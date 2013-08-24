@@ -26,6 +26,7 @@ Check the [compatibility matrix](http://www.polymer-project.org/compatibility.ht
 
 Once your Web Component is registered you can use it either programmatically:
 
+```
 ;;append a my-element node to body
 (.appendChild js/document.body (.createElement js/document "my-element"))
 ;;or using dommy and hiccup syntax
