@@ -17,7 +17,7 @@ Check the [compatibility matrix](http://www.polymer-project.org/compatibility.ht
 
 ```clojure
 (def proto (prototype {:content "Hello world!"})
-(register 'my-element' proto)
+(register "my-element" proto)
 
 ;;alternatively you can use the defwebcomponent macro
 (defwebcomponent my-element
