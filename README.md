@@ -2,16 +2,16 @@
 
 A Web Components library for ClojureScript.
 
-Lucuma is similar conceptually to [polymer](http://www.polymer-project.org/), [x-tags](http://www.x-tags.org/) or dart's [web-ui](https://www.dartlang.org/articles/web-ui/).
+Lucuma is similar conceptually to [polymer](http://www.polymer-project.org/), [x-tags](http://www.x-tags.org/) or dart's [web-ui](https://www.dartlang.org/articles/web-ui/) and builds on top of [Custom Elements](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html), [Shadow DOM](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html) and [HTML Templates](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html).
 
-Lucuma builds on top of [Custom Elements](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html), [Shadow DOM](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html) and [HTML Templates](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html).
+__Disclaimer__
 
-__Disclaimer__ technologies involved are pre-alpha (specs are not frozen yet). Use cautiously! It works great on evergreen browsers when using [polymer polyfill](http://www.polymer-project.org/getting-the-code.html).
+Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously! It works great on evergreen browsers when using [polymer polyfill](http://www.polymer-project.org/getting-the-code.html).
 Check the [compatibility matrix](http://www.polymer-project.org/compatibility.html) for more details.
 
 ## Installation
 
-`lucuma` is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"] `:dependency` to your `project.clj`.
+Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"] `:dependency` to your `project.clj`.
 
 ## Usage
 
