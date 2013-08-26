@@ -44,16 +44,33 @@
       (.getPrototypeOf js/Object (.createElement js/document t)))
     (.-prototype js/HTMLElement)))
 
+(defn- wrap-with-this-argument
+  [f]
+  (when f (fn [& args] (this-as e (apply f (conj args e))))))
+
+(defn set-callback!
+  [proto name callback]
+  (set-if-not-nil! proto name (wrap-with-this-argument callback)))
+
+(defn initialize-and-set-callback!
+  [f m]
+  (fn []
+    (do
+      (let [{:keys [content style reset-style-inheritance apply-author-styles]} m]
+        (this-as e (initialize e content style reset-style-inheritance apply-author-styles)))
+      (when-let [f (wrap-with-this-argument f)]
+        (f)))))
+
 (defn create-prototype
   [m]
-  (let [{:keys [base-type content style reset-style-inheritance apply-author-styles created-fn entered-document-fn left-document-fn attribute-changed-fn fns]} m
+  (let [{:keys [base-type created-fn entered-document-fn left-document-fn attribute-changed-fn fns]} m
         proto (.create js/Object (find-prototype base-type))]
-    (set-if-not-nil! proto "createdCallback" #(this-as this (do (initialize this content style reset-style-inheritance apply-author-styles) (when created-fn (created-fn)))))
-    (set-if-not-nil! proto "enteredDocumentCallback" entered-document-fn)
-    (set-if-not-nil! proto "leftDocumentCallback" left-document-fn)
-    (set-if-not-nil! proto "attributeChangedCallback" attribute-changed-fn)
+    (aset proto "createdCallback" (initialize-and-set-callback! created-fn m))
+    (set-callback! proto "enteredDocumentCallback" entered-document-fn)
+    (set-callback! proto "leftDocumentCallback" left-document-fn)
+    (set-callback! proto "attributeChangedCallback" attribute-changed-fn)
     (doseq [f fns]
-      (set-if-not-nil! proto (key f) (val f)))
+      (set-callback! proto (key f) (val f)))
     proto))
 
 (defn register
