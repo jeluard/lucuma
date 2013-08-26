@@ -1,5 +1,6 @@
 (ns lucuma.custom-elements
-  (:require [lucuma.shadow-dom :as sd])
+  (:require [lucuma.shadow-dom :as sd]
+            [lucuma.util :refer [set-if-not-nil!]])
   (:refer-clojure :exclude [name])
   (:use-macros [dommy.macros :only [node]]))
 
@@ -13,11 +14,6 @@
   [name]
   (and (.contains name "-")
        (not (contains? forbidden-names name))))
-
-(defn- set-callback!
-  [proto p f]
-  (when f
-    (aset proto p f)))
 
 (defmulti set-content! (fn [_ c] (type c)))
 
@@ -52,12 +48,12 @@
   [m]
   (let [{:keys [base-type content style reset-style-inheritance apply-author-styles created-fn entered-document-fn left-document-fn attribute-changed-fn fns]} m
         proto (.create js/Object (find-prototype base-type))]
-    (set-callback! proto "createdCallback" #(this-as this (do (initialize this content style reset-style-inheritance apply-author-styles) (when created-fn (created-fn)))))
-    (set-callback! proto "enteredDocumentCallback" entered-document-fn)
-    (set-callback! proto "leftDocumentCallback" left-document-fn)
-    (set-callback! proto "attributeChangedCallback" attribute-changed-fn)
+    (set-if-not-nil! proto "createdCallback" #(this-as this (do (initialize this content style reset-style-inheritance apply-author-styles) (when created-fn (created-fn)))))
+    (set-if-not-nil! proto "enteredDocumentCallback" entered-document-fn)
+    (set-if-not-nil! proto "leftDocumentCallback" left-document-fn)
+    (set-if-not-nil! proto "attributeChangedCallback" attribute-changed-fn)
     (doseq [f fns]
-      (set-callback! proto (key f) (val f)))
+      (set-if-not-nil! proto (key f) (val f)))
     proto))
 
 (defn register
