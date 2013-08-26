@@ -1,4 +1,5 @@
-(ns lucuma)
+(ns lucuma
+  (:require [lucuma.custom-elements :refer [create-prototype register]]))
 
 (defmacro defwebcomponent
   [n & m]
