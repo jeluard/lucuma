@@ -4,9 +4,6 @@
   (:refer-clojure :exclude [name])
   (:use-macros [dommy.macros :only [node]]))
 
-(defprotocol HiccupRenderer
-  (render [_ hiccup]))
-
 ;;https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html#concepts
 (def ^:private forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
 
@@ -15,13 +12,17 @@
   (and (.contains name "-")
        (not (contains? forbidden-names name))))
 
+(defmulti render-content (fn [c] (type c)))
+
+(defmethod render-content js/String [s] s)
+
+(defmethod render-content js/HTMLTemplateElement [t] (.cloneNode (aget t "content") true))
+
 (defmulti set-content! (fn [_ c] (type c)))
 
 (defmethod set-content! js/String [sr s] (aset sr "innerHTML" s))
 
-(defmethod set-content! PersistentVector [sr v] (.appendChild sr (node v)))
-
-(defmethod set-content! js/HTMLTemplateElement [sr t] (.appendChild sr (.cloneNode (aget t "content") true)))
+(defmethod set-content! js/HTMLElement [sr e] (.appendChild sr e))
 
 (defmulti set-style! (fn [_ c] (type c)))
 
@@ -29,11 +30,16 @@
                                          (aset style "innerHTML" s)
                                          (.appendChild sr style)))
 
+(defn- init-content!
+  [sr c]
+  (if-let [rc (render-content c)]
+    (set-content! sr rc)))
+
 (defn- initialize
   [e content style reset-style-inheritance apply-author-styles]
   (when (or content style)
     (let [sr (sd/create e reset-style-inheritance apply-author-styles)]
-      (when content (set-content! sr content))
+      (when content (init-content! sr content))
       (when style (set-style! sr style)))))
 
 (defn- find-prototype
