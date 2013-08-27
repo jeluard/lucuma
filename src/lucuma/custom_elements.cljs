@@ -63,14 +63,12 @@
 
 (defn create-prototype
   [m]
-  (let [{:keys [base-type created-fn entered-document-fn left-document-fn attribute-changed-fn fns]} m
+  (let [{:keys [base-type created-fn entered-document-fn left-document-fn attribute-changed-fn]} m
         proto (.create js/Object (find-prototype base-type))]
     (aset proto "createdCallback" (initialize-and-set-callback! created-fn m))
     (set-callback! proto "enteredDocumentCallback" entered-document-fn)
     (set-callback! proto "leftDocumentCallback" left-document-fn)
     (set-callback! proto "attributeChangedCallback" attribute-changed-fn)
-    (doseq [f fns]
-      (set-callback! proto (key f) (val f)))
     proto))
 
 (defn register
