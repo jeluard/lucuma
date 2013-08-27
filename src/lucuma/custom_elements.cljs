@@ -1,8 +1,7 @@
 (ns lucuma.custom-elements
   (:require [lucuma.shadow-dom :as sd]
             [lucuma.util :refer [set-if-not-nil!]])
-  (:refer-clojure :exclude [name])
-  (:use-macros [dommy.macros :only [node]]))
+  (:refer-clojure :exclude [name]))
 
 ;;https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html#concepts
 (def ^:private forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
@@ -18,11 +17,15 @@
 
 (defmethod render-content js/HTMLTemplateElement [t] (.cloneNode (aget t "content") true))
 
+(defmethod render-content :default [c] (throw (str "No render-content implementation for " c) (ex-info {:type (type c)})))
+
 (defmulti set-content! (fn [_ c] (type c)))
 
 (defmethod set-content! js/String [sr s] (aset sr "innerHTML" s))
 
 (defmethod set-content! js/HTMLElement [sr e] (.appendChild sr e))
+
+(defmethod set-content! :default [sr c] (throw (str "No set-content! implementation for " c) (ex-info {:type (type c)})))
 
 (defmulti set-style! (fn [_ c] (type c)))
 
