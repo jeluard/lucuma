@@ -2,7 +2,7 @@
 
 A Web Components library for ClojureScript.
 
-Lucuma is similar conceptually to [polymer](http://www.polymer-project.org/), [x-tags](http://www.x-tags.org/) or dart's [web-ui](https://www.dartlang.org/articles/web-ui/) and builds on top of [Custom Elements](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html), [Shadow DOM](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html) and [HTML Templates](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html).
+Lucuma is conceptually similar to [polymer](http://www.polymer-project.org/), [x-tags](http://www.x-tags.org/) or dart's [web-ui](https://www.dartlang.org/articles/web-ui/) and builds on top of [Custom Elements](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html), [Shadow DOM](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html) and [HTML Templates](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html).
 
 __Disclaimer__
 
@@ -15,21 +15,23 @@ Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"] `:dependency` to 
 
 ## Usage
 
-### Element creation
+### Custom Element definition
 
 ```clojure
-;;First
+;;First define your new element
 (use 'lucuma.custom-elements)
 (def proto (create-prototype {:content "Hello world!"})
 
-(use 'lucuma)
-;;alternatively you can use the defwebcomponent macro
-(defwebcomponent my-element
-  :content "Hello World!")
+;;then register it
 
 (register "my-element" proto)
 
-;;or
+;;alternatively you can use the defwebcomponent macro
+
+(use 'lucuma)
+(defwebcomponent my-element
+  :content "Hello World!")
+
 (register my-element)
 ```
 
@@ -51,6 +53,8 @@ You can hook function using following keys:
 * `created-fn` will be called when the element is created via `document.createElement`
 * `entered-document-fn` will be called each time the element is inserted in the document
 * `left-document-fn` will be called each time the element is removed from the document
+
+All functions receive as unique argument the targeted element.
 
 ```clojure
 (defwebcomponent my-element
