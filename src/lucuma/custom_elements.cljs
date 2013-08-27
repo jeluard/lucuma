@@ -9,7 +9,7 @@
 
 (defn valid-name?
   [name]
-  (and (.contains name "-")
+  (and (not= -1 (.indexOf name "-"))
        (not (contains? forbidden-names name))))
 
 (defmulti render-content (fn [c] (type c)))
