@@ -9,11 +9,13 @@ __Disclaimer__
 Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously! It works great on evergreen browsers when using [polymer polyfill](http://www.polymer-project.org/getting-the-code.html).
 Check the [compatibility matrix](http://www.polymer-project.org/compatibility.html) for more details.
 
-## Installation
+[Install](#install) | [Use](#use) | [Examples](/examples) | [Links](#links) | [License](#license)
 
-Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"] `:dependency` to your `project.clj`.
+## Install
 
-## Usage
+Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"]` dependency to your `project.clj`.
+
+## Use
 
 ### Custom Element definition
 
@@ -35,16 +37,26 @@ Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"] `:dependency` to 
 (register my-element)
 ```
 
-Once your Web Component is registered you can use it either programmatically:
+Once your Web Component is registered you can use it programmatically:
 
 ```clojure
 ;;append a my-element node to body
 (.appendChild js/document.body (.createElement js/document "my-element"))
+
 ;;or using dommy and hiccup syntax
 (dommy/append! (dommy/sel1 :body) [:my-element])
 ```
 
-or simply add the node `<my-element></my-element>` directly to your document.
+Alternatively you can directly use it as an html element:
+
+```html
+<!doctype html>
+<html>
+  <body>
+    <my-element></my-element>
+  </body>
+</html>
+```
 
 ### Lifecycle
 
@@ -68,6 +80,12 @@ All functions receive as unique argument the targeted element.
 (.appendChild js/document.body e) ;; => `entered-document-fn` is called
 (.removeChild js/document.body e) ;; => `left-document-fn` is called
 ```
+
+### Content definition
+
+### Style definition
+
+### Extend base type
 
 ## Links
 
