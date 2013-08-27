@@ -18,7 +18,7 @@ Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"] `:dependency` to 
 ### Element creation
 
 ```clojure
-;;First 
+;;First
 (use 'lucuma.custom-elements)
 (def proto (create-prototype {:content "Hello world!"})
 
@@ -35,7 +35,7 @@ Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"] `:dependency` to 
 
 Once your Web Component is registered you can use it either programmatically:
 
-```
+```clojure
 ;;append a my-element node to body
 (.appendChild js/document.body (.createElement js/document "my-element"))
 ;;or using dommy and hiccup syntax
@@ -43,6 +43,27 @@ Once your Web Component is registered you can use it either programmatically:
 ```
 
 or simply add the node `<my-element></my-element>` directly to your document.
+
+### Lifecycle
+
+You can hook function using following keys:
+
+* `created-fn` will be called when the element is created via `document.createElement`
+* `entered-document-fn` will be called each time the element is inserted in the document
+* `left-document-fn` will be called each time the element is removed from the document
+
+```clojure
+(defwebcomponent my-element
+  :created-fn #(.log js/console % " has been created")
+  :entered-document-fn #(.log js/console % " has been inserted in the document")
+  :left-document-fn #(.log js/console % " has been removed from the document"))
+
+(register my-element)
+
+(def e (.createElement js/document "my-element") ;; => `created-fn` is called
+(.appendChild js/document.body e) ;; => `entered-document-fn` is called
+(.removeChild js/document.body e) ;; => `left-document-fn` is called
+```
 
 ## Links
 
