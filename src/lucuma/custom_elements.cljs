@@ -31,7 +31,7 @@
 
 (defn- initialize
   [e content style reset-style-inheritance apply-author-styles]
-  (when content
+  (when (or content style)
     (let [sr (sd/create e reset-style-inheritance apply-author-styles)]
       (when content (set-content! sr content))
       (when style (set-style! sr style)))))
