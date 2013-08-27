@@ -8,7 +8,7 @@
   (render [_ hiccup]))
 
 ;;https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html#concepts
-(def forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
+(def ^:private forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
 
 (defn valid-name?
   [name]
@@ -48,11 +48,11 @@
   [f]
   (when f (fn [& args] (this-as e (apply f (conj args e))))))
 
-(defn set-callback!
+(defn- set-callback!
   [proto name callback]
   (set-if-not-nil! proto name (wrap-with-this-argument callback)))
 
-(defn initialize-and-set-callback!
+(defn- initialize-and-set-callback!
   [f m]
   (fn []
     (do
