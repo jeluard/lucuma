@@ -15,13 +15,22 @@ Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"] `:dependency` to 
 
 ## Usage
 
-```clojure
-(def proto (prototype {:content "Hello world!"})
-(register "my-element" proto)
+### Element creation
 
+```clojure
+;;First 
+(use 'lucuma.custom-elements)
+(def proto (create-prototype {:content "Hello world!"})
+
+(use 'lucuma)
 ;;alternatively you can use the defwebcomponent macro
 (defwebcomponent my-element
   :content "Hello World!")
+
+(register "my-element" proto)
+
+;;or
+(register my-element)
 ```
 
 Once your Web Component is registered you can use it either programmatically:

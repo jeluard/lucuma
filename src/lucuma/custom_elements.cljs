@@ -72,6 +72,7 @@
     proto))
 
 (defn register
+  ([m] (register (:name m) (create-prototype m) (:extends m)))
   ([name proto] (register name proto nil))
   ([name proto extends] {:pre [(valid-name? name)]} (.register js/document name (clj->js (merge {:prototype proto} (when extends {:extends extends}))))))
 
