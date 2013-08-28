@@ -162,6 +162,7 @@ Existing element can be extended ...
 
 ### To go further
 
+* http://www.html5rocks.com/en/tutorials/webcomponents/customelements/
 * http://www.html5rocks.com/en/tutorials/webcomponents/template/
 * http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/
 * http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/
