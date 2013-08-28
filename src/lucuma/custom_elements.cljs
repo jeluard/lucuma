@@ -13,7 +13,9 @@
 
 (defmulti render-content
   "render content value to something that can be added to the DOM via append!"
-  (fn [c] (type c)))
+  ;; Hack to workaround browsers where document.createElement('template').constructor != HTMLTemplateElement but still document.createElement('template') instanceof HTMLTemplateElement
+  ;; (type c)
+  (fn [c] (if (instance? js/HTMLTemplateElement c) js/HTMLTemplateElement (type c))))
 
 (defmethod render-content js/String [s] s)
 
@@ -23,7 +25,7 @@
 
 (defmulti render-style
   "render style value to something that can be added to the DOM via append!"
-  (fn [s] (type s)))
+  type)
 
 (defmethod render-style js/String [s] (let [style (.createElement js/document "style")]
                                         (aset style "innerHTML" s)
