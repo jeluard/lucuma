@@ -130,7 +130,7 @@ Existing element can be extended ...
 
 ```clojure
 (defcomponent my-button
-  :base-type 'button' ;; or js/HTMLButtonElement
+  :base-type "button" ;; or js/HTMLButtonElement
   :style "button {background: red;}")
 ```
 
