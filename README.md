@@ -129,6 +129,7 @@ Existing element can be extended ...
 
 ```clojure
 (defcomponent my-button
+  :base-type 'button' ;; or js/HTMLButtonElement
   :style "button {background: red;}")
 ```
 
@@ -139,6 +140,8 @@ Existing element can be extended ...
   ...
 </html>
 ```
+
+`base-type` value can be an element name or a concrete prototype extending HTMLElement. It defaults to HTMLElement.
 
 ## Links
 
