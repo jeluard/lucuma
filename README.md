@@ -122,6 +122,7 @@ Out of the box `render-style` has implementations for String.
 ```clojure
 (defwebcomponent my-element
   :style "div {background: green;}")
+```
 
 ### Extend base type
 
