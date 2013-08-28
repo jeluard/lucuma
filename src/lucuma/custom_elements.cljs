@@ -14,6 +14,7 @@
 (defmulti render-content
   "render content value to something that can be added to the DOM via append!"
   ;; Hack to workaround browsers where document.createElement('template').constructor != HTMLTemplateElement but still document.createElement('template') instanceof HTMLTemplateElement
+  ;; see https://github.com/Polymer/TemplateBinding/issues/139
   ;; (type c)
   (fn [c] (if (instance? js/HTMLTemplateElement c) js/HTMLTemplateElement (type c))))
 
