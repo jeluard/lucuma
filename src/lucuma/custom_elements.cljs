@@ -66,22 +66,28 @@
       (.getPrototypeOf js/Object (.createElement js/document t)))
     (.-prototype js/HTMLElement)))
 
-(defn- wrap-with-this-argument
+(defn- call-with-this-argument
+  [f this args]
+  (apply f (conj args this)))
+
+(defn- wrap-with-callback-this-value
   [f]
-  (fn [& args] (this-as e (apply f (conj args e)))))
+  (fn [& args] (this-as this (call-with-this-argument f this args))))
 
 (defn- set-callback!
   [proto name f]
-  (when f (aset proto name (wrap-with-this-argument f))))
+  (when f (aset proto name (wrap-with-callback-this-value f))))
 
 (defn- initialize-and-set-callback!
   [f m]
   (fn []
-    (do
-      (let [{:keys [content style reset-style-inheritance apply-author-styles]} m]
-        (this-as e (initialize e content style reset-style-inheritance apply-author-styles)))
-      (when f
-        ((wrap-with-this-argument f))))))
+    (this-as
+      this
+      (do
+        (let [{:keys [content style reset-style-inheritance apply-author-styles]} m]
+          (initialize this content style reset-style-inheritance apply-author-styles))
+        (when f
+          (call-with-this-argument f this []))))))
 
 (defn create-prototype
   "create a Custom Element prototype from a map definition"
