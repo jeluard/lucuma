@@ -127,7 +127,7 @@ Out of the box `render-style` has implementations for String.
 
 ### Extend base type
 
-Existing element can be extended ...
+Existing element can be extended to inherit capacity from another element (via prototype inheritence).
 
 ```clojure
 (defcomponent my-button
@@ -143,7 +143,7 @@ Existing element can be extended ...
 </html>
 ```
 
-`base-type` value can be an element name or a concrete prototype extending HTMLElement. It defaults to HTMLElement.
+`base-type` value can be an element name or a concrete type extending HTMLElement. It defaults to HTMLElement.
 
 ## Links
 
