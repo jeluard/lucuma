@@ -108,7 +108,8 @@ Add support to hiccup style vector by providing a custom render-content implemen
 ```clojure
 ;; Use dommy.macros/node to render hiccup style vector as a DocumentFragment.
 
-(defmethod render-content PersistentVector [v] (node v))
+(derive PersistentVector ::vector)
+(defmethod render-content ::vector [v] (node v))
 
 (defwebcomponent my-element
   :content [:div "Hello world!"])
