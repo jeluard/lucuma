@@ -19,31 +19,35 @@
 
 (defmethod render-content :default [c] (throw (str "No render-content implementation for " c) (ex-info {:type (type c)})))
 
-(defmulti set-content! (fn [_ c] (type c)))
+(defmulti render-style (fn [s] (type s)))
 
-(defmethod set-content! js/String [sr s] (aset sr "innerHTML" s))
+(defmethod render-style js/String [s] (let [style (.createElement js/document "style")]
+                                        (aset style "innerHTML" s)
+                                        style))
 
-(defmethod set-content! js/HTMLElement [sr e] (.appendChild sr e))
+(defmethod render-style :default [s] (throw (str "No render-style implementation for " s) (ex-info {:type (type s)})))
 
-(defmethod set-content! :default [sr c] (throw (str "No set-content! implementation for " c) (ex-info {:type (type c)})))
+(defmulti append! (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
-(defmulti set-style! (fn [_ c] (type c)))
+(defmethod append! js/String [sr s] (aset sr "innerHTML" s))
 
-(defmethod set-style! js/String [sr s] (let [style (.createElement js/document "style")]
-                                         (aset style "innerHTML" s)
-                                         (.appendChild sr style)))
+(defmethod append! js/HTMLElement [sr e] (.appendChild sr e))
 
-(defn- init-content!
-  [sr c]
-  (if-let [rc (render-content c)]
-    (set-content! sr rc)))
+(defmethod append! js/DocumentFragment [sr e] (.appendChild sr e))
+
+(defmethod append! :default [sr e] (throw (str "No append! implementation for " e) (ex-info {:type (type e)})))
+
+(defn- render-then-append!
+  [sr render-fn c]
+  (if-let [rc (render-fn c)]
+    (append! sr rc)))
 
 (defn- initialize
   [e content style reset-style-inheritance apply-author-styles]
   (when (or content style)
     (let [sr (sd/create e reset-style-inheritance apply-author-styles)]
-      (when content (init-content! sr content))
-      (when style (set-style! sr style)))))
+      (when content (render-then-append! sr render-content content))
+      (when style (render-then-append! sr render-style style)))))
 
 (defn- find-prototype
   [t]
