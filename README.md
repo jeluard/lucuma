@@ -70,9 +70,9 @@ All functions receive as unique argument the targeted element.
 
 ```clojure
 (defwebcomponent my-element
-  :created-fn #(.log js/console % " has been created")
-  :entered-document-fn #(.log js/console % " has been inserted in the document")
-  :left-document-fn #(.log js/console % " has been removed from the document"))
+  :created-fn #(.log js/console (str % " has been created"))
+  :entered-document-fn #(.log js/console (str % " has been inserted in the document"))
+  :left-document-fn #(.log js/console % " (str has been removed from the document")))
 
 (register my-element)
 
@@ -83,9 +83,62 @@ All functions receive as unique argument the targeted element.
 
 ### Content definition
 
+Content is first rendered with the `render-content` multimethod then appended via the `append!` multimethod, both applied in a row.
+Out of the box `render-content` has implementations for String and HTMLTemplateElement and `append!` implementations for String, any HTMLElement and DocumentFragment.
+
+HTML template can be directly used as content:
+
+```html
+<html>
+  ...
+  <template id="template-id">
+    Hello world!
+  </template>
+  ...
+</html>
+```
+
+```clojure
+(defwebcomponent my-element
+  :content (dommy.macros/sel1 :#template-id))
+```
+
+Add support to hiccup style vector by providing a custom render-content implementation:
+
+```clojure
+;; Use dommy.macros/node to render hiccup style vector as a DocumentFragment.
+
+(defmethod render-content PersistentVector [v] (node v))
+
+(defwebcomponent my-element
+  :content [:div "Hello world!"])
+```
+
 ### Style definition
 
+Style is first rendered with the `render-style` multimethod then appended via the `append!` multimethod, both applied in a row.
+Out of the box `render-style` has implementations for String.
+
+```clojure
+(defwebcomponent my-element
+  :style "div {background: green;}")
+
 ### Extend base type
+
+Existing element can be extended ...
+
+```clojure
+(defcomponent my-button
+  :style "button {background: red;}")
+```
+
+```html
+<html>
+  ...
+  <button is="my-button">Hello world!</button>
+  ...
+</html>
+```
 
 ## Links
 
