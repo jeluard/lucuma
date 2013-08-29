@@ -13,7 +13,7 @@ Check the [compatibility matrix](http://www.polymer-project.org/compatibility.ht
 
 ## Install
 
-Lucuma is available in Clojars. Add `[lucuma "0.1.0-SNAPSHOT"]` dependency to your `project.clj`.
+Lucuma is available in Clojars. Add `[lucuma "0.1.0"]` dependency to your `project.clj`.
 
 ## Use
 
