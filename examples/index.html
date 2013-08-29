@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Lucuma examples</title>
+    <script src="http://www.polymer-project.org/polymer.min.js"></script>
+    <script src="examples.js"></script>
+  </head>
+  <body>
+    <section>
+      <input id="input" is="lucu-range-with-threshold" type="range" min="0" max="50" step="5" value="25" min-threshold="10" max-threshold="40" onthresholdcrossed="thresholdCrossed(e)" />
+      <!--lucu-range-with-threshold id="input" type="range" min="0" max="50" step="5" value="25" min-threshold="10" max-threshold="40" onthresholdcrossed="thresholdCrossed(e)" /-->
+      <script>
+      function thresholdCrossed(e) {
+        console.log(e.detail);
+      }
+      </script>
+    </section>
+  </body>
+</html>
