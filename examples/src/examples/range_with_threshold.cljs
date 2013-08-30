@@ -35,6 +35,8 @@
 
 ;;Extending native element currently fails with polymer polyfill
 ;;TODO https://github.com/Polymer/ShadowDOM/issues/190
+;;Also chrome doesn't support dynamically created shadow root on input element so the style is nt applied.
+;;TODO https://code.google.com/p/chromium/issues/detail?id=263940
 
 (defwebcomponent lucu-range-with-threshold
   ;;[min-threshold max-threshold]
