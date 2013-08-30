@@ -42,5 +42,5 @@
   ;;[min-threshold max-threshold]
   :extends "input"
   :style "input[type='range'] .threshold-crossed { background-color: red; }"
-  :entered-document-fn #(initialize % (or min-threshold 10) (or max-threshold 30))
+  :created-fn #(initialize % (or min-threshold 10) (or max-threshold 30))
   :event-handlers #{:threshold-crossed})
