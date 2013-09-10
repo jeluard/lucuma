@@ -6,5 +6,6 @@
     (.initCustomEvent ev n can-bubble cancelable (clj->js m))))
 
 (defn fire
+  ([el n] (fire el n {}))
   ([el n m] (fire el n m false false))
   ([el n m can-bubble cancelable] (.dispatchEvent el (create-event n m can-bubble cancelable))))
