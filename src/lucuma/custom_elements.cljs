@@ -95,8 +95,8 @@
   (let [{:keys [base-type created-fn entered-document-fn left-document-fn attribute-changed-fn]} m
         proto (.create js/Object (find-prototype base-type))]
     (aset proto "createdCallback" (initialize-and-set-callback! created-fn m))
-    (set-callback! proto "enteredDocumentCallback" entered-document-fn)
-    (set-callback! proto "leftDocumentCallback" left-document-fn)
+    (set-callback! proto "enteredDocumentCallback" entered-document-fn) ;; TODO rename to enteredViewCallback
+    (set-callback! proto "leftDocumentCallback" left-document-fn) ;; TODO rename to leftViewCallback
     (set-callback! proto "attributeChangedCallback" attribute-changed-fn)
     proto))
 
@@ -104,7 +104,7 @@
   "register a Custom Element from an abstract definition"
   ([m] (register (:name m) (create-prototype m) (:extends m)))
   ([name proto] (register name proto nil))
-  ([name proto extends] {:pre [(valid-name? name)]} (.register js/document name (clj->js (merge {:prototype proto} (when extends {:extends extends}))))))
+  ([name proto extends] {:pre [(valid-name? name)]} (.register js/document name (clj->js (merge {:prototype proto} (when extends {:extends extends})))))) ;; TODO extends must be provided now
 
 (defn create
   "create an HTML element from it's name. 'is' value is used as second argument to document.createElement"
