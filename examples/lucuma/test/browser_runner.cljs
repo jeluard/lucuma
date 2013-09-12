@@ -2,7 +2,7 @@
   (:require [dommy.core :as dommy]
             [lucuma.overlay :as o]
             [lucuma.event-test :as et]
-            [cemerick.cljs.test :refer [report run-all-tests *testing-vars* *testing-contexts* testing-contexts-str testing-vars-str]])
+            [cemerick.cljs.test :refer [report *testing-vars* *testing-contexts*] :as t])
   (:require-macros [dommy.macros :refer [sel1]]))
 
 (defn- log
@@ -41,10 +41,10 @@
   (log m))
 
 (defmethod report :fail [m]
-  (log (str ":fail " (:name (meta (:var m))) " " (testing-vars-str m) " " (testing-contexts-str))))
+  (log (str ":fail " (:name (meta (:var m))) " " *testing-vars* " " *testing-contexts*)))
 
 (defmethod report :pass [m]
-  (log (str ":pass " (:name (meta (:var m))) " " (testing-vars-str m) " " (testing-contexts-str) " " (:message m))))
+  (log (str ":pass " (:name (meta (:var m))) " " *testing-vars* " " *testing-contexts* " " (:message m))))
 
 (defn ^:export run-all-tests
   []

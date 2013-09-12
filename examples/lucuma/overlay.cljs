@@ -1,4 +1,4 @@
-(ns examples.lucuma.overlay
+(ns lucuma.overlay
   (:require [lucuma.event :refer [fire]]
             [dommy.core :as dommy])
   (:require-macros [lucuma :refer [defwebcomponent]]

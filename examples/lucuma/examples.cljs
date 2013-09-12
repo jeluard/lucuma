@@ -7,7 +7,7 @@
 (defwebcomponent ex-hello
   :content "hello-world")
 
-(defn ^:export register
+(defn ^:export register-all
   []
   (register ex-hello)
   (register lucu-range-with-threshold)
