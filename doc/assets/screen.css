@@ -1,0 +1,134 @@
+body { 
+  padding-top: 70px; 
+}
+
+h1 {
+  margin-top: 50px;
+}
+
+pre[class*="language-"] {
+  margin: 0;
+  padding: 0;
+}
+
+code[class*="language-"] {
+  margin: 0;
+  padding: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 20px 0;
+}
+
+#ribbon {
+  position: fixed;
+  top: 0px;
+  right: 0;
+  border: 0;
+  width: 149px;
+  height: 149px;
+  z-index: 10;
+}
+
+#github-button {
+  position: fixed;
+  top: 10px;
+  right: 150px;
+  border: 0;
+  z-index: 10;
+}
+
+#navbar {
+  z-index: 9;
+}
+
+.disclaimer {
+  margin: 20px 0;
+  padding: 5px 15px 5px 15px;
+  border-left: 5px solid;
+  background-color: #fcf2f2;
+  border-color: #dFb5b4;
+}
+
+.main-section {
+  border-bottom: 1px solid #eeeeee;
+}
+
+.example-live, .example-cljs {
+  position: relative;
+  padding: 25px 0 10px 15px;
+  margin: 0;
+  background-color: #fafafa;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
+  border-color: #e5e5e5 #eee #eee;
+  border-style: solid;
+  border-width: 1px 0;
+}
+
+.example-live:after {
+  content: "Live";
+  position: absolute;
+  top:  15px;
+  left: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.example-markup {
+  position: relative;
+  padding: 15px;
+  margin: 0 -15px 15px;
+  background-color: #fafafa;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
+  border-color: #e5e5e5 #eee #eee;
+  border-style: solid;
+  border-width: 1px 0;
+}
+
+.example-markup:after {
+  content: "HTML";
+  position: absolute;
+  top:  10px;
+  left: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.example-cljs:after {
+  content: "Cljs";
+  position: absolute;
+  top:  15px;
+  left: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.example-live, .example-markup, .example-cljs {
+  border-radius: 0;
+  border-width: 0 0 1px;
+}
+
+@media screen and (min-width: 768px) {
+  .example-live {
+    margin-left: 0;
+    margin-right: 0;
+    background-color: #fff;
+    border-width: 1px;
+    border-color: #ddd;
+    border-radius: 4px 4px 0 0;
+    box-shadow: none;
+  }
+  .example-live + .example-markup {
+    border-width: 1px;
+  }
+}
