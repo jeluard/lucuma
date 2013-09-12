@@ -53,6 +53,7 @@ footer {
 
 .main-section {
   border-bottom: 1px solid #eeeeee;
+  padding-bottom: 20px;
 }
 
 .example-live, .example-cljs {
