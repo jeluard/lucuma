@@ -1,4 +1,4 @@
-(ns examples.range-with-threshold
+(ns examples.lucuma.range-with-threshold
   (:require [lucuma.event :refer [fire]])
   (:require-macros [lucuma :refer [defwebcomponent]]))
 
