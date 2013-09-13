@@ -137,8 +137,8 @@ You can hook function using following keys:
 
 <ul>
   <li><strong>created-fn</strong> will be called when the element is created via <strong>document.createElement</strong></li>
-  <li><strong>entered-document-fn</strong> will be called each time the element is inserted in the document</li>
-  <li><strong>left-document-fn</strong> will be called each time the element is removed from the document</li>
+  <li><strong>entered-view-fn</strong> will be called each time the element is inserted in the document</li>
+  <li><strong>left-view-fn</strong> will be called each time the element is removed from the document</li>
 </ul>
 
 All functions receive as unique argument the targeted element.
@@ -155,14 +155,14 @@ All functions receive as unique argument the targeted element.
               <code class="language-clojure">
   (defwebcomponent ex-lifecycle
     :created-fn #(.log js/console (str % " has been created"))
-    :entered-document-fn #(.log js/console (str % " has been inserted in the document"))
-    :left-document-fn #(.log js/console % " (str has been removed from the document")))
+    :entered-view-fn #(.log js/console (str % " has been inserted in the document"))
+    :left-view-fn #(.log js/console % " (str has been removed from the document")))
   
   (register ex-lifecycle)
   
   (def e (.createElement js/document "my-element") ;; => `created-fn` is called
-  (.appendChild js/document.body e) ;; => `entered-document-fn` is called
-  (.removeChild js/document.body e) ;; => `left-document-fn` is called
+  (.appendChild js/document.body e) ;; => `entered-view-fn` is called
+  (.removeChild js/document.body e) ;; => `left-view-fn` is called
               </code>
             </pre>
           </section>

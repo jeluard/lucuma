@@ -10,8 +10,8 @@
 
 (defwebcomponent ex-lifecycle
   :created-fn #(.log js/console  (str % " has been created"))
-  :entered-document-fn #(.log js/console  (str % " has been inserted in the document"))
-  :left-document-fn #(.log js/console % " (str has been removed from the document"))
+  :entered-view-fn #(.log js/console  (str % " has been inserted in the document"))
+  :left-view-fn #(.log js/console % " (str has been removed from the document"))
 
 (defwebcomponent ex-content-template
   :content #(dommy.macros/sel1 :#template-id))

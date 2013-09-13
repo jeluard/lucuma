@@ -96,11 +96,11 @@
 (defn create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
-  (let [{:keys [base-type created-fn entered-document-fn left-document-fn attribute-changed-fn]} m
+  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attribute-changed-fn]} m
         proto (.create js/Object (find-prototype base-type))]
     (aset proto "createdCallback" (initialize-and-set-callback! created-fn m))
-    (set-callback! proto "enteredDocumentCallback" entered-document-fn) ;; TODO rename to enteredViewCallback
-    (set-callback! proto "leftDocumentCallback" left-document-fn) ;; TODO rename to leftViewCallback
+    (set-callback! proto "enteredViewCallback" entered-view-fn)
+    (set-callback! proto "leftViewCallback" left-view-fn)
     (set-callback! proto "attributeChangedCallback" attribute-changed-fn)
     proto))
 
