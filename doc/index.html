@@ -170,7 +170,7 @@ All functions receive as unique argument the targeted element.
           <section>
             <h2 id="custom-element-content">Content</h2>
             <p>
-              Content is first rendered with the <strong>render-content</strong> multimethod then appended via the <strong>append!</strong> multimethod, both applied in a row.
+              Content is first rendered with the <strong>render-content</strong> multimethod then appended via the <strong>append!</strong> multimethod, both applied in a row. If content is a function it will be evaluated at element creation time.
               Out of the box <strong>render-content</strong> has implementations for String and HTMLTemplateElement and <strong>append!</strong> implementations for String, any HTMLElement and DocumentFragment.
               
               HTML template can be directly used as content:
@@ -184,7 +184,7 @@ All functions receive as unique argument the targeted element.
             <pre class="example-cljs">
               <code class="language-clojure">
   (defwebcomponent ex-content-template
-    :content (dommy.macros/sel1 :#template-id))
+    :content #(dommy.macros/sel1 :#template-id))
               </code>
             </pre>
             <p>
@@ -209,7 +209,7 @@ All functions receive as unique argument the targeted element.
           <section>
             <h2 id="custom-element-style">Style</h2>
             <p>
-              Style is first rendered with the <strong>render-style</strong> multimethod then appended via the <strong>append!</strong> multimethod, both applied in a row.
+              Style is first rendered with the <strong>render-style</strong> multimethod then appended via the <strong>append!</strong> multimethod, both applied in a row. If style is a function it will be evaluated at element creation time.
 Out of the box <strong>render-style</strong> has implementations for String.
             </p>
             <div class="example-live">

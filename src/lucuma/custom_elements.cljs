@@ -51,12 +51,16 @@
   (if-let [rc (render-fn c)]
     (append! sr rc)))
 
+(defn- invoke-if-fn
+  [o]
+  (if (fn? o) (o) o))
+
 (defn- initialize
   [e content style reset-style-inheritance apply-author-styles]
   (when (or content style)
     (let [sr (sd/create e reset-style-inheritance apply-author-styles)]
-      (when content (render-then-append! sr render-content content))
-      (when style (render-then-append! sr render-style style)))))
+      (when content (render-then-append! sr render-content (invoke-if-fn content)))
+      (when style (render-then-append! sr render-style (invoke-if-fn style))))))
 
 (defn- find-prototype
   [t]
