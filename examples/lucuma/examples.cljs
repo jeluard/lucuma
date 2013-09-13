@@ -1,20 +1,21 @@
 (ns lucuma.examples
-  (:require [lucuma.custom-elements :refer [register render-content]]
+  (:require [dommy.core :refer [prepend!]]
+            [lucuma.custom-elements :refer [register render-content]]
             [lucuma.overlay :refer [lucu-overlay]]
             [lucuma.range-with-threshold :refer [lucu-range-with-threshold]])
   (:require-macros [lucuma :refer [defwebcomponent]]
-                   [dommy.macros :refer [node]]))
+                   [dommy.macros :refer [node sel1]]))
 
 (defwebcomponent ex-hello
   :content "Hello world!")
 
 (defwebcomponent ex-lifecycle
-  :created-fn #(.log js/console  (str % " has been created"))
-  :entered-view-fn #(.log js/console  (str % " has been inserted in the document"))
-  :left-view-fn #(.log js/console (str % "has been removed from the document")))
+  :created-fn #(prepend! (sel1 :#lifecycle-events) [:li "element created"])
+  :entered-view-fn #(prepend! (sel1 :#lifecycle-events) [:li "element entered view"])
+  :left-view-fn #(prepend! (sel1 :#lifecycle-events) [:li "element left view"]))
 
 (defwebcomponent ex-content-template
-  :content #(dommy.macros/sel1 :#template-id))
+  :content #(sel1 :#template-id))
 
 (derive PersistentVector ::vector)
 (defmethod render-content ::vector [v] (node v))

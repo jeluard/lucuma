@@ -137,32 +137,44 @@ You can hook function using following keys:
 
 <ul>
   <li><strong>created-fn</strong> will be called when the element is created via <strong>document.createElement</strong></li>
-  <li><strong>entered-view-fn</strong> will be called each time the element is inserted in the document</li>
-  <li><strong>left-view-fn</strong> will be called each time the element is removed from the document</li>
+  <li><strong>entered-view-fn</strong> will be called each time after the element entered the view</li>
+  <li><strong>left-view-fn</strong> will be called each time after the element left the view</li>
 </ul>
 
 All functions receive as unique argument the targeted element.
             </p>
             <div class="example-live">
-              <ex-lifecycle></ex-lifecycle>
+              <script>
+              var e;
+              function createLifecycle() {
+                e = document.createElement('ex-lifecycle');
+                document.getElementById('btn-append').disabled = null;
+                document.getElementById('btn-remove').disabled = "disabled";
+              }
+              function appendLifecycle() {
+                document.body.appendChild(e);
+                document.getElementById('btn-append').disabled = "disabled";
+                document.getElementById('btn-remove').disabled = null;
+              }
+              function removeLifecycle() {
+                document.body.removeChild(e);
+                document.getElementById('btn-append').disabled = null;
+                document.getElementById('btn-remove').disabled = "disabled";
+              }
+              </script>
+              <div class="btn-group" style="float: left;">
+                <button type="button" class="btn btn-default" onclick="createLifecycle()">Create</button>
+                <button id="btn-append" type="button" class="btn btn-success" onclick="appendLifecycle()" disabled="disabled">Append</button>
+                <button id="btn-remove" type="button" class="btn btn-danger" onclick="removeLifecycle()" disabled="disabled">Remove</button>
+              </div>
+              <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
             </div>
-            <pre class="example-markup">
-              <code class="language-markup">
-  &lt;ex-lifecycle&gt;&lt;/ex-lifecycle&gt;
-              </code>
-            </pre>
             <pre class="example-cljs">
               <code class="language-clojure">
   (defwebcomponent ex-lifecycle
-    :created-fn #(.log js/console (str % " has been created"))
-    :entered-view-fn #(.log js/console (str % " has been inserted in the document"))
-    :left-view-fn #(.log js/console % " (str has been removed from the document")))
-  
-  (register ex-lifecycle)
-  
-  (def e (.createElement js/document "my-element") ;; => `created-fn` is called
-  (.appendChild js/document.body e) ;; => `entered-view-fn` is called
-  (.removeChild js/document.body e) ;; => `left-view-fn` is called
+    :created-fn #(prepend! (sel1 :#lifecycle-events) [:li "element created"])
+    :entered-view-fn #(prepend! (sel1 :#lifecycle-events) [:li "element entered view"])
+    :left-view-fn #(prepend! (sel1 :#lifecycle-events) [:li "element left view"]))
               </code>
             </pre>
           </section>

@@ -26073,19 +26073,21 @@ lucuma.range_with_threshold.lucu_range_with_threshold = cljs.core.merge.call(nul
 }, new cljs.core.Keyword(null, "extends", "extends", 4003207179), "input"], true));
 goog.provide("lucuma.examples");
 goog.require("cljs.core");
+goog.require("dommy.core");
 goog.require("lucuma.range_with_threshold");
 goog.require("lucuma.overlay");
 goog.require("lucuma.custom_elements");
 goog.require("lucuma.range_with_threshold");
 goog.require("lucuma.overlay");
 goog.require("lucuma.custom_elements");
+goog.require("dommy.core");
 lucuma.examples.ex_hello = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-hello"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "Hello world!"], true));
-lucuma.examples.ex_lifecycle = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-lifecycle"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772), function(p1__4600_SHARP_) {
-  return console.log(p1__4600_SHARP_, " (str has been removed from the document")
-}, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447), function(p1__4598_SHARP_) {
-  return console.log([cljs.core.str(p1__4598_SHARP_), cljs.core.str(" has been created")].join(""))
-}, new cljs.core.Keyword(null, "entered-view-fn", "entered-view-fn", 3505744396), function(p1__4599_SHARP_) {
-  return console.log([cljs.core.str(p1__4599_SHARP_), cljs.core.str(" has been inserted in the document")].join(""))
+lucuma.examples.ex_lifecycle = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-lifecycle"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772), function() {
+  return dommy.core.prepend_BANG_.call(null, document.getElementById("lifecycle-events"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), "element left view"], true))
+}, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447), function() {
+  return dommy.core.prepend_BANG_.call(null, document.getElementById("lifecycle-events"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), "element created"], true))
+}, new cljs.core.Keyword(null, "entered-view-fn", "entered-view-fn", 3505744396), function() {
+  return dommy.core.prepend_BANG_.call(null, document.getElementById("lifecycle-events"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), "element entered view"], true))
 }], true));
 lucuma.examples.ex_content_template = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-template"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), function() {
   return document.getElementById("template-id")
