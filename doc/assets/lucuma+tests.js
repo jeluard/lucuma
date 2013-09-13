@@ -25951,14 +25951,14 @@ lucuma.custom_elements.create_prototype = function create_prototype(m) {
   var map__3925 = m;
   var map__3925__$1 = cljs.core.seq_QMARK_.call(null, map__3925) ? cljs.core.apply.call(null, cljs.core.hash_map, map__3925) : map__3925;
   var attribute_changed_fn = cljs.core.get.call(null, map__3925__$1, new cljs.core.Keyword(null, "attribute-changed-fn", "attribute-changed-fn", 511779268));
-  var left_document_fn = cljs.core.get.call(null, map__3925__$1, new cljs.core.Keyword(null, "left-document-fn", "left-document-fn", 1672699238));
-  var entered_document_fn = cljs.core.get.call(null, map__3925__$1, new cljs.core.Keyword(null, "entered-document-fn", "entered-document-fn", 648860374));
+  var left_view_fn = cljs.core.get.call(null, map__3925__$1, new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772));
+  var entered_view_fn = cljs.core.get.call(null, map__3925__$1, new cljs.core.Keyword(null, "entered-view-fn", "entered-view-fn", 3505744396));
   var created_fn = cljs.core.get.call(null, map__3925__$1, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447));
   var base_type = cljs.core.get.call(null, map__3925__$1, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472));
   var proto = Object.create(lucuma.custom_elements.find_prototype.call(null, base_type));
   proto["createdCallback"] = lucuma.custom_elements.initialize_and_set_callback_BANG_.call(null, created_fn, m);
-  lucuma.custom_elements.set_callback_BANG_.call(null, proto, "enteredDocumentCallback", entered_document_fn);
-  lucuma.custom_elements.set_callback_BANG_.call(null, proto, "leftDocumentCallback", left_document_fn);
+  lucuma.custom_elements.set_callback_BANG_.call(null, proto, "enteredViewCallback", entered_view_fn);
+  lucuma.custom_elements.set_callback_BANG_.call(null, proto, "leftViewCallback", left_view_fn);
   lucuma.custom_elements.set_callback_BANG_.call(null, proto, "attributeChangedCallback", attribute_changed_fn);
   return proto
 };
@@ -26080,12 +26080,12 @@ goog.require("lucuma.range_with_threshold");
 goog.require("lucuma.overlay");
 goog.require("lucuma.custom_elements");
 lucuma.examples.ex_hello = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-hello"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "Hello world!"], true));
-lucuma.examples.ex_lifecycle = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-lifecycle"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "entered-document-fn", "entered-document-fn", 648860374), function(p1__4599_SHARP_) {
-  return console.log([cljs.core.str(p1__4599_SHARP_), cljs.core.str(" has been inserted in the document")].join(""))
+lucuma.examples.ex_lifecycle = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-lifecycle"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772), function(p1__4600_SHARP_) {
+  return console.log(p1__4600_SHARP_, " (str has been removed from the document")
 }, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447), function(p1__4598_SHARP_) {
   return console.log([cljs.core.str(p1__4598_SHARP_), cljs.core.str(" has been created")].join(""))
-}, new cljs.core.Keyword(null, "left-document-fn", "left-document-fn", 1672699238), function(p1__4600_SHARP_) {
-  return console.log(p1__4600_SHARP_, " (str has been removed from the document")
+}, new cljs.core.Keyword(null, "entered-view-fn", "entered-view-fn", 3505744396), function(p1__4599_SHARP_) {
+  return console.log([cljs.core.str(p1__4599_SHARP_), cljs.core.str(" has been inserted in the document")].join(""))
 }], true));
 lucuma.examples.ex_content_template = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-template"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), function() {
   return document.getElementById("template-id")
