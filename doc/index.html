@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/prism.css">
     <link rel="stylesheet" href="assets/screen.css">
-    <script>
-      lucuma.examples.register_all();
-    </script>
   </head>
   <body data-spy="scroll" data-target="#navbar">
     <main class="container">
@@ -147,11 +144,11 @@ You can hook function using following keys:
 All functions receive as unique argument the targeted element.
             </p>
             <div class="example-live">
-              <ex-hello></ex-hello>
+              <ex-lifecycle></ex-lifecycle>
             </div>
             <pre class="example-markup">
               <code class="language-markup">
-  &lt;ex-hello&gt;&lt;/ex-hello&gt;
+  &lt;ex-lifecycle&gt;&lt;/ex-lifecycle&gt;
               </code>
             </pre>
             <pre class="example-cljs">
@@ -180,7 +177,7 @@ All functions receive as unique argument the targeted element.
             </p>
             <div class="example-live">
               <template id="template-id">
-                Hello world!
+                Hello template!
               </template>
               <ex-content-template></ex-content-template>
             </div>
@@ -204,7 +201,7 @@ All functions receive as unique argument the targeted element.
   (defmethod render-content ::vector [v] (node v))
   
   (defwebcomponent ex-content-hiccup
-    :content [:div "Hello world!"])
+    :content [:div "Hello hiccup!"])
               </code>
             </pre>
           </section>
@@ -221,6 +218,7 @@ Out of the box <strong>render-style</strong> has implementations for String.
             <pre class="example-cljs">
               <code class="language-clojure">
   (defwebcomponent ex-style
+    :content "<div>Hello styled!</div>"
     :style "div {background: green;}")
               </code>
             </pre>
@@ -314,6 +312,11 @@ Out of the box <strong>render-style</strong> has implementations for String.
         Enable native Custom Elements support via the <a href="chrome://flags/#enable-experimental-web-platform-features">enable-experimental-web-platform-features</a> flag.
       </section>
 
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          lucuma.examples.register_all();
+        });
+      </script>
     </main>
 
     <footer>

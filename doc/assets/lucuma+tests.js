@@ -26072,9 +26072,29 @@ goog.require("lucuma.custom_elements");
 goog.require("lucuma.range_with_threshold");
 goog.require("lucuma.overlay");
 goog.require("lucuma.custom_elements");
-lucuma.examples.ex_hello = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-hello"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "hello-world"], true));
+lucuma.examples.ex_hello = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-hello"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "Hello world!"], true));
+lucuma.examples.ex_lifecycle = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-lifecycle"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "entered-document-fn", "entered-document-fn", 648860374), function(p1__4872_SHARP_) {
+  return console.log([cljs.core.str(p1__4872_SHARP_), cljs.core.str(" has been inserted in the document")].join(""))
+}, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447), function(p1__4871_SHARP_) {
+  return console.log([cljs.core.str(p1__4871_SHARP_), cljs.core.str(" has been created")].join(""))
+}, new cljs.core.Keyword(null, "left-document-fn", "left-document-fn", 1672699238), function(p1__4873_SHARP_) {
+  return console.log(p1__4873_SHARP_, " (str has been removed from the document")
+}], true));
+lucuma.examples.ex_content_template = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-template"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), document.getElementById("template-id")], true));
+cljs.core.derive.call(null, cljs.core.PersistentVector, new cljs.core.Keyword("lucuma.examples", "vector", "lucuma.examples/vector", 4458923423));
+cljs.core._add_method.call(null, lucuma.custom_elements.render_content, new cljs.core.Keyword("lucuma.examples", "vector", "lucuma.examples/vector", 4458923423), function(v) {
+  return dommy.template.__GT_node_like.call(null, v)
+});
+lucuma.examples.ex_content_hiccup = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-hiccup"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), "Hello hiccup!"], true)], true));
+lucuma.examples.ex_style = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "\x3cdiv\x3eHello styled!\x3c/div\x3e", new cljs.core.Keyword(null, "style", "style", 1123684643), "div { background: green; }"], true));
+lucuma.examples.ex_extend = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-extend"], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "base-type", "base-type", 3446290472), "button", new cljs.core.Keyword(null, "style", "style", 1123684643), "@host { :scope {background: red;}}"], true));
 lucuma.examples.register_all = function register_all() {
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_hello);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_lifecycle);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_content_template);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_content_hiccup);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_style);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_extend);
   lucuma.custom_elements.register.call(null, lucuma.range_with_threshold.lucu_range_with_threshold);
   return lucuma.custom_elements.register.call(null, lucuma.overlay.lucu_overlay)
 };
