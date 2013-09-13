@@ -2,8 +2,8 @@ body {
   padding-top: 70px; 
 }
 
-h1 {
-  margin-top: 50px;
+p {
+  margin: 10px;
 }
 
 pre[class*="language-"] {
@@ -55,6 +55,7 @@ footer {
 
 .main-section {
   border-bottom: 1px solid #eeeeee;
+  padding-top: 20px;
   padding-bottom: 20px;
 }
 
