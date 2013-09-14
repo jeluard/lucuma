@@ -24,8 +24,8 @@
   :content [:div "Hello hiccup!"])
 
 (defwebcomponent ex-style
-  :content "<div>Hello styled!</div>"
-  :style "div { background: green; }")
+  :content "<button>Hello styled!</button>"
+  :style "button { background: blue; color: white;}")
 
 (defwebcomponent ex-extend
   :base-type "button" ;; or js/HTMLButtonElement

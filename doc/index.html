@@ -233,8 +233,8 @@ Out of the box <strong>render-style</strong> has implementations for String.
             <pre class="example-cljs">
               <code class="language-clojure">
   (defwebcomponent ex-style
-    :content "<div>Hello styled!</div>"
-    :style "div {background: green;}")
+    :content "&lt;button&gt;Hello styled!&lt;/button&gt;"
+    :style "button {background: blue; color: white;}")
               </code>
             </pre>
           </section>
@@ -301,12 +301,12 @@ Out of the box <strong>render-style</strong> has implementations for String.
     
       <section id="native-browser-support" class="main-section">
         <h1>Native browser support</h1>
-        Browsers are <a href="http://jonrimmer.github.io/are-we-componentized-yet/">implementing</a> Web Components technologies furiously those days. Still you have to enable their support manually.
-
+        <p>
+          Browsers are <a href="http://jonrimmer.github.io/are-we-componentized-yet/">implementing</a> Web Components technologies furiously those days. Still you have to enable their support manually.
+        </p>
         <h3>Chrome Canary</h3>
-        Check chrome progress <a href="http://www.chromestatus.com/features">here</a>.
-
-        Enable native Custom Elements support via the <a href="chrome://flags/#enable-experimental-web-platform-features">enable-experimental-web-platform-features</a> flag.
+        <p>Check chrome progress <a href="http://www.chromestatus.com/features">here</a>.</p>
+        <p>Enable native Custom Elements support via the <a href="chrome://flags/#enable-experimental-web-platform-features">enable-experimental-web-platform-features</a> flag.</p>
       </section>
 
       <section id="links" class="main-section">
