@@ -9,24 +9,28 @@
   [s]
   (.log js/console (clj->js s)))
 
-(defmethod report :begin-test-ns [m]
-  (log (str "begin " m))
-  (dommy/append! (sel1 :#tests) [:div {:id (:ns m)} (str (:ns m))]))
+(def current-ns (atom nil))
 
-(defmethod report :end-test-ns [m]
-  (log (str "end " m))
-  )
+(defn- sel-test
+  ([] (.getElementById js/document @current-ns))
+  ([t] (.item (.getElementsByClassName (sel-test) t) "0")))
+
+(defmethod report :begin-test-ns
+  [m]
+  (reset! current-ns (:ns m))
+  (dommy/append! (sel1 :#tests-results) [:div {:id (:ns m)} [:h3 (str (:ns m))]]))
+
+(defmethod report :end-test-ns
+  [m]
+  (dommy/add-class! (sel-test) "test-ns-done"))
 
 (defmethod report :begin-test-var [m]
-  (log (str ":begin " (:name (meta (:var m)))))
-  )
+  (let [n (:name (meta (:var m)))]
+    (dommy/append! (sel-test) [:ul {:class n} [:h4 (str n)]])))
 
-(defmethod report :end-test-var [m]
-  (log (str ":end " (:name (meta (:var m))) " " *testing-vars* " " *testing-contexts*))
-  )
+(defmethod report :end-test-var [m])
 
-(defmethod report :summary [m]
-  (log m))
+(defmethod report :summary [m])
 
 ;;begin/end-test-var
 ;;:var
@@ -37,14 +41,16 @@
 ;;error, fail, pass
 ;;:var :message :actual :expected
 
-(defmethod report :error [m]
-  (log m))
+(defmethod report :error [m])
 
 (defmethod report :fail [m]
-  (log (str ":fail " (:name (meta (:var m))) " " *testing-vars* " " *testing-contexts*)))
+  (let [n (first *testing-vars*)]
+    (dommy/append! (sel-test n) [:li (str "fail " (:message m))])))
 
 (defmethod report :pass [m]
-  (log (str ":pass " (:name (meta (:var m))) " " *testing-vars* " " *testing-contexts* " " (:message m))))
+  (log (re-matches #"^#[\w]+$" "#a.b"))
+  (let [n (first *testing-vars*)]
+    (dommy/append! (sel-test n) [:li (str "success " (:message m))])))
 
 (defn ^:export run-all-tests
   []

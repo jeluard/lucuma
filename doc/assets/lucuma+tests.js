@@ -25663,60 +25663,124 @@ lucuma.event_test.some_test = function some_test() {
   return cemerick.cljs.test.test_var.call(null, lucuma.event_test.some_test)
 };
 lucuma.event_test.some_test = cljs.core.vary_meta.call(null, lucuma.event_test.some_test, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "some-test", "some-test", 2024334212, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function some_test_test() {
-  var _STAR_testing_contexts_STAR_4107 = cemerick.cljs.test._STAR_testing_contexts_STAR_;
+  var _STAR_testing_contexts_STAR_4365 = cemerick.cljs.test._STAR_testing_contexts_STAR_;
   try {
     cemerick.cljs.test._STAR_testing_contexts_STAR_ = cljs.core.conj.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_, "111");
     try {
-      var values__3968__auto___4111 = cljs.core.list.call(null, true, true);
-      var result__3969__auto___4112 = cljs.core.apply.call(null, cljs.core._EQ_, values__3968__auto___4111);
-      if(cljs.core.truth_(result__3969__auto___4112)) {
-        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, values__3968__auto___4111), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+      var values__4226__auto___4369 = cljs.core.list.call(null, true, true);
+      var result__4227__auto___4370 = cljs.core.apply.call(null, cljs.core._EQ_, values__4226__auto___4369);
+      if(cljs.core.truth_(result__4227__auto___4370)) {
+        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, values__4226__auto___4369), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
         "\x3d", "\x3d", -1640531466, null), true, true)], true))
       }else {
-        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), values__3968__auto___4111)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", 
+        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), values__4226__auto___4369)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", 
         "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), true, true)], true))
       }
-    }catch(e4109) {
-      if(e4109 instanceof Error) {
-        var t__4005__auto___4113 = e4109;
-        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), t__4005__auto___4113, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, 
+    }catch(e4367) {
+      if(e4367 instanceof Error) {
+        var t__4263__auto___4371 = e4367;
+        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), t__4263__auto___4371, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, 
         null), true, true)], true))
       }else {
         if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-          throw e4109;
+          throw e4367;
         }else {
         }
       }
     }
     try {
-      var values__3968__auto__ = cljs.core.list.call(null, true, false);
-      var result__3969__auto__ = cljs.core.apply.call(null, cljs.core._EQ_, values__3968__auto__);
-      if(cljs.core.truth_(result__3969__auto__)) {
-        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, values__3968__auto__), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+      var values__4226__auto__ = cljs.core.list.call(null, true, false);
+      var result__4227__auto__ = cljs.core.apply.call(null, cljs.core._EQ_, values__4226__auto__);
+      if(cljs.core.truth_(result__4227__auto__)) {
+        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, values__4226__auto__), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
         "\x3d", "\x3d", -1640531466, null), true, false)], true))
       }else {
-        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), values__3968__auto__)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", 
+        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), values__4226__auto__)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", 
         "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), true, false)], true))
       }
-      return result__3969__auto__
-    }catch(e4110) {
-      if(e4110 instanceof Error) {
-        var t__4005__auto__ = e4110;
-        return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), t__4005__auto__, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, 
+      return result__4227__auto__
+    }catch(e4368) {
+      if(e4368 instanceof Error) {
+        var t__4263__auto__ = e4368;
+        return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), t__4263__auto__, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, 
         null), true, false)], true))
       }else {
         if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-          throw e4110;
+          throw e4368;
         }else {
           return null
         }
       }
     }
   }finally {
-    cemerick.cljs.test._STAR_testing_contexts_STAR_ = _STAR_testing_contexts_STAR_4107
+    cemerick.cljs.test._STAR_testing_contexts_STAR_ = _STAR_testing_contexts_STAR_4365
   }
 });
 cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.event-test", "lucuma.event-test", 685758045, null), lucuma.event_test.some_test);
+lucuma.event_test.some_test2 = function some_test2() {
+  return cemerick.cljs.test.test_var.call(null, lucuma.event_test.some_test2)
+};
+lucuma.event_test.some_test2 = cljs.core.vary_meta.call(null, lucuma.event_test.some_test2, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "some-test2", "some-test2", 301156736, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function some_test2_test() {
+  var _STAR_testing_contexts_STAR_4378 = cemerick.cljs.test._STAR_testing_contexts_STAR_;
+  try {
+    cemerick.cljs.test._STAR_testing_contexts_STAR_ = cljs.core.conj.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_, "112");
+    var _STAR_testing_contexts_STAR_4380 = cemerick.cljs.test._STAR_testing_contexts_STAR_;
+    try {
+      cemerick.cljs.test._STAR_testing_contexts_STAR_ = cljs.core.conj.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_, "212");
+      try {
+        var values__4226__auto___4384 = cljs.core.list.call(null, true, true);
+        var result__4227__auto___4385 = cljs.core.apply.call(null, cljs.core._EQ_, values__4226__auto___4384);
+        if(cljs.core.truth_(result__4227__auto___4385)) {
+          cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, values__4226__auto___4384), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+          "\x3d", "\x3d", -1640531466, null), true, true)], true))
+        }else {
+          cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), values__4226__auto___4384)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", 
+          "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), true, true)], true))
+        }
+      }catch(e4382) {
+        if(e4382 instanceof Error) {
+          var t__4263__auto___4386 = e4382;
+          cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), t__4263__auto___4386, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, 
+          null), true, true)], true))
+        }else {
+          if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+            throw e4382;
+          }else {
+          }
+        }
+      }
+      try {
+        var values__4226__auto__ = cljs.core.list.call(null, true, false);
+        var result__4227__auto__ = cljs.core.apply.call(null, cljs.core._EQ_, values__4226__auto__);
+        if(cljs.core.truth_(result__4227__auto__)) {
+          cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, values__4226__auto__), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+          "\x3d", "\x3d", -1640531466, null), true, false)], true))
+        }else {
+          cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), values__4226__auto__)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", 
+          "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), true, false)], true))
+        }
+        return result__4227__auto__
+      }catch(e4383) {
+        if(e4383 instanceof Error) {
+          var t__4263__auto__ = e4383;
+          return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), t__4263__auto__, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, 
+          null), true, false)], true))
+        }else {
+          if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+            throw e4383;
+          }else {
+            return null
+          }
+        }
+      }
+    }finally {
+      cemerick.cljs.test._STAR_testing_contexts_STAR_ = _STAR_testing_contexts_STAR_4380
+    }
+  }finally {
+    cemerick.cljs.test._STAR_testing_contexts_STAR_ = _STAR_testing_contexts_STAR_4378
+  }
+});
+cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.event-test", "lucuma.event-test", 685758045, null), lucuma.event_test.some_test2);
 goog.provide("lucuma.test.browser_runner");
 goog.require("cljs.core");
 goog.require("cemerick.cljs.test");
@@ -25727,31 +25791,57 @@ goog.require("dommy.core");
 lucuma.test.browser_runner.log = function log(s) {
   return console.log(cljs.core.clj__GT_js.call(null, s))
 };
+lucuma.test.browser_runner.current_ns = cljs.core.atom.call(null, null);
+lucuma.test.browser_runner.sel_test = function() {
+  var sel_test = null;
+  var sel_test__0 = function() {
+    return document.getElementById(cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns))
+  };
+  var sel_test__1 = function(t) {
+    return sel_test.call(null).getElementsByClassName(t).item("0")
+  };
+  sel_test = function(t) {
+    switch(arguments.length) {
+      case 0:
+        return sel_test__0.call(this);
+      case 1:
+        return sel_test__1.call(this, t)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  sel_test.cljs$core$IFn$_invoke$arity$0 = sel_test__0;
+  sel_test.cljs$core$IFn$_invoke$arity$1 = sel_test__1;
+  return sel_test
+}();
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "begin-test-ns", "begin-test-ns", 1359210286), function(m) {
-  lucuma.test.browser_runner.log.call(null, [cljs.core.str("begin "), cljs.core.str(m)].join(""));
-  return dommy.core.append_BANG_.call(null, document.getElementById("tests"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, m)], true), [cljs.core.str((new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, m))].join("")], true))
+  cljs.core.reset_BANG_.call(null, lucuma.test.browser_runner.current_ns, (new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, m));
+  return dommy.core.append_BANG_.call(null, document.getElementById("tests-results"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, m)], true), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "h3", "h3", 1013907517), [cljs.core.str((new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, 
+  m))].join("")], true)], true))
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "end-test-ns", "end-test-ns", 3401491808), function(m) {
-  return lucuma.test.browser_runner.log.call(null, [cljs.core.str("end "), cljs.core.str(m)].join(""))
+  return dommy.core.add_class_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null), "test-ns-done")
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "begin-test-var", "begin-test-var", 3128464258), function(m) {
-  return lucuma.test.browser_runner.log.call(null, [cljs.core.str(":begin "), cljs.core.str((new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, (new cljs.core.Keyword(null, "var", "var", 1014020761)).call(null, m))))].join(""))
+  var n = (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, (new cljs.core.Keyword(null, "var", "var", 1014020761)).call(null, m)));
+  return dommy.core.append_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "ul", "ul", 1013907977), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), n], true), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "h4", "h4", 1013907518), [cljs.core.str(n)].join("")], true)], true))
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "end-test-var", "end-test-var", 2014682E3), function(m) {
-  return lucuma.test.browser_runner.log.call(null, [cljs.core.str(":end "), cljs.core.str((new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, (new cljs.core.Keyword(null, "var", "var", 1014020761)).call(null, m)))), cljs.core.str(" "), cljs.core.str(cemerick.cljs.test._STAR_testing_vars_STAR_), cljs.core.str(" "), cljs.core.str(cemerick.cljs.test._STAR_testing_contexts_STAR_)].join(""))
+  return null
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "summary", "summary", 3451231E3), function(m) {
-  return lucuma.test.browser_runner.log.call(null, m)
+  return null
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "error", "error", 1110689146), function(m) {
-  return lucuma.test.browser_runner.log.call(null, m)
+  return null
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "fail", "fail", 1017039504), function(m) {
-  return lucuma.test.browser_runner.log.call(null, [cljs.core.str(":fail "), cljs.core.str((new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, (new cljs.core.Keyword(null, "var", "var", 1014020761)).call(null, m)))), cljs.core.str(" "), cljs.core.str(cemerick.cljs.test._STAR_testing_vars_STAR_), cljs.core.str(" "), cljs.core.str(cemerick.cljs.test._STAR_testing_contexts_STAR_)].join(""))
+  var n = cljs.core.first.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_);
+  return dommy.core.append_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null, n), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), [cljs.core.str("fail "), cljs.core.str((new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, m))].join("")], true))
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "pass", "pass", 1017337731), function(m) {
-  return lucuma.test.browser_runner.log.call(null, [cljs.core.str(":pass "), cljs.core.str((new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, (new cljs.core.Keyword(null, "var", "var", 1014020761)).call(null, m)))), cljs.core.str(" "), cljs.core.str(cemerick.cljs.test._STAR_testing_vars_STAR_), cljs.core.str(" "), cljs.core.str(cemerick.cljs.test._STAR_testing_contexts_STAR_), cljs.core.str(" "), cljs.core.str((new cljs.core.Keyword(null, "message", "message", 
-  1968829305)).call(null, m))].join(""))
+  lucuma.test.browser_runner.log.call(null, cljs.core.re_matches.call(null, /^#[\w]+$/, "#a.b"));
+  var n = cljs.core.first.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_);
+  return dommy.core.append_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null, n), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), [cljs.core.str("success "), cljs.core.str((new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, m))].join("")], true))
 });
 lucuma.test.browser_runner.run_all_tests = function run_all_tests() {
   return cemerick.cljs.test.run_all_tests.call(null)

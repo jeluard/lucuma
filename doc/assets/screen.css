@@ -136,3 +136,7 @@ footer {
     border-width: 1px;
   }
 }
+
+.test-ns-done {
+  background: green;
+}

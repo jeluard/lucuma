@@ -277,8 +277,15 @@ Out of the box <strong>render-style</strong> has implementations for String.
       </section>
 
       <section id="tests" class="main-section" >
-       <h1>Tests</h1>
-       <button onclick="lucuma.test.browser_runner.run_all_tests();">Run tests</button>
+        <h1>Tests</h1>
+        <script>
+        function run_all_tests() {
+          document.getElementById('tests-results').innerHTML = '';
+          lucuma.test.browser_runner.run_all_tests();
+        }
+        </script>
+        <button onclick="run_all_tests()">Run tests</button>
+        <div id="tests-results"></div>
       </section>
     
       <section id="native-browser-support" class="main-section">
