@@ -8,56 +8,59 @@
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <!--link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css"-->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
     <link rel="stylesheet" href="assets/prism.css">
     <link rel="stylesheet" href="assets/screen.css">
   </head>
   <body data-spy="scroll" data-target="#navbar">
-    <main class="container">
-      <a href="https://github.com/jeluard/lucuma">
-        <img id="ribbon" src="http://aral.github.com/fork-me-on-github-retina-ribbons/right-dusk-blue@2x.png" alt="Fork me on GitHub">
-      </a>
-      <iframe id="github-button" src="http://ghbtns.com/github-btn.html?user=jeluard&repo=lucuma&type=watch&count=true"
-  allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-      <nav id="navbar" class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"><strong>LUCUMA</strong></a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#introduction">Introduction</a></li>
-            <li><a href="#installation">Installation</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usage <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#custom-element-definition">Custom Element definition</a></li>
-                <li><a href="#custom-element-lifecycle">Lifecycle</a></li>
-                <li><a href="#custom-element-content">Content</a></li>
-                <li><a href="#custom-element-style">Style</a></li>
-                <li><a href="#custom-element-extend">Extending</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#range-with-threshold">Range with threshold</a></li>
-                <li><a href="#overlay">Overlay</a></li>
-                <li><a href="#flipbox">Flipbox</a></li>
-                <li><a href="#todomvc">TodoMVC</a></li>
-              </ul>
-            </li>
-            <li><a href="#tests">Tests</a></li>
-            <li><a href="#native-browser-support">Native browser support</a></li>
-            <li><a href="#links">Links</a></li>
-          </ul>
-        </div>
-      </nav>
 
+    <a href="https://github.com/jeluard/lucuma">
+      <img id="ribbon" src="http://aral.github.com/fork-me-on-github-retina-ribbons/right-dusk-blue@2x.png" alt="Fork me on GitHub">
+    </a>
+    <iframe id="github-button" src="http://ghbtns.com/github-btn.html?user=jeluard&repo=lucuma&type=watch&count=true"
+allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+    <nav id="navbar" class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"><strong>LUCUMA</strong></a>
+      </div>
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#introduction">Introduction</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usage <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#custom-element-definition">Custom Element definition</a></li>
+              <li><a href="#custom-element-lifecycle">Lifecycle</a></li>
+              <li><a href="#custom-element-content">Content</a></li>
+              <li><a href="#custom-element-style">Style</a></li>
+              <li><a href="#custom-element-extend">Extending</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#range-with-threshold">Range with threshold</a></li>
+              <li><a href="#overlay">Overlay</a></li>
+              <li><a href="#flipbox">Flipbox</a></li>
+              <li><a href="#todomvc">TodoMVC</a></li>
+            </ul>
+          </li>
+          <li><a href="#tests">Tests</a></li>
+          <li><a href="#native-browser-support">Native browser support</a></li>
+          <li><a href="#links">Links</a></li>
+        </ul>
+      </div>
+    </nav>
+    
+    <main class="container">
       <section id="introduction" class="main-section">
           <p>A Web Components library for <a href="https://github.com/clojure/clojurescript">ClojureScript</a>.</p>
           <p>At it's core lucuma helps with creating your own html element type (Web Component).</p>
@@ -79,6 +82,8 @@
       <section id="installation" class="main-section">
         <h1>Installation</h1>
         <p>Lucuma is available in <a href="https://clojars.org/lucuma">Clojars</a>. Add <strong>[lucuma "0.1.0"]</strong> dependency to your <strong>project.clj</strong>.</p>
+        <p>
+        </p>
       </section>
 
       <section id="usage" class="main-section">
@@ -261,18 +266,22 @@ Out of the box <strong>render-style</strong> has implementations for String.
         <h1>Examples</h1>
         <section>
           <h2 id="range-with-threshold">Range with threshold</h2>
+          <em>TODO</em>
         </section>
         <section>
           <h2 id="overlay">Overlay</h2>
           <p>Adpated from bee's <a href="https://github.com/blossom/bee/blob/master/lib/components/overlay.dart">overlay</a></p>
+          <em>TODO</em>
         </section>
         <section>
           <h2 id="flipbox">Flipbox</h2>
           <p>Adpated from brick's <a href="https://github.com/x-tag/flipbox">flipbox</a></p>
+          <em>TODO</em>
         </section>
         <section>
           <h2 id="todomvc">TodoMVC</h2>
           <p>Lucuma based implementation of <a href="http://todomvc.com/">TodoMVC</a></p>
+          <em>TODO</em>
         </section>
       </section>
 
@@ -284,7 +293,7 @@ Out of the box <strong>render-style</strong> has implementations for String.
           lucuma.test.browser_runner.run_all_tests();
         }
         </script>
-        <button onclick="run_all_tests()">Run tests</button>
+        <button type="button" class="btn btn-default" onclick="run_all_tests()">Run tests</button>
         <div id="tests-results"></div>
       </section>
     
