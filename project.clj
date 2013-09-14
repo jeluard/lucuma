@@ -7,7 +7,7 @@
                  [org.clojure/clojurescript "0.0-1878"]
                  [com.cemerick/clojurescript.test "0.0.4" :scope "test"]
                  [prismatic/dommy "0.1.1" :scope "test"]]
-  :plugins [[lein-cljsbuild "0.3.2"]]
+  :plugins [[lein-cljsbuild "0.3.3"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src" "test" "examples"]
                         :compiler {:output-to "target/cljs/lucuma+tests.js"
