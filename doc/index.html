@@ -8,7 +8,6 @@
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <!--link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css"-->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
     <link rel="stylesheet" href="assets/prism.css">
     <link rel="stylesheet" href="assets/screen.css">
@@ -65,16 +64,13 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <p>A Web Components library for <a href="https://github.com/clojure/clojurescript">ClojureScript</a>.</p>
           <p>At it's core lucuma helps with creating your own html element type (Web Component).</p>
           <p>
-              Lucuma builds on top of <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">Custom Elements</a>, <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html">Shadow DOM</a> and <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html">HTML Templates</a> and is conceptually similar to <a href="http://www.polymer-project.org/">polymer</a>, <a href="http://www.x-tags.org/">x-tags</a> or dart's <a href="https://www.dartlang.org/articles/web-ui/">web-ui</a>.
+            Lucuma builds on top of <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">Custom Elements</a>, <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html">Shadow DOM</a> and <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html">HTML Templates</a> and is conceptually similar to <a href="http://www.polymer-project.org/">polymer</a>, <a href="http://www.x-tags.org/">x-tags</a> or dart's <a href="https://www.dartlang.org/articles/web-ui/">web-ui</a>.
           </p>
   
           <div class="disclaimer">
-            <h2>Disclaimer</h2>
+            <h4>Disclaimer</h4>
             <p>
-              Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously! 
-              <br>
-              It works great on evergreen browsers when using <a href="http://www.polymer-project.org/getting-the-code.html">polymer polyfill</a>.
-              Check the <a href="http://www.polymer-project.org/compatibility.html">compatibility matrix</a> for more details.
+              Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously!
             </p>
           </div>
       </section>
@@ -82,8 +78,14 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
       <section id="installation" class="main-section">
         <h1>Installation</h1>
         <p>Lucuma is available in <a href="https://clojars.org/lucuma">Clojars</a>. Add <strong>[lucuma "0.1.0"]</strong> dependency to your <strong>project.clj</strong>.</p>
-        <p>
-        </p>
+        <div class="info">
+          <h4>Browser support</h4>
+          <p>Unless you target browsers with <a href="#native-browser-support">native</a> custom elements support you will need to use a polyfill.</p>
+          <p>
+            <a href="http://www.polymer-project.org/getting-the-code.html">Polymer</a> is one of the stronger alternative.
+            Use it by adding <code class="language-markup">&lt;script src="platform.min.js"&gt;&lt;/script&gt;</code> to your html head (check <a href="http://www.polymer-project.org/build/">build reports</a> for browser support).
+            </p>
+        </div>
       </section>
 
       <section id="usage" class="main-section">
