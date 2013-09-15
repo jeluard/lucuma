@@ -154,13 +154,22 @@ footer {
 .panel-body {
   list-style-type: none;
   margin-bottom: 0;
-  padding: 10px;
+  padding: 0 10px 5px;
+}
+
+.panel-body > h4 {
+  display: inline;
+  padding-right: 10px;
+  margin-bottom: 5px;
+}
+
+.panel-body > li {
+  margin-left: 10px;
 }
 
 .panel-title {
   display: inline;
   padding-right: 10px;
-  
 }
 
 .test-ns-pass {
@@ -180,7 +189,23 @@ footer {
 .test-pass {
 }
 
+.test-pass > i {
+  color: #468847;
+}
+
+.test-pass .test-expected-value {
+  display: none;
+}
+
+.test-pass .test-actual-value {
+  display: none;
+}
+
 .test-fail {
+}
+
+.test-fail > i {
+  color: #b94a48;
 }
 
 .test-error {
