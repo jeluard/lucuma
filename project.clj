@@ -4,7 +4,7 @@
   :license  {:name "Eclipse Public License"
              :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-1878"]
+                 [org.clojure/clojurescript "0.0-1889"]
                  [com.cemerick/clojurescript.test "0.0.4" :scope "test"]
                  [prismatic/dommy "0.1.1" :scope "test"]]
   :plugins [[lein-cljsbuild "0.3.3"]]
@@ -12,7 +12,7 @@
   :cljsbuild {:builds [{:source-paths ["src" "test" "examples"]
                         :compiler {:output-to "target/cljs/lucuma+tests.js"
                                    :output-dir "target/cljs/"
-                                   :source-map "target/cljs/lucuma+tests.js.map"
+;;                                   :source-map "target/cljs/lucuma+tests.js.map"
                                    :optimizations :simple
                                    :pretty-print true}}]
               :test-commands {"unit-tests" ["runners/phantomjs.js" "target/cljs/lucuma+tests.js"]}}
