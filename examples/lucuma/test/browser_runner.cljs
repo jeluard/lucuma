@@ -12,7 +12,7 @@
 
 (def ^:private current-ns (atom nil))
 
-(def ^:private report-counters (atom {}))
+(def ^:private report-details (atom {}))
 
 (defn- sel-current-ns
   []
@@ -30,23 +30,45 @@
   [t]
   (.-firstChild (sel-test t)))
 
-(defn- issues
+(defn- or-0 [r t] (or (get r t) 0))
+(defn- passes [r] (or-0 r :pass))
+(defn- failures [r] (or-0 r :fail))
+(defn- errors [r] (or-0 r :error))
+(defn- issues [r] (+ (failures r) (errors r)))
+(defn- tests [r] (+ (passes r) (issues r)))
+
+(defn- reports
+  ([] @report-details)
+  ([n] (get @report-details n))
+  ([n t] (get-in @report-details [n t])))
+
+(defn- agg-ns
+  [r f]
+  (reduce + (map f (vals r))))
+
+(defn- all-tests
+  []
+  (letfn [(agg [t] (reduce + (map #(agg-ns % t) (vals (reports)))))]
+    (merge {} {:pass (agg :pass)} {:fail (agg :fail)} {:error (agg :error)})))
+
+(defn- elapsed
   [r]
-  (+ (or (:error r) 0) (or (:fail r) 0)))
+  (- (.getTime (:end-time r)) (.getTime (:start-time r))))
 
 (defn- failed-ns?
   [n]
-  (let [r (get @report-counters n)]
+  (let [r (reports n)]
     (not= 0 (reduce + (map issues (vals r))))))
 
 (defn- failed-test?
   [n t]
-  (let [r (get-in @report-counters [n t])]
+  (let [r (reports n t)]
     (not= 0 (issues r))))
 
 (defmethod report :begin-test-ns
   [m]
   (reset! current-ns (s/replace (str (:ns m)) #"\." "-"))
+  (swap! report-details assoc-in [@current-ns :start-time] (js/Date.))
   (dommy/add-class! (sel1 :#tests-results) "panel-group")
   (dommy/append! (sel1 :#tests-results) [:div {:class "panel panel-default"}
                                          [:div {:id (str "collapse-" @current-ns "-header") :class "panel-heading test-ns-running"}
@@ -57,20 +79,25 @@
 
 (defmethod report :end-test-ns
   [m]
+  (swap! report-details assoc-in [@current-ns :end-time] (js/Date.))
   (dommy/remove-class! (sel-current-ns-header) "test-ns-running")
   (dommy/add-class! (sel-current-ns-header) (if (failed-ns? @current-ns) "test-ns-fail" "test-ns-pass"))
-  (dommy/append! (sel-current-ns-header) [:i {:class (if (failed-ns? @current-ns) "icon-remove" "icon-ok")}]))
+  (let [r (reports @current-ns)
+        title (str (agg-ns r tests) " tests (" (agg-ns r failures) " failures, " (agg-ns r errors) " errors) executed in " (elapsed r) "ms")]
+    (dommy/append! (sel-current-ns-header) [:i {:class (if (failed-ns? @current-ns) "icon-remove" "icon-ok") :data-toggle "tooltip" :data-placement "right" :title title}])))
 
 (defmethod report :begin-test-var [m]
-  (let [n (:name (meta (:var m)))]
-    (dommy/append! (sel-current-ns) [:ul {:class (str n " panel-body test-running")} [:h4 (str n)]])))
+  (let [n (str (:name (meta (:var m))))]
+    (swap! report-details assoc-in [@current-ns n :start-time] (js/Date.))
+    (dommy/append! (sel-current-ns) [:ul {:class (str n " panel-body test-running")} [:h4 n]])))
 
 (defmethod report :end-test-var
   [m]
   (let [n (str (:name (meta (:var m))))]
+    (swap! report-details assoc-in [@current-ns n :end-time] (js/Date.))
     (dommy/remove-class! (sel-test n) "test-running")
     (dommy/add-class! (sel-test n) (if (failed-test? @current-ns n) "test-fail" "test-pass"))
-    (dommy/insert-after! [:i {:class (if (failed-test? @current-ns n) "icon-remove" "icon-ok")}] (sel-test-header n))))
+    (dommy/insert-after! [:i {:class (if (failed-test? @current-ns n) "icon-remove" "icon-ok") :data-toggle "tooltip" :data-placement "right" :title (str "executed in " (elapsed (reports @current-ns n)) "ms")}] (sel-test-header n))))
 
 (defn- append-test-result
   [m n c]
@@ -87,22 +114,23 @@
 (defmethod report :pass
   [m]
   (let [n (str (first *testing-vars*))]
-    (swap! report-counters update-in [@current-ns n :pass] (fnil inc 0))
+    (swap! report-details update-in [@current-ns n :pass] (fnil inc 0))
     (append-test-result m n "test-pass")))
 
 (defmethod report :error [m]
   (let [n (str (first *testing-vars*))]
-    (swap! report-counters update-in [@current-ns n :error] (fnil inc 0))
+    (swap! report-details update-in [@current-ns n :error] (fnil inc 0))
     (append-test-result m n "test-error")))
 
 (defmethod report :fail
   [m]
   (let [n (str (first *testing-vars*))]
-    (swap! report-counters update-in [@current-ns n :fail] (fnil inc 0))
+    (swap! report-details update-in [@current-ns n :fail] (fnil inc 0))
     (append-test-result m n "test-fail")))
 
 (defmethod report :summary [m]
-  (dommy/append! (sel1 :#tests-results) [:script "Prism.highlightAll()"]))
+  (dommy/append! (sel1 :#tests-results) [:script "Prism.highlightAll(); $('#tests-results').tooltip({selector: \"[data-toggle=tooltip]\"});"])
+  (reset! report-details {}))
 
 (defn ^:export run-all-tests
   []
