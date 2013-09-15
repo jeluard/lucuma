@@ -25,7 +25,7 @@
 
 (defwebcomponent ex-style
   :content "<button>Hello styled!</button>"
-  :style "button { background: blue; color: white;}")
+  :style "button { background: #3d7c45; color: white; border: 0; border-radius: 4px;}")
 
 (defwebcomponent ex-extend
   :base-type "button" ;; or js/HTMLButtonElement

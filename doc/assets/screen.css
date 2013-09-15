@@ -154,7 +154,7 @@ footer {
 .panel-body {
   list-style-type: none;
   margin-bottom: 0;
-  padding: 0 10px 5px;
+  padding: 5px 10px 5px;
 }
 
 .panel-body > h4 {
@@ -186,6 +186,9 @@ footer {
   color: #b94a48;
 }
 
+.test-result {
+}
+
 .test-pass {
 }
 
@@ -193,11 +196,21 @@ footer {
   color: #468847;
 }
 
-.test-pass .test-expected-value {
+.test-expected-value > span {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.test-pass > .test-result > .test-expected-value {
   display: none;
 }
 
-.test-pass .test-actual-value {
+.test-actual-value > span {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.test-pass > .test-result > .test-actual-value {
   display: none;
 }
 

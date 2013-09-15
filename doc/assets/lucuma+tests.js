@@ -15599,6 +15599,7 @@ lucuma.test.browser_runner.log = function(a) {
   return console.log(cljs.core.clj__GT_js.call(null, a))
 };
 lucuma.test.browser_runner.current_ns = cljs.core.atom.call(null, null);
+lucuma.test.browser_runner.report_counters = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY);
 lucuma.test.browser_runner.sel_current_ns = function() {
   return document.getElementById([cljs.core.str("collapse-"), cljs.core.str(cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns))].join(""))
 };
@@ -15611,19 +15612,30 @@ lucuma.test.browser_runner.sel_test = function(a) {
 lucuma.test.browser_runner.sel_test_header = function(a) {
   return lucuma.test.browser_runner.sel_test.call(null, a).firstChild
 };
+lucuma.test.browser_runner.issues = function(a) {
+  return function() {
+    var b = (new cljs.core.Keyword(null, "error", "error", 1110689146)).call(null, a);
+    return cljs.core.truth_(b) ? b : 0
+  }() + function() {
+    var b = (new cljs.core.Keyword(null, "fail", "fail", 1017039504)).call(null, a);
+    return cljs.core.truth_(b) ? b : 0
+  }()
+};
 lucuma.test.browser_runner.failed_ns_QMARK_ = function(a) {
-  return!1
+  a = cljs.core.get.call(null, cljs.core.deref.call(null, lucuma.test.browser_runner.report_counters), a);
+  return cljs.core.not_EQ_.call(null, 0, cljs.core.reduce.call(null, cljs.core._PLUS_, cljs.core.map.call(null, lucuma.test.browser_runner.issues, cljs.core.vals.call(null, a))))
 };
 lucuma.test.browser_runner.failed_test_QMARK_ = function(a, b) {
-  return!0
+  var c = cljs.core.get_in.call(null, cljs.core.deref.call(null, lucuma.test.browser_runner.report_counters), cljs.core.PersistentVector.fromArray([a, b], !0));
+  return cljs.core.not_EQ_.call(null, 0, lucuma.test.browser_runner.issues.call(null, c))
 };
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "begin-test-ns", "begin-test-ns", 1359210286), function(a) {
   cljs.core.reset_BANG_.call(null, lucuma.test.browser_runner.current_ns, clojure.string.replace.call(null, "" + cljs.core.str((new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, a)), /\./, "-"));
-  return dommy.core.append_BANG_.call(null, document.getElementById("tests-results"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), "accordion", new cljs.core.Keyword(null, "class", "class", 1108647146), "panel-group"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
-  "class", "class", 1108647146), "panel panel-default"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), [cljs.core.str("collapse-"), cljs.core.str(cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns)), cljs.core.str("-header")].join(""), new cljs.core.Keyword(null, "class", "class", 1108647146), "panel-heading test-ns-running"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
-  "h4", "h4", 1013907518), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "panel-title"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "a", "a", 1013904339), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "accordion-toggle", new cljs.core.Keyword(null, "data-toggle", "data-toggle", 2577667657), "collapse", new cljs.core.Keyword(null, "data-parent", "data-parent", 2450547615), 
-  "#accordion", new cljs.core.Keyword(null, "href", "href", 1017115293), [cljs.core.str("#collapse-"), cljs.core.str(cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns))].join("")], !0), cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns)], !0)], !0)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), [cljs.core.str("collapse-"), 
-  cljs.core.str(cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns))].join(""), new cljs.core.Keyword(null, "class", "class", 1108647146), "panel-collapse collapse"], !0)], !0)], !0)], !0))
+  dommy.core.add_class_BANG_.call(null, document.getElementById("tests-results"), "panel-group");
+  return dommy.core.append_BANG_.call(null, document.getElementById("tests-results"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "panel panel-default"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), [cljs.core.str("collapse-"), 
+  cljs.core.str(cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns)), cljs.core.str("-header")].join(""), new cljs.core.Keyword(null, "class", "class", 1108647146), "panel-heading test-ns-running"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "h4", "h4", 1013907518), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "panel-title"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "a", "a", 
+  1013904339), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "accordion-toggle", new cljs.core.Keyword(null, "data-toggle", "data-toggle", 2577667657), "collapse", new cljs.core.Keyword(null, "data-parent", "data-parent", 2450547615), "#tests-results", new cljs.core.Keyword(null, "href", "href", 1017115293), [cljs.core.str("#collapse-"), cljs.core.str(cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns))].join("")], !0), cljs.core.deref.call(null, 
+  lucuma.test.browser_runner.current_ns)], !0)], !0)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), [cljs.core.str("collapse-"), cljs.core.str(cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns))].join(""), new cljs.core.Keyword(null, "class", "class", 1108647146), "panel-collapse collapse"], !0)], !0)], !0))
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "end-test-ns", "end-test-ns", 3401491808), function(a) {
   dommy.core.remove_class_BANG_.call(null, lucuma.test.browser_runner.sel_current_ns_header.call(null), "test-ns-running");
@@ -15635,31 +15647,35 @@ cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keywor
   return dommy.core.append_BANG_.call(null, lucuma.test.browser_runner.sel_current_ns.call(null), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "ul", "ul", 1013907977), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), [cljs.core.str(a), cljs.core.str(" panel-body test-running")].join("")], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "h4", "h4", 1013907518), "" + cljs.core.str(a)], !0)], !0))
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "end-test-var", "end-test-var", 2014682E3), function(a) {
-  a = (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, (new cljs.core.Keyword(null, "var", "var", 1014020761)).call(null, a)));
+  a = "" + cljs.core.str((new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, (new cljs.core.Keyword(null, "var", "var", 1014020761)).call(null, a))));
   dommy.core.remove_class_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null, a), "test-running");
   dommy.core.add_class_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null, a), cljs.core.truth_(lucuma.test.browser_runner.failed_test_QMARK_.call(null, cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns), a)) ? "test-fail" : "test-pass");
   return dommy.core.insert_after_BANG_.call(null, cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "i", "i", 1013904347), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), cljs.core.truth_(lucuma.test.browser_runner.failed_test_QMARK_.call(null, cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns), a)) ? "icon-remove" : "icon-ok"], !0)], !0), lucuma.test.browser_runner.sel_test_header.call(null, a))
 });
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "summary", "summary", 3451231E3), function(a) {
-  return null
-});
+lucuma.test.browser_runner.append_test_result = function(a, b, c) {
+  return dommy.core.append_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null, b), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), c], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "em", "em", 1013907482), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-message"], 
+  !0), (new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, a)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-result"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), 
+  "test-expected-value"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), "expected:"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "code", "code", 1016963423), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "language-clojure"], !0), "" + cljs.core.str((new cljs.core.Keyword(null, "expected", "expected", 3373152810)).call(null, a))], !0)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
+  "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-actual-value"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), "but got:"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "code", "code", 1016963423), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "language-clojure"], !0), "" + cljs.core.str((new cljs.core.Keyword(null, 
+  "actual", "actual", 3885931776)).call(null, a))], !0)], !0)], !0)], !0))
+};
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "pass", "pass", 1017337731), function(a) {
-  var b = cljs.core.first.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_);
-  return dommy.core.append_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null, b), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-pass"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-message"], 
-  !0), (new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, a)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-expected-value"], !0), [cljs.core.str("expected: "), cljs.core.str((new cljs.core.Keyword(null, "expected", "expected", 3373152810)).call(null, a))].join("")], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
-  "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-actual-value"], !0), [cljs.core.str("actual:"), cljs.core.str((new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a))].join("")], !0)], !0))
+  var b = "" + cljs.core.str(cljs.core.first.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_));
+  cljs.core.swap_BANG_.call(null, lucuma.test.browser_runner.report_counters, cljs.core.update_in, cljs.core.PersistentVector.fromArray([cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns), b, new cljs.core.Keyword(null, "pass", "pass", 1017337731)], !0), cljs.core.fnil.call(null, cljs.core.inc, 0));
+  return lucuma.test.browser_runner.append_test_result.call(null, a, b, "test-pass")
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "error", "error", 1110689146), function(a) {
-  var b = cljs.core.first.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_);
-  return dommy.core.append_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null, b), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-error"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-message"], 
-  !0), (new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, a)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-expected-value"], !0), [cljs.core.str("expected: "), cljs.core.str((new cljs.core.Keyword(null, "expected", "expected", 3373152810)).call(null, a))].join("")], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
-  "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-actual-value"], !0), "" + cljs.core.str((new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a))], !0)], !0))
+  var b = "" + cljs.core.str(cljs.core.first.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_));
+  cljs.core.swap_BANG_.call(null, lucuma.test.browser_runner.report_counters, cljs.core.update_in, cljs.core.PersistentVector.fromArray([cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns), b, new cljs.core.Keyword(null, "error", "error", 1110689146)], !0), cljs.core.fnil.call(null, cljs.core.inc, 0));
+  return lucuma.test.browser_runner.append_test_result.call(null, a, b, "test-error")
 });
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "fail", "fail", 1017039504), function(a) {
-  var b = cljs.core.first.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_);
-  return dommy.core.append_BANG_.call(null, lucuma.test.browser_runner.sel_test.call(null, b), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-fail"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-message"], 
-  !0), (new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, a)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-expected-value"], !0), [cljs.core.str("expected: "), cljs.core.str((new cljs.core.Keyword(null, "expected", "expected", 3373152810)).call(null, a))].join("")], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
-  "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "test-actual-value"], !0), "" + cljs.core.str((new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a))], !0)], !0))
+  var b = "" + cljs.core.str(cljs.core.first.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_));
+  cljs.core.swap_BANG_.call(null, lucuma.test.browser_runner.report_counters, cljs.core.update_in, cljs.core.PersistentVector.fromArray([cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns), b, new cljs.core.Keyword(null, "fail", "fail", 1017039504)], !0), cljs.core.fnil.call(null, cljs.core.inc, 0));
+  return lucuma.test.browser_runner.append_test_result.call(null, a, b, "test-fail")
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "summary", "summary", 3451231E3), function(a) {
+  return dommy.core.append_BANG_.call(null, document.getElementById("tests-results"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "script", "script", 4401185853), "Prism.highlightAll()"], !0))
 });
 lucuma.test.browser_runner.run_all_tests = function() {
   return cemerick.cljs.test.run_all_tests.call(null)
@@ -15872,7 +15888,7 @@ cljs.core._add_method.call(null, lucuma.custom_elements.render_content, new cljs
   return dommy.template.__GT_node_like.call(null, a)
 });
 lucuma.examples.ex_content_hiccup = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-hiccup"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), "Hello hiccup!"], !0)], !0));
-lucuma.examples.ex_style = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "\x3cbutton\x3eHello styled!\x3c/button\x3e", new cljs.core.Keyword(null, "style", "style", 1123684643), "button { background: blue; color: white;}"], !0));
+lucuma.examples.ex_style = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "\x3cbutton\x3eHello styled!\x3c/button\x3e", new cljs.core.Keyword(null, "style", "style", 1123684643), "button { background: #3d7c45; color: white; border: 0; border-radius: 4px;}"], !0));
 lucuma.examples.ex_extend = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-extend"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "base-type", "base-type", 3446290472), "button", new cljs.core.Keyword(null, "style", "style", 1123684643), "@host { :scope {background: red;}}"], !0));
 lucuma.examples.register_all = function() {
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_hello);

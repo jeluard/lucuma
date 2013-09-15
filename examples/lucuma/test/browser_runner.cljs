@@ -10,7 +10,9 @@
   [s]
   (.log js/console (clj->js s)))
 
-(def current-ns (atom nil))
+(def ^:private current-ns (atom nil))
+
+(def ^:private report-counters (atom {}))
 
 (defn- sel-current-ns
   []
@@ -28,24 +30,30 @@
   [t]
   (.-firstChild (sel-test t)))
 
-(defn failed-ns?
-  [n]
-  false)
+(defn- issues
+  [r]
+  (+ (or (:error r) 0) (or (:fail r) 0)))
 
-(defn failed-test?
+(defn- failed-ns?
+  [n]
+  (let [r (get @report-counters n)]
+    (not= 0 (reduce + (map issues (vals r))))))
+
+(defn- failed-test?
   [n t]
-  true)
+  (let [r (get-in @report-counters [n t])]
+    (not= 0 (issues r))))
 
 (defmethod report :begin-test-ns
   [m]
   (reset! current-ns (s/replace (str (:ns m)) #"\." "-"))
-  (dommy/append! (sel1 :#tests-results) [:div {:id "accordion" :class "panel-group"}
-                                         [:div {:class "panel panel-default"}
-                                          [:div {:id (str "collapse-" @current-ns "-header") :class "panel-heading test-ns-running"}
-                                           [:h4 {:class "panel-title"}
-                                            [:a {:class "accordion-toggle" :data-toggle "collapse" :data-parent "#accordion" :href (str "#collapse-" @current-ns)}
-                                             @current-ns]]]
-                                          [:div {:id (str "collapse-" @current-ns) :class "panel-collapse collapse"}]]]))
+  (dommy/add-class! (sel1 :#tests-results) "panel-group")
+  (dommy/append! (sel1 :#tests-results) [:div {:class "panel panel-default"}
+                                         [:div {:id (str "collapse-" @current-ns "-header") :class "panel-heading test-ns-running"}
+                                          [:h4 {:class "panel-title"}
+                                           [:a {:class "accordion-toggle" :data-toggle "collapse" :data-parent "#tests-results" :href (str "#collapse-" @current-ns)}
+                                            @current-ns]]]
+                                         [:div {:id (str "collapse-" @current-ns) :class "panel-collapse collapse"}]]))
 
 (defmethod report :end-test-ns
   [m]
@@ -59,44 +67,42 @@
 
 (defmethod report :end-test-var
   [m]
-  (let [n (:name (meta (:var m)))]
+  (let [n (str (:name (meta (:var m))))]
     (dommy/remove-class! (sel-test n) "test-running")
     (dommy/add-class! (sel-test n) (if (failed-test? @current-ns n) "test-fail" "test-pass"))
     (dommy/insert-after! [:i {:class (if (failed-test? @current-ns n) "icon-remove" "icon-ok")}] (sel-test-header n))))
 
-(defmethod report :summary [m])
-
-;;begin/end-test-var
-;;:var
-
-;;begin/end-test-ns
-;;:ns
-
-;;error, fail, pass
-;;:var :message :actual :expected
+(defn- append-test-result
+  [m n c]
+  (dommy/append! (sel-test n) [:li {:class c}
+                                 [:em {:class "test-message"} (:message m)]
+                                 [:span {:class "test-result"}
+                                  [:span {:class "test-expected-value"}
+                                   [:span "expected:"]
+                                   [:code {:class "language-clojure"} (str (:expected m))]]
+                                  [:span {:class "test-actual-value"}
+                                   [:span "but got:"]
+                                   [:code {:class "language-clojure"} (str (:actual m))]]]]))
 
 (defmethod report :pass
   [m]
-  (let [n (first *testing-vars*)]
-    (dommy/append! (sel-test n) [:li {:class "test-pass"}
-                                 [:span {:class "test-message"} (:message m)]
-                                 [:span {:class "test-expected-value"} (str "expected: " (:expected m))]
-                                 [:span {:class "test-actual-value"} (str "actual:" (:actual m))]])))
+  (let [n (str (first *testing-vars*))]
+    (swap! report-counters update-in [@current-ns n :pass] (fnil inc 0))
+    (append-test-result m n "test-pass")))
 
 (defmethod report :error [m]
-  (let [n (first *testing-vars*)]
-    (dommy/append! (sel-test n) [:li {:class "test-error"}
-                                 [:span {:class "test-message"} (:message m)]
-                                 [:span {:class "test-expected-value"} (str "expected: " (:expected m))]
-                                 [:span {:class "test-actual-value"} (str (:actual m))]])))
+  (let [n (str (first *testing-vars*))]
+    (swap! report-counters update-in [@current-ns n :error] (fnil inc 0))
+    (append-test-result m n "test-error")))
 
 (defmethod report :fail
   [m]
-  (let [n (first *testing-vars*)]
-    (dommy/append! (sel-test n) [:li {:class "test-fail"}
-                                 [:span {:class "test-message"} (:message m)]
-                                 [:span {:class "test-expected-value"} (str "expected: " (:expected m))]
-                                 [:span {:class "test-actual-value"} (str (:actual m))]])))
+  (let [n (str (first *testing-vars*))]
+    (swap! report-counters update-in [@current-ns n :fail] (fnil inc 0))
+    (append-test-result m n "test-fail")))
+
+(defmethod report :summary [m]
+  (dommy/append! (sel1 :#tests-results) [:script "Prism.highlightAll()"]))
 
 (defn ^:export run-all-tests
   []
