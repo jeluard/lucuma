@@ -107,10 +107,10 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <code class="language-clojure">
   ;;First define your new element
   (use 'lucuma.custom-elements)
-  (def proto (create-prototype {:content "Hello world!"})
+  (def m {:content "Hello world!")
   
   ;;then register it
-  (register "ex-hello" proto)
+  (register "ex-hello" m)
   
   ;;alternatively you can use the defwebcomponent macro
 
@@ -276,11 +276,11 @@ Out of the box <strong>render-style</strong> has implementations for String.
             <pre class="example-cljs">
               <code class="language-clojure">
    (defwebcomponent ex-extend
-    :base-type "button" ;; or js/HTMLButtonElement
+    :base-type "button"
     :style "button {background: red;}")
               </code>
             </pre>
-            <p><strong>base-type</strong> value can be an element name or a concrete type extending HTMLElement. It defaults to HTMLElement.</p>
+            <p><strong>base-type</strong> must be a valid tag name. It defaults to HTMLElement.</p>
           </section>
 
       </section>

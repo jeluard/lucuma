@@ -28,7 +28,7 @@
   :style "button { background: #3d7c45; color: white; border: 0; border-radius: 4px;}")
 
 (defwebcomponent ex-extend
-  :base-type "button" ;; or js/HTMLButtonElement
+  :base-type "button"
   :style "@host { :scope {background: red;}}")
 
 (defn ^:export register-all

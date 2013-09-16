@@ -2,7 +2,8 @@
   (:require [lucuma.shadow-dom :as sd])
   (:refer-clojure :exclude [name]))
 
-;;https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html#concepts
+;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
+
 (def ^:private forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
 
 (defn valid-name?
@@ -65,9 +66,7 @@
 (defn- find-prototype
   [t]
   (if t
-    (if (instance? js/HTMLElement t)
-      (.-prototype t)
-      (.getPrototypeOf js/Object (.createElement js/document t)))
+    (.getPrototypeOf js/Object (.createElement js/document t))
     (.-prototype js/HTMLElement)))
 
 (defn- call-with-this-argument
@@ -93,7 +92,7 @@
         (when f
           (call-with-this-argument f this []))))))
 
-(defn create-prototype
+(defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
   (let [{:keys [base-type created-fn entered-view-fn left-view-fn attribute-changed-fn]} m
@@ -106,11 +105,10 @@
 
 (defn register
   "register a Custom Element from an abstract definition"
-  ([m] (register (:name m) (create-prototype m) (:extends m)))
-  ([name proto] (register name proto nil))
-  ([name proto extends] {:pre [(valid-name? name)]} (.register js/document name (clj->js (merge {:prototype proto} (when extends {:extends extends})))))) ;; TODO extends must be provided now
+  ([m] (register (:name m) m))
+  ([n m] {:pre [(valid-name? n)]} (.register js/document n (clj->js (merge {:prototype (create-prototype m)} (when (:base-type m) {:extends (:base-type m)}))))))
 
 (defn create
   "create an HTML element from it's name. 'is' value is used as second argument to document.createElement"
-  ([name] (create name nil))
-  ([name is] (.createElement js/document name is)))
+  ([n] (create n nil))
+  ([n is] (.createElement js/document n is)))
