@@ -60,17 +60,21 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     </nav>
     
     <main class="container">
-      <section id="introduction" class="lead main-section">
-          <p>A Web Components library for <a href="https://github.com/clojure/clojurescript">ClojureScript</a>.</p>
-          <p>At its core lucuma helps with creating your own html element tag (Web Component) encapsulating content, style and logic. It is <strong>not</strong> a fancy <em>MV*</em> framework and aims at being a thin layer building on top of next generation web standards (mainly Custom Elements, Shadow DOM and HTML Template). It also makes the extra effort of being flexible and open to existing ClojureScript standards and libraries.</p>
+      <section id="introduction" class="main-section">
+        <div class="lead">
+          <p>A Web Components library for <a href="http://clojurescript.com">ClojureScript</a>.</p>
           <p>
-            Lucuma is conceptually similar to <a href="http://www.polymer-project.org/">polymer</a>, <a href="http://www.x-tags.org/">x-tags</a> or dart's <a href="https://www.dartlang.org/polymer-dart/">Polymer.dart</a>.
+            At its core lucuma helps with creating your own HTML element tag (Web Component) encapsulating content, style and logic. It is <strong>not</strong> a fancy <em>MV*</em> framework and aims at being a thin layer building on top of next generation web standards (mainly <span class="text-muted">Custom Elements</span>, <span class="text-muted">Shadow DOM</span> and <span class="text-muted">HTML Template</span>).
+            <br>
+            It also makes the extra effort of being flexible and open to existing ClojureScript standards and libraries.</p>
+          <p>
+            Lucuma is conceptually similar to <a href="http://www.polymer-project.org/">polymer</a>, <a href="http://www.x-tags.org/">x-tags</a> or <a href="https://www.dartlang.org/polymer-dart/">Polymer.dart</a>.
           </p>
-  
-          <div class="disclaimer">
-            <h4>Disclaimer</h4>
-            <p>Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously!</p>
-          </div>
+        </div>
+        <div class="disclaimer">
+          <h4>Disclaimer</h4>
+          <p>Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously!</p>
+        </div>
       </section>
     
       <section id="installation" class="main-section">
@@ -308,7 +312,17 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         <h1>Examples</h1>
         <section>
           <h2 id="range-with-threshold">Range with threshold</h2>
-          <em>TODO</em>
+          <div class="example-live">
+            <lucu-range-with-threshold>Hello extended!</lucu-range-with-threshold>
+          </div>
+          <pre class="example-markup">
+            <code class="language-markup">
+            </code>
+          </pre>
+          <pre class="example-cljs">
+            <code class="language-clojure">
+            </code>
+          </pre>
         </section>
         <section>
           <h2 id="overlay">Overlay</h2>
