@@ -184,10 +184,20 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
 
           <section>
             <h2 id="custom-element-content">Content</h2>
-
             <p>
-              Content is first rendered with the <strong>render-content</strong> multimethod then appended via the <strong>append!</strong> multimethod, both applied in a row. If content is a function it will be evaluated during <a href="#custom-element-lifecycle">creation phase</a>.
-              Out of the box <strong>render-content</strong> has implementations for String and HTMLTemplateElement and <strong>append!</strong> implementations for String, any HTMLElement and DocumentFragment.
+              Content of a Web Component comes the <strong>content</strong> value that will be rendered based on its type then inserted as a child of the element root node. This process is triggered per instance during <a href="#custom-element-lifecycle">creation phase</a>. For encapsulation purpoise content is inserted as a  Shadow DOM.
+            </p>
+            <p>The rendering process consists of:</p>
+            <ol>
+              <li>if content is a function evaluate it; otherwise use content value as-is</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L15">render-content</a> multimethod (dispatch on content type) to generate the rendered html</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L38">append!</a> multimethod (dispatch on rendered html type) to insert content in the DOM</li>
+            </ol>
+            <p>
+            <p>
+              <strong>render-content</strong> has implementations for String (identity) and <a href="#custom-element-template-support">HTML Template</a>.
+              <br>
+              <strong>append!</strong> has implementations for String (set as innerHTML), any HTMLElement and DocumentFragment (both inserted with appendChild).
             </p>
             <div class="example-live">
               <ex-hello></ex-hello>
@@ -198,7 +208,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     :content "Hello world!")
               </code>
             </pre>
-            <h4>Template support</h4>            
+            <h4 id="custom-element-template-support">Template support</h4>            
             <p>
               <a href="http://docs.webplatform.org/wiki/html/elements/template">HTML template</a> can be directly used as content (its content will be cloned during <a href="#custom-element-lifecycle">creation phase</a>):
             </p>
@@ -222,7 +232,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     :content #(dommy.macros/sel1 :#template-id))
               </code>
             </pre>
-            <h4>Custom logic support</h4>
+            <h4 id="custom-element-custom-logic">Custom logic support</h4>
             <p>
               As rendering is delegated to the render-content multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/weavejester/hiccup">hiccup</a> implementation (such as <a href="https://github.com/Prismatic/dommy">dommy</a>, <a href="https://github.com/ibdknox/crate/">crate</a>, <a href="https://github.com/lynaghk/singult">singult</a> or <a href="https://github.com/teropa/hiccups">hiccups</a>) to render vectors.
             </p>
@@ -244,9 +254,18 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
 
           <section>
             <h2 id="custom-element-style">Style</h2>
+            <p>Style is treated similarly to <a href="custom-element-content">content</a>. Note that a single shadow DOM is created if one of <strong>content</strong> or <strong>style</strong> is defined.</p>
+            <p>The rendering process consists of:</p>
+            <ol>
+              <li>if style is a function evaluate it; otherwise use style value as-is</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L28">render-style</a> multimethod (dispatch on content type) to generate the rendered html</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L38">append!</a> multimethod (dispatch on rendered html type) to insert content in the DOM</li>
+            </ol>
             <p>
-              Style is first rendered with the <strong>render-style</strong> multimethod then appended via the <strong>append!</strong> multimethod, both applied in a row. If style is a function it will be evaluated at element creation time.
-Out of the box <strong>render-style</strong> has implementations for String.
+            <p>
+              <strong>render-style</strong> has implementations for String (set as innerHTML of a newly created <strong>style</strong> element).
+              <br>
+              <strong>append!</strong> is the one used for <a href="custom-element-content">content</a> handling.
             </p>
             <div class="example-live">
               <ex-style></ex-style>
@@ -254,7 +273,7 @@ Out of the box <strong>render-style</strong> has implementations for String.
             <pre class="example-cljs">
               <code class="language-clojure">
   (defwebcomponent ex-style
-    :content "&lt;button&gjt;Hello styled!&lt;/button&gt;"
+    :content "&lt;button&gt;Hello styled!&lt;/button&gt;"
     :style "button {background: blue; color: white; border: 0; border-radius: 4px;}")
               </code>
             </pre>
@@ -266,11 +285,11 @@ Out of the box <strong>render-style</strong> has implementations for String.
               Existing element can be extended to inherit capacity from another element (via prototype inheritence).
             </p>
             <div class="example-live">
-              <button is="ex-extend"></button>
+              <button is="ex-extend">Hello extended!</button>
             </div>
             <pre class="example-markup">
               <code class="language-markup">
-  &lt;button is="ex-extend"&gt;&lt;/button&gt;
+  &lt;button is="ex-extend"&gt;Hello extended!&lt;/button&gt;
               </code>
             </pre>
             <pre class="example-cljs">
