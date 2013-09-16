@@ -1,9 +1,8 @@
 (ns lucuma.shadow-dom)
 
-;;http://www.w3.org/TR/shadow-dom/
-;;ShadowRoot.olderShadowRoot
 ;;http://html5-demos.appspot.com/static/shadowdom-visualizer/index.html
 ;;http://updates.html5rocks.com/2013/03/Visualizing-Shadow-DOM-Concepts
+;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/shadow/
 
 (defn create
   [e reset-style-inheritance apply-author-styles]
