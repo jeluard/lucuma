@@ -60,18 +60,16 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     </nav>
     
     <main class="container">
-      <section id="introduction" class="main-section">
+      <section id="introduction" class="lead main-section">
           <p>A Web Components library for <a href="https://github.com/clojure/clojurescript">ClojureScript</a>.</p>
-          <p>At it's core lucuma helps with creating your own html element type (Web Component).</p>
+          <p>At its core lucuma helps with creating your own html element tag (Web Component) encapsulating content, style and logic. It is <strong>not</strong> a fancy <em>MV*</em> framework and aims at being a thin layer building on top of next generation web standards (mainly Custom Elements, Shadow DOM and HTML Template). It also makes the extra effort of being flexible and open to existing ClojureScript standards and libraries.</p>
           <p>
-            Lucuma builds on top of <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">Custom Elements</a>, <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html">Shadow DOM</a> and <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html">HTML Templates</a> and is conceptually similar to <a href="http://www.polymer-project.org/">polymer</a>, <a href="http://www.x-tags.org/">x-tags</a> or dart's <a href="https://www.dartlang.org/articles/web-ui/">web-ui</a>.
+            Lucuma is conceptually similar to <a href="http://www.polymer-project.org/">polymer</a>, <a href="http://www.x-tags.org/">x-tags</a> or dart's <a href="https://www.dartlang.org/polymer-dart/">Polymer.dart</a>.
           </p>
   
           <div class="disclaimer">
             <h4>Disclaimer</h4>
-            <p>
-              Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously!
-            </p>
+            <p>Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously!</p>
           </div>
       </section>
     
@@ -94,7 +92,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <section>
             <h2 id="custom-element-definition">Custom Element definition</h2>
             <p>
-              
+              Custom elements are defined as maps of keyword / value. The main keys available are :content, :style and 3 lifecyle related .
+              This map serves as the abstract definition for the element prototype. Once registered the element can be manipulated by the DOM.
             </p>
             <div class="example-live">
               <ex-hello></ex-hello>
@@ -139,13 +138,14 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
 
           <section>
             <h2 id="custom-element-lifecycle">Lifecycle</h2>
-            <p>You can hook function using following keys:</p>
+            <p>Custom Elements define lifecycle callbacks that hook on element instance <strong>creation</strong>, view <strong>insertion</strong> and view <strong>removal</strong>.</p>
+            <p>You can hook function to the element lifecycle using following keys:</p>
             <ul>
-              <li><strong>created-fn</strong> will be called when the element is created via <strong>document.createElement</strong></li>
-              <li><strong>entered-view-fn</strong> will be called each time after the element entered the view</li>
-              <li><strong>left-view-fn</strong> will be called each time after the element left the view</li>
+              <li><strong>created-fn</strong> called when an instance of the component is created (e.g. via <strong>document.createElement</strong>)</li>
+              <li><strong>entered-view-fn</strong> called after an instance of the component entered the view (i.e. has been inserted)</li>
+              <li><strong>left-view-fn</strong> called after an instance of the component left the view (i.e. has been removed)</li>
             </ul>
-            <p>All functions receive as unique argument the targeted element.</p>
+            <p>All functions receive as unique argument the element instances.</p>
             <div class="example-live">
               <script>
               var e;
@@ -184,26 +184,47 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
 
           <section>
             <h2 id="custom-element-content">Content</h2>
+
             <p>
-              Content is first rendered with the <strong>render-content</strong> multimethod then appended via the <strong>append!</strong> multimethod, both applied in a row. If content is a function it will be evaluated at element creation time.
+              Content is first rendered with the <strong>render-content</strong> multimethod then appended via the <strong>append!</strong> multimethod, both applied in a row. If content is a function it will be evaluated during <a href="#custom-element-lifecycle">creation phase</a>.
               Out of the box <strong>render-content</strong> has implementations for String and HTMLTemplateElement and <strong>append!</strong> implementations for String, any HTMLElement and DocumentFragment.
-              
-              HTML template can be directly used as content:
+            </p>
+            <div class="example-live">
+              <ex-hello></ex-hello>
+            </div>
+            <pre class="example-cljs">
+              <code class="language-clojure">
+  (defwebcomponent ex-hello
+    :content "Hello world!")
+              </code>
+            </pre>
+            <h4>Template support</h4>            
+            <p>
+              <a href="http://docs.webplatform.org/wiki/html/elements/template">HTML template</a> can be directly used as content (its content will be cloned during <a href="#custom-element-lifecycle">creation phase</a>):
             </p>
             <div class="example-live">
               <template id="template-id">
-                Hello template!
+                <div>Hello template!</div>
               </template>
               <ex-content-template></ex-content-template>
             </div>
+            <pre class="example-markup">
+              <code class="language-markup">
+  &lt;template id="template-id"&gt;
+    &lt;div&gt;Hello template!&lt;/div&gt;
+  &lt;/template&gt;
+  &lt;ex-content-template&gt;&lt;/ex-content-template&gt;
+              </code>
+            </pre>
             <pre class="example-cljs">
               <code class="language-clojure">
   (defwebcomponent ex-content-template
     :content #(dommy.macros/sel1 :#template-id))
               </code>
             </pre>
+            <h4>Custom logic support</h4>
             <p>
-              Add support to hiccup style vector by providing a custom render-content implementation:
+              As rendering is delegated to the render-content multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/weavejester/hiccup">hiccup</a> implementation (such as <a href="https://github.com/Prismatic/dommy">dommy</a>, <a href="https://github.com/ibdknox/crate/">crate</a>, <a href="https://github.com/lynaghk/singult">singult</a> or <a href="https://github.com/teropa/hiccups">hiccups</a>) to render vectors.
             </p>
             <div class="example-live">
               <ex-content-hiccup></ex-content-hiccup>
@@ -314,7 +335,7 @@ Out of the box <strong>render-style</strong> has implementations for String.
 
         <h3>Introdution</h3>
         <ul>
-          <li><a href="http://www.w3.org/TR/components-intro/">http://www.w3.org/TR/components-intro/</a></li>
+          <li><a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html">W3C Introduction to Web Components</a></li>
           <li><a href="http://webcomponentsshift.com">webcomponentsshift.com</a></li>
           <li><a href="https://speakerdeck.com/stopsatgreen/web-components-getting-started">Getting started</a></li>
         </ul>
@@ -330,10 +351,17 @@ Out of the box <strong>render-style</strong> has implementations for String.
         <h3>To go further</h3>
         <ul>
           <li><a href="http://www.html5rocks.com/en/tutorials/webcomponents/customelements/">Custom Elements</a></li>
-          <li><a href="http://www.html5rocks.com/en/tutorials/webcomponents/template/">Template</a></li>
           <li><a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/">Shadow DOM 101</a></li>
           <li><a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/">Shadow DOM 201</a></li>
           <li><a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-301/">Shadow DOM 301</a></li>
+          <li><a href="http://www.html5rocks.com/en/tutorials/webcomponents/template/">Template</a></li>
+        </ul>
+
+        <h3>Specifications</h3>
+        <ul>
+          <li><a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">Custom Elements</a></li>
+          <li><a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html">Shadow DOM</a></li>
+          <li><a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html">HTML Template</a></li>
         </ul>
 
       </section>
