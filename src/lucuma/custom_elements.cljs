@@ -1,6 +1,5 @@
 (ns lucuma.custom-elements
-  (:require [lucuma.shadow-dom :as sd])
-  (:refer-clojure :exclude [name]))
+  (:require [lucuma.shadow-dom :as sd]))
 
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
 
@@ -8,9 +7,9 @@
 
 (defn valid-name?
   "return true if provided name is a valid Custom Element name"
-  [name]
-  (and (not= -1 (.indexOf name "-"))
-       (not (contains? forbidden-names name))))
+  [s]
+  (and (not= -1 (.indexOf s "-"))
+       (not (contains? forbidden-names s))))
 
 (defmulti render-content
   "render content value to something that can be added to the DOM via append!"
@@ -78,8 +77,8 @@
   (fn [& args] (this-as this (call-with-this-argument f this args))))
 
 (defn- set-callback!
-  [proto name f]
-  (when f (aset proto name (wrap-with-callback-this-value f))))
+  [proto n f]
+  (when f (aset proto n (wrap-with-callback-this-value f))))
 
 (defn- initialize-and-set-callback!
   [f m]
