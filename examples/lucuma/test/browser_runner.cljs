@@ -110,8 +110,10 @@
 
 (defn ^:export run-all-tests
   []
+  (.start (.create js/Ladda (sel1 :#tests-btn)))
   (if-let [tr (sel1 :#tests-results)]
     (dommy/clear! tr))
   (if-let [trl (sel1 :#tests-results-label)]
     (dommy/remove! trl))
-  (t/run-all-tests))
+  (t/run-all-tests)
+  (.stopAll js/Ladda))

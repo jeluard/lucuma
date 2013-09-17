@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <title>Lucuma</title>
     <script src="assets/platform.min.js"></script>
+    <script src="assets/spin.min.js"></script>
+    <script src="assets/ladda.min.js"></script>
     <script src="assets/lucuma+tests.js"></script>
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -11,6 +13,7 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
     <link rel="stylesheet" href="assets/prism.css">
     <link rel="stylesheet" href="assets/screen.css">
+    <link rel="stylesheet" href="assets/ladda-themeless.min.css">
   </head>
   <body data-spy="scroll" data-target="#navbar">
 
@@ -397,7 +400,10 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           lucuma.test.browser_runner.run_all_tests();
         }
         </script>
-        <button type="button" class="btn btn-primary" onclick="run_all_tests()">Run tests</button>
+        <button id="tests-btn" type="button" class="btn btn-primary ladda-button" data-style="zoom-out" onclick="run_all_tests()">
+          <span class="ladda-label">Run tests</span>
+          <span class="ladda-spinner"></span>
+        </button>
         <div id="tests-results"></div>
       </section>
     
