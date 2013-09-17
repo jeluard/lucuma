@@ -41,6 +41,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <li><a href="#custom-element-content">Content</a></li>
               <li><a href="#custom-element-style">Style</a></li>
               <li><a href="#custom-element-extend">Extending</a></li>
+              <li><a href="#custom-element-methods">JavaScript Methods</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -286,7 +287,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <section>
             <h2 id="custom-element-extend">Extension</h2>
             <p>
-              Existing element can be extended to inherit capacity from another element (via prototype inheritence).
+              Existing element can be extended to inherit capacity from another element (via prototype inheritence). <strong>base-type</strong> value must be a valid tag name. It defaults to HTMLElement.
             </p>
             <div class="example-live">
               <button is="ex-extend">Hello extended!</button>
@@ -303,7 +304,35 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     :style "button {background: red;}")
               </code>
             </pre>
-            <p><strong>base-type</strong> must be a valid tag name. It defaults to HTMLElement.</p>
+          </section>
+
+          <section>
+            <h2 id="custom-element-methods">JavaScript methods</h2>
+            <p>
+              Regular ClojureScript functions can directly manipulate element instances. You can also expose those functions to JavaScript users by explicitely listing those functions and assigning them a name that will be attached to the element prototype.
+              <br>
+              Note that ClojureScript functions will receive the right element instance as first parameter while you don't provide it JavaScript side.
+            </p>
+            <div class="example-live">
+              <ex-methods id="ex-methods"></ex-methods>
+              <button onclick="document.getElementById('ex-methods').alert()">Call alert</button>
+            </div>
+            <pre class="example-markup">
+              <code class="language-markup">
+  &lt;ex-methods id="ex-methods"&gt;&lt;/ex-methods&gt;
+  &lt;button onclick="document.getElementById('ex-methods').alert()"&gt;Call alert&lt;/button&gt;
+              </code>
+            </pre>
+            <pre class="example-cljs">
+              <code class="language-clojure">
+   (defn alert-fn
+     [el]
+     (.alert js/window (str "Hello " el " !")))
+
+   (defwebcomponent ex-methods
+    :methods {:alert alert-fn})
+              </code>
+            </pre>
           </section>
 
       </section>

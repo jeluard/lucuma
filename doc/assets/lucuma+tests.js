@@ -15171,9 +15171,6 @@ dommy.core.fire_BANG_ = function() {
 }();
 lucuma.overlay = {};
 lucuma.overlay.style = 'body {\n          overflow: visible;\n          overflow-y: scroll;\n        }\n        .overlay-backdrop-active body {\n          overflow: hidden;\n        }\n\n        .b-overlay-backdrop {\n          background-color: rgba(252, 252, 252, 0.7);\n          -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr\x3d#B3FCFCFC, endColorstr\x3d#B3FCFCFC)";\n          position: fixed;\n          top: 0;\n          left: 0;\n          right: 0;\n          bottom: 0;\n          z-index: 998;\n          overflow-x: auto;\n          overflow-y: scroll;\n          display: none;\n        }\n\n        .b-overlay-backdrop-close {\n          color: #aaa;\n          font-size: 30px;\n          width: 30px;\n          height: 30px;\n          line-height: 30px;\n          text-align: center;\n          border: 0;\n          position: fixed;\n          top: 10px;\n          right: 10px;\n          cursor: pointer;\n        }\n\n        .b-overlay-body {\n          border: 1px solid #cccccc;\n          z-index: 999;\n          -moz-box-shadow: -1px 1px 1px rgba(0,0,0,.2);\n          -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.2);\n          box-shadow: 0 2px 4px rgba(0,0,0,.2);\n          background: #ffffff;\n          position: static;\n          margin: 60px auto;\n          padding: 60px;\n        }';
-lucuma.overlay.shadow_root_style = function(a) {
-  return a.shadowRoot.children(1)
-};
 lucuma.overlay.display_BANG_ = function(a, b) {
   return a.style.display = b
 };
@@ -15829,11 +15826,6 @@ lucuma.custom_elements.initialize_and_set_callback_BANG_ = function(a, b) {
     return cljs.core.truth_(a) ? lucuma.custom_elements.call_with_this_argument.call(null, a, this, cljs.core.PersistentVector.EMPTY) : null
   }
 };
-lucuma.custom_elements.fn_name = function(a) {
-  console.log(a);
-  console.log(a.name);
-  return a.name
-};
 lucuma.custom_elements.create_prototype = function(a) {
   var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, c = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "methods", "methods", 1969438500)), d = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "attribute-changed-fn", "attribute-changed-fn", 511779268)), e = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772)), f = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "entered-view-fn", 
   "entered-view-fn", 3505744396)), g = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447)), b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)), b = Object.create(lucuma.custom_elements.find_prototype.call(null, b));
@@ -15949,6 +15941,10 @@ cljs.core._add_method.call(null, lucuma.custom_elements.render_content, new cljs
 lucuma.examples.ex_content_hiccup = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-hiccup"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), "Hello hiccup!"], !0)], !0));
 lucuma.examples.ex_style = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "\x3cbutton\x3eHello styled!\x3c/button\x3e", new cljs.core.Keyword(null, "style", "style", 1123684643), "button { background: #3d7c45; color: white; border: 0; border-radius: 4px;}"], !0));
 lucuma.examples.ex_extend = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-extend"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "base-type", "base-type", 3446290472), "button", new cljs.core.Keyword(null, "style", "style", 1123684643), "@host { :scope {background: red;}}"], !0));
+lucuma.examples.alert_fn = function(a) {
+  return window.alert([cljs.core.str("Hello "), cljs.core.str(a), cljs.core.str(" !")].join(""))
+};
+lucuma.examples.ex_methods = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-methods"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "methods", "methods", 1969438500), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "alert", "alert", 1106803918), lucuma.examples.alert_fn], !0)], !0));
 lucuma.examples.register_all = function() {
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_hello);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_lifecycle);
@@ -15956,6 +15952,7 @@ lucuma.examples.register_all = function() {
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_content_hiccup);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_style);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_extend);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_methods);
   lucuma.custom_elements.register.call(null, lucuma.range_with_threshold.lucu_range_with_threshold);
   return lucuma.custom_elements.register.call(null, lucuma.overlay.lucu_overlay)
 };

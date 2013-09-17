@@ -31,6 +31,13 @@
   :base-type "button"
   :style "@host { :scope {background: red;}}")
 
+(defn alert-fn
+  [el]
+  (.alert js/window  (str "Hello " el " !")))
+
+(defwebcomponent ex-methods
+  :methods {:alert alert-fn})
+
 (defn ^:export register-all
   []
   (register ex-hello)
@@ -39,6 +46,7 @@
   (register ex-content-hiccup)
   (register ex-style)
   (register ex-extend)
+  (register ex-methods)
 
   (register lucu-range-with-threshold)
   (register lucu-overlay))
