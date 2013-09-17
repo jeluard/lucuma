@@ -33,9 +33,9 @@
   [el min-threshold max-threshold]
   (.addEventListener el "change" #(fire-event-on-threshold-cross (aget % "target") (aget % "target" "value") min-threshold max-threshold) false))
 
-;;Extending native element currently fails with polymer polyfill
+;;Extending native element currently fails with polymer polyfill.
 ;;TODO https://github.com/Polymer/ShadowDOM/issues/190
-;;Also chrome doesn't support dynamically created shadow root on input element so the style is nt applied.
+;;Also chrome doesn't support dynamically created shadow root on input element so the style is not applied.
 ;;TODO https://code.google.com/p/chromium/issues/detail?id=263940
 
 (defwebcomponent lucu-range-with-threshold
