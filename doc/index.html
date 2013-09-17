@@ -46,10 +46,10 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#range-with-threshold">Range with threshold</a></li>
-              <li><a href="#overlay">Overlay</a></li>
-              <li><a href="#flipbox">Flipbox</a></li>
-              <li><a href="#todomvc">TodoMVC</a></li>
+              <li><a href="#example-range-with-threshold">Range with threshold</a></li>
+              <li><a href="#example-overlay">Overlay</a></li>
+              <li><a href="#example-flipbox">Flipbox</a></li>
+              <li><a href="#example-todomvc">TodoMVC</a></li>
             </ul>
           </li>
           <li><a href="#tests">Tests</a></li>
@@ -311,7 +311,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
       <section id="examples" class="main-section">
         <h1>Examples</h1>
         <section>
-          <h2 id="range-with-threshold">Range with threshold</h2>
+          <h2 id="example-range-with-threshold">Range with threshold</h2>
           <div class="example-live">
             <input is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5" />
             <!--lucu-range-with-threshold type="range" value="25" min="0" max="50" step="5" /-->
@@ -326,17 +326,36 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           </pre>
         </section>
         <section>
-          <h2 id="overlay">Overlay</h2>
+          <h2 id="example-overlay">Overlay</h2>
           <p>Adpated from bee's <a href="https://github.com/blossom/bee/blob/master/lib/components/overlay.dart">overlay</a></p>
-          <em>TODO</em>
+          <div class="example-live">
+            <lucu-overlay id="overlay">
+              <h4>Title</h4>
+              <div>Some content</div>
+            </lucu-overlay>
+            <button onclick="document.getElementById('overlay').show()">Show overlay</button>
+          </div>
+          <pre class="example-markup">
+            <code class="language-markup">
+  &lt;lucu-overlay id="overlay"&gt;
+    &lt;h4&gt;Title&lt;/h4&gt;
+    &lt;div&gt;Some content&lt;/div&gt;
+  &lt;/lucu-overlay&gt;
+  &lt;button onclick="document.getElementById('overlay').show()">Show overlay&lt;/button&gt;
+            </code>
+          </pre>
+          <pre class="example-cljs">
+            <code class="language-clojure">
+            </code>
+          </pre>
         </section>
         <section>
-          <h2 id="flipbox">Flipbox</h2>
+          <h2 id="example-flipbox">Flipbox</h2>
           <p>Adpated from brick's <a href="https://github.com/x-tag/flipbox">flipbox</a></p>
           <em>TODO</em>
         </section>
         <section>
-          <h2 id="todomvc">TodoMVC</h2>
+          <h2 id="example-todomvc">TodoMVC</h2>
           <p>Lucuma based implementation of <a href="http://todomvc.com/">TodoMVC</a></p>
           <em>TODO</em>
         </section>

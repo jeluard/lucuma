@@ -15171,28 +15171,28 @@ dommy.core.fire_BANG_ = function() {
 }();
 lucuma.overlay = {};
 lucuma.overlay.style = 'body {\n          overflow: visible;\n          overflow-y: scroll;\n        }\n        .overlay-backdrop-active body {\n          overflow: hidden;\n        }\n\n        .b-overlay-backdrop {\n          background-color: rgba(252, 252, 252, 0.7);\n          -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr\x3d#B3FCFCFC, endColorstr\x3d#B3FCFCFC)";\n          position: fixed;\n          top: 0;\n          left: 0;\n          right: 0;\n          bottom: 0;\n          z-index: 998;\n          overflow-x: auto;\n          overflow-y: scroll;\n          display: none;\n        }\n\n        .b-overlay-backdrop-close {\n          color: #aaa;\n          font-size: 30px;\n          width: 30px;\n          height: 30px;\n          line-height: 30px;\n          text-align: center;\n          border: 0;\n          position: fixed;\n          top: 10px;\n          right: 10px;\n          cursor: pointer;\n        }\n\n        .b-overlay-body {\n          border: 1px solid #cccccc;\n          z-index: 999;\n          -moz-box-shadow: -1px 1px 1px rgba(0,0,0,.2);\n          -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.2);\n          box-shadow: 0 2px 4px rgba(0,0,0,.2);\n          background: #ffffff;\n          position: static;\n          margin: 60px auto;\n          padding: 60px;\n        }';
-lucuma.overlay.shadow_root = function(a) {
-  return a.firstChild()
+lucuma.overlay.shadow_root_style = function(a) {
+  return a.shadowRoot.children(1)
 };
 lucuma.overlay.display_BANG_ = function(a, b) {
-  a.style.display = b;
-  return a
+  return a.style.display = b
 };
 lucuma.overlay.backdrop = function(a) {
-  return dommy.utils.__GT_Array.call(null, dommy.template.__GT_node_like.call(null, lucuma.overlay.shadow_root.call(null, a)).getElementsByClassName("q-b-overlay-backdrop"))[0]
+  return dommy.utils.__GT_Array.call(null, dommy.template.__GT_node_like.call(null, a.shadowRoot).getElementsByClassName("q-b-overlay-backdrop"))[0]
 };
 lucuma.overlay.show = function(a) {
   lucuma.overlay.display_BANG_.call(null, lucuma.overlay.backdrop.call(null, a), "block");
   dommy.core.add_class_BANG_.call(null, dommy.utils.__GT_Array.call(null, document.getElementsByTagName("html"))[0], new cljs.core.Keyword(null, "overlay-backdrop-active", "overlay-backdrop-active", 2733255762));
-  return lucuma.event.fire.call(null, a, "show")
+  return lucuma.event.fire.call(null, a, "show", cljs.core.PersistentArrayMap.EMPTY)
 };
 lucuma.overlay.hide = function(a) {
   lucuma.overlay.display_BANG_.call(null, lucuma.overlay.backdrop.call(null, a), "none");
-  return lucuma.event.fire.call(null, a, "hide")
+  return lucuma.event.fire.call(null, a, "hide", cljs.core.PersistentArrayMap.EMPTY)
 };
-lucuma.overlay.lucu_overlay = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "lucu-overlay"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), cljs.core.PersistentVector.fromArray(["b-overlay-backdrop", 
-"q-b-overlay-backdrop"], !0)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), cljs.core.PersistentVector.fromArray(["b-overlay-backdrop-close", "q-b-overlay-backdrop-close"], !0), new cljs.core.Keyword(null, "title", "title", 1124275658), "Press ESC to close"], !0), "x"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", 
-"div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), cljs.core.PersistentVector.fromArray(["b-overlay-body", "q-overlay"], !0)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859)], !0)], !0)], !0), new cljs.core.Keyword(null, "style", "style", 1123684643), lucuma.overlay.style], !0));
+lucuma.overlay.lucu_overlay = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "lucu-overlay"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "b-overlay-backdrop q-b-overlay-backdrop"], 
+!0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "b-overlay-backdrop-close q-b-overlay-backdrop-close", new cljs.core.Keyword(null, "title", "title", 1124275658), "Press ESC to close"], !0), "x"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
+"class", "class", 1108647146), "b-overlay-body q-overlay"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859)], !0)], !0)], !0), new cljs.core.Keyword(null, "style", "style", 1123684643), lucuma.overlay.style, new cljs.core.Keyword(null, "methods", "methods", 1969438500), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "show", "show", 1017433711), lucuma.overlay.show, new cljs.core.Keyword(null, "hide", "hide", 1017106612), 
+lucuma.overlay.hide], !0)], !0));
 var cemerick = {cljs:{}};
 cemerick.cljs.test = {};
 cemerick.cljs.test._STAR_report_counters_STAR_ = null;
@@ -15829,13 +15829,31 @@ lucuma.custom_elements.initialize_and_set_callback_BANG_ = function(a, b) {
     return cljs.core.truth_(a) ? lucuma.custom_elements.call_with_this_argument.call(null, a, this, cljs.core.PersistentVector.EMPTY) : null
   }
 };
+lucuma.custom_elements.fn_name = function(a) {
+  console.log(a);
+  console.log(a.name);
+  return a.name
+};
 lucuma.custom_elements.create_prototype = function(a) {
-  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, c = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "attribute-changed-fn", "attribute-changed-fn", 511779268)), d = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772)), e = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "entered-view-fn", "entered-view-fn", 3505744396)), f = cljs.core.get.call(null, b, new cljs.core.Keyword(null, 
-  "created-fn", "created-fn", 2383536447)), b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)), b = Object.create(lucuma.custom_elements.find_prototype.call(null, b));
-  b.createdCallback = lucuma.custom_elements.initialize_and_set_callback_BANG_.call(null, f, a);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "enteredViewCallback", e);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "leftViewCallback", d);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "attributeChangedCallback", c);
+  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, c = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "methods", "methods", 1969438500)), d = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "attribute-changed-fn", "attribute-changed-fn", 511779268)), e = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772)), f = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "entered-view-fn", 
+  "entered-view-fn", 3505744396)), g = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447)), b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)), b = Object.create(lucuma.custom_elements.find_prototype.call(null, b));
+  b.createdCallback = lucuma.custom_elements.initialize_and_set_callback_BANG_.call(null, g, a);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "enteredViewCallback", f);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "leftViewCallback", e);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "attributeChangedCallback", d);
+  a = cljs.core.seq.call(null, c);
+  c = null;
+  for(e = d = 0;;) {
+    if(e < d) {
+      f = cljs.core._nth.call(null, c, e), b[cljs.core.name.call(null, cljs.core.key.call(null, f))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, f)), e += 1
+    }else {
+      if(a = cljs.core.seq.call(null, a)) {
+        c = a, cljs.core.chunked_seq_QMARK_.call(null, c) ? (a = cljs.core.chunk_first.call(null, c), e = cljs.core.chunk_rest.call(null, c), c = a, d = cljs.core.count.call(null, a), a = e) : (a = cljs.core.first.call(null, c), b[cljs.core.name.call(null, cljs.core.key.call(null, a))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, a)), a = cljs.core.next.call(null, c), c = null, d = 0), e = 0
+      }else {
+        break
+      }
+    }
+  }
   return b
 };
 lucuma.custom_elements.register = function() {
@@ -15898,7 +15916,6 @@ lucuma.range_with_threshold.fire_event_on_threshold_cross = function(a, b, c, d)
   return c > b ? lucuma.range_with_threshold.breach_threshold.call(null, a, b, c) : b > d ? lucuma.range_with_threshold.breach_threshold.call(null, a, b, d) : new cljs.core.Keyword(null, "default", "default", 2558708147) ? lucuma.range_with_threshold.clear_threshold.call(null, a, b) : null
 };
 lucuma.range_with_threshold.initialize = function(a, b, c) {
-  console.log("new lucu");
   return a.addEventListener("change", function(a) {
     return lucuma.range_with_threshold.fire_event_on_threshold_cross.call(null, a.target, a.target.value, b, c)
   }, !1)

@@ -53,32 +53,28 @@
           padding: 60px;
         }")
 
-(defn shadow-root
-  [el]
-  (.firstChild el))
-
-(defn display!
+(defn- display!
   [el t]
-  (doto el (-> .-style .-display (set! t))))
+  (aset el "style" "display" t))
 
-(defn backdrop
+(defn- backdrop
   [el]
-  (sel1 (shadow-root el) :.q-b-overlay-backdrop))
+  (sel1 (.-shadowRoot el) :.q-b-overlay-backdrop))
 
 (defn show
   [el]
   (display! (backdrop el) "block")
   (dommy/add-class! (sel1 :html) :overlay-backdrop-active)
-  (fire el "show"))
+  (fire el "show" {}))
 
 (defn hide
   [el]
   (display! (backdrop el) "none")
-  (fire el "hide"))
+  (fire el "hide" {}))
 
 (defwebcomponent lucu-overlay
-
-  :content [:div {:class ["b-overlay-backdrop" "q-b-overlay-backdrop"]}
-            [:div {:class ["b-overlay-backdrop-close" "q-b-overlay-backdrop-close"] :title "Press ESC to close"} "x"]
-            [:div {:class ["b-overlay-body" "q-overlay"]} [:content]]]
-  :style style)
+  :content [:div {:class "b-overlay-backdrop q-b-overlay-backdrop"}
+            [:div {:class "b-overlay-backdrop-close q-b-overlay-backdrop-close" :title "Press ESC to close"} "x"]
+            [:div {:class "b-overlay-body q-overlay"} [:content]]]
+  :style style
+  :methods {:show show :hide hide})
