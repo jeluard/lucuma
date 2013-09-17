@@ -10,11 +10,8 @@
 (def ^:private report-details (atom {}))
 
 (defn- sel-current-ns [] (.getElementById js/document (str "collapse-" @current-ns)))
-
 (defn- sel-current-ns-header [] (.getElementById js/document (str "collapse-" @current-ns "-header")))
-
 (defn- sel-test [t] (.item (.getElementsByClassName (sel-current-ns) t) 0))
-
 (defn- sel-test-header [t] (.-firstChild (sel-test t)))
 
 (defn- or-0 [r t] (or (get r t) 0))
@@ -31,7 +28,7 @@
 
 (defn- agg-ns [r f] (reduce + (map f (vals r))))
 
-(defn- all-tests
+(defn- all-reports
   []
   (letfn [(agg [t] (reduce + (map #(agg-ns % t) (vals (reports)))))]
     (merge {} {:pass (agg :pass)} {:fail (agg :fail)} {:error (agg :error)})))
@@ -104,8 +101,17 @@
 (defmethod report :error [m] (report-var m :error "test-error"))
 (defmethod report :fail [m] (report-var m :fail "test-fail"))
 
-(defmethod report :summary [m]
+(defmethod report :summary
+  [m]
   (dommy/append! (sel1 :#tests-results) [:script "Prism.highlightAll(); $('#tests-results').tooltip({selector: \"[data-toggle=tooltip]\"});"])
+  (let [r (all-reports)]
+    (dommy/insert-before! [:span {:id "tests-results-label"} (str (tests r) " tests run (" (:fail r) " failures, " (:error r) " errors)")] (sel1 :#tests-results)))
   (reset! report-details {}))
 
-(defn ^:export run-all-tests [] (t/run-all-tests))
+(defn ^:export run-all-tests
+  []
+  (if-let [tr (sel1 :#tests-results)]
+    (dommy/clear! tr))
+  (if-let [trl (sel1 :#tests-results-label)]
+    (dommy/remove! trl))
+  (t/run-all-tests))

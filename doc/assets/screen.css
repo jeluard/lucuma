@@ -151,6 +151,10 @@ footer {
   overflow: auto;
 }
 
+#tests-results-label {
+  margin-left: 10px;
+}
+
 .panel-body {
   list-style-type: none;
   margin-bottom: 0;

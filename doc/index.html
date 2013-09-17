@@ -313,7 +313,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         <section>
           <h2 id="range-with-threshold">Range with threshold</h2>
           <div class="example-live">
-            <lucu-range-with-threshold>Hello extended!</lucu-range-with-threshold>
+            <input is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5" />
+            <!--lucu-range-with-threshold type="range" value="25" min="0" max="50" step="5" /-->
           </div>
           <pre class="example-markup">
             <code class="language-markup">
@@ -345,7 +346,6 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         <h1>Tests</h1>
         <script>
         function run_all_tests() {
-          document.getElementById('tests-results').innerHTML = '';
           lucuma.test.browser_runner.run_all_tests();
         }
         </script>

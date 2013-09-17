@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-1889"]
                  [com.cemerick/clojurescript.test "0.0.4" :scope "test"]
-                 [prismatic/dommy "0.1.1" :scope "test"]]
+                 [prismatic/dommy "0.1.2-SNAPSHOT" :scope "test"]]
   :plugins [[lein-cljsbuild "0.3.3"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src" "test" "examples"]
