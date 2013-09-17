@@ -1,5 +1,6 @@
 (ns lucuma.custom-elements
-  (:require [lucuma.shadow-dom :as sd]))
+  (:require [lucuma.shadow-dom :as sd])
+  (:refer-clojure :exclude [methods]))
 
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
 
@@ -94,12 +95,14 @@
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
-  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attribute-changed-fn]} m
+  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attribute-changed-fn methods]} m
         proto (.create js/Object (find-prototype base-type))]
     (aset proto "createdCallback" (initialize-and-set-callback! created-fn m))
     (set-callback! proto "enteredViewCallback" entered-view-fn)
     (set-callback! proto "leftViewCallback" left-view-fn)
     (set-callback! proto "attributeChangedCallback" attribute-changed-fn)
+    (doseq [method methods]
+      (aset proto (name (key method)) (wrap-with-callback-this-value (val method))))
     proto))
 
 (defn register
