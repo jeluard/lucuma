@@ -13744,31 +13744,169 @@ cljs.core.special_symbol_QMARK_ = function(a) {
   new cljs.core.Symbol(null, "recur", "recur", -1532142362, null), null, new cljs.core.Symbol(null, ".", ".", -1640531481, null), null, new cljs.core.Symbol(null, "ns", "ns", -1640528002, null), null, new cljs.core.Symbol(null, "do", "do", -1640528316, null), null, new cljs.core.Symbol(null, "fn*", "fn*", -1640430053, null), null, new cljs.core.Symbol(null, "throw", "throw", -1530191713, null), null, new cljs.core.Symbol(null, "letfn*", "letfn*", 1548249632, null), null, new cljs.core.Symbol(null, 
   "js*", "js*", -1640426054, null), null, new cljs.core.Symbol(null, "defrecord*", "defrecord*", 774272013, null), null, new cljs.core.Symbol(null, "let*", "let*", -1637213400, null), null, new cljs.core.Symbol(null, "loop*", "loop*", -1537374273, null), null, new cljs.core.Symbol(null, "if", "if", -1640528170, null), null, new cljs.core.Symbol(null, "def", "def", -1640432194, null), null], !0), a)
 };
-var lucuma = {event:{}};
-lucuma.event.create_event = function(a, b, c, d) {
-  return document.createEvent("CustomEvent").initCustomEvent(a, c, d, cljs.core.clj__GT_js.call(null, b))
+var lucuma = {shadow_dom:{}};
+lucuma.shadow_dom.create = function(a, b, c) {
+  a = a.createShadowRoot();
+  cljs.core.truth_(b) && (a.resetStyleInheritance = !0);
+  cljs.core.truth_(c) && (a.applyAuthorStyles = !0);
+  return a
 };
-lucuma.event.fire = function() {
-  var a = null, b = function(b, c) {
-    return a.call(null, b, c, cljs.core.PersistentArrayMap.EMPTY)
-  }, c = function(b, c, d) {
-    return a.call(null, b, c, d, !1, !1)
-  }, d = function(a, b, c, d, k) {
-    return a.dispatchEvent(lucuma.event.create_event.call(null, b, c, d, k))
-  }, a = function(a, f, g, h, k) {
+lucuma.custom_elements = {};
+lucuma.custom_elements.forbidden_names = cljs.core.PersistentHashSet.fromArray(["missing-glyph", null, "font-face-format", null, "font-face-src", null, "annotation-xml", null, "font-face-uri", null, "font-face", null, "font-face-name", null, "color-profile", null], !0);
+lucuma.custom_elements.valid_name_QMARK_ = function(a) {
+  var b = cljs.core.not_EQ_.call(null, -1, a.indexOf("-"));
+  return b ? !cljs.core.contains_QMARK_.call(null, lucuma.custom_elements.forbidden_names, a) : b
+};
+lucuma.custom_elements.render_content = function() {
+  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
+  return new cljs.core.MultiFn("render-content", function(a) {
+    return a instanceof HTMLTemplateElement ? HTMLTemplateElement : cljs.core.type.call(null, a)
+  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
+}();
+cljs.core._add_method.call(null, lucuma.custom_elements.render_content, String, function(a) {
+  return a
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.render_content, HTMLTemplateElement, function(a) {
+  return a.content.cloneNode(!0)
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.render_content, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
+  throw[cljs.core.str("No render-content implementation for "), cljs.core.str(a)].join("");
+});
+lucuma.custom_elements.render_style = function() {
+  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
+  return new cljs.core.MultiFn("render-style", cljs.core.type, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
+}();
+cljs.core._add_method.call(null, lucuma.custom_elements.render_style, String, function(a) {
+  var b = document.createElement("style");
+  b.innerHTML = a;
+  return b
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.render_style, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
+  throw[cljs.core.str("No render-style implementation for "), cljs.core.str(a)].join("");
+});
+lucuma.custom_elements.append_BANG_ = function() {
+  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
+  return new cljs.core.MultiFn("append!", function(a, b) {
+    return b instanceof HTMLElement ? HTMLElement : cljs.core.type.call(null, b)
+  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
+}();
+cljs.core._add_method.call(null, lucuma.custom_elements.append_BANG_, String, function(a, b) {
+  return a.innerHTML = b
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.append_BANG_, HTMLElement, function(a, b) {
+  return a.appendChild(b)
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.append_BANG_, DocumentFragment, function(a, b) {
+  return a.appendChild(b)
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.append_BANG_, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a, b) {
+  throw[cljs.core.str("No append! implementation for "), cljs.core.str(b)].join("");
+});
+lucuma.custom_elements.render_then_append_BANG_ = function(a, b, c) {
+  b = b.call(null, c);
+  return cljs.core.truth_(b) ? lucuma.custom_elements.append_BANG_.call(null, a, b) : null
+};
+lucuma.custom_elements.invoke_if_fn = function(a) {
+  return cljs.core.fn_QMARK_.call(null, a) ? a.call(null) : a
+};
+lucuma.custom_elements.initialize = function(a, b, c, d, e) {
+  return cljs.core.truth_(cljs.core.truth_(b) ? b : c) ? (a = lucuma.shadow_dom.create.call(null, a, d, e), cljs.core.truth_(b) && lucuma.custom_elements.render_then_append_BANG_.call(null, a, lucuma.custom_elements.render_content, lucuma.custom_elements.invoke_if_fn.call(null, b)), cljs.core.truth_(c) ? lucuma.custom_elements.render_then_append_BANG_.call(null, a, lucuma.custom_elements.render_style, lucuma.custom_elements.invoke_if_fn.call(null, c)) : null) : null
+};
+lucuma.custom_elements.find_prototype = function(a) {
+  return cljs.core.truth_(a) ? Object.getPrototypeOf(document.createElement(a)) : HTMLElement.prototype
+};
+lucuma.custom_elements.call_with_this_argument = function(a, b, c) {
+  return cljs.core.apply.call(null, a, cljs.core.conj.call(null, c, b))
+};
+lucuma.custom_elements.wrap_with_callback_this_value = function(a) {
+  return function() {
+    var b = function(b) {
+      return lucuma.custom_elements.call_with_this_argument.call(null, a, this, b)
+    }, c = function(a) {
+      var c = null;
+      0 < arguments.length && (c = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0), 0));
+      return b.call(this, c)
+    };
+    c.cljs$lang$maxFixedArity = 0;
+    c.cljs$lang$applyTo = function(a) {
+      a = cljs.core.seq(a);
+      return b(a)
+    };
+    c.cljs$core$IFn$_invoke$arity$variadic = b;
+    return c
+  }()
+};
+lucuma.custom_elements.set_callback_BANG_ = function(a, b, c) {
+  return cljs.core.truth_(c) ? a[b] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, c) : null
+};
+lucuma.custom_elements.initialize_and_set_callback_BANG_ = function(a, b) {
+  return function() {
+    var c = cljs.core.seq_QMARK_.call(null, b) ? cljs.core.apply.call(null, cljs.core.hash_map, b) : b, d = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967)), e = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "reset-style-inheritance", "reset-style-inheritance", 1435321634)), f = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "style", "style", 1123684643)), c = cljs.core.get.call(null, c, new cljs.core.Keyword(null, 
+    "content", "content", 1965434859));
+    lucuma.custom_elements.initialize.call(null, this, c, f, e, d);
+    return cljs.core.truth_(a) ? lucuma.custom_elements.call_with_this_argument.call(null, a, this, cljs.core.PersistentVector.EMPTY) : null
+  }
+};
+lucuma.custom_elements.create_prototype = function(a) {
+  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, c = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "methods", "methods", 1969438500)), d = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "attribute-changed-fn", "attribute-changed-fn", 511779268)), e = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772)), f = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "entered-view-fn", 
+  "entered-view-fn", 3505744396)), g = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447)), b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)), b = Object.create(lucuma.custom_elements.find_prototype.call(null, b));
+  b.createdCallback = lucuma.custom_elements.initialize_and_set_callback_BANG_.call(null, g, a);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "enteredViewCallback", f);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "leftViewCallback", e);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "attributeChangedCallback", d);
+  a = cljs.core.seq.call(null, c);
+  c = null;
+  for(e = d = 0;;) {
+    if(e < d) {
+      f = cljs.core._nth.call(null, c, e), b[cljs.core.name.call(null, cljs.core.key.call(null, f))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, f)), e += 1
+    }else {
+      if(a = cljs.core.seq.call(null, a)) {
+        c = a, cljs.core.chunked_seq_QMARK_.call(null, c) ? (a = cljs.core.chunk_first.call(null, c), e = cljs.core.chunk_rest.call(null, c), c = a, d = cljs.core.count.call(null, a), a = e) : (a = cljs.core.first.call(null, c), b[cljs.core.name.call(null, cljs.core.key.call(null, a))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, a)), a = cljs.core.next.call(null, c), c = null, d = 0), e = 0
+      }else {
+        break
+      }
+    }
+  }
+  return b
+};
+lucuma.custom_elements.register = function() {
+  var a = null, b = function(b) {
+    return a.call(null, (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, b), b)
+  }, c = function(a, b) {
+    if(!cljs.core.truth_(lucuma.custom_elements.valid_name_QMARK_.call(null, a))) {
+      throw Error([cljs.core.str("Assert failed: "), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), new cljs.core.Symbol(null, "n", "n", -1640531417, null))))].join(""));
+    }
+    return document.register(a, cljs.core.clj__GT_js.call(null, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "prototype", "prototype", 4710078612), lucuma.custom_elements.create_prototype.call(null, b)], !0), cljs.core.truth_((new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b)) ? cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "extends", "extends", 4003207179), (new cljs.core.Keyword(null, "base-type", 
+    "base-type", 3446290472)).call(null, b)], !0) : null)))
+  }, a = function(a, e) {
     switch(arguments.length) {
+      case 1:
+        return b.call(this, a);
       case 2:
-        return b.call(this, a, f);
-      case 3:
-        return c.call(this, a, f, g);
-      case 5:
-        return d.call(this, a, f, g, h, k)
+        return c.call(this, a, e)
     }
     throw Error("Invalid arity: " + arguments.length);
   };
-  a.cljs$core$IFn$_invoke$arity$2 = b;
-  a.cljs$core$IFn$_invoke$arity$3 = c;
-  a.cljs$core$IFn$_invoke$arity$5 = d;
+  a.cljs$core$IFn$_invoke$arity$1 = b;
+  a.cljs$core$IFn$_invoke$arity$2 = c;
+  return a
+}();
+lucuma.custom_elements.create = function() {
+  var a = null, b = function(b) {
+    return a.call(null, b, null)
+  }, c = function(a, b) {
+    return document.createElement(a, b)
+  }, a = function(a, e) {
+    switch(arguments.length) {
+      case 1:
+        return b.call(this, a);
+      case 2:
+        return c.call(this, a, e)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$1 = b;
+  a.cljs$core$IFn$_invoke$arity$2 = c;
   return a
 }();
 var clojure = {string:{}};
@@ -13917,6 +14055,423 @@ clojure.string.escape = function(a, b) {
     e += 1
   }
 };
+var cemerick = {cljs:{}};
+cemerick.cljs.test = {};
+cemerick.cljs.test._STAR_report_counters_STAR_ = null;
+cemerick.cljs.test._STAR_initial_report_counters_STAR_ = cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "test", "test", 1017460740), 0, new cljs.core.Keyword(null, "pass", "pass", 1017337731), 0, new cljs.core.Keyword(null, "fail", "fail", 1017039504), 0, new cljs.core.Keyword(null, "error", "error", 1110689146), 0], !0);
+cemerick.cljs.test._STAR_testing_vars_STAR_ = cljs.core.list.call(null);
+cemerick.cljs.test._STAR_testing_contexts_STAR_ = cljs.core.list.call(null);
+cemerick.cljs.test._STAR_test_print_fn_STAR_ = null;
+cemerick.cljs.test.registered_tests = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY);
+cemerick.cljs.test.registered_test_hooks = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY);
+cemerick.cljs.test.registered_fixtures = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY);
+cemerick.cljs.test.register_test_BANG_ = function(a, b) {
+  return cljs.core.swap_BANG_.call(null, cemerick.cljs.test.registered_tests, cljs.core.update_in, cljs.core.PersistentVector.fromArray([a], !0), cljs.core.fnil.call(null, cljs.core.conj, cljs.core.PersistentHashSet.EMPTY), b)
+};
+cemerick.cljs.test.register_test_ns_hook_BANG_ = function(a, b) {
+  return cljs.core.swap_BANG_.call(null, cemerick.cljs.test.registered_test_hooks, cljs.core.assoc, a, b)
+};
+cemerick.cljs.test.testing_vars_str = function(a) {
+  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
+  a = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "line", "line", 1017226086));
+  b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "file", "file", 1017047278));
+  return[cljs.core.str(cljs.core.pr_str.call(null, cljs.core.reverse.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_))), cljs.core.str(" ("), cljs.core.str(b), cljs.core.str(":"), cljs.core.str(a), cljs.core.str(")")].join("")
+};
+cemerick.cljs.test.testing_contexts_str = function() {
+  return cljs.core.apply.call(null, cljs.core.str, cljs.core.interpose.call(null, " ", cljs.core.reverse.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_)))
+};
+cemerick.cljs.test.inc_report_counter = function(a) {
+  return cljs.core.truth_(cemerick.cljs.test._STAR_report_counters_STAR_) ? cljs.core.swap_BANG_.call(null, cemerick.cljs.test._STAR_report_counters_STAR_, cljs.core.update_in, cljs.core.PersistentVector.fromArray([a], !0), cljs.core.fnil.call(null, cljs.core.inc, 0)) : null
+};
+cemerick.cljs.test.report = function() {
+  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
+  return new cljs.core.MultiFn("report", new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
+}();
+cemerick.cljs.test.file_and_line = function(a) {
+  return cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "file", "file", 1017047278), a.fileName, new cljs.core.Keyword(null, "line", "line", 1017226086), a.lineNumber], !0)
+};
+cemerick.cljs.test.do_report = function(a) {
+  return cemerick.cljs.test.report.call(null, function() {
+    var b = (new cljs.core.Keyword(null, "type", "type", 1017479852)).call(null, a);
+    return cljs.core._EQ_.call(null, new cljs.core.Keyword(null, "error", "error", 1110689146), b) ? cljs.core.merge.call(null, cemerick.cljs.test.file_and_line.call(null, (new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a)), a) : cljs.core._EQ_.call(null, new cljs.core.Keyword(null, "fail", "fail", 1017039504), b) ? cljs.core.merge.call(null, cemerick.cljs.test.file_and_line.call(null, Error()), a) : new cljs.core.Keyword(null, "else", "else", 1017020587) ? a : null
+  }())
+};
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
+  var b = cljs.core._STAR_print_fn_STAR_;
+  try {
+    var c = cljs.core, d;
+    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
+    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
+    c._STAR_print_fn_STAR_ = d;
+    return cljs.core.prn.call(null, a)
+  }finally {
+    cljs.core._STAR_print_fn_STAR_ = b
+  }
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "pass", "pass", 1017337731), function(a) {
+  a = cljs.core._STAR_print_fn_STAR_;
+  try {
+    var b = cljs.core, c;
+    var d = cemerick.cljs.test._STAR_test_print_fn_STAR_;
+    c = cljs.core.truth_(d) ? d : cljs.core._STAR_print_fn_STAR_;
+    b._STAR_print_fn_STAR_ = c;
+    return cemerick.cljs.test.inc_report_counter.call(null, new cljs.core.Keyword(null, "pass", "pass", 1017337731))
+  }finally {
+    cljs.core._STAR_print_fn_STAR_ = a
+  }
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "fail", "fail", 1017039504), function(a) {
+  var b = cljs.core._STAR_print_fn_STAR_;
+  try {
+    var c = cljs.core, d;
+    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
+    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
+    c._STAR_print_fn_STAR_ = d;
+    cemerick.cljs.test.inc_report_counter.call(null, new cljs.core.Keyword(null, "fail", "fail", 1017039504));
+    cljs.core.println.call(null, "\nFAIL in", cemerick.cljs.test.testing_vars_str.call(null, a));
+    cljs.core.seq.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_) && cljs.core.println.call(null, cemerick.cljs.test.testing_contexts_str.call(null));
+    var f = (new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, a);
+    cljs.core.truth_(f) && cljs.core.println.call(null, f);
+    cljs.core.println.call(null, "expected:", cljs.core.pr_str.call(null, (new cljs.core.Keyword(null, "expected", "expected", 3373152810)).call(null, a)));
+    return cljs.core.println.call(null, "  actual:", cljs.core.pr_str.call(null, (new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a)))
+  }finally {
+    cljs.core._STAR_print_fn_STAR_ = b
+  }
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "error", "error", 1110689146), function(a) {
+  var b = cljs.core._STAR_print_fn_STAR_;
+  try {
+    var c = cljs.core, d;
+    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
+    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
+    c._STAR_print_fn_STAR_ = d;
+    cemerick.cljs.test.inc_report_counter.call(null, new cljs.core.Keyword(null, "error", "error", 1110689146));
+    cljs.core.println.call(null, "\nERROR in", cemerick.cljs.test.testing_vars_str.call(null, a));
+    cljs.core.seq.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_) && cljs.core.println.call(null, cemerick.cljs.test.testing_contexts_str.call(null));
+    var f = (new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, a);
+    cljs.core.truth_(f) && cljs.core.println.call(null, f);
+    cljs.core.println.call(null, "expected:", cljs.core.pr_str.call(null, (new cljs.core.Keyword(null, "expected", "expected", 3373152810)).call(null, a)));
+    cljs.core.print.call(null, "  actual: ");
+    var g = (new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a);
+    return g instanceof Error ? cljs.core.println.call(null, g.stack) : cljs.core.prn.call(null, g)
+  }finally {
+    cljs.core._STAR_print_fn_STAR_ = b
+  }
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "summary", "summary", 3451231E3), function(a) {
+  var b = cljs.core._STAR_print_fn_STAR_;
+  try {
+    var c = cljs.core, d;
+    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
+    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
+    c._STAR_print_fn_STAR_ = d;
+    cljs.core.println.call(null, "\nRan", (new cljs.core.Keyword(null, "test", "test", 1017460740)).call(null, a), "tests containing", (new cljs.core.Keyword(null, "pass", "pass", 1017337731)).call(null, a) + (new cljs.core.Keyword(null, "fail", "fail", 1017039504)).call(null, a) + (new cljs.core.Keyword(null, "error", "error", 1110689146)).call(null, a), "assertions.");
+    return cljs.core.println.call(null, (new cljs.core.Keyword(null, "fail", "fail", 1017039504)).call(null, a), "failures,", (new cljs.core.Keyword(null, "error", "error", 1110689146)).call(null, a), "errors.")
+  }finally {
+    cljs.core._STAR_print_fn_STAR_ = b
+  }
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "begin-test-ns", "begin-test-ns", 1359210286), function(a) {
+  var b = cljs.core._STAR_print_fn_STAR_;
+  try {
+    var c = cljs.core, d;
+    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
+    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
+    c._STAR_print_fn_STAR_ = d;
+    return cljs.core.println.call(null, "\nTesting", (new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, a))
+  }finally {
+    cljs.core._STAR_print_fn_STAR_ = b
+  }
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "end-test-ns", "end-test-ns", 3401491808), function(a) {
+  return null
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "begin-test-var", "begin-test-var", 3128464258), function(a) {
+  return null
+});
+cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "end-test-var", "end-test-var", 2014682E3), function(a) {
+  return null
+});
+cemerick.cljs.test.register_fixtures_BANG_ = function() {
+  var a = function(a, b, e) {
+    return cljs.core.swap_BANG_.call(null, cemerick.cljs.test.registered_fixtures, cljs.core.update_in, cljs.core.PersistentVector.fromArray([a, b], !0), cljs.core.constantly.call(null, e))
+  }, b = function(b, d, e) {
+    var f = null;
+    2 < arguments.length && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b);
+    b = cljs.core.next(b);
+    var e = cljs.core.first(b);
+    b = cljs.core.rest(b);
+    return a(d, e, b)
+  };
+  b.cljs$core$IFn$_invoke$arity$variadic = a;
+  return b
+}();
+cemerick.cljs.test.default_fixture = function(a) {
+  return a.call(null)
+};
+cemerick.cljs.test.compose_fixtures = function(a, b) {
+  return function(c) {
+    return a.call(null, function() {
+      return b.call(null, c)
+    })
+  }
+};
+cemerick.cljs.test.join_fixtures = function(a) {
+  return cljs.core.reduce.call(null, cemerick.cljs.test.compose_fixtures, cemerick.cljs.test.default_fixture, a)
+};
+cemerick.cljs.test.test_var = function(a) {
+  if(!cljs.core.fn_QMARK_.call(null, a)) {
+    throw Error([cljs.core.str("Assert failed: "), cljs.core.str("test-var must be passed the function to be tested (not a symbol naming it)"), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "fn?", "fn?", -1640430032, null), new cljs.core.Symbol(null, "v", "v", -1640531409, null))))].join(""));
+  }
+  var b = (new cljs.core.Keyword(null, "test", "test", 1017460740)).call(null, cljs.core.meta.call(null, a));
+  if(cljs.core.truth_(b)) {
+    var c = cemerick.cljs.test._STAR_testing_vars_STAR_;
+    try {
+      cemerick.cljs.test._STAR_testing_vars_STAR_ = cljs.core.conj.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_, function() {
+        var b = (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, a));
+        return cljs.core.truth_(b) ? b : a
+      }());
+      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "begin-test-var", "begin-test-var", 3128464258), new cljs.core.Keyword(null, "var", "var", 1014020761), a], !0));
+      cemerick.cljs.test.inc_report_counter.call(null, new cljs.core.Keyword(null, "test", "test", 1017460740));
+      try {
+        b.call(null)
+      }catch(d) {
+        if(d instanceof Error) {
+          cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "Uncaught exception, not in assertion.", new cljs.core.Keyword(null, "expected", "expected", 3373152810), null, new cljs.core.Keyword(null, "actual", "actual", 3885931776), d], !0))
+        }else {
+          if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+            throw d;
+          }
+        }
+      }
+      return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "end-test-var", "end-test-var", 2014682E3), new cljs.core.Keyword(null, "var", "var", 1014020761), a], !0))
+    }finally {
+      cemerick.cljs.test._STAR_testing_vars_STAR_ = c
+    }
+  }else {
+    return null
+  }
+};
+cemerick.cljs.test.test_all_vars = function(a) {
+  var b = cemerick.cljs.test.join_fixtures.call(null, (new cljs.core.Keyword(null, "once", "once", 1017319923)).call(null, a.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_fixtures)))), c = cemerick.cljs.test.join_fixtures.call(null, (new cljs.core.Keyword(null, "each", "each", 1017009523)).call(null, a.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_fixtures))));
+  return b.call(null, function() {
+    for(var b = cljs.core.seq.call(null, cljs.core.get.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_tests), a)), e = null, f = 0, g = 0;;) {
+      if(g < f) {
+        var h = cljs.core._nth.call(null, e, g);
+        cljs.core.truth_((new cljs.core.Keyword(null, "test", "test", 1017460740)).call(null, cljs.core.meta.call(null, h))) && c.call(null, function(a, b, c, d, e) {
+          return function() {
+            return cemerick.cljs.test.test_var.call(null, e)
+          }
+        }(b, e, f, g, h));
+        g += 1
+      }else {
+        var k = cljs.core.seq.call(null, b);
+        if(k) {
+          var l = k;
+          cljs.core.chunked_seq_QMARK_.call(null, l) ? (b = cljs.core.chunk_first.call(null, l), f = cljs.core.chunk_rest.call(null, l), e = b, l = cljs.core.count.call(null, b), b = f, f = l) : (h = cljs.core.first.call(null, l), cljs.core.truth_((new cljs.core.Keyword(null, "test", "test", 1017460740)).call(null, cljs.core.meta.call(null, h))) && c.call(null, function(a, b, c, d, e, f, g) {
+            return function() {
+              return cemerick.cljs.test.test_var.call(null, e)
+            }
+          }(b, e, f, g, h, l, k)), b = cljs.core.next.call(null, l), e = null, f = 0);
+          g = 0
+        }else {
+          return null
+        }
+      }
+    }
+  })
+};
+cemerick.cljs.test.test_ns = function(a) {
+  var b = cemerick.cljs.test._STAR_report_counters_STAR_;
+  try {
+    cemerick.cljs.test._STAR_report_counters_STAR_ = cljs.core.atom.call(null, cemerick.cljs.test._STAR_initial_report_counters_STAR_);
+    cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "begin-test-ns", "begin-test-ns", 1359210286), new cljs.core.Keyword(null, "ns", "ns", 1013907767), a], !0));
+    var c = cljs.core.get.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_test_hooks), a);
+    cljs.core.truth_(c) ? c.call(null) : cemerick.cljs.test.test_all_vars.call(null, a);
+    cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "end-test-ns", "end-test-ns", 3401491808), new cljs.core.Keyword(null, "ns", "ns", 1013907767), a], !0));
+    return cljs.core.deref.call(null, cemerick.cljs.test._STAR_report_counters_STAR_)
+  }finally {
+    cemerick.cljs.test._STAR_report_counters_STAR_ = b
+  }
+};
+cemerick.cljs.test.run_tests_STAR_ = function() {
+  var a = function(a) {
+    a = cljs.core.assoc.call(null, cljs.core.apply.call(null, cljs.core.merge_with, cljs.core._PLUS_, cljs.core.map.call(null, cemerick.cljs.test.test_ns, a)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "summary", "summary", 3451231E3));
+    cemerick.cljs.test.do_report.call(null, a);
+    return a
+  }, b = function(b) {
+    var d = null;
+    0 < arguments.length && (d = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0), 0));
+    return a.call(this, d)
+  };
+  b.cljs$lang$maxFixedArity = 0;
+  b.cljs$lang$applyTo = function(b) {
+    b = cljs.core.seq(b);
+    return a(b)
+  };
+  b.cljs$core$IFn$_invoke$arity$variadic = a;
+  return b
+}();
+goog.exportSymbol("cemerick.cljs.test.run_tests_STAR_", cemerick.cljs.test.run_tests_STAR_);
+cemerick.cljs.test.run_all_tests = function() {
+  var a = null, b = function() {
+    return cljs.core.apply.call(null, cemerick.cljs.test.run_tests_STAR_, cljs.core.keys.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_tests)))
+  }, c = function(a) {
+    return cljs.core.apply.call(null, cemerick.cljs.test.run_tests_STAR_, cljs.core.filter.call(null, function(b) {
+      return cljs.core.re_matches.call(null, a, cljs.core.name.call(null, b))
+    }, cljs.core.keys.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_tests))))
+  }, a = function(a) {
+    switch(arguments.length) {
+      case 0:
+        return b.call(this);
+      case 1:
+        return c.call(this, a)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$0 = b;
+  a.cljs$core$IFn$_invoke$arity$1 = c;
+  return a
+}();
+goog.exportSymbol("cemerick.cljs.test.run_all_tests", cemerick.cljs.test.run_all_tests);
+cemerick.cljs.test.successful_QMARK_ = function(a) {
+  var b = 0 === (new cljs.core.Keyword(null, "fail", "fail", 1017039504)).call(null, a, 0);
+  return b ? 0 === (new cljs.core.Keyword(null, "error", "error", 1110689146)).call(null, a, 0) : b
+};
+goog.exportSymbol("cemerick.cljs.test.successful_QMARK_", cemerick.cljs.test.successful_QMARK_);
+cemerick.cljs.test.set_print_fn_BANG_ = function(a) {
+  return cljs.core._STAR_print_fn_STAR_ = a
+};
+goog.exportSymbol("cemerick.cljs.test.set_print_fn_BANG_", cemerick.cljs.test.set_print_fn_BANG_);
+lucuma.custom_elements_test = {};
+lucuma.custom_elements_test.names = function() {
+  return cemerick.cljs.test.test_var.call(null, lucuma.custom_elements_test.names)
+};
+lucuma.custom_elements_test.names = cljs.core.vary_meta.call(null, lucuma.custom_elements_test.names, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "names", "names", -1535946495, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
+  try {
+    var a = cljs.core.list.call(null, "ex-name"), b = cljs.core.apply.call(null, lucuma.custom_elements.valid_name_QMARK_, a);
+    cljs.core.truth_(b) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, lucuma.custom_elements.valid_name_QMARK_, a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol("ce", 
+    "valid-name?", "ce/valid-name?", -190304458, null), "ex-name")], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), a)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", 
+    "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "ex-name")], !0))
+  }catch(c) {
+    if(c instanceof Error) {
+      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), c, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "ex-name")], 
+      !0))
+    }else {
+      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+        throw c;
+      }
+    }
+  }
+  try {
+    var d = cljs.core.list.call(null, "ex-name-name"), e = cljs.core.apply.call(null, lucuma.custom_elements.valid_name_QMARK_, d);
+    cljs.core.truth_(e) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, lucuma.custom_elements.valid_name_QMARK_, d), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol("ce", 
+    "valid-name?", "ce/valid-name?", -190304458, null), "ex-name-name")], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), d)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, 
+    "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "ex-name-name")], !0))
+  }catch(f) {
+    if(f instanceof Error) {
+      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), f, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "ex-name-name")], 
+      !0))
+    }else {
+      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+        throw f;
+      }
+    }
+  }
+  try {
+    var g = cljs.core.list.call(null, lucuma.custom_elements.valid_name_QMARK_.call(null, "name")), h = cljs.core.apply.call(null, cljs.core.not, g);
+    cljs.core.truth_(h) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, g), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+    "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "name"))], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), g)), new cljs.core.Keyword(null, "type", 
+    "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "name"))], !0))
+  }catch(k) {
+    if(k instanceof Error) {
+      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), k, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", 
+      "valid-name?", "ce/valid-name?", -190304458, null), "name"))], !0))
+    }else {
+      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+        throw k;
+      }
+    }
+  }
+  try {
+    var l = cljs.core.list.call(null, lucuma.custom_elements.valid_name_QMARK_.call(null, "ex_name")), m = cljs.core.apply.call(null, cljs.core.not, l);
+    cljs.core.truth_(m) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, l), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+    "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "ex_name"))], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), l)), new cljs.core.Keyword(null, 
+    "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "ex_name"))], !0))
+  }catch(n) {
+    if(n instanceof Error) {
+      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), n, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", 
+      "valid-name?", "ce/valid-name?", -190304458, null), "ex_name"))], !0))
+    }else {
+      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+        throw n;
+      }
+    }
+  }
+  try {
+    var p = cljs.core.list.call(null, lucuma.custom_elements.valid_name_QMARK_.call(null, "color-profile")), q = cljs.core.apply.call(null, cljs.core.not, p);
+    cljs.core.truth_(q) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, p), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+    "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "color-profile"))], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), p)), new cljs.core.Keyword(null, 
+    "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", "valid-name?", "ce/valid-name?", -190304458, null), "color-profile"))], !0));
+    return q
+  }catch(r) {
+    if(r instanceof Error) {
+      return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), r, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("ce", 
+      "valid-name?", "ce/valid-name?", -190304458, null), "color-profile"))], !0))
+    }
+    if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+      throw r;
+    }
+    return null
+  }
+});
+cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.custom-elements-test", "lucuma.custom-elements-test", -265684476, null), lucuma.custom_elements_test.names);
+lucuma.custom_elements_test.register = function() {
+  return cemerick.cljs.test.test_var.call(null, lucuma.custom_elements_test.register)
+};
+lucuma.custom_elements_test.register = cljs.core.vary_meta.call(null, lucuma.custom_elements_test.register, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "register", "register", 1964222556, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
+  return null
+});
+cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.custom-elements-test", "lucuma.custom-elements-test", -265684476, null), lucuma.custom_elements_test.register);
+lucuma.custom_elements_test.create = function() {
+  return cemerick.cljs.test.test_var.call(null, lucuma.custom_elements_test.create)
+};
+lucuma.custom_elements_test.create = cljs.core.vary_meta.call(null, lucuma.custom_elements_test.create, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "create", "create", 1302141621, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
+  return null
+});
+cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.custom-elements-test", "lucuma.custom-elements-test", -265684476, null), lucuma.custom_elements_test.create);
+lucuma.event = {};
+lucuma.event.create_event = function(a, b, c, d) {
+  return document.createEvent("CustomEvent").initCustomEvent(a, c, d, cljs.core.clj__GT_js.call(null, b))
+};
+lucuma.event.fire = function() {
+  var a = null, b = function(b, c) {
+    return a.call(null, b, c, cljs.core.PersistentArrayMap.EMPTY)
+  }, c = function(b, c, d) {
+    return a.call(null, b, c, d, !1, !1)
+  }, d = function(a, b, c, d, k) {
+    return a.dispatchEvent(lucuma.event.create_event.call(null, b, c, d, k))
+  }, a = function(a, f, g, h, k) {
+    switch(arguments.length) {
+      case 2:
+        return b.call(this, a, f);
+      case 3:
+        return c.call(this, a, f, g);
+      case 5:
+        return d.call(this, a, f, g, h, k)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$2 = b;
+  a.cljs$core$IFn$_invoke$arity$3 = c;
+  a.cljs$core$IFn$_invoke$arity$5 = d;
+  return a
+}();
 var dommy = {attrs:{}};
 dommy.attrs.class_match_QMARK_ = function(a, b, c) {
   var d;
@@ -15193,391 +15748,30 @@ lucuma.overlay.lucu_overlay = cljs.core.merge.call(null, cljs.core.PersistentArr
 !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "b-overlay-backdrop-close q-b-overlay-backdrop-close", new cljs.core.Keyword(null, "title", "title", 1124275658), "Press ESC to close"], !0), "x"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
 "class", "class", 1108647146), "b-overlay-body q-overlay"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859)], !0)], !0)], !0), new cljs.core.Keyword(null, "style", "style", 1123684643), lucuma.overlay.style, new cljs.core.Keyword(null, "methods", "methods", 1969438500), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "show", "show", 1017433711), lucuma.overlay.show, new cljs.core.Keyword(null, "hide", "hide", 1017106612), 
 lucuma.overlay.hide], !0)], !0));
-var cemerick = {cljs:{}};
-cemerick.cljs.test = {};
-cemerick.cljs.test._STAR_report_counters_STAR_ = null;
-cemerick.cljs.test._STAR_initial_report_counters_STAR_ = cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "test", "test", 1017460740), 0, new cljs.core.Keyword(null, "pass", "pass", 1017337731), 0, new cljs.core.Keyword(null, "fail", "fail", 1017039504), 0, new cljs.core.Keyword(null, "error", "error", 1110689146), 0], !0);
-cemerick.cljs.test._STAR_testing_vars_STAR_ = cljs.core.list.call(null);
-cemerick.cljs.test._STAR_testing_contexts_STAR_ = cljs.core.list.call(null);
-cemerick.cljs.test._STAR_test_print_fn_STAR_ = null;
-cemerick.cljs.test.registered_tests = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY);
-cemerick.cljs.test.registered_test_hooks = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY);
-cemerick.cljs.test.registered_fixtures = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY);
-cemerick.cljs.test.register_test_BANG_ = function(a, b) {
-  return cljs.core.swap_BANG_.call(null, cemerick.cljs.test.registered_tests, cljs.core.update_in, cljs.core.PersistentVector.fromArray([a], !0), cljs.core.fnil.call(null, cljs.core.conj, cljs.core.PersistentHashSet.EMPTY), b)
+lucuma.shadow_dom_test = {};
+lucuma.shadow_dom_test.create = function() {
+  return cemerick.cljs.test.test_var.call(null, lucuma.shadow_dom_test.create)
 };
-cemerick.cljs.test.register_test_ns_hook_BANG_ = function(a, b) {
-  return cljs.core.swap_BANG_.call(null, cemerick.cljs.test.registered_test_hooks, cljs.core.assoc, a, b)
-};
-cemerick.cljs.test.testing_vars_str = function(a) {
-  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
-  a = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "line", "line", 1017226086));
-  b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "file", "file", 1017047278));
-  return[cljs.core.str(cljs.core.pr_str.call(null, cljs.core.reverse.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_))), cljs.core.str(" ("), cljs.core.str(b), cljs.core.str(":"), cljs.core.str(a), cljs.core.str(")")].join("")
-};
-cemerick.cljs.test.testing_contexts_str = function() {
-  return cljs.core.apply.call(null, cljs.core.str, cljs.core.interpose.call(null, " ", cljs.core.reverse.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_)))
-};
-cemerick.cljs.test.inc_report_counter = function(a) {
-  return cljs.core.truth_(cemerick.cljs.test._STAR_report_counters_STAR_) ? cljs.core.swap_BANG_.call(null, cemerick.cljs.test._STAR_report_counters_STAR_, cljs.core.update_in, cljs.core.PersistentVector.fromArray([a], !0), cljs.core.fnil.call(null, cljs.core.inc, 0)) : null
-};
-cemerick.cljs.test.report = function() {
-  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
-  return new cljs.core.MultiFn("report", new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
-}();
-cemerick.cljs.test.file_and_line = function(a) {
-  return cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "file", "file", 1017047278), a.fileName, new cljs.core.Keyword(null, "line", "line", 1017226086), a.lineNumber], !0)
-};
-cemerick.cljs.test.do_report = function(a) {
-  return cemerick.cljs.test.report.call(null, function() {
-    var b = (new cljs.core.Keyword(null, "type", "type", 1017479852)).call(null, a);
-    return cljs.core._EQ_.call(null, new cljs.core.Keyword(null, "error", "error", 1110689146), b) ? cljs.core.merge.call(null, cemerick.cljs.test.file_and_line.call(null, (new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a)), a) : cljs.core._EQ_.call(null, new cljs.core.Keyword(null, "fail", "fail", 1017039504), b) ? cljs.core.merge.call(null, cemerick.cljs.test.file_and_line.call(null, Error()), a) : new cljs.core.Keyword(null, "else", "else", 1017020587) ? a : null
-  }())
-};
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
-  var b = cljs.core._STAR_print_fn_STAR_;
+lucuma.shadow_dom_test.create = cljs.core.vary_meta.call(null, lucuma.shadow_dom_test.create, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "create", "create", 1302141621, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
   try {
-    var c = cljs.core, d;
-    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
-    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
-    c._STAR_print_fn_STAR_ = d;
-    return cljs.core.prn.call(null, a)
-  }finally {
-    cljs.core._STAR_print_fn_STAR_ = b
-  }
-});
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "pass", "pass", 1017337731), function(a) {
-  a = cljs.core._STAR_print_fn_STAR_;
-  try {
-    var b = cljs.core, c;
-    var d = cemerick.cljs.test._STAR_test_print_fn_STAR_;
-    c = cljs.core.truth_(d) ? d : cljs.core._STAR_print_fn_STAR_;
-    b._STAR_print_fn_STAR_ = c;
-    return cemerick.cljs.test.inc_report_counter.call(null, new cljs.core.Keyword(null, "pass", "pass", 1017337731))
-  }finally {
-    cljs.core._STAR_print_fn_STAR_ = a
-  }
-});
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "fail", "fail", 1017039504), function(a) {
-  var b = cljs.core._STAR_print_fn_STAR_;
-  try {
-    var c = cljs.core, d;
-    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
-    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
-    c._STAR_print_fn_STAR_ = d;
-    cemerick.cljs.test.inc_report_counter.call(null, new cljs.core.Keyword(null, "fail", "fail", 1017039504));
-    cljs.core.println.call(null, "\nFAIL in", cemerick.cljs.test.testing_vars_str.call(null, a));
-    cljs.core.seq.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_) && cljs.core.println.call(null, cemerick.cljs.test.testing_contexts_str.call(null));
-    var f = (new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, a);
-    cljs.core.truth_(f) && cljs.core.println.call(null, f);
-    cljs.core.println.call(null, "expected:", cljs.core.pr_str.call(null, (new cljs.core.Keyword(null, "expected", "expected", 3373152810)).call(null, a)));
-    return cljs.core.println.call(null, "  actual:", cljs.core.pr_str.call(null, (new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a)))
-  }finally {
-    cljs.core._STAR_print_fn_STAR_ = b
-  }
-});
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "error", "error", 1110689146), function(a) {
-  var b = cljs.core._STAR_print_fn_STAR_;
-  try {
-    var c = cljs.core, d;
-    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
-    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
-    c._STAR_print_fn_STAR_ = d;
-    cemerick.cljs.test.inc_report_counter.call(null, new cljs.core.Keyword(null, "error", "error", 1110689146));
-    cljs.core.println.call(null, "\nERROR in", cemerick.cljs.test.testing_vars_str.call(null, a));
-    cljs.core.seq.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_) && cljs.core.println.call(null, cemerick.cljs.test.testing_contexts_str.call(null));
-    var f = (new cljs.core.Keyword(null, "message", "message", 1968829305)).call(null, a);
-    cljs.core.truth_(f) && cljs.core.println.call(null, f);
-    cljs.core.println.call(null, "expected:", cljs.core.pr_str.call(null, (new cljs.core.Keyword(null, "expected", "expected", 3373152810)).call(null, a)));
-    cljs.core.print.call(null, "  actual: ");
-    var g = (new cljs.core.Keyword(null, "actual", "actual", 3885931776)).call(null, a);
-    return g instanceof Error ? cljs.core.println.call(null, g.stack) : cljs.core.prn.call(null, g)
-  }finally {
-    cljs.core._STAR_print_fn_STAR_ = b
-  }
-});
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "summary", "summary", 3451231E3), function(a) {
-  var b = cljs.core._STAR_print_fn_STAR_;
-  try {
-    var c = cljs.core, d;
-    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
-    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
-    c._STAR_print_fn_STAR_ = d;
-    cljs.core.println.call(null, "\nRan", (new cljs.core.Keyword(null, "test", "test", 1017460740)).call(null, a), "tests containing", (new cljs.core.Keyword(null, "pass", "pass", 1017337731)).call(null, a) + (new cljs.core.Keyword(null, "fail", "fail", 1017039504)).call(null, a) + (new cljs.core.Keyword(null, "error", "error", 1110689146)).call(null, a), "assertions.");
-    return cljs.core.println.call(null, (new cljs.core.Keyword(null, "fail", "fail", 1017039504)).call(null, a), "failures,", (new cljs.core.Keyword(null, "error", "error", 1110689146)).call(null, a), "errors.")
-  }finally {
-    cljs.core._STAR_print_fn_STAR_ = b
-  }
-});
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "begin-test-ns", "begin-test-ns", 1359210286), function(a) {
-  var b = cljs.core._STAR_print_fn_STAR_;
-  try {
-    var c = cljs.core, d;
-    var e = cemerick.cljs.test._STAR_test_print_fn_STAR_;
-    d = cljs.core.truth_(e) ? e : cljs.core._STAR_print_fn_STAR_;
-    c._STAR_print_fn_STAR_ = d;
-    return cljs.core.println.call(null, "\nTesting", (new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, a))
-  }finally {
-    cljs.core._STAR_print_fn_STAR_ = b
-  }
-});
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "end-test-ns", "end-test-ns", 3401491808), function(a) {
-  return null
-});
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "begin-test-var", "begin-test-var", 3128464258), function(a) {
-  return null
-});
-cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "end-test-var", "end-test-var", 2014682E3), function(a) {
-  return null
-});
-cemerick.cljs.test.register_fixtures_BANG_ = function() {
-  var a = function(a, b, e) {
-    return cljs.core.swap_BANG_.call(null, cemerick.cljs.test.registered_fixtures, cljs.core.update_in, cljs.core.PersistentVector.fromArray([a, b], !0), cljs.core.constantly.call(null, e))
-  }, b = function(b, d, e) {
-    var f = null;
-    2 < arguments.length && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b);
-    b = cljs.core.next(b);
-    var e = cljs.core.first(b);
-    b = cljs.core.rest(b);
-    return a(d, e, b)
-  };
-  b.cljs$core$IFn$_invoke$arity$variadic = a;
-  return b
-}();
-cemerick.cljs.test.default_fixture = function(a) {
-  return a.call(null)
-};
-cemerick.cljs.test.compose_fixtures = function(a, b) {
-  return function(c) {
-    return a.call(null, function() {
-      return b.call(null, c)
-    })
-  }
-};
-cemerick.cljs.test.join_fixtures = function(a) {
-  return cljs.core.reduce.call(null, cemerick.cljs.test.compose_fixtures, cemerick.cljs.test.default_fixture, a)
-};
-cemerick.cljs.test.test_var = function(a) {
-  if(!cljs.core.fn_QMARK_.call(null, a)) {
-    throw Error([cljs.core.str("Assert failed: "), cljs.core.str("test-var must be passed the function to be tested (not a symbol naming it)"), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "fn?", "fn?", -1640430032, null), new cljs.core.Symbol(null, "v", "v", -1640531409, null))))].join(""));
-  }
-  var b = (new cljs.core.Keyword(null, "test", "test", 1017460740)).call(null, cljs.core.meta.call(null, a));
-  if(cljs.core.truth_(b)) {
-    var c = cemerick.cljs.test._STAR_testing_vars_STAR_;
-    try {
-      cemerick.cljs.test._STAR_testing_vars_STAR_ = cljs.core.conj.call(null, cemerick.cljs.test._STAR_testing_vars_STAR_, function() {
-        var b = (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, cljs.core.meta.call(null, a));
-        return cljs.core.truth_(b) ? b : a
-      }());
-      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "begin-test-var", "begin-test-var", 3128464258), new cljs.core.Keyword(null, "var", "var", 1014020761), a], !0));
-      cemerick.cljs.test.inc_report_counter.call(null, new cljs.core.Keyword(null, "test", "test", 1017460740));
-      try {
-        b.call(null)
-      }catch(d) {
-        if(d instanceof Error) {
-          cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "Uncaught exception, not in assertion.", new cljs.core.Keyword(null, "expected", "expected", 3373152810), null, new cljs.core.Keyword(null, "actual", "actual", 3885931776), d], !0))
-        }else {
-          if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-            throw d;
-          }
-        }
-      }
-      return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "end-test-var", "end-test-var", 2014682E3), new cljs.core.Keyword(null, "var", "var", 1014020761), a], !0))
-    }finally {
-      cemerick.cljs.test._STAR_testing_vars_STAR_ = c
+    var a = cljs.core.list.call(null, null == lucuma.shadow_dom.create.call(null, document.createElement("a"), !0, !0)), b = cljs.core.apply.call(null, cljs.core.not, a);
+    cljs.core.truth_(b) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+    "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "nil?", "nil?", -1637150201, null), cljs.core.list(new cljs.core.Symbol("sd", "create", "sd/create", 1302379736, null), cljs.core.list(new cljs.core.Symbol(null, ".createElement", ".createElement", 1457256107, null), new cljs.core.Symbol("js", "document", "js/document", -778588881, null), "a"), !0, !0)))], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
+    "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), a)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
+    "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "nil?", "nil?", -1637150201, null), cljs.core.list(new cljs.core.Symbol("sd", "create", "sd/create", 1302379736, null), cljs.core.list(new cljs.core.Symbol(null, ".createElement", ".createElement", 1457256107, null), new cljs.core.Symbol("js", "document", "js/document", -778588881, null), "a"), !0, !0)))], !0));
+    return b
+  }catch(c) {
+    if(c instanceof Error) {
+      return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), c, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, 
+      "nil?", "nil?", -1637150201, null), cljs.core.list(new cljs.core.Symbol("sd", "create", "sd/create", 1302379736, null), cljs.core.list(new cljs.core.Symbol(null, ".createElement", ".createElement", 1457256107, null), new cljs.core.Symbol("js", "document", "js/document", -778588881, null), "a"), !0, !0)))], !0))
     }
-  }else {
+    if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+      throw c;
+    }
     return null
   }
-};
-cemerick.cljs.test.test_all_vars = function(a) {
-  var b = cemerick.cljs.test.join_fixtures.call(null, (new cljs.core.Keyword(null, "once", "once", 1017319923)).call(null, a.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_fixtures)))), c = cemerick.cljs.test.join_fixtures.call(null, (new cljs.core.Keyword(null, "each", "each", 1017009523)).call(null, a.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_fixtures))));
-  return b.call(null, function() {
-    for(var b = cljs.core.seq.call(null, cljs.core.get.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_tests), a)), e = null, f = 0, g = 0;;) {
-      if(g < f) {
-        var h = cljs.core._nth.call(null, e, g);
-        cljs.core.truth_((new cljs.core.Keyword(null, "test", "test", 1017460740)).call(null, cljs.core.meta.call(null, h))) && c.call(null, function(a, b, c, d, e) {
-          return function() {
-            return cemerick.cljs.test.test_var.call(null, e)
-          }
-        }(b, e, f, g, h));
-        g += 1
-      }else {
-        var k = cljs.core.seq.call(null, b);
-        if(k) {
-          var l = k;
-          cljs.core.chunked_seq_QMARK_.call(null, l) ? (b = cljs.core.chunk_first.call(null, l), f = cljs.core.chunk_rest.call(null, l), e = b, l = cljs.core.count.call(null, b), b = f, f = l) : (h = cljs.core.first.call(null, l), cljs.core.truth_((new cljs.core.Keyword(null, "test", "test", 1017460740)).call(null, cljs.core.meta.call(null, h))) && c.call(null, function(a, b, c, d, e, f, g) {
-            return function() {
-              return cemerick.cljs.test.test_var.call(null, e)
-            }
-          }(b, e, f, g, h, l, k)), b = cljs.core.next.call(null, l), e = null, f = 0);
-          g = 0
-        }else {
-          return null
-        }
-      }
-    }
-  })
-};
-cemerick.cljs.test.test_ns = function(a) {
-  var b = cemerick.cljs.test._STAR_report_counters_STAR_;
-  try {
-    cemerick.cljs.test._STAR_report_counters_STAR_ = cljs.core.atom.call(null, cemerick.cljs.test._STAR_initial_report_counters_STAR_);
-    cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "begin-test-ns", "begin-test-ns", 1359210286), new cljs.core.Keyword(null, "ns", "ns", 1013907767), a], !0));
-    var c = cljs.core.get.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_test_hooks), a);
-    cljs.core.truth_(c) ? c.call(null) : cemerick.cljs.test.test_all_vars.call(null, a);
-    cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "end-test-ns", "end-test-ns", 3401491808), new cljs.core.Keyword(null, "ns", "ns", 1013907767), a], !0));
-    return cljs.core.deref.call(null, cemerick.cljs.test._STAR_report_counters_STAR_)
-  }finally {
-    cemerick.cljs.test._STAR_report_counters_STAR_ = b
-  }
-};
-cemerick.cljs.test.run_tests_STAR_ = function() {
-  var a = function(a) {
-    a = cljs.core.assoc.call(null, cljs.core.apply.call(null, cljs.core.merge_with, cljs.core._PLUS_, cljs.core.map.call(null, cemerick.cljs.test.test_ns, a)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "summary", "summary", 3451231E3));
-    cemerick.cljs.test.do_report.call(null, a);
-    return a
-  }, b = function(b) {
-    var d = null;
-    0 < arguments.length && (d = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0), 0));
-    return a.call(this, d)
-  };
-  b.cljs$lang$maxFixedArity = 0;
-  b.cljs$lang$applyTo = function(b) {
-    b = cljs.core.seq(b);
-    return a(b)
-  };
-  b.cljs$core$IFn$_invoke$arity$variadic = a;
-  return b
-}();
-goog.exportSymbol("cemerick.cljs.test.run_tests_STAR_", cemerick.cljs.test.run_tests_STAR_);
-cemerick.cljs.test.run_all_tests = function() {
-  var a = null, b = function() {
-    return cljs.core.apply.call(null, cemerick.cljs.test.run_tests_STAR_, cljs.core.keys.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_tests)))
-  }, c = function(a) {
-    return cljs.core.apply.call(null, cemerick.cljs.test.run_tests_STAR_, cljs.core.filter.call(null, function(b) {
-      return cljs.core.re_matches.call(null, a, cljs.core.name.call(null, b))
-    }, cljs.core.keys.call(null, cljs.core.deref.call(null, cemerick.cljs.test.registered_tests))))
-  }, a = function(a) {
-    switch(arguments.length) {
-      case 0:
-        return b.call(this);
-      case 1:
-        return c.call(this, a)
-    }
-    throw Error("Invalid arity: " + arguments.length);
-  };
-  a.cljs$core$IFn$_invoke$arity$0 = b;
-  a.cljs$core$IFn$_invoke$arity$1 = c;
-  return a
-}();
-goog.exportSymbol("cemerick.cljs.test.run_all_tests", cemerick.cljs.test.run_all_tests);
-cemerick.cljs.test.successful_QMARK_ = function(a) {
-  var b = 0 === (new cljs.core.Keyword(null, "fail", "fail", 1017039504)).call(null, a, 0);
-  return b ? 0 === (new cljs.core.Keyword(null, "error", "error", 1110689146)).call(null, a, 0) : b
-};
-goog.exportSymbol("cemerick.cljs.test.successful_QMARK_", cemerick.cljs.test.successful_QMARK_);
-cemerick.cljs.test.set_print_fn_BANG_ = function(a) {
-  return cljs.core._STAR_print_fn_STAR_ = a
-};
-goog.exportSymbol("cemerick.cljs.test.set_print_fn_BANG_", cemerick.cljs.test.set_print_fn_BANG_);
-lucuma.event_test = {};
-lucuma.event_test.some_test = function() {
-  return cemerick.cljs.test.test_var.call(null, lucuma.event_test.some_test)
-};
-lucuma.event_test.some_test = cljs.core.vary_meta.call(null, lucuma.event_test.some_test, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "some-test", "some-test", 2024334212, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
-  var a = cemerick.cljs.test._STAR_testing_contexts_STAR_;
-  try {
-    cemerick.cljs.test._STAR_testing_contexts_STAR_ = cljs.core.conj.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_, "111");
-    try {
-      var b = cljs.core.list.call(null, !0, !0), c = cljs.core.apply.call(null, cljs.core._EQ_, b);
-      cljs.core.truth_(c) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, b), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-      "\x3d", "\x3d", -1640531466, null), !0, !0)], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), b)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, 
-      "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), !0, !0)], !0))
-    }catch(d) {
-      if(d instanceof Error) {
-        cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), d, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my first test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), !0, !0)], 
-        !0))
-      }else {
-        if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-          throw d;
-        }
-      }
-    }
-    try {
-      var e = cljs.core.list.call(null, !0, !1), f = cljs.core.apply.call(null, cljs.core._EQ_, e);
-      cljs.core.truth_(f) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, e), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-      "\x3d", "\x3d", -1640531466, null), !0, !1)], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), e)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, 
-      "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), !0, !1)], !0));
-      return f
-    }catch(g) {
-      if(g instanceof Error) {
-        return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), g, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), !0, 
-        !1)], !0))
-      }
-      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-        throw g;
-      }
-      return null
-    }
-  }finally {
-    cemerick.cljs.test._STAR_testing_contexts_STAR_ = a
-  }
 });
-cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.event-test", "lucuma.event-test", 685758045, null), lucuma.event_test.some_test);
-lucuma.event_test.some_test2 = function() {
-  return cemerick.cljs.test.test_var.call(null, lucuma.event_test.some_test2)
-};
-lucuma.event_test.some_test2 = cljs.core.vary_meta.call(null, lucuma.event_test.some_test2, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "some-test2", "some-test2", 301156736, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
-  var a = cemerick.cljs.test._STAR_testing_contexts_STAR_;
-  try {
-    cemerick.cljs.test._STAR_testing_contexts_STAR_ = cljs.core.conj.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_, "112");
-    var b = cemerick.cljs.test._STAR_testing_contexts_STAR_;
-    try {
-      cemerick.cljs.test._STAR_testing_contexts_STAR_ = cljs.core.conj.call(null, cemerick.cljs.test._STAR_testing_contexts_STAR_, "212");
-      try {
-        var c = cljs.core.list.call(null, !0, !0), d = cljs.core.apply.call(null, cljs.core._EQ_, c);
-        cljs.core.truth_(d) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, c), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-        "\x3d", "\x3d", -1640531466, null), !0, !0)], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), c)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, 
-        "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), !0, !0)], !0))
-      }catch(e) {
-        if(e instanceof Error) {
-          cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), e, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), !0, !0)], !0))
-        }else {
-          if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-            throw e;
-          }
-        }
-      }
-      try {
-        var f = cljs.core.list.call(null, !0, !1), g = cljs.core.apply.call(null, cljs.core._EQ_, f);
-        cljs.core.truth_(g) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core._EQ_, f), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-        "\x3d", "\x3d", -1640531466, null), !0, !1)], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), f)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, 
-        "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), !0, !1)], !0));
-        return g
-      }catch(h) {
-        if(h instanceof Error) {
-          return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), h, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), "my second test", new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "\x3d", "\x3d", -1640531466, null), 
-          !0, !1)], !0))
-        }
-        if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-          throw h;
-        }
-        return null
-      }
-    }finally {
-      cemerick.cljs.test._STAR_testing_contexts_STAR_ = b
-    }
-  }finally {
-    cemerick.cljs.test._STAR_testing_contexts_STAR_ = a
-  }
-});
-cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.event-test", "lucuma.event-test", 685758045, null), lucuma.event_test.some_test2);
+cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.shadow-dom-test", "lucuma.shadow-dom-test", 1815242916, null), lucuma.shadow_dom_test.create);
 lucuma.test = {};
 lucuma.test.browser_runner = {};
 lucuma.test.browser_runner.current_ns = cljs.core.atom.call(null, null);
@@ -15659,8 +15853,11 @@ lucuma.test.browser_runner.failed_test_QMARK_ = function(a, b) {
   var c = lucuma.test.browser_runner.reports.call(null, a, b);
   return cljs.core.not_EQ_.call(null, 0, lucuma.test.browser_runner.issues.call(null, c))
 };
+lucuma.test.browser_runner.ns_id = function(a) {
+  return cljs.core.first.call(null, cljs.core.reverse.call(null, clojure.string.split.call(null, a, /\./)))
+};
 cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keyword(null, "begin-test-ns", "begin-test-ns", 1359210286), function(a) {
-  cljs.core.reset_BANG_.call(null, lucuma.test.browser_runner.current_ns, clojure.string.replace.call(null, "" + cljs.core.str((new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, a)), /\./, "-"));
+  cljs.core.reset_BANG_.call(null, lucuma.test.browser_runner.current_ns, lucuma.test.browser_runner.ns_id.call(null, "" + cljs.core.str((new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, a))));
   cljs.core.swap_BANG_.call(null, lucuma.test.browser_runner.report_details, cljs.core.assoc_in, cljs.core.PersistentVector.fromArray([cljs.core.deref.call(null, lucuma.test.browser_runner.current_ns), new cljs.core.Keyword(null, "start-time", "start-time", 3689550026)], !0), new Date);
   dommy.core.add_class_BANG_.call(null, document.getElementById("tests-results"), "panel-group");
   return dommy.core.append_BANG_.call(null, document.getElementById("tests-results"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "panel panel-default"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), [cljs.core.str("collapse-"), 
@@ -15728,171 +15925,6 @@ lucuma.test.browser_runner.run_all_tests = function() {
   return Ladda.stopAll()
 };
 goog.exportSymbol("lucuma.test.browser_runner.run_all_tests", lucuma.test.browser_runner.run_all_tests);
-lucuma.shadow_dom = {};
-lucuma.shadow_dom.create = function(a, b, c) {
-  a = a.createShadowRoot();
-  cljs.core.truth_(b) && (a.resetStyleInheritance = !0);
-  cljs.core.truth_(c) && (a.applyAuthorStyles = !0);
-  return a
-};
-lucuma.custom_elements = {};
-lucuma.custom_elements.forbidden_names = cljs.core.PersistentHashSet.fromArray(["missing-glyph", null, "font-face-format", null, "font-face-src", null, "annotation-xml", null, "font-face-uri", null, "font-face", null, "font-face-name", null, "color-profile", null], !0);
-lucuma.custom_elements.valid_name_QMARK_ = function(a) {
-  var b = cljs.core.not_EQ_.call(null, -1, a.indexOf("-"));
-  return b ? !cljs.core.contains_QMARK_.call(null, lucuma.custom_elements.forbidden_names, a) : b
-};
-lucuma.custom_elements.render_content = function() {
-  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
-  return new cljs.core.MultiFn("render-content", function(a) {
-    return a instanceof HTMLTemplateElement ? HTMLTemplateElement : cljs.core.type.call(null, a)
-  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
-}();
-cljs.core._add_method.call(null, lucuma.custom_elements.render_content, String, function(a) {
-  return a
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.render_content, HTMLTemplateElement, function(a) {
-  return a.content.cloneNode(!0)
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.render_content, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
-  throw[cljs.core.str("No render-content implementation for "), cljs.core.str(a)].join("");
-});
-lucuma.custom_elements.render_style = function() {
-  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
-  return new cljs.core.MultiFn("render-style", cljs.core.type, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
-}();
-cljs.core._add_method.call(null, lucuma.custom_elements.render_style, String, function(a) {
-  var b = document.createElement("style");
-  b.innerHTML = a;
-  return b
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.render_style, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
-  throw[cljs.core.str("No render-style implementation for "), cljs.core.str(a)].join("");
-});
-lucuma.custom_elements.append_BANG_ = function() {
-  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
-  return new cljs.core.MultiFn("append!", function(a, b) {
-    return b instanceof HTMLElement ? HTMLElement : cljs.core.type.call(null, b)
-  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
-}();
-cljs.core._add_method.call(null, lucuma.custom_elements.append_BANG_, String, function(a, b) {
-  return a.innerHTML = b
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.append_BANG_, HTMLElement, function(a, b) {
-  return a.appendChild(b)
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.append_BANG_, DocumentFragment, function(a, b) {
-  return a.appendChild(b)
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.append_BANG_, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a, b) {
-  throw[cljs.core.str("No append! implementation for "), cljs.core.str(b)].join("");
-});
-lucuma.custom_elements.render_then_append_BANG_ = function(a, b, c) {
-  b = b.call(null, c);
-  return cljs.core.truth_(b) ? lucuma.custom_elements.append_BANG_.call(null, a, b) : null
-};
-lucuma.custom_elements.invoke_if_fn = function(a) {
-  return cljs.core.fn_QMARK_.call(null, a) ? a.call(null) : a
-};
-lucuma.custom_elements.initialize = function(a, b, c, d, e) {
-  return cljs.core.truth_(cljs.core.truth_(b) ? b : c) ? (a = lucuma.shadow_dom.create.call(null, a, d, e), cljs.core.truth_(b) && lucuma.custom_elements.render_then_append_BANG_.call(null, a, lucuma.custom_elements.render_content, lucuma.custom_elements.invoke_if_fn.call(null, b)), cljs.core.truth_(c) ? lucuma.custom_elements.render_then_append_BANG_.call(null, a, lucuma.custom_elements.render_style, lucuma.custom_elements.invoke_if_fn.call(null, c)) : null) : null
-};
-lucuma.custom_elements.find_prototype = function(a) {
-  return cljs.core.truth_(a) ? Object.getPrototypeOf(document.createElement(a)) : HTMLElement.prototype
-};
-lucuma.custom_elements.call_with_this_argument = function(a, b, c) {
-  return cljs.core.apply.call(null, a, cljs.core.conj.call(null, c, b))
-};
-lucuma.custom_elements.wrap_with_callback_this_value = function(a) {
-  return function() {
-    var b = function(b) {
-      return lucuma.custom_elements.call_with_this_argument.call(null, a, this, b)
-    }, c = function(a) {
-      var c = null;
-      0 < arguments.length && (c = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0), 0));
-      return b.call(this, c)
-    };
-    c.cljs$lang$maxFixedArity = 0;
-    c.cljs$lang$applyTo = function(a) {
-      a = cljs.core.seq(a);
-      return b(a)
-    };
-    c.cljs$core$IFn$_invoke$arity$variadic = b;
-    return c
-  }()
-};
-lucuma.custom_elements.set_callback_BANG_ = function(a, b, c) {
-  return cljs.core.truth_(c) ? a[b] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, c) : null
-};
-lucuma.custom_elements.initialize_and_set_callback_BANG_ = function(a, b) {
-  return function() {
-    var c = cljs.core.seq_QMARK_.call(null, b) ? cljs.core.apply.call(null, cljs.core.hash_map, b) : b, d = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967)), e = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "reset-style-inheritance", "reset-style-inheritance", 1435321634)), f = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "style", "style", 1123684643)), c = cljs.core.get.call(null, c, new cljs.core.Keyword(null, 
-    "content", "content", 1965434859));
-    lucuma.custom_elements.initialize.call(null, this, c, f, e, d);
-    return cljs.core.truth_(a) ? lucuma.custom_elements.call_with_this_argument.call(null, a, this, cljs.core.PersistentVector.EMPTY) : null
-  }
-};
-lucuma.custom_elements.create_prototype = function(a) {
-  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, c = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "methods", "methods", 1969438500)), d = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "attribute-changed-fn", "attribute-changed-fn", 511779268)), e = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772)), f = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "entered-view-fn", 
-  "entered-view-fn", 3505744396)), g = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447)), b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)), b = Object.create(lucuma.custom_elements.find_prototype.call(null, b));
-  b.createdCallback = lucuma.custom_elements.initialize_and_set_callback_BANG_.call(null, g, a);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "enteredViewCallback", f);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "leftViewCallback", e);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "attributeChangedCallback", d);
-  a = cljs.core.seq.call(null, c);
-  c = null;
-  for(e = d = 0;;) {
-    if(e < d) {
-      f = cljs.core._nth.call(null, c, e), b[cljs.core.name.call(null, cljs.core.key.call(null, f))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, f)), e += 1
-    }else {
-      if(a = cljs.core.seq.call(null, a)) {
-        c = a, cljs.core.chunked_seq_QMARK_.call(null, c) ? (a = cljs.core.chunk_first.call(null, c), e = cljs.core.chunk_rest.call(null, c), c = a, d = cljs.core.count.call(null, a), a = e) : (a = cljs.core.first.call(null, c), b[cljs.core.name.call(null, cljs.core.key.call(null, a))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, a)), a = cljs.core.next.call(null, c), c = null, d = 0), e = 0
-      }else {
-        break
-      }
-    }
-  }
-  return b
-};
-lucuma.custom_elements.register = function() {
-  var a = null, b = function(b) {
-    return a.call(null, (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, b), b)
-  }, c = function(a, b) {
-    if(!cljs.core.truth_(lucuma.custom_elements.valid_name_QMARK_.call(null, a))) {
-      throw Error([cljs.core.str("Assert failed: "), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), new cljs.core.Symbol(null, "n", "n", -1640531417, null))))].join(""));
-    }
-    return document.register(a, cljs.core.clj__GT_js.call(null, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "prototype", "prototype", 4710078612), lucuma.custom_elements.create_prototype.call(null, b)], !0), cljs.core.truth_((new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b)) ? cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "extends", "extends", 4003207179), (new cljs.core.Keyword(null, "base-type", 
-    "base-type", 3446290472)).call(null, b)], !0) : null)))
-  }, a = function(a, e) {
-    switch(arguments.length) {
-      case 1:
-        return b.call(this, a);
-      case 2:
-        return c.call(this, a, e)
-    }
-    throw Error("Invalid arity: " + arguments.length);
-  };
-  a.cljs$core$IFn$_invoke$arity$1 = b;
-  a.cljs$core$IFn$_invoke$arity$2 = c;
-  return a
-}();
-lucuma.custom_elements.create = function() {
-  var a = null, b = function(b) {
-    return a.call(null, b, null)
-  }, c = function(a, b) {
-    return document.createElement(a, b)
-  }, a = function(a, e) {
-    switch(arguments.length) {
-      case 1:
-        return b.call(this, a);
-      case 2:
-        return c.call(this, a, e)
-    }
-    throw Error("Invalid arity: " + arguments.length);
-  };
-  a.cljs$core$IFn$_invoke$arity$1 = b;
-  a.cljs$core$IFn$_invoke$arity$2 = c;
-  return a
-}();
 lucuma.range_with_threshold = {};
 lucuma.range_with_threshold.previous_value = cljs.core.atom.call(null, null);
 lucuma.range_with_threshold.add_threshold_crossed_class = function(a) {
@@ -15962,101 +15994,4 @@ lucuma.examples.register_all = function() {
   return lucuma.custom_elements.register.call(null, lucuma.overlay.lucu_overlay)
 };
 goog.exportSymbol("lucuma.examples.register_all", lucuma.examples.register_all);
-lucuma.custom_elements_test = {};
-lucuma.custom_elements_test.names = function() {
-  return cemerick.cljs.test.test_var.call(null, lucuma.custom_elements_test.names)
-};
-lucuma.custom_elements_test.names = cljs.core.vary_meta.call(null, lucuma.custom_elements_test.names, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "names", "names", -1535946495, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
-  try {
-    var a = cljs.core.list.call(null, "ex-name"), b = cljs.core.apply.call(null, lucuma.custom_elements.valid_name_QMARK_, a);
-    cljs.core.truth_(b) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, lucuma.custom_elements.valid_name_QMARK_, a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-    "valid-name?", "valid-name?", -190511172, null), "ex-name")], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), a)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", 
-    "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "ex-name")], !0))
-  }catch(c) {
-    if(c instanceof Error) {
-      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), c, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "ex-name")], 
-      !0))
-    }else {
-      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-        throw c;
-      }
-    }
-  }
-  try {
-    var d = cljs.core.list.call(null, "ex-name-name"), e = cljs.core.apply.call(null, lucuma.custom_elements.valid_name_QMARK_, d);
-    cljs.core.truth_(e) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, lucuma.custom_elements.valid_name_QMARK_, d), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-    "valid-name?", "valid-name?", -190511172, null), "ex-name-name")], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), d)), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", 
-    "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "ex-name-name")], !0))
-  }catch(f) {
-    if(f instanceof Error) {
-      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), f, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "ex-name-name")], 
-      !0))
-    }else {
-      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-        throw f;
-      }
-    }
-  }
-  try {
-    var g = cljs.core.list.call(null, lucuma.custom_elements.valid_name_QMARK_.call(null, "name")), h = cljs.core.apply.call(null, cljs.core.not, g);
-    cljs.core.truth_(h) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, g), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-    "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "name"))], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), g)), new cljs.core.Keyword(null, "type", 
-    "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "name"))], !0))
-  }catch(k) {
-    if(k instanceof Error) {
-      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), k, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, 
-      "valid-name?", "valid-name?", -190511172, null), "name"))], !0))
-    }else {
-      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-        throw k;
-      }
-    }
-  }
-  try {
-    var l = cljs.core.list.call(null, lucuma.custom_elements.valid_name_QMARK_.call(null, "ex_name")), m = cljs.core.apply.call(null, cljs.core.not, l);
-    cljs.core.truth_(m) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, l), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-    "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "ex_name"))], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), l)), new cljs.core.Keyword(null, "type", 
-    "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "ex_name"))], !0))
-  }catch(n) {
-    if(n instanceof Error) {
-      cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), n, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, 
-      "valid-name?", "valid-name?", -190511172, null), "ex_name"))], !0))
-    }else {
-      if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-        throw n;
-      }
-    }
-  }
-  try {
-    var p = cljs.core.list.call(null, lucuma.custom_elements.valid_name_QMARK_.call(null, "color-profile")), q = cljs.core.apply.call(null, cljs.core.not, p);
-    cljs.core.truth_(q) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, p), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
-    "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "color-profile"))], !0)) : cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.list.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.cons.call(null, new cljs.core.Symbol(null, "not", "not", -1640422260, null), p)), new cljs.core.Keyword(null, 
-    "type", "type", 1017479852), new cljs.core.Keyword(null, "fail", "fail", 1017039504), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), "color-profile"))], !0));
-    return q
-  }catch(r) {
-    if(r instanceof Error) {
-      return cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), r, new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "error", "error", 1110689146), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, 
-      "valid-name?", "valid-name?", -190511172, null), "color-profile"))], !0))
-    }
-    if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-      throw r;
-    }
-    return null
-  }
-});
-cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.custom-elements-test", "lucuma.custom-elements-test", -265684476, null), lucuma.custom_elements_test.names);
-lucuma.custom_elements_test.register = function() {
-  return cemerick.cljs.test.test_var.call(null, lucuma.custom_elements_test.register)
-};
-lucuma.custom_elements_test.register = cljs.core.vary_meta.call(null, lucuma.custom_elements_test.register, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "register", "register", 1964222556, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
-  return null
-});
-cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.custom-elements-test", "lucuma.custom-elements-test", -265684476, null), lucuma.custom_elements_test.register);
-lucuma.custom_elements_test.create = function() {
-  return cemerick.cljs.test.test_var.call(null, lucuma.custom_elements_test.create)
-};
-lucuma.custom_elements_test.create = cljs.core.vary_meta.call(null, lucuma.custom_elements_test.create, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "create", "create", 1302141621, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
-  return null
-});
-cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.custom-elements-test", "lucuma.custom-elements-test", -265684476, null), lucuma.custom_elements_test.create);
 lucuma.mutation_observer = {};

@@ -2,7 +2,8 @@
   (:require [clojure.string :as s]
             [dommy.core :as dommy]
             [lucuma.overlay :as o]
-            [lucuma.event-test :as et]
+            [lucuma.custom-elements-test :as cet]
+            [lucuma.shadow-dom-test :as sdt]
             [cemerick.cljs.test :refer [report *testing-vars* *testing-contexts*] :as t])
   (:require-macros [dommy.macros :refer [sel1]]))
 
@@ -45,9 +46,14 @@
   (let [r (reports n t)]
     (not= 0 (issues r))))
 
+(defn- ns-id
+  [n]
+  (first (reverse (s/split n #"\."))))
+
 (defmethod report :begin-test-ns
   [m]
-  (reset! current-ns (s/replace (str (:ns m)) #"\." "-"))
+  ;;(reset! current-ns (s/replace (str (:ns m)) #"\." "-"))
+  (reset! current-ns (ns-id (str (:ns m))))
   (swap! report-details assoc-in [@current-ns :start-time] (js/Date.))
   (dommy/add-class! (sel1 :#tests-results) "panel-group")
   (dommy/append! (sel1 :#tests-results) [:div {:class "panel panel-default"}

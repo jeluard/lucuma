@@ -5,9 +5,8 @@
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/shadow/
 
 (defn create
-  [e reset-style-inheritance apply-author-styles]
-  (let [sr (.createShadowRoot e)]
+  [el reset-style-inheritance apply-author-styles]
+  (let [sr (.createShadowRoot el)]
     (when reset-style-inheritance (aset sr "resetStyleInheritance" true))
     (when apply-author-styles (aset sr "applyAuthorStyles" true))
     sr))
-
