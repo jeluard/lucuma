@@ -12,9 +12,15 @@
   :cljsbuild {:builds [{:source-paths ["src" "test" "examples"]
                         :compiler {:output-to "target/cljs/lucuma+tests.js"
                                    :output-dir "target/cljs/"
-;;                                   :source-map "target/cljs/lucuma+tests.js.map"
+                                   :source-map "target/cljs/lucuma+tests.js.map"
                                    :optimizations :simple
-                                   :pretty-print true}}]
+                                   :pretty-print true}}
+                       {:id "prod"
+                        :source-paths ["src" "test" "examples"]
+                        :compiler {:output-to "target/cljs/lucuma+tests.js"
+                                   :externs ["resources/extern.js"]
+                                   :optimizations :advanced
+                                   :pretty-print false}}]
               :test-commands {"unit-tests" ["runners/phantomjs.js" "target/cljs/lucuma+tests.js"]}}
   :min-lein-version "2.3.0"
   :repositories  {"sonatype-oss-public" "https://oss.sonatype.org/content/groups/public/"})

@@ -377,13 +377,6 @@ goog.base = function(a, b, c) {
 goog.scope = function(a) {
   a.call(goog.global)
 };
-goog.debug = {};
-goog.debug.Error = function(a) {
-  Error.captureStackTrace ? Error.captureStackTrace(this, goog.debug.Error) : this.stack = Error().stack || "";
-  a && (this.message = String(a))
-};
-goog.inherits(goog.debug.Error, Error);
-goog.debug.Error.prototype.name = "CustomError";
 goog.string = {};
 goog.string.Unicode = {NBSP:"\u00a0"};
 goog.string.startsWith = function(a, b) {
@@ -715,6 +708,13 @@ goog.string.parseInt = function(a) {
   isFinite(a) && (a = String(a));
   return goog.isString(a) ? /^\s*-?0x/i.test(a) ? parseInt(a, 16) : parseInt(a, 10) : NaN
 };
+goog.debug = {};
+goog.debug.Error = function(a) {
+  Error.captureStackTrace ? Error.captureStackTrace(this, goog.debug.Error) : this.stack = Error().stack || "";
+  a && (this.message = String(a))
+};
+goog.inherits(goog.debug.Error, Error);
+goog.debug.Error.prototype.name = "CustomError";
 goog.asserts = {};
 goog.asserts.ENABLE_ASSERTS = goog.DEBUG;
 goog.asserts.AssertionError = function(a, b) {
@@ -3506,16 +3506,16 @@ cljs.core.with_meta = function with_meta(b, c) {
     c && (b ? (c = (c = b.cljs$lang$protocol_mask$partition0$ & 262144) ? c : b.cljs$core$IWithMeta$, c = c ? !0 : b.cljs$lang$protocol_mask$partition0$ ? !1 : cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b)) : c = cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b), c = !c);
     return c
   }() ? with_meta.call(null, function() {
-    "undefined" === typeof cljs.core.t4738 && (cljs.core.t4738 = {}, cljs.core.t4738 = function(b, c, f, g) {
+    "undefined" === typeof cljs.core.t4743 && (cljs.core.t4743 = {}, cljs.core.t4743 = function(b, c, f, g) {
       this.meta = b;
       this.o = c;
       this.with_meta = f;
-      this.meta4739 = g;
+      this.meta4744 = g;
       this.cljs$lang$protocol_mask$partition1$ = 0;
       this.cljs$lang$protocol_mask$partition0$ = 393217
-    }, cljs.core.t4738.cljs$lang$type = !0, cljs.core.t4738.cljs$lang$ctorStr = "cljs.core/t4738", cljs.core.t4738.cljs$lang$ctorPrWriter = function(b, c, f) {
-      return cljs.core._write.call(null, c, "cljs.core/t4738")
-    }, cljs.core.t4738.prototype.call = function() {
+    }, cljs.core.t4743.cljs$lang$type = !0, cljs.core.t4743.cljs$lang$ctorStr = "cljs.core/t4743", cljs.core.t4743.cljs$lang$ctorPrWriter = function(b, c, f) {
+      return cljs.core._write.call(null, c, "cljs.core/t4743")
+    }, cljs.core.t4743.prototype.call = function() {
       var b = function(b, c) {
         return cljs.core.apply.call(null, b.o, c)
       }, c = function(c, e) {
@@ -3532,17 +3532,17 @@ cljs.core.with_meta = function with_meta(b, c) {
       };
       c.cljs$core$IFn$_invoke$arity$variadic = b;
       return c
-    }(), cljs.core.t4738.prototype.apply = function(b, c) {
+    }(), cljs.core.t4743.prototype.apply = function(b, c) {
       b = this;
       return b.call.apply(b, [b].concat(c.slice()))
-    }, cljs.core.t4738.prototype.cljs$core$Fn$ = !0, cljs.core.t4738.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-      return this.meta4739
-    }, cljs.core.t4738.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-      return new cljs.core.t4738(this.meta, this.o, this.with_meta, c)
-    }, cljs.core.__GT_t4738 = function(b, c, f, g) {
-      return new cljs.core.t4738(b, c, f, g)
+    }, cljs.core.t4743.prototype.cljs$core$Fn$ = !0, cljs.core.t4743.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+      return this.meta4744
+    }, cljs.core.t4743.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+      return new cljs.core.t4743(this.meta, this.o, this.with_meta, c)
+    }, cljs.core.__GT_t4743 = function(b, c, f, g) {
+      return new cljs.core.t4743(b, c, f, g)
     });
-    return new cljs.core.t4738(c, b, with_meta, null)
+    return new cljs.core.t4743(c, b, with_meta, null)
   }(), c) : cljs.core._with_meta.call(null, b, c)
 };
 cljs.core.meta = function(a) {
@@ -15129,13 +15129,13 @@ try {
   Window.prototype.dommy$template$PElement$ = !0, Window.prototype.dommy$template$PElement$_elem$arity$1 = function(a) {
     return a
   }
-}catch(e6106) {
-  if(e6106 instanceof ReferenceError) {
-    var __6107 = e6106;
+}catch(e6195) {
+  if(e6195 instanceof ReferenceError) {
+    var __6196 = e6195;
     console.log("PElement: js/Window not defined by browser, skipping it... (running on phantomjs?)")
   }else {
     if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-      throw e6106;
+      throw e6195;
     }
   }
 }
@@ -15369,30 +15369,30 @@ dommy.core.selector_map = function selector_map(b, c) {
   return cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "container", "container", 602947571), d], !0), cljs.core.into.call(null, cljs.core.PersistentArrayMap.EMPTY, cljs.core.map.call(null, function(e) {
     var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null);
     return cljs.core.PersistentVector.fromArray([f, cljs.core.truth_((new cljs.core.Keyword(null, "live", "live", 1017226334)).call(null, cljs.core.meta.call(null, g))) ? function() {
-      "undefined" === typeof dommy.core.t5639 && (dommy.core.t5639 = {}, dommy.core.t5639 = function(b, c, d, e, f, g, q, r, s) {
+      "undefined" === typeof dommy.core.t5728 && (dommy.core.t5728 = {}, dommy.core.t5728 = function(b, c, d, e, f, g, q, r, s) {
         this.v = b;
         this.k = c;
-        this.vec__5638 = d;
-        this.p__5637 = e;
+        this.vec__5727 = d;
+        this.p__5726 = e;
         this.container = f;
         this.key_selectors_map = g;
         this.template = q;
         this.selector_map = r;
-        this.meta5640 = s;
+        this.meta5729 = s;
         this.cljs$lang$protocol_mask$partition1$ = 0;
         this.cljs$lang$protocol_mask$partition0$ = 425984
-      }, dommy.core.t5639.cljs$lang$type = !0, dommy.core.t5639.cljs$lang$ctorStr = "dommy.core/t5639", dommy.core.t5639.cljs$lang$ctorPrWriter = function(b, c, d) {
-        return cljs.core._write.call(null, c, "dommy.core/t5639")
-      }, dommy.core.t5639.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
+      }, dommy.core.t5728.cljs$lang$type = !0, dommy.core.t5728.cljs$lang$ctorStr = "dommy.core/t5728", dommy.core.t5728.cljs$lang$ctorPrWriter = function(b, c, d) {
+        return cljs.core._write.call(null, c, "dommy.core/t5728")
+      }, dommy.core.t5728.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
         return dommy.utils.__GT_Array.call(null, dommy.template.__GT_node_like.call(null, this.container).querySelectorAll(dommy.core.selector.call(null, this.v)))
-      }, dommy.core.t5639.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-        return this.meta5640
-      }, dommy.core.t5639.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-        return new dommy.core.t5639(this.v, this.k, this.vec__5638, this.p__5637, this.container, this.key_selectors_map, this.template, this.selector_map, c)
-      }, dommy.core.__GT_t5639 = function(b, c, d, e, f, g, q, r, s) {
-        return new dommy.core.t5639(b, c, d, e, f, g, q, r, s)
+      }, dommy.core.t5728.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+        return this.meta5729
+      }, dommy.core.t5728.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+        return new dommy.core.t5728(this.v, this.k, this.vec__5727, this.p__5726, this.container, this.key_selectors_map, this.template, this.selector_map, c)
+      }, dommy.core.__GT_t5728 = function(b, c, d, e, f, g, q, r, s) {
+        return new dommy.core.t5728(b, c, d, e, f, g, q, r, s)
       });
-      return new dommy.core.t5639(g, f, e, e, d, c, b, selector_map, null)
+      return new dommy.core.t5728(g, f, e, e, d, c, b, selector_map, null)
     }() : dommy.template.__GT_node_like.call(null, d).querySelector(dommy.core.selector.call(null, g))], !0)
   }, c)))
 };
@@ -15995,3 +15995,5 @@ lucuma.examples.register_all = function() {
 };
 goog.exportSymbol("lucuma.examples.register_all", lucuma.examples.register_all);
 lucuma.mutation_observer = {};
+
+//@ sourceMappingURL=target/cljs/lucuma+tests.js.map
