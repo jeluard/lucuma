@@ -114,6 +114,7 @@ footer {
   position: relative;
   padding: 40px 0 10px 15px;
   margin: 0;
+  max-height: 300px;
   background-color: #fafafa;
 }
 

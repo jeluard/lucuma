@@ -9,6 +9,8 @@
     <script src="assets/lucuma+tests.js"></script>
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="assets/prism.js"></script>
+    <script src="assets/prism.clojure.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
     <link rel="stylesheet" href="assets/prism.css">
@@ -51,6 +53,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="#example-range-with-threshold">Range with threshold</a></li>
+              <li><a href="#example-autocompleter">Autocompleter</a></li>
               <li><a href="#example-overlay">Overlay</a></li>
               <li><a href="#example-flipbox">Flipbox</a></li>
               <li><a href="#example-todomvc">TodoMVC</a></li>
@@ -342,8 +345,10 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
 
       <section id="examples" class="main-section">
         <h1>Examples</h1>
-        <section>
-          <h2 id="example-range-with-threshold">Range with threshold</h2>
+        <p>All examples sources can be found <a href="https://github.com/jeluard/lucuma/tree/master/examples/lucuma">here</a>.</p>
+
+        <section id="example-range-with-threshold">
+          <h2>Range with threshold</h2>
           <div class="example-live">
             <input is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5" />
             <!--lucu-range-with-threshold type="range" value="25" min="0" max="50" step="5" /-->
@@ -357,8 +362,24 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </code>
           </pre>
         </section>
-        <section>
-          <h2 id="example-overlay">Overlay</h2>
+
+        <section id="example-autocompleter">
+          <h2>Autocompleter</h2>
+          <p>Adpated from the excellent <a href="http://swannodette.github.io/2013/08/17/comparative/">post</a> from David Nolen</p>
+          <div class="example-live">
+          </div>
+          <pre class="example-markup">
+            <code class="language-markup">
+            </code>
+          </pre>
+          <pre class="example-cljs">
+            <code class="language-clojure">
+            </code>
+          </pre>
+        </section>
+
+        <section id="example-overlay">
+          <h2>Overlay</h2>
           <p>Adpated from bee's <a href="https://github.com/blossom/bee/blob/master/lib/components/overlay.dart">overlay</a></p>
           <div class="example-live">
             <lucu-overlay id="overlay">
@@ -381,16 +402,56 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </code>
           </pre>
         </section>
+
         <section>
           <h2 id="example-flipbox">Flipbox</h2>
           <p>Adpated from brick's <a href="https://github.com/x-tag/flipbox">flipbox</a></p>
           <em>TODO</em>
         </section>
-        <section>
-          <h2 id="example-todomvc">TodoMVC</h2>
+
+        <section id="example-todomvc">
+          <h2>TodoMVC</h2>
           <p>Lucuma based implementation of <a href="http://todomvc.com/">TodoMVC</a></p>
           <em>TODO</em>
         </section>
+
+        <script>
+          function fetchExample(id, name) {
+            var selector = '#' + id + ' .example-cljs code';
+            var example = document.querySelector(selector);
+            if (example == null) {
+              return;
+            }
+
+            var owner = "jeluard";
+            var repo = "lucuma";
+            var url_sha = "https://api.github.com/repos/" + owner + "/" + repo + "/contents/examples/lucuma/" + name + ".cljs";
+            var xhr_sha = new XMLHttpRequest();
+            xhr_sha.onreadystatechange = function() {
+              if (xhr_sha.readyState == 4 && xhr_sha.status == 200) {
+                var name = JSON.parse(xhr_sha.responseText).sha;
+                var url = "https://api.github.com/repos/" + owner + "/" + repo + "/git/blobs/" + name;
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                  if (xhr.readyState == 4 && xhr.status == 200) {
+                    example.innerHTML = window.atob(JSON.parse(xhr.responseText).content.replace(/\n/g, ""));
+                  }
+                };
+                xhr.open("GET", url, true);
+                xhr.send(null);
+              }
+            };
+            xhr_sha.open("GET", url_sha, true);
+            xhr_sha.send(null);
+          }
+
+          fetchExample("example-range-with-threshold", "range_with_threshold");
+          fetchExample("example-autocompleter", "autocompleter");
+          fetchExample("example-overlay", "overlay");
+          fetchExample("example-flipbox", "flipbox");
+          fetchExample("example-todomvc", "todomvc");
+          Prism.highlightAll();
+        </script>
       </section>
 
       <section id="tests" class="main-section" >
@@ -464,7 +525,5 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
       Copyright © 2013 Julien Eluard - Distributed under the <a href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License</a>, the same as Clojure.
     </footer>
 
-    <script src="assets/prism.js"></script>
-    <script src="assets/prism.clojure.js"></script>
   </body>
 </html>
