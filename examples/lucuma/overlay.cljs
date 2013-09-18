@@ -15,7 +15,6 @@
 
         .b-overlay-backdrop {
           background-color: rgba(252, 252, 252, 0.7);
-          -ms-filter: \"progid:DXImageTransform.Microsoft.gradient(startColorstr=#B3FCFCFC, endColorstr=#B3FCFCFC)\";
           position: fixed;
           top: 0;
           left: 0;
@@ -51,6 +50,10 @@
           position: static;
           margin: 60px auto;
           padding: 60px;
+        }
+
+        .q-overlay {
+          width: 600px;
         }")
 
 (defn- display!
@@ -61,16 +64,17 @@
   [el]
   (sel1 (.-shadowRoot el) :.q-b-overlay-backdrop))
 
+(defn hide
+  [el]
+  (display! (backdrop el) "none")
+  (fire el "hide"))
+
 (defn show
   [el]
   (display! (backdrop el) "block")
   (dommy/add-class! (sel1 :html) :overlay-backdrop-active)
-  (fire el "show" {}))
-
-(defn hide
-  [el]
-  (display! (backdrop el) "none")
-  (fire el "hide" {}))
+  (.addEventListener el "click" #(hide el))
+  (fire el "show"))
 
 (defwebcomponent lucu-overlay
   :content [:div {:class "b-overlay-backdrop q-b-overlay-backdrop"}

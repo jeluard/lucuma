@@ -15170,21 +15170,24 @@ dommy.core.fire_BANG_ = function() {
   return b
 }();
 lucuma.overlay = {};
-lucuma.overlay.style = 'body {\n          overflow: visible;\n          overflow-y: scroll;\n        }\n        .overlay-backdrop-active body {\n          overflow: hidden;\n        }\n\n        .b-overlay-backdrop {\n          background-color: rgba(252, 252, 252, 0.7);\n          -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr\x3d#B3FCFCFC, endColorstr\x3d#B3FCFCFC)";\n          position: fixed;\n          top: 0;\n          left: 0;\n          right: 0;\n          bottom: 0;\n          z-index: 998;\n          overflow-x: auto;\n          overflow-y: scroll;\n          display: none;\n        }\n\n        .b-overlay-backdrop-close {\n          color: #aaa;\n          font-size: 30px;\n          width: 30px;\n          height: 30px;\n          line-height: 30px;\n          text-align: center;\n          border: 0;\n          position: fixed;\n          top: 10px;\n          right: 10px;\n          cursor: pointer;\n        }\n\n        .b-overlay-body {\n          border: 1px solid #cccccc;\n          z-index: 999;\n          -moz-box-shadow: -1px 1px 1px rgba(0,0,0,.2);\n          -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.2);\n          box-shadow: 0 2px 4px rgba(0,0,0,.2);\n          background: #ffffff;\n          position: static;\n          margin: 60px auto;\n          padding: 60px;\n        }';
+lucuma.overlay.style = "body {\n          overflow: visible;\n          overflow-y: scroll;\n        }\n        .overlay-backdrop-active body {\n          overflow: hidden;\n        }\n\n        .b-overlay-backdrop {\n          background-color: rgba(252, 252, 252, 0.7);\n          position: fixed;\n          top: 0;\n          left: 0;\n          right: 0;\n          bottom: 0;\n          z-index: 998;\n          overflow-x: auto;\n          overflow-y: scroll;\n          display: none;\n        }\n\n        .b-overlay-backdrop-close {\n          color: #aaa;\n          font-size: 30px;\n          width: 30px;\n          height: 30px;\n          line-height: 30px;\n          text-align: center;\n          border: 0;\n          position: fixed;\n          top: 10px;\n          right: 10px;\n          cursor: pointer;\n        }\n\n        .b-overlay-body {\n          border: 1px solid #cccccc;\n          z-index: 999;\n          -moz-box-shadow: -1px 1px 1px rgba(0,0,0,.2);\n          -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.2);\n          box-shadow: 0 2px 4px rgba(0,0,0,.2);\n          background: #ffffff;\n          position: static;\n          margin: 60px auto;\n          padding: 60px;\n        }\n\n        .q-overlay {\n          width: 600px;\n        }";
 lucuma.overlay.display_BANG_ = function(a, b) {
   return a.style.display = b
 };
 lucuma.overlay.backdrop = function(a) {
   return dommy.utils.__GT_Array.call(null, dommy.template.__GT_node_like.call(null, a.shadowRoot).getElementsByClassName("q-b-overlay-backdrop"))[0]
 };
+lucuma.overlay.hide = function(a) {
+  lucuma.overlay.display_BANG_.call(null, lucuma.overlay.backdrop.call(null, a), "none");
+  return lucuma.event.fire.call(null, a, "hide")
+};
 lucuma.overlay.show = function(a) {
   lucuma.overlay.display_BANG_.call(null, lucuma.overlay.backdrop.call(null, a), "block");
   dommy.core.add_class_BANG_.call(null, dommy.utils.__GT_Array.call(null, document.getElementsByTagName("html"))[0], new cljs.core.Keyword(null, "overlay-backdrop-active", "overlay-backdrop-active", 2733255762));
-  return lucuma.event.fire.call(null, a, "show", cljs.core.PersistentArrayMap.EMPTY)
-};
-lucuma.overlay.hide = function(a) {
-  lucuma.overlay.display_BANG_.call(null, lucuma.overlay.backdrop.call(null, a), "none");
-  return lucuma.event.fire.call(null, a, "hide", cljs.core.PersistentArrayMap.EMPTY)
+  a.addEventListener("click", function() {
+    return lucuma.overlay.hide.call(null, a)
+  });
+  return lucuma.event.fire.call(null, a, "show")
 };
 lucuma.overlay.lucu_overlay = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "lucu-overlay"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "b-overlay-backdrop q-b-overlay-backdrop"], 
 !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "b-overlay-backdrop-close q-b-overlay-backdrop-close", new cljs.core.Keyword(null, "title", "title", 1124275658), "Press ESC to close"], !0), "x"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
@@ -15716,11 +15719,13 @@ cljs.core._add_method.call(null, cemerick.cljs.test.report, new cljs.core.Keywor
   return cljs.core.reset_BANG_.call(null, lucuma.test.browser_runner.report_details, cljs.core.PersistentArrayMap.EMPTY)
 });
 lucuma.test.browser_runner.run_all_tests = function() {
+  Ladda.create(document.getElementById("tests-btn")).start();
   var a = document.getElementById("tests-results");
   cljs.core.truth_(a) && dommy.core.clear_BANG_.call(null, a);
   a = document.getElementById("tests-results-label");
   cljs.core.truth_(a) && dommy.core.remove_BANG_.call(null, a);
-  return cemerick.cljs.test.run_all_tests.call(null)
+  cemerick.cljs.test.run_all_tests.call(null);
+  return Ladda.stopAll()
 };
 goog.exportSymbol("lucuma.test.browser_runner.run_all_tests", lucuma.test.browser_runner.run_all_tests);
 lucuma.shadow_dom = {};
