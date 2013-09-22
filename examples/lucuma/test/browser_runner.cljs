@@ -52,7 +52,6 @@
 
 (defmethod report :begin-test-ns
   [m]
-  ;;(reset! current-ns (s/replace (str (:ns m)) #"\." "-"))
   (reset! current-ns (ns-id (str (:ns m))))
   (swap! report-details assoc-in [@current-ns :start-time] (js/Date.))
   (dommy/add-class! (sel1 :#tests-results) "panel-group")
