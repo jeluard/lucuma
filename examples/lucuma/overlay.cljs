@@ -62,7 +62,7 @@
 
 (defn- backdrop
   [el]
-  (sel1 (.-shadowRoot el) :.q-b-overlay-backdrop))
+  (.querySelector (.-shadowRoot el)  ".q-b-overlay-backdrop"))
 
 (defn hide
   [el]
