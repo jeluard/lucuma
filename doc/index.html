@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Lucuma</title>
-    <script src="assets/platform.min.js"></script>
+    <title>Lucuma - A Web Components library for ClojureScript</title>
+    <script src="assets/platform.js"></script>
     <script src="assets/spin.min.js"></script>
     <script src="assets/ladda.min.js"></script>
     <script src="assets/lucuma+tests.js"></script>
@@ -45,15 +45,15 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <li><a href="#custom-element-lifecycle">Lifecycle</a></li>
               <li><a href="#custom-element-content">Content</a></li>
               <li><a href="#custom-element-style">Style</a></li>
+              <li><a href="#custom-element-attributes">Attributes</a></li>
+              <li><a href="#custom-element-methods">Methods</a></li>
               <li><a href="#custom-element-extend">Extending</a></li>
-              <li><a href="#custom-element-methods">JavaScript Methods</a></li>
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="#example-range-with-threshold">Range with threshold</a></li>
-              <li><a href="#example-autocompleter">Autocompleter</a></li>
               <li><a href="#example-overlay">Overlay</a></li>
               <li><a href="#example-flipbox">Flipbox</a></li>
               <li><a href="#example-todomvc">TodoMVC</a></li>
@@ -103,8 +103,10 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <section>
             <h2 id="custom-element-definition">Custom Element definition</h2>
             <p>
-              Custom elements are defined as maps of keyword / value. The main keys available are :content, :style and 3 lifecyle related .
-              This map serves as the abstract definition for the element prototype. Once registered the element can be manipulated by the DOM.
+              Custom elements are defined as maps of keyword / value. This map serves as the abstract definition for the element prototype. Once registered the element can be manipulated by the DOM.
+            </p>
+            <p>
+              For encapsulation purpoise content and style are appended to a Shadow DOM.
             </p>
             <div class="example-live">
               <ex-hello></ex-hello>
@@ -196,19 +198,19 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <section>
             <h2 id="custom-element-content">Content</h2>
             <p>
-              Content of a Web Component comes the <strong>content</strong> value that will be rendered based on its type then inserted as a child of the element root node. This process is triggered per instance during <a href="#custom-element-lifecycle">creation phase</a>. For encapsulation purpoise content is inserted as a  Shadow DOM.
+              Content of a Web Component comes from the <strong>content</strong> value that will be rendered based on its type then appended to the element internal ShadowRoot. This process is triggered per instance during the <a href="#custom-element-lifecycle">creation phase</a>.
             </p>
             <p>The rendering process consists of:</p>
             <ol>
               <li>if content is a function evaluate it; otherwise use content value as-is</li>
               <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L15">render-content</a> multimethod (dispatch on content type) to generate the rendered html</li>
-              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L38">append!</a> multimethod (dispatch on rendered html type) to insert content in the DOM</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L38">append-content!</a> multimethod (dispatch on rendered content type) to insert content in the DOM</li>
             </ol>
             <p>
             <p>
               <strong>render-content</strong> has implementations for String (identity) and <a href="#custom-element-template-support">HTML Template</a>.
               <br>
-              <strong>append!</strong> has implementations for String (set as innerHTML), any HTMLElement and DocumentFragment (both inserted with appendChild).
+              <strong>append-content!</strong> has implementations for String (set as <strong>innerHTML</strong>), any <strong>HTMLElement</strong> and <strong>DocumentFragment</strong> (both appended to the ShadowRoot).
             </p>
             <div class="example-live">
               <ex-hello></ex-hello>
@@ -221,7 +223,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
             <h4 id="custom-element-template-support">Template support</h4>            
             <p>
-              <a href="http://docs.webplatform.org/wiki/html/elements/template">HTML template</a> can be directly used as content (its content will be cloned during <a href="#custom-element-lifecycle">creation phase</a>):
+              <a href="http://docs.webplatform.org/wiki/html/elements/template">HTML template</a> can be directly used as content (its content will be cloned during the <a href="#custom-element-lifecycle">creation phase</a>):
             </p>
             <div class="example-live">
               <template id="template-id">
@@ -243,7 +245,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     :content #(dommy.macros/sel1 :#template-id))
               </code>
             </pre>
-            <h4 id="custom-element-custom-logic">Custom logic support</h4>
+            <h4 id="custom-element-custom-logic-content">Custom logic support</h4>
             <p>
               As rendering is delegated to the render-content multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/weavejester/hiccup">hiccup</a> implementation (such as <a href="https://github.com/Prismatic/dommy">dommy</a>, <a href="https://github.com/ibdknox/crate/">crate</a>, <a href="https://github.com/lynaghk/singult">singult</a> or <a href="https://github.com/teropa/hiccups">hiccups</a>) to render vectors.
             </p>
@@ -265,18 +267,18 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
 
           <section>
             <h2 id="custom-element-style">Style</h2>
-            <p>Style is treated similarly to <a href="custom-element-content">content</a>. Note that a single shadow DOM is created if one of <strong>content</strong> or <strong>style</strong> is defined.</p>
+            <p>Style is treated similarly to <a href="custom-element-content">content</a>.
             <p>The rendering process consists of:</p>
             <ol>
               <li>if style is a function evaluate it; otherwise use style value as-is</li>
               <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L28">render-style</a> multimethod (dispatch on content type) to generate the rendered html</li>
-              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L38">append!</a> multimethod (dispatch on rendered html type) to insert content in the DOM</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L38">append-style!</a> multimethod (dispatch on rendered style type) to insert content in the DOM</li>
             </ol>
             <p>
             <p>
-              <strong>render-style</strong> has implementations for String (set as innerHTML of a newly created <strong>style</strong> element).
+              <strong>render-style</strong> has implementations for String (identity).
               <br>
-              <strong>append!</strong> is the one used for <a href="custom-element-content">content</a> handling.
+              <strong>append-style!</strong> has an implementation for String (set as <strong>textContent</strong> of a newly created <strong>style</strong> element, itself appended to the ShadowRoot).
             </p>
             <div class="example-live">
               <ex-style></ex-style>
@@ -284,8 +286,80 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <pre class="example-cljs">
               <code class="language-clojure">
   (defwebcomponent ex-style
-    :content "&lt;button&gt;Hello styled!&lt;/button&gt;"
+    :content [:button "Hello styled!"]
     :style "button {background: blue; color: white; border: 0; border-radius: 4px;}")
+              </code>
+            </pre>
+            <h4 id="custom-element-custom-logic-style">Custom logic support</h4>
+            <p>
+              As rendering is delegated to the render-style multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/noprompt/garden">garden</a> to render vectors.
+            </p>
+            <div class="example-live">
+              <ex-style-garden></ex-style-garden>
+            </div>
+            <pre class="example-cljs">
+              <code class="language-clojure">
+  ;; Use garden.core/css to render garden style vector as a String.
+  
+  (derive PersistentVector ::vector)
+  (defmethod render-style ::vector [v] (css v))
+  
+  (defwebcomponent ex-style-garden
+    :content [:button "Hello garden!"]
+    :style [:button {:background "#3d7c45" :color "white" :border "0" :border-radius "4px"}])
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <h2 id="custom-element-attributes">Attributes</h2>
+            <p>
+            </p>
+            <div class="example-live">
+              <ex-attributes id="ex-attributes" ex-attribute="value"></ex-attributes>
+              <button onclick="document.getElementById('ex-methods').alert()">Toggle attribute</button>
+            </div>
+            <pre class="example-markup">
+              <code class="language-markup">
+              </code>
+            </pre>
+            <pre class="example-cljs">
+              <code class="language-clojure">
+   (defn alert-fn
+     [el]
+     (.alert js/window (str "Hello " el " !")))
+
+   (defwebcomponent ex-methods
+    :attributes #{:ex-attribute})
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <h2 id="custom-element-methods">Methods</h2>
+            <p>
+              Regular ClojureScript functions can directly manipulate element instances. You can also expose those functions to JavaScript users by explicitely listing those functions and assigning them a name that will be attached to the element prototype.
+              <br>
+              Note that ClojureScript functions will receive the right element instance as first parameter when invoked as a result of the invocation of the associated JavaScript method.
+            </p>
+            <div class="example-live">
+              <ex-methods id="ex-methods"></ex-methods>
+              <button onclick="document.getElementById('ex-methods').alert()">Call alert</button>
+            </div>
+            <pre class="example-markup">
+              <code class="language-markup">
+  &lt;ex-methods id="ex-methods"&gt;&lt;/ex-methods&gt;
+  &lt;button onclick="document.getElementById('ex-methods').alert()"&gt;Call alert&lt;/button&gt;
+              </code>
+            </pre>
+            <pre class="example-cljs">
+              <code class="language-clojure">
+   (defn alert-fn
+     [el]
+     (.alert js/window (str "Hello " el " !")))
+
+   (defwebcomponent ex-methods
+    :methods {:alert alert-fn})
               </code>
             </pre>
           </section>
@@ -312,35 +386,6 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
           </section>
 
-          <section>
-            <h2 id="custom-element-methods">JavaScript methods</h2>
-            <p>
-              Regular ClojureScript functions can directly manipulate element instances. You can also expose those functions to JavaScript users by explicitely listing those functions and assigning them a name that will be attached to the element prototype.
-              <br>
-              Note that ClojureScript functions will receive the right element instance as first parameter while you don't provide it JavaScript side.
-            </p>
-            <div class="example-live">
-              <ex-methods id="ex-methods"></ex-methods>
-              <button onclick="document.getElementById('ex-methods').alert()">Call alert</button>
-            </div>
-            <pre class="example-markup">
-              <code class="language-markup">
-  &lt;ex-methods id="ex-methods"&gt;&lt;/ex-methods&gt;
-  &lt;button onclick="document.getElementById('ex-methods').alert()"&gt;Call alert&lt;/button&gt;
-              </code>
-            </pre>
-            <pre class="example-cljs">
-              <code class="language-clojure">
-   (defn alert-fn
-     [el]
-     (.alert js/window (str "Hello " el " !")))
-
-   (defwebcomponent ex-methods
-    :methods {:alert alert-fn})
-              </code>
-            </pre>
-          </section>
-
       </section>
 
       <section id="examples" class="main-section">
@@ -352,21 +397,6 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <div class="example-live">
             <input is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5" />
             <!--lucu-range-with-threshold type="range" value="25" min="0" max="50" step="5" /-->
-          </div>
-          <pre class="example-markup">
-            <code class="language-markup">
-            </code>
-          </pre>
-          <pre class="example-cljs">
-            <code class="language-clojure">
-            </code>
-          </pre>
-        </section>
-
-        <section id="example-autocompleter">
-          <h2>Autocompleter</h2>
-          <p>Adpated from the excellent <a href="http://swannodette.github.io/2013/08/17/comparative/">post</a> from David Nolen</p>
-          <div class="example-live">
           </div>
           <pre class="example-markup">
             <code class="language-markup">
@@ -406,7 +436,34 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         <section>
           <h2 id="example-flipbox">Flipbox</h2>
           <p>Adpated from brick's <a href="https://github.com/x-tag/flipbox">flipbox</a></p>
-          <em>TODO</em>
+          <div class="example-live">
+            <lucu-flipbox id="flipbox">
+              <div>This is front</div>
+              <div>This is back</div>
+            </lucu-flipbox>
+            <span class="btn-group">
+              <button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').toggle()">Toggle</button>
+              <button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').showFront()">Show front</button>
+              <button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').showBack()">Show back</button>
+            </span>
+          </div>
+          <pre class="example-markup">
+            <code class="language-markup">
+  &lt;lucu-flipbox id="flipbox"&gt;
+    &lt;div&gt;This is front&lt;/div&gt;
+    &lt;div&gt;This is back&lt;/div&gt;
+  &lt;/lucu-flipbox&gt;
+  &lt;span class="btn-group"&gt;
+    &lt;button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').toggle()"&gt;Toggle&lt;/button&gt;
+    &lt;button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').showFront()"&gt;Show front&lt;/button&gt;
+    &lt;button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').showBack()"&gt;Show back&lt;/button&gt;
+  &lt;/span&gt;
+            </code>
+          </pre>
+          <pre class="example-cljs">
+            <code class="language-clojure">
+            </code>
+          </pre>
         </section>
 
         <section id="example-todomvc">
@@ -446,7 +503,6 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           }
 
           fetchExample("example-range-with-threshold", "range_with_threshold");
-          fetchExample("example-autocompleter", "autocompleter");
           fetchExample("example-overlay", "overlay");
           fetchExample("example-flipbox", "flipbox");
           fetchExample("example-todomvc", "todomvc");

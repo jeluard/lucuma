@@ -13,44 +13,46 @@
        (not (contains? forbidden-names s))))
 
 (defmulti render-content
-  "render content value to something that can be added to the DOM via append!"
+  "render 'content' to something that can be added to the DOM"
   ;; Hack to workaround browsers where document.createElement('template').constructor != HTMLTemplateElement but still document.createElement('template') instanceof HTMLTemplateElement
   ;; see https://github.com/Polymer/TemplateBinding/issues/139
   ;; (type c)
   (fn [c] (if (instance? js/HTMLTemplateElement c) js/HTMLTemplateElement (type c))))
 
 (defmethod render-content js/String [s] s)
-
 (defmethod render-content js/HTMLTemplateElement [t] (.cloneNode (aget t "content") true))
-
 (defmethod render-content :default [c] (throw (str "No render-content implementation for " c) (ex-info {:type (type c)})))
 
-(defmulti render-style
-  "render style value to something that can be added to the DOM via append!"
-  type)
-
-(defmethod render-style js/String [s] (let [style (.createElement js/document "style")]
-                                        (aset style "innerHTML" s)
-                                        style))
-
-(defmethod render-style :default [s] (throw (str "No render-style implementation for " s) (ex-info {:type (type s)})))
-
-(defmulti append!
-  "append an element to provided ShadowRoot so that it is interpreted as HTML"
+(defmulti append-content!
+  "append rendered 'content' to provided ShadowRoot"
   (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
-(defmethod append! js/String [sr s] (aset sr "innerHTML" s))
+(defmethod append-content! js/String [sr s] (aset sr "innerHTML" s))
+(defmethod append-content! js/HTMLElement [sr e] (.appendChild sr e))
+(defmethod append-content! js/DocumentFragment [sr e] (.appendChild sr e))
+(defmethod append-content! :default [sr e] (throw (str "No append! implementation for " e) (ex-info {:type (type e)})))
 
-(defmethod append! js/HTMLElement [sr e] (.appendChild sr e))
+(defmulti render-style
+  "render 'style' to something that can be added to the DOM"
+  type)
 
-(defmethod append! js/DocumentFragment [sr e] (.appendChild sr e))
+(defmethod render-style js/String [s] s)
+(defmethod render-style :default [s] (throw (str "No render-style implementation for " s) (ex-info {:type (type s)})))
 
-(defmethod append! :default [sr e] (throw (str "No append! implementation for " e) (ex-info {:type (type e)})))
+(defmulti append-style!
+  "append rendered 'style' to provided ShadowRoot"
+  (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
+
+(defmethod append-style! js/String
+  [sr s]
+  (let [style (.createElement js/document "style")]
+    (aset style "textContent" s)
+    (.appendChild sr style)))
 
 (defn- render-then-append!
-  [sr render-fn c]
+  [sr render-fn append-fn c]
   (if-let [rc (render-fn c)]
-    (append! sr rc)))
+    (append-fn sr rc)))
 
 (defn- invoke-if-fn
   [o]
@@ -58,10 +60,10 @@
 
 (defn- initialize
   [e content style reset-style-inheritance apply-author-styles]
-  (when (or content style)
+  (when (or style content)
     (let [sr (sd/create e reset-style-inheritance apply-author-styles)]
-      (when content (render-then-append! sr render-content (invoke-if-fn content)))
-      (when style (render-then-append! sr render-style (invoke-if-fn style))))))
+      (when style (render-then-append! sr render-style append-style! (invoke-if-fn style)))
+      (when content (render-then-append! sr render-content append-content! (invoke-if-fn content))))))
 
 (defn- find-prototype
   [t]
@@ -92,10 +94,14 @@
         (when f
           (call-with-this-argument f this []))))))
 
+(defn- attribute-changed-fn
+  [el o n]
+  (.log js/console (str o " " n)))
+
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
-  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attribute-changed-fn methods]} m
+  (let [{:keys [base-type created-fn entered-view-fn left-view-fn methods]} m
         proto (.create js/Object (find-prototype base-type))]
     (aset proto "createdCallback" (initialize-and-set-callback! created-fn m))
     (set-callback! proto "enteredViewCallback" entered-view-fn)

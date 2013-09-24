@@ -1,8 +1,10 @@
 (ns lucuma.examples
   (:require [dommy.core :refer [prepend!]]
-            [lucuma.custom-elements :refer [register render-content]]
+            [lucuma.custom-elements :refer [register render-content render-style]]
+            [lucuma.range-with-threshold :refer [lucu-range-with-threshold]]
             [lucuma.overlay :refer [lucu-overlay]]
-            [lucuma.range-with-threshold :refer [lucu-range-with-threshold]])
+            [lucuma.flipbox :refer [lucu-flipbox]]
+            [garden.core :refer [css]])
   (:require-macros [lucuma :refer [defwebcomponent]]
                    [dommy.macros :refer [node sel1]]))
 
@@ -24,16 +26,25 @@
   :content [:div "Hello hiccup!"])
 
 (defwebcomponent ex-style
-  :content "<button>Hello styled!</button>"
-  :style "button { background: #3d7c45; color: white; border: 0; border-radius: 4px;}")
+  :content [:button "Hello styled!"]
+  :style "@host { button { background: blue; color: white; border: 0; border-radius: 4px;}}")
+
+(defmethod render-style ::vector [v] (css v))
+
+(defwebcomponent ex-style-garden
+  :content [:button "Hello garden!"]
+  :style [:button {:background "#3d7c45" :color "white" :border 0 :border-radius "4px"}])
 
 (defwebcomponent ex-extend
   :base-type "button"
-  :style "@host { :scope {background: red;}}")
+  :style "@host { * {background: red;}}")
+
+(defwebcomponent ex-attributes
+  :attributes #{:ex-attribute})
 
 (defn alert-fn
   [el]
-  (.alert js/window  (str "Hello " el " !")))
+  (.alert js/window  (str "Hello methods from '" (.-id el) "' !")))
 
 (defwebcomponent ex-methods
   :methods {:alert alert-fn})
@@ -45,8 +56,10 @@
   (register ex-content-template)
   (register ex-content-hiccup)
   (register ex-style)
+  (register ex-style-garden)
   (register ex-extend)
   (register ex-methods)
 
   (register lucu-range-with-threshold)
-  (register lucu-overlay))
+  (register lucu-overlay)
+  (register lucu-flipbox))
