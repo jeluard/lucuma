@@ -528,10 +528,53 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         <h1>Native browser support</h1>
         <p>
           Browsers are implementing Web Components technologies furiously those days. Still you might have to enable their support manually.
+          <br>
+          Check browser progress on <a href="http://caniuse.com/shadowdom">Shadow DOM</a>.
         </p>
-        <h3>Chrome Canary</h3>
-        <p>Check chrome progress on <a href="http://www.chromestatus.com/features/4642138092470272">Custom Elements</a> and <a href="http://www.chromestatus.com/features/5479141319114752">Shadow DOM</a>.</p>
-        <p>Enable native Custom Elements support via the <a href="chrome://flags/#enable-experimental-web-platform-features">enable-experimental-web-platform-features</a> flag.</p>
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#chrome" data-toggle="tab">Chrome</a></li>
+          <li><a href="#chrome-canary" data-toggle="tab">Chrome Canary</a></li>
+          <li><a href="#firefox" data-toggle="tab">Chrome Canary</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="chrome" class="row tab-pane active">
+            <a href="https://www.google.com/intl/en/chrome/browser/" class="col-md-3">
+              <img class="browser-logo" src="assets/chrome.png">
+            </a>
+            <div class="col-md-9 browser-description">
+              <p>Check chrome progress on <a href="http://www.chromium.org/blink/web-components">Web components</a>, <a href="http://www.chromestatus.com/features/4642138092470272">Custom Elements</a> and <a href="http://www.chromestatus.com/features/5479141319114752">Shadow DOM</a>.</p>
+              <p>To enable native support:</p>
+              <ol>
+                <li>Open <strong>chrome://flags/#enable-experimental-webkit-features</strong></li>
+                <li>Click the <em>Enable</em> link within that section</li>
+                <li>Click the <em>Relaunch Now</em> button at the bottom of the window</li>
+              </ol>
+            </div>
+          </div>
+          <div id="chrome-canary" class="row tab-pane">
+            <a href="https://www.google.com/intl/en/chrome/browser/canary.html" class="col-md-3">
+              <img class="browser-logo" src="assets/chrome-canary.png">
+            </a>
+            <div class="col-md-9 browser-description">
+              <p>Check chrome progress on <a href="http://www.chromium.org/blink/web-components">Web components</a>, <a href="http://www.chromestatus.com/features/4642138092470272">Custom Elements</a> and <a href="http://www.chromestatus.com/features/5479141319114752">Shadow DOM</a>.</p>
+              <p>To enable native support:</p>
+              <ol>
+                <li>Open <strong>chrome://flags/#enable-experimental-web-platform-features</strong></li>
+                <li>Click the <em>Enable</em> link within that section</li>
+                <li>Click the <em>Relaunch Now</em> button at the bottom of the window</li>
+              </ol>
+            </div>
+          </div>
+          <div id="firefox" class="row tab-pane">
+            <a href="http://www.mozilla.org/firefox/new/" class="col-md-3">
+              <img class="browser-logo" src="assets/firefox.png">
+            </a>
+            <div class="col-md-9 browser-description">
+              <p>Check firefox progress on <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=856140">Custom Elements</a> and <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=806506">Shadow DOM</a>.</p>
+              <p>All features are enabled by default.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section id="links" class="main-section">

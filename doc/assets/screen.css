@@ -228,3 +228,12 @@ footer {
 
 .test-error {
 }
+
+.browser-logo {
+  width: 150px;
+  margin-top: 20px;
+}
+
+.browser-description {
+  margin-top: 20px;
+}
