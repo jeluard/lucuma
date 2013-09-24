@@ -1,8 +1,3 @@
-#!/usr/bin/env phantomjs
-
-// reusable phantomjs script for running clojurescript.test tests
-// see http://github.com/cemerick/clojurescript.test for more info
-
 var p = require('webpage').create();
 var sys = require('system');
 p.injectJs(sys.args[1]);
