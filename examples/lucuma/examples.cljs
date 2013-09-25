@@ -35,6 +35,10 @@
   :content [:button "Hello garden!"]
   :style [:button {:background "#3d7c45" :color "white" :border 0 :border-radius "4px"}])
 
+(defwebcomponent ex-style-scope
+  :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
+  :apply-author-styles true)
+
 (defwebcomponent ex-extend
   :base-type "button"
   :content [:span {:class "icon-exclamation-sign"} [:content]]
@@ -59,6 +63,7 @@
   (register ex-content-hiccup)
   (register ex-style)
   (register ex-style-garden)
+  (register ex-style-scope)
   (register ex-extend)
   (register ex-methods)
 

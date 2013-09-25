@@ -309,6 +309,20 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     :style [:button {:background "#3d7c45" :color "white" :border "0" :border-radius "4px"}])
               </code>
             </pre>
+            <h4 id="custom-element-style-scope">Style scope</h4>
+            <p>
+              By default global styles are not applied to the Shadow DOM (concept of shadow boundary). <strong>apply-author-styles</strong> and <strong>reset-style-inheritance</strong> allow to control this behaviour. Check this <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/#style-inherit-cheetsheet">cheatsheet</a> for a comprehensive explanation.
+            </p>
+            <div class="example-live">
+              <ex-style-scope></ex-style-scope>
+            </div>
+            <pre class="example-cljs">
+              <code class="language-clojure">  
+  (defwebcomponent ex-style-scope
+    :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
+    :apply-author-styles true)
+              </code>
+            </pre>
           </section>
 
           <section>
