@@ -83,6 +83,15 @@
   [proto n f]
   (when f (aset proto n (wrap-with-callback-this-value f))))
 
+(defn- install-shadow-css-shim-when-needed
+  "Make sure styles do not leak when using polymer polyfill.
+  See https://github.com/Polymer/ShadowDOM/issues/260."
+  [sr n base-type]
+  (when js/ShadowDOMPolyfill
+    (if base-type
+      (.shimStyling js/Platform.ShadowCSS sr n base-type)
+      (.shimStyling js/Platform.ShadowCSS sr n))))
+
 (defn- initialize-and-set-callback!
   [f m]
   (fn []
@@ -90,7 +99,8 @@
       this
       (do
         (let [{:keys [content style reset-style-inheritance apply-author-styles]} m]
-          (initialize this content style reset-style-inheritance apply-author-styles))
+          (initialize this content style reset-style-inheritance apply-author-styles)
+          (when style (install-shadow-css-shim-when-needed (.-shadowRoot this) (:name m) (:base-type m))))
         (when f
           (call-with-this-argument f this []))))))
 
