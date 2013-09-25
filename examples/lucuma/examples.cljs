@@ -27,7 +27,7 @@
 
 (defwebcomponent ex-style
   :content [:button "Hello styled!"]
-  :style "@host { button { background: blue; color: white; border: 0; border-radius: 4px;}}")
+  :style "button { background: blue; color: white; border: 0; border-radius: 4px;}")
 
 (defmethod render-style ::vector [v] (css v))
 
@@ -37,7 +37,9 @@
 
 (defwebcomponent ex-extend
   :base-type "button"
-  :style "@host { * {background: red;}}")
+  :content [:span {:class "icon-exclamation-sign"} [:content]]
+  :style [:button {:color "red"}]
+  :apply-author-styles true)
 
 (defwebcomponent ex-attributes
   :attributes #{:ex-attribute})

@@ -47,7 +47,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <li><a href="#custom-element-style">Style</a></li>
               <li><a href="#custom-element-attributes">Attributes</a></li>
               <li><a href="#custom-element-methods">Methods</a></li>
-              <li><a href="#custom-element-extend">Extending</a></li>
+              <li><a href="#custom-element-extend">Extension</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -367,7 +367,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <section>
             <h2 id="custom-element-extend">Extension</h2>
             <p>
-              Existing element can be extended to inherit capacity from another element (via prototype inheritence). <strong>base-type</strong> value must be a valid tag name. It defaults to HTMLElement.
+              Existing element can be extended to inherit capacity from another element (via prototype inheritence). <strong>base-type</strong> value must be a valid tag name. When not provided the element prototype will extend HTMLElement.
             </p>
             <div class="example-live">
               <button is="ex-extend">Hello extended!</button>
@@ -381,7 +381,9 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <code class="language-clojure">
    (defwebcomponent ex-extend
     :base-type "button"
-    :style "button {background: red;}")
+    :content [:span {:class "icon-exclamation-sign"} [:content]]
+    :style [:button {:color "red"}]
+    :apply-author-styles true)
               </code>
             </pre>
           </section>
