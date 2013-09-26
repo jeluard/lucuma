@@ -41,36 +41,15 @@
   :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
   :apply-author-styles true)
 
-(defwebcomponent ex-extend
-  :base-type "button"
-  :content [:span {:class "icon-exclamation-sign"} [:content]]
-  :style [:button {:color "red"}]
-  :apply-author-styles true)
-
-(defwebcomponent ex-attributes
-  :attributes #{:ex-attribute})
-
-(defn ^:export delegate-attributes2
-  [el f]
-  (let [c (get-chan el)]
-    (.log js/console (str "delegate " c))
-    (go
-      (.log js/console "go")
-      (loop []
-        (do
-        (.log js/console "loop")
-        (when-let [u (clj->js (<! c))]
-          (do
-            (.log js/console u)
-            (f u)
-            (recur))))))))
-
 (defn ^:export delegate-attributes
   [el f]
   (let [c (get-chan el)]
     (go (while true
           (let [u (<! c)]
             (.log js/console u))))))
+
+(defwebcomponent ex-attributes
+  :attributes #{:ex-attribute})
 
 (defn alert-fn
   [el]
@@ -82,6 +61,12 @@
 (defwebcomponent ex-constructor
   :constructor "MyConstructor"
   :content [:div "Hello constructor!"])
+
+(defwebcomponent ex-extend
+  :base-type "button"
+  :content [:span {:class "icon-exclamation-sign"} [:content]]
+  :style [:button {:color "red"}]
+  :apply-author-styles true)
 
 (defn ^:export register-all
   []

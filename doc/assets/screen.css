@@ -2,6 +2,10 @@ body {
   padding-top: 70px; 
 }
 
+section {
+  padding-top: 20px;
+}
+
 p {
   margin: 10px;
 }

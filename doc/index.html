@@ -221,48 +221,55 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     :content "Hello world!")
               </code>
             </pre>
-            <h4 id="custom-element-template-support">Template support</h4>            
-            <p>
-              <a href="http://docs.webplatform.org/wiki/html/elements/template">HTML template</a> can be directly used as content (its content will be cloned during the <a href="#custom-element-lifecycle">creation phase</a>):
-            </p>
-            <div class="example-live">
-              <template id="template-id">
-                <div>Hello template!</div>
-              </template>
-              <ex-content-template></ex-content-template>
-            </div>
-            <pre class="example-markup">
-              <code class="language-markup">
-  &lt;template id="template-id"&gt;
-    &lt;div&gt;Hello template!&lt;/div&gt;
-  &lt;/template&gt;
-  &lt;ex-content-template&gt;&lt;/ex-content-template&gt;
-              </code>
-            </pre>
-            <pre class="example-cljs">
-              <code class="language-clojure">
-  (defwebcomponent ex-content-template
-    :content #(dommy.macros/sel1 :#template-id))
-              </code>
-            </pre>
-            <h4 id="custom-element-custom-logic-content">Custom logic support</h4>
-            <p>
-              As rendering is delegated to the render-content multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/weavejester/hiccup">hiccup</a> implementation (such as <a href="https://github.com/Prismatic/dommy">dommy</a>, <a href="https://github.com/ibdknox/crate/">crate</a>, <a href="https://github.com/lynaghk/singult">singult</a> or <a href="https://github.com/teropa/hiccups">hiccups</a>) to render vectors.
-            </p>
-            <div class="example-live">
-              <ex-content-hiccup></ex-content-hiccup>
-            </div>
-            <pre class="example-cljs">
-              <code class="language-clojure">
-  ;; Use dommy.macros/node to render hiccup style vector as a DocumentFragment.
-  
-  (derive PersistentVector ::vector)
-  (defmethod render-content ::vector [v] (node v))
-  
-  (defwebcomponent ex-content-hiccup
-    :content [:div "Hello hiccup!"])
-              </code>
-            </pre>
+
+            <section id="custom-element-template-support">
+              <h4>Template support</h4>
+              <p>
+                <a href="http://docs.webplatform.org/wiki/html/elements/template">HTML template</a> can be directly used as content (its content will be cloned during the <a href="#custom-element-lifecycle">creation phase</a>):
+              </p>
+              <div class="example-live">
+                <template id="template-id">
+                  <div>Hello template!</div>
+                </template>
+                <ex-content-template></ex-content-template>
+              </div>
+              <pre class="example-markup">
+                <code class="language-markup">
+    &lt;template id="template-id"&gt;
+      &lt;div&gt;Hello template!&lt;/div&gt;
+    &lt;/template&gt;
+    &lt;ex-content-template&gt;&lt;/ex-content-template&gt;
+                </code>
+              </pre>
+              <pre class="example-cljs">
+                <code class="language-clojure">
+    (defwebcomponent ex-content-template
+      :content #(dommy.macros/sel1 :#template-id))
+                </code>
+              </pre>
+            </section>
+
+            <section id="custom-element-content-custom-logic">
+              <h4>Custom logic support</h4>
+              <p>
+                As rendering is delegated to the render-content multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/weavejester/hiccup">hiccup</a> implementation (such as <a href="https://github.com/Prismatic/dommy">dommy</a>, <a href="https://github.com/ibdknox/crate/">crate</a>, <a href="https://github.com/lynaghk/singult">singult</a> or <a href="https://github.com/teropa/hiccups">hiccups</a>) to render vectors.
+              </p>
+              <div class="example-live">
+                <ex-content-hiccup></ex-content-hiccup>
+              </div>
+              <pre class="example-cljs">
+                <code class="language-clojure">
+    ;; Use dommy.macros/node to render hiccup style vector as a DocumentFragment.
+
+    (derive PersistentVector ::vector)
+    (defmethod render-content ::vector [v] (node v))
+
+    (defwebcomponent ex-content-hiccup
+      :content [:div "Hello hiccup!"])
+                </code>
+              </pre>
+            </section>
+
           </section>
 
           <section id="custom-element-style">
@@ -290,39 +297,46 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
     :style "button {background: blue; color: white; border: 0; border-radius: 4px;}")
               </code>
             </pre>
-            <h4 id="custom-element-custom-logic-style">Custom logic support</h4>
-            <p>
-              As rendering is delegated to the render-style multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/noprompt/garden">garden</a> to render vectors.
-            </p>
-            <div class="example-live">
-              <ex-style-garden></ex-style-garden>
-            </div>
-            <pre class="example-cljs">
-              <code class="language-clojure">
-  ;; Use garden.core/css to render garden style vector as a String.
-  
-  (derive PersistentVector ::vector)
-  (defmethod render-style ::vector [v] (css v))
-  
-  (defwebcomponent ex-style-garden
-    :content [:button "Hello garden!"]
-    :style [:button {:background "#3d7c45" :color "white" :border "0" :border-radius "4px"}])
-              </code>
-            </pre>
-            <h4 id="custom-element-style-scope">Style scope</h4>
-            <p>
-              By default global styles are not applied to the Shadow DOM (concept of shadow boundary). <strong>apply-author-styles</strong> and <strong>reset-style-inheritance</strong> allow to control this behaviour. Check this <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/#style-inherit-cheetsheet">cheatsheet</a> for a comprehensive explanation.
-            </p>
-            <div class="example-live">
-              <ex-style-scope></ex-style-scope>
-            </div>
-            <pre class="example-cljs">
-              <code class="language-clojure">  
-  (defwebcomponent ex-style-scope
-    :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
-    :apply-author-styles true)
-              </code>
-            </pre>
+
+            <section>
+              <h4 id="custom-element-style-custom-logic">Custom logic support</h4>
+              <p>
+                As rendering is delegated to the render-style multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/noprompt/garden">garden</a> to render vectors.
+              </p>
+              <div class="example-live">
+                <ex-style-garden></ex-style-garden>
+              </div>
+              <pre class="example-cljs">
+                <code class="language-clojure">
+    ;; Use garden.core/css to render garden style vector as a String.
+
+    (derive PersistentVector ::vector)
+    (defmethod render-style ::vector [v] (css v))
+
+    (defwebcomponent ex-style-garden
+      :content [:button "Hello garden!"]
+      :style [:button {:background "#3d7c45" :color "white" :border "0" :border-radius "4px"}])
+                </code>
+              </pre>
+            </section>
+
+            <section>
+              <h4 id="custom-element-style-scope">Style scope</h4>
+              <p>
+                By default global styles are not applied to the Shadow DOM (concept of shadow boundary). <strong>apply-author-styles</strong> and <strong>reset-style-inheritance</strong> allow to control this behaviour. Check this <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/#style-inherit-cheetsheet">cheatsheet</a> for a comprehensive explanation.
+              </p>
+              <div class="example-live">
+                <ex-style-scope></ex-style-scope>
+              </div>
+              <pre class="example-cljs">
+                <code class="language-clojure">
+    (defwebcomponent ex-style-scope
+      :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
+      :apply-author-styles true)
+                </code>
+              </pre>
+            </section>
+
           </section>
 
           <section id="custom-element-attributes">
@@ -531,15 +545,34 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </code>
           </pre>
         </section>
-
         <script>
-          function fetchExample(id, name) {
+          function appendExampleUsage(usages) {
+            fetchExample("examples", function(c) {
+              var contentArray = c.split("\n");
+              for (var i = 0; i < usages.length; i++) {
+                var usage = usages[k];
+                var selector = '#' + usage.id + ' .example-cljs code';
+                var example = document.querySelector(selector);
+                if (example != null) {
+                  example.innerHTML = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join("\n");
+                }
+              }
+            });
+          }
+
+          function appendExample(id, name) {
             var selector = '#' + id + ' .example-cljs code';
             var example = document.querySelector(selector);
             if (example == null) {
               return;
             }
 
+            fetchExample(name, function (c) {
+              example.innerHTML = c;
+            });
+          }
+
+          function fetchExample(name, fn) {
             var owner = "jeluard";
             var repo = "lucuma";
             var url_sha = "https://api.github.com/repos/" + owner + "/" + repo + "/contents/examples/lucuma/" + name + ".cljs";
@@ -551,7 +584,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                   if (xhr.readyState == 4 && xhr.status == 200) {
-                    example.innerHTML = window.atob(JSON.parse(xhr.responseText).content.replace(/\n/g, ""));
+                    fn(window.atob(JSON.parse(xhr.responseText).content.replace(/\n/g, "")));
                   }
                 };
                 xhr.open("GET", url, true);
@@ -562,10 +595,23 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             xhr_sha.send(null);
           }
 
-          fetchExample("example-range-with-threshold", "range_with_threshold");
-          fetchExample("example-overlay", "overlay");
-          fetchExample("example-flipbox", "flipbox");
-          fetchExample("example-todomvc", "todomvc");
+          appendExample("example-range-with-threshold", "range_with_threshold");
+          appendExample("example-overlay", "overlay");
+          appendExample("example-flipbox", "flipbox");
+
+          appendExampleUsage([{id: "#custom-element-definition", lines: [13, 14]},
+                              {id: "#custom-element-lifecycle", lines: [16, 19]},
+                              {id: "#custom-element-content", line: [13, 14]},
+                              {id: "#custom-element-content-template-support", lines: [21, 22]},
+                              {id: "#custom-element-content-custom-logic", lines: [24, 28]},
+                              {id: "#custom-element-style", lines: [30, 32]},
+                              {id: "#custom-element-style-custom-logic", lines: [34, 38]},
+                              {id: "#custom-element-style-scope", lines: [40, 42]},
+                              {id: "#custom-element-attributes", lines: [44, 52]},
+                              {id: "#custom-element-methods", lines: [54, 59]},
+                              {id: "#custom-element-constructor", lines: [61, 63]},
+                              {id: "#custom-element-extend", lines: [65, 69]}]);
+
           Prism.highlightAll();
         </script>
       </section>
