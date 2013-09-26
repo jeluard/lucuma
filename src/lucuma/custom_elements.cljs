@@ -1,6 +1,7 @@
 (ns lucuma.custom-elements
-  (:require [cljs.core.async :refer [chan close! put!]]
-            [lucuma.shadow-dom :as sd])
+  (:require [lucuma.shadow-dom :as sd]
+            [clojure.string :as string]
+            [cljs.core.async :refer [chan close! put!]])
   (:refer-clojure :exclude [methods]))
 
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
@@ -127,10 +128,20 @@
       (aset proto (name (key method)) (wrap-with-callback-this-value (val method))))
     proto))
 
+(defn default-constructor-name
+  [n]
+  (let [v (string/split n #"-")]
+    (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1))))))
+
 (defn register
   "register a Custom Element from an abstract definition"
   ([m] (register (:name m) m))
-  ([n m] {:pre [(valid-name? n)]} (.register js/document n (clj->js (merge {:prototype (create-prototype m)} (when (:base-type m) {:extends (:base-type m)}))))))
+  ([n m]
+   {:pre [(valid-name? n)]}
+   (let [p (create-prototype m)]
+     (.register js/document n (clj->js (merge {:prototype p} (when (:base-type m) {:extends (:base-type m)}))))
+     (let [c (get m :constructor (default-constructor-name n))]
+       (when c (aset js/window c (.-constructor p)))))))
 
 (defn create
   "create an HTML element from it's name. 'is' value is used as second argument to document.createElement"

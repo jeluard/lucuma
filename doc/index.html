@@ -47,6 +47,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <li><a href="#custom-element-style">Style</a></li>
               <li><a href="#custom-element-attributes">Attributes</a></li>
               <li><a href="#custom-element-methods">Methods</a></li>
+              <li><a href="#custom-element-constructor">Constructor</a></li>
               <li><a href="#custom-element-extend">Extension</a></li>
             </ul>
           </li>
@@ -100,8 +101,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
       <section id="usage" class="main-section">
           <h1>Usage</h1>
 
-          <section>
-            <h2 id="custom-element-definition">Custom Element definition</h2>
+          <section id="custom-element-definition">
+            <h2>Custom Element definition</h2>
             <p>
               Custom elements are defined as maps of keyword / value. This map serves as the abstract definition for the element prototype. Once registered the element can be manipulated by the DOM.
             </p>
@@ -149,8 +150,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
           </section>
 
-          <section>
-            <h2 id="custom-element-lifecycle">Lifecycle</h2>
+          <section id="custom-element-lifecycle">
+            <h2>Lifecycle</h2>
             <p>Custom Elements define lifecycle callbacks that hook on element instance <strong>creation</strong>, view <strong>insertion</strong> and view <strong>removal</strong>.</p>
             <p>You can hook function to the element lifecycle using following keys:</p>
             <ul>
@@ -195,8 +196,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
           </section>
 
-          <section>
-            <h2 id="custom-element-content">Content</h2>
+          <section id="custom-element-content">
+            <h2>Content</h2>
             <p>
               Content of a Web Component comes from the <strong>content</strong> value that will be rendered based on its type then appended to the element internal ShadowRoot. This process is triggered per instance during the <a href="#custom-element-lifecycle">creation phase</a>.
             </p>
@@ -265,8 +266,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
           </section>
 
-          <section>
-            <h2 id="custom-element-style">Style</h2>
+          <section id="custom-element-style">
+            <h2>Style</h2>
             <p>Style is treated similarly to <a href="custom-element-content">content</a>.
             <p>The rendering process consists of:</p>
             <ol>
@@ -325,15 +326,15 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
           </section>
 
-          <section>
-            <h2 id="custom-element-attributes">Attributes</h2>
+          <section id="custom-element-attributes">
+            <h2>Attributes</h2>
             <p>
             </p>
             <div class="example-live">
               <ex-attributes id="ex-attributes"></ex-attributes>
               <button onclick="toggle()">Toggle attribute</button>
               <script>
-                document.addEventListener("DOMContentLoaded", function() {
+                document.addEventListener("WebComponentsReady", function() {
                   /*
                   lucuma.examples.delegate_attributes(document.getElementById('ex-attributes'), function(update) {
                     console.log(update);
@@ -369,8 +370,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
           </section>
 
-          <section>
-            <h2 id="custom-element-methods">Methods</h2>
+          <section id="custom-element-methods">
+            <h2>Methods</h2>
             <p>
               Regular ClojureScript functions can directly manipulate element instances. You can also expose those functions to JavaScript users by explicitely listing those functions and assigning them a name that will be attached to the element prototype.
               <br>
@@ -398,8 +399,38 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
           </section>
 
-          <section>
-            <h2 id="custom-element-extend">Extension</h2>
+          <section id="custom-element-constructor">
+            <h2>Constructor</h2>
+            <p>
+              New instances of an element can be created using a JavaScript constructor available globally. Constructor name can be provided via the <strong>constructor</strong> key. When not provided a default name is generated based on the element name (e.g. <strong>EXMyElement</strong> if the tag name is <strong>ex-my-element</strong>). Constructor is not registered when <strong>constructor</strong> is set to <strong>nil</strong>.
+            </p>
+            <div class="example-live">
+              <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  var el = new MyConstructor();
+                  document.querySelector("#custom-element-constructor .example-live").appendChild(el);
+                });
+              </script>
+            </div>
+            <pre class="example-markup">
+              <code class="language-markup">
+  &lt;script&gt;
+    var el = new MyConstructor();
+    document.querySelector("#custom-element-constructor .example-live").appendChild(el);
+  &lt;/script&gt;
+              </code>
+            </pre>
+            <pre class="example-cljs">
+              <code class="language-clojure">
+   (defwebcomponent ex-constructor
+    :constructor "MyConstructor"
+    :content [:div "Hello constructor!"])
+              </code>
+            </pre>
+          </section>
+
+          <section id="custom-element-extend">
+            <h2>Extension</h2>
             <p>
               Existing element can be extended to inherit capacity from another element (via prototype inheritence). <strong>base-type</strong> value must be a valid tag name. When not provided the element prototype will extend HTMLElement.
             </p>
@@ -469,8 +500,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           </pre>
         </section>
 
-        <section>
-          <h2 id="example-flipbox">Flipbox</h2>
+        <section id="example-flipbox">
+          <h2>Flipbox</h2>
           <p>Adpated from brick's <a href="https://github.com/x-tag/flipbox">flipbox</a></p>
           <div class="example-live">
             <lucu-flipbox id="flipbox">
@@ -650,9 +681,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
       </section>
 
       <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          lucuma.examples.register_all();
-        });
+        lucuma.examples.register_all();
       </script>
     </main>
 

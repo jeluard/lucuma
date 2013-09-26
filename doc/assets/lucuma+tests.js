@@ -13744,6 +13744,152 @@ cljs.core.special_symbol_QMARK_ = function(a) {
   new cljs.core.Symbol(null, "recur", "recur", -1532142362, null), null, new cljs.core.Symbol(null, ".", ".", -1640531481, null), null, new cljs.core.Symbol(null, "ns", "ns", -1640528002, null), null, new cljs.core.Symbol(null, "do", "do", -1640528316, null), null, new cljs.core.Symbol(null, "fn*", "fn*", -1640430053, null), null, new cljs.core.Symbol(null, "throw", "throw", -1530191713, null), null, new cljs.core.Symbol(null, "letfn*", "letfn*", 1548249632, null), null, new cljs.core.Symbol(null, 
   "js*", "js*", -1640426054, null), null, new cljs.core.Symbol(null, "defrecord*", "defrecord*", 774272013, null), null, new cljs.core.Symbol(null, "let*", "let*", -1637213400, null), null, new cljs.core.Symbol(null, "loop*", "loop*", -1537374273, null), null, new cljs.core.Symbol(null, "if", "if", -1640528170, null), null, new cljs.core.Symbol(null, "def", "def", -1640432194, null), null], !0), a)
 };
+var clojure = {string:{}};
+clojure.string.seq_reverse = function(a) {
+  return cljs.core.reduce.call(null, cljs.core.conj, cljs.core.List.EMPTY, a)
+};
+clojure.string.reverse = function(a) {
+  return a.split("").reverse().join("")
+};
+clojure.string.replace = function(a, b, c) {
+  if("string" === typeof b) {
+    return a.replace(RegExp(goog.string.regExpEscape(b), "g"), c)
+  }
+  if(cljs.core.truth_(b.hasOwnProperty("source"))) {
+    return a.replace(RegExp(b.source, "g"), c)
+  }
+  if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+    throw[cljs.core.str("Invalid match arg: "), cljs.core.str(b)].join("");
+  }
+  return null
+};
+clojure.string.replace_first = function(a, b, c) {
+  return a.replace(b, c)
+};
+clojure.string.join = function() {
+  var a = null, b = function(a) {
+    return cljs.core.apply.call(null, cljs.core.str, a)
+  }, c = function(a, b) {
+    return cljs.core.apply.call(null, cljs.core.str, cljs.core.interpose.call(null, a, b))
+  }, a = function(a, e) {
+    switch(arguments.length) {
+      case 1:
+        return b.call(this, a);
+      case 2:
+        return c.call(this, a, e)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$1 = b;
+  a.cljs$core$IFn$_invoke$arity$2 = c;
+  return a
+}();
+clojure.string.upper_case = function(a) {
+  return a.toUpperCase()
+};
+clojure.string.lower_case = function(a) {
+  return a.toLowerCase()
+};
+clojure.string.capitalize = function(a) {
+  return 2 > cljs.core.count.call(null, a) ? clojure.string.upper_case.call(null, a) : [cljs.core.str(clojure.string.upper_case.call(null, cljs.core.subs.call(null, a, 0, 1))), cljs.core.str(clojure.string.lower_case.call(null, cljs.core.subs.call(null, a, 1)))].join("")
+};
+clojure.string.pop_last_while_empty = function(a) {
+  for(;;) {
+    if(cljs.core._EQ_.call(null, "", cljs.core.peek.call(null, a))) {
+      a = cljs.core.pop.call(null, a)
+    }else {
+      return a
+    }
+  }
+};
+clojure.string.discard_trailing_if_needed = function(a, b) {
+  return cljs.core._EQ_.call(null, 0, a) ? clojure.string.pop_last_while_empty.call(null, b) : b
+};
+clojure.string.split_with_empty_regex = function(a, b) {
+  var c;
+  c = (c = 0 >= b) ? c : b >= 2 + cljs.core.count.call(null, a);
+  if(c) {
+    return cljs.core.conj.call(null, cljs.core.vec.call(null, cljs.core.cons.call(null, "", cljs.core.map.call(null, cljs.core.str, cljs.core.seq.call(null, a)))), "")
+  }
+  c = cljs.core._EQ_;
+  if(c.call(null, 1, b)) {
+    return cljs.core.vector.call(null, a)
+  }
+  if(c.call(null, 2, b)) {
+    return cljs.core.vector.call(null, "", a)
+  }
+  c = b - 2;
+  return cljs.core.conj.call(null, cljs.core.vec.call(null, cljs.core.cons.call(null, "", cljs.core.subvec.call(null, cljs.core.vec.call(null, cljs.core.map.call(null, cljs.core.str, cljs.core.seq.call(null, a))), 0, c))), cljs.core.subs.call(null, a, c))
+};
+clojure.string.split = function() {
+  var a = null, b = function(b, c) {
+    return a.call(null, b, c, 0)
+  }, c = function(a, b, c) {
+    return clojure.string.discard_trailing_if_needed.call(null, c, cljs.core._EQ_.call(null, "" + cljs.core.str(b), "/(?:)/") ? clojure.string.split_with_empty_regex.call(null, a, c) : 1 > c ? cljs.core.vec.call(null, ("" + cljs.core.str(a)).split(b)) : function() {
+      for(var g = a, h = c, k = cljs.core.PersistentVector.EMPTY;;) {
+        if(cljs.core._EQ_.call(null, h, 1)) {
+          return cljs.core.conj.call(null, k, g)
+        }
+        var l = cljs.core.re_find.call(null, b, g);
+        if(cljs.core.truth_(l)) {
+          var m = l, l = g.indexOf(m), m = g.substring(l + cljs.core.count.call(null, m)), h = h - 1, k = cljs.core.conj.call(null, k, g.substring(0, l)), g = m
+        }else {
+          return cljs.core.conj.call(null, k, g)
+        }
+      }
+    }())
+  }, a = function(a, e, f) {
+    switch(arguments.length) {
+      case 2:
+        return b.call(this, a, e);
+      case 3:
+        return c.call(this, a, e, f)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$2 = b;
+  a.cljs$core$IFn$_invoke$arity$3 = c;
+  return a
+}();
+clojure.string.split_lines = function(a) {
+  return clojure.string.split.call(null, a, /\n|\r\n/)
+};
+clojure.string.trim = function(a) {
+  return goog.string.trim(a)
+};
+clojure.string.triml = function(a) {
+  return goog.string.trimLeft(a)
+};
+clojure.string.trimr = function(a) {
+  return goog.string.trimRight(a)
+};
+clojure.string.trim_newline = function(a) {
+  for(var b = a.length;;) {
+    if(0 === b) {
+      return""
+    }
+    var c = cljs.core.get.call(null, a, b - 1);
+    var d = cljs.core._EQ_.call(null, c, "\n"), c = d ? d : cljs.core._EQ_.call(null, c, "\r");
+    if(c) {
+      b -= 1
+    }else {
+      return a.substring(0, b)
+    }
+  }
+};
+clojure.string.blank_QMARK_ = function(a) {
+  return goog.string.isEmptySafe(a)
+};
+clojure.string.escape = function(a, b) {
+  for(var c = new goog.string.StringBuffer, d = a.length, e = 0;;) {
+    if(cljs.core._EQ_.call(null, d, e)) {
+      return c.toString()
+    }
+    var f = a.charAt(e), g = cljs.core.get.call(null, b, f);
+    cljs.core.truth_(g) ? c.append("" + cljs.core.str(g)) : c.append(f);
+    e += 1
+  }
+};
 cljs.core.async = {};
 cljs.core.async.impl = {};
 cljs.core.async.impl.protocols = {};
@@ -13857,26 +14003,26 @@ cljs.core.async.impl.ioc_helpers.finished_QMARK_ = function(a) {
   return a[cljs.core.async.impl.ioc_helpers.STATE_IDX] === new cljs.core.Keyword(null, "finished", "finished", 4635210724)
 };
 cljs.core.async.impl.ioc_helpers.fn_handler = function fn_handler(b) {
-  "undefined" === typeof cljs.core.async.impl.ioc_helpers.t7447 && (cljs.core.async.impl.ioc_helpers.t7447 = {}, cljs.core.async.impl.ioc_helpers.t7447 = function(b, d, e) {
+  "undefined" === typeof cljs.core.async.impl.ioc_helpers.t7461 && (cljs.core.async.impl.ioc_helpers.t7461 = {}, cljs.core.async.impl.ioc_helpers.t7461 = function(b, d, e) {
     this.f = b;
     this.fn_handler = d;
-    this.meta7448 = e;
+    this.meta7462 = e;
     this.cljs$lang$protocol_mask$partition1$ = 0;
     this.cljs$lang$protocol_mask$partition0$ = 393216
-  }, cljs.core.async.impl.ioc_helpers.t7447.cljs$lang$type = !0, cljs.core.async.impl.ioc_helpers.t7447.cljs$lang$ctorStr = "cljs.core.async.impl.ioc-helpers/t7447", cljs.core.async.impl.ioc_helpers.t7447.cljs$lang$ctorPrWriter = function(b, d, e) {
-    return cljs.core._write.call(null, d, "cljs.core.async.impl.ioc-helpers/t7447")
-  }, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
+  }, cljs.core.async.impl.ioc_helpers.t7461.cljs$lang$type = !0, cljs.core.async.impl.ioc_helpers.t7461.cljs$lang$ctorStr = "cljs.core.async.impl.ioc-helpers/t7461", cljs.core.async.impl.ioc_helpers.t7461.cljs$lang$ctorPrWriter = function(b, d, e) {
+    return cljs.core._write.call(null, d, "cljs.core.async.impl.ioc-helpers/t7461")
+  }, cljs.core.async.impl.ioc_helpers.t7461.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.impl.ioc_helpers.t7461.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
     return!0
-  }, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
+  }, cljs.core.async.impl.ioc_helpers.t7461.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
     return this.f
-  }, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-    return this.meta7448
-  }, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
-    return new cljs.core.async.impl.ioc_helpers.t7447(this.f, this.fn_handler, d)
-  }, cljs.core.async.impl.ioc_helpers.__GT_t7447 = function(b, d, e) {
-    return new cljs.core.async.impl.ioc_helpers.t7447(b, d, e)
+  }, cljs.core.async.impl.ioc_helpers.t7461.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7462
+  }, cljs.core.async.impl.ioc_helpers.t7461.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
+    return new cljs.core.async.impl.ioc_helpers.t7461(this.f, this.fn_handler, d)
+  }, cljs.core.async.impl.ioc_helpers.__GT_t7461 = function(b, d, e) {
+    return new cljs.core.async.impl.ioc_helpers.t7461(b, d, e)
   });
-  return new cljs.core.async.impl.ioc_helpers.t7447(b, fn_handler, null)
+  return new cljs.core.async.impl.ioc_helpers.t7461(b, fn_handler, null)
 };
 cljs.core.async.impl.ioc_helpers.run_state_machine = function(a) {
   return cljs.core.async.impl.ioc_helpers.aget_object.call(null, a, cljs.core.async.impl.ioc_helpers.FN_IDX).call(null, a)
@@ -14147,24 +14293,24 @@ cljs.core.async.impl.dispatch.queue_delay = function(a, b) {
 };
 cljs.core.async.impl.channels = {};
 cljs.core.async.impl.channels.box = function box(b) {
-  "undefined" === typeof cljs.core.async.impl.channels.t7436 && (cljs.core.async.impl.channels.t7436 = {}, cljs.core.async.impl.channels.t7436 = function(b, d, e) {
+  "undefined" === typeof cljs.core.async.impl.channels.t7450 && (cljs.core.async.impl.channels.t7450 = {}, cljs.core.async.impl.channels.t7450 = function(b, d, e) {
     this.val = b;
     this.box = d;
-    this.meta7437 = e;
+    this.meta7451 = e;
     this.cljs$lang$protocol_mask$partition1$ = 0;
     this.cljs$lang$protocol_mask$partition0$ = 425984
-  }, cljs.core.async.impl.channels.t7436.cljs$lang$type = !0, cljs.core.async.impl.channels.t7436.cljs$lang$ctorStr = "cljs.core.async.impl.channels/t7436", cljs.core.async.impl.channels.t7436.cljs$lang$ctorPrWriter = function(b, d, e) {
-    return cljs.core._write.call(null, d, "cljs.core.async.impl.channels/t7436")
-  }, cljs.core.async.impl.channels.t7436.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
+  }, cljs.core.async.impl.channels.t7450.cljs$lang$type = !0, cljs.core.async.impl.channels.t7450.cljs$lang$ctorStr = "cljs.core.async.impl.channels/t7450", cljs.core.async.impl.channels.t7450.cljs$lang$ctorPrWriter = function(b, d, e) {
+    return cljs.core._write.call(null, d, "cljs.core.async.impl.channels/t7450")
+  }, cljs.core.async.impl.channels.t7450.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
     return this.val
-  }, cljs.core.async.impl.channels.t7436.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-    return this.meta7437
-  }, cljs.core.async.impl.channels.t7436.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
-    return new cljs.core.async.impl.channels.t7436(this.val, this.box, d)
-  }, cljs.core.async.impl.channels.__GT_t7436 = function(b, d, e) {
-    return new cljs.core.async.impl.channels.t7436(b, d, e)
+  }, cljs.core.async.impl.channels.t7450.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7451
+  }, cljs.core.async.impl.channels.t7450.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
+    return new cljs.core.async.impl.channels.t7450(this.val, this.box, d)
+  }, cljs.core.async.impl.channels.__GT_t7450 = function(b, d, e) {
+    return new cljs.core.async.impl.channels.t7450(b, d, e)
   });
-  return new cljs.core.async.impl.channels.t7436(b, box, null)
+  return new cljs.core.async.impl.channels.t7450(b, box, null)
 };
 cljs.core.async.impl.channels.PutBox = function(a, b) {
   this.handler = a;
@@ -14548,26 +14694,26 @@ cljs.core.async.impl.timers.timeout = function(a) {
   return d
 };
 cljs.core.async.fn_handler = function fn_handler$$0(b) {
-  "undefined" === typeof cljs.core.async.t7380 && (cljs.core.async.t7380 = {}, cljs.core.async.t7380 = function(b, d, e) {
+  "undefined" === typeof cljs.core.async.t7394 && (cljs.core.async.t7394 = {}, cljs.core.async.t7394 = function(b, d, e) {
     this.f = b;
     this.fn_handler = d;
-    this.meta7381 = e;
+    this.meta7395 = e;
     this.cljs$lang$protocol_mask$partition1$ = 0;
     this.cljs$lang$protocol_mask$partition0$ = 393216
-  }, cljs.core.async.t7380.cljs$lang$type = !0, cljs.core.async.t7380.cljs$lang$ctorStr = "cljs.core.async/t7380", cljs.core.async.t7380.cljs$lang$ctorPrWriter = function(b, d, e) {
-    return cljs.core._write.call(null, d, "cljs.core.async/t7380")
-  }, cljs.core.async.t7380.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7380.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
+  }, cljs.core.async.t7394.cljs$lang$type = !0, cljs.core.async.t7394.cljs$lang$ctorStr = "cljs.core.async/t7394", cljs.core.async.t7394.cljs$lang$ctorPrWriter = function(b, d, e) {
+    return cljs.core._write.call(null, d, "cljs.core.async/t7394")
+  }, cljs.core.async.t7394.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7394.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
     return!0
-  }, cljs.core.async.t7380.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
+  }, cljs.core.async.t7394.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
     return this.f
-  }, cljs.core.async.t7380.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-    return this.meta7381
-  }, cljs.core.async.t7380.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
-    return new cljs.core.async.t7380(this.f, this.fn_handler, d)
-  }, cljs.core.async.__GT_t7380 = function(b, d, e) {
-    return new cljs.core.async.t7380(b, d, e)
+  }, cljs.core.async.t7394.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7395
+  }, cljs.core.async.t7394.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
+    return new cljs.core.async.t7394(this.f, this.fn_handler, d)
+  }, cljs.core.async.__GT_t7394 = function(b, d, e) {
+    return new cljs.core.async.t7394(b, d, e)
   });
-  return new cljs.core.async.t7380(b, fn_handler$$0, null)
+  return new cljs.core.async.t7394(b, fn_handler$$0, null)
 };
 cljs.core.async.buffer = function(a) {
   return cljs.core.async.impl.buffers.fixed_buffer.call(null, a)
@@ -14681,51 +14827,51 @@ cljs.core.async.random_array = function(a) {
 };
 cljs.core.async.alt_flag = function alt_flag() {
   var b = cljs.core.atom.call(null, !0);
-  "undefined" === typeof cljs.core.async.t7391 && (cljs.core.async.t7391 = {}, cljs.core.async.t7391 = function(b, d, e) {
+  "undefined" === typeof cljs.core.async.t7405 && (cljs.core.async.t7405 = {}, cljs.core.async.t7405 = function(b, d, e) {
     this.flag = b;
     this.alt_flag = d;
-    this.meta7392 = e;
+    this.meta7406 = e;
     this.cljs$lang$protocol_mask$partition1$ = 0;
     this.cljs$lang$protocol_mask$partition0$ = 393216
-  }, cljs.core.async.t7391.cljs$lang$type = !0, cljs.core.async.t7391.cljs$lang$ctorStr = "cljs.core.async/t7391", cljs.core.async.t7391.cljs$lang$ctorPrWriter = function(b, d, e) {
-    return cljs.core._write.call(null, d, "cljs.core.async/t7391")
-  }, cljs.core.async.t7391.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7391.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
+  }, cljs.core.async.t7405.cljs$lang$type = !0, cljs.core.async.t7405.cljs$lang$ctorStr = "cljs.core.async/t7405", cljs.core.async.t7405.cljs$lang$ctorPrWriter = function(b, d, e) {
+    return cljs.core._write.call(null, d, "cljs.core.async/t7405")
+  }, cljs.core.async.t7405.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7405.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
     return cljs.core.deref.call(null, this.flag)
-  }, cljs.core.async.t7391.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
+  }, cljs.core.async.t7405.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
     cljs.core.reset_BANG_.call(null, this.flag, null);
     return!0
-  }, cljs.core.async.t7391.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-    return this.meta7392
-  }, cljs.core.async.t7391.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
-    return new cljs.core.async.t7391(this.flag, this.alt_flag, d)
-  }, cljs.core.async.__GT_t7391 = function(b, d, e) {
-    return new cljs.core.async.t7391(b, d, e)
+  }, cljs.core.async.t7405.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7406
+  }, cljs.core.async.t7405.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
+    return new cljs.core.async.t7405(this.flag, this.alt_flag, d)
+  }, cljs.core.async.__GT_t7405 = function(b, d, e) {
+    return new cljs.core.async.t7405(b, d, e)
   });
-  return new cljs.core.async.t7391(b, alt_flag, null)
+  return new cljs.core.async.t7405(b, alt_flag, null)
 };
 cljs.core.async.alt_handler = function alt_handler(b, c) {
-  "undefined" === typeof cljs.core.async.t7397 && (cljs.core.async.t7397 = {}, cljs.core.async.t7397 = function(b, c, f, g) {
+  "undefined" === typeof cljs.core.async.t7411 && (cljs.core.async.t7411 = {}, cljs.core.async.t7411 = function(b, c, f, g) {
     this.cb = b;
     this.flag = c;
     this.alt_handler = f;
-    this.meta7398 = g;
+    this.meta7412 = g;
     this.cljs$lang$protocol_mask$partition1$ = 0;
     this.cljs$lang$protocol_mask$partition0$ = 393216
-  }, cljs.core.async.t7397.cljs$lang$type = !0, cljs.core.async.t7397.cljs$lang$ctorStr = "cljs.core.async/t7397", cljs.core.async.t7397.cljs$lang$ctorPrWriter = function(b, c, f) {
-    return cljs.core._write.call(null, c, "cljs.core.async/t7397")
-  }, cljs.core.async.t7397.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7397.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
+  }, cljs.core.async.t7411.cljs$lang$type = !0, cljs.core.async.t7411.cljs$lang$ctorStr = "cljs.core.async/t7411", cljs.core.async.t7411.cljs$lang$ctorPrWriter = function(b, c, f) {
+    return cljs.core._write.call(null, c, "cljs.core.async/t7411")
+  }, cljs.core.async.t7411.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7411.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
     return cljs.core.async.impl.protocols.active_QMARK_.call(null, this.flag)
-  }, cljs.core.async.t7397.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
+  }, cljs.core.async.t7411.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
     cljs.core.async.impl.protocols.commit.call(null, this.flag);
     return this.cb
-  }, cljs.core.async.t7397.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-    return this.meta7398
-  }, cljs.core.async.t7397.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-    return new cljs.core.async.t7397(this.cb, this.flag, this.alt_handler, c)
-  }, cljs.core.async.__GT_t7397 = function(b, c, f, g) {
-    return new cljs.core.async.t7397(b, c, f, g)
+  }, cljs.core.async.t7411.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7412
+  }, cljs.core.async.t7411.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+    return new cljs.core.async.t7411(this.cb, this.flag, this.alt_handler, c)
+  }, cljs.core.async.__GT_t7411 = function(b, c, f, g) {
+    return new cljs.core.async.t7411(b, c, f, g)
   });
-  return new cljs.core.async.t7397(c, b, alt_handler, null)
+  return new cljs.core.async.t7411(c, b, alt_handler, null)
 };
 cljs.core.async.do_alts = function(a, b, c) {
   var d = cljs.core.async.alt_flag.call(null), e = cljs.core.count.call(null, b), f = cljs.core.async.random_array.call(null, e), g = (new cljs.core.Keyword(null, "priority", "priority", 4143410454)).call(null, c), h = function() {
@@ -14925,6 +15071,10 @@ lucuma.custom_elements.create_prototype = function(a) {
   }
   return b
 };
+lucuma.custom_elements.default_constructor_name = function(a) {
+  a = clojure.string.split.call(null, a, /-/);
+  return[cljs.core.str(clojure.string.upper_case.call(null, cljs.core.get.call(null, a, 0))), cljs.core.str(clojure.string.join.call(null, cljs.core.map.call(null, clojure.string.capitalize, cljs.core.subvec.call(null, a, 1))))].join("")
+};
 lucuma.custom_elements.register = function() {
   var a = null, b = function(b) {
     return a.call(null, (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, b), b)
@@ -14932,8 +15082,10 @@ lucuma.custom_elements.register = function() {
     if(!cljs.core.truth_(lucuma.custom_elements.valid_name_QMARK_.call(null, a))) {
       throw Error([cljs.core.str("Assert failed: "), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), new cljs.core.Symbol(null, "n", "n", -1640531417, null))))].join(""));
     }
-    return document.register(a, cljs.core.clj__GT_js.call(null, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "prototype", "prototype", 4710078612), lucuma.custom_elements.create_prototype.call(null, b)], !0), cljs.core.truth_((new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b)) ? cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "extends", "extends", 4003207179), (new cljs.core.Keyword(null, "base-type", 
-    "base-type", 3446290472)).call(null, b)], !0) : null)))
+    var c = lucuma.custom_elements.create_prototype.call(null, b);
+    document.register(a, cljs.core.clj__GT_js.call(null, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "prototype", "prototype", 4710078612), c], !0), cljs.core.truth_((new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b)) ? cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "extends", "extends", 4003207179), (new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b)], !0) : null)));
+    var g = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "constructor", "constructor", 3720465260), lucuma.custom_elements.default_constructor_name.call(null, a));
+    return cljs.core.truth_(g) ? window[g] = c.constructor : null
   }, a = function(a, e) {
     switch(arguments.length) {
       case 1:
@@ -14965,152 +15117,6 @@ lucuma.custom_elements.create = function() {
   a.cljs$core$IFn$_invoke$arity$2 = c;
   return a
 }();
-var clojure = {string:{}};
-clojure.string.seq_reverse = function(a) {
-  return cljs.core.reduce.call(null, cljs.core.conj, cljs.core.List.EMPTY, a)
-};
-clojure.string.reverse = function(a) {
-  return a.split("").reverse().join("")
-};
-clojure.string.replace = function(a, b, c) {
-  if("string" === typeof b) {
-    return a.replace(RegExp(goog.string.regExpEscape(b), "g"), c)
-  }
-  if(cljs.core.truth_(b.hasOwnProperty("source"))) {
-    return a.replace(RegExp(b.source, "g"), c)
-  }
-  if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-    throw[cljs.core.str("Invalid match arg: "), cljs.core.str(b)].join("");
-  }
-  return null
-};
-clojure.string.replace_first = function(a, b, c) {
-  return a.replace(b, c)
-};
-clojure.string.join = function() {
-  var a = null, b = function(a) {
-    return cljs.core.apply.call(null, cljs.core.str, a)
-  }, c = function(a, b) {
-    return cljs.core.apply.call(null, cljs.core.str, cljs.core.interpose.call(null, a, b))
-  }, a = function(a, e) {
-    switch(arguments.length) {
-      case 1:
-        return b.call(this, a);
-      case 2:
-        return c.call(this, a, e)
-    }
-    throw Error("Invalid arity: " + arguments.length);
-  };
-  a.cljs$core$IFn$_invoke$arity$1 = b;
-  a.cljs$core$IFn$_invoke$arity$2 = c;
-  return a
-}();
-clojure.string.upper_case = function(a) {
-  return a.toUpperCase()
-};
-clojure.string.lower_case = function(a) {
-  return a.toLowerCase()
-};
-clojure.string.capitalize = function(a) {
-  return 2 > cljs.core.count.call(null, a) ? clojure.string.upper_case.call(null, a) : [cljs.core.str(clojure.string.upper_case.call(null, cljs.core.subs.call(null, a, 0, 1))), cljs.core.str(clojure.string.lower_case.call(null, cljs.core.subs.call(null, a, 1)))].join("")
-};
-clojure.string.pop_last_while_empty = function(a) {
-  for(;;) {
-    if(cljs.core._EQ_.call(null, "", cljs.core.peek.call(null, a))) {
-      a = cljs.core.pop.call(null, a)
-    }else {
-      return a
-    }
-  }
-};
-clojure.string.discard_trailing_if_needed = function(a, b) {
-  return cljs.core._EQ_.call(null, 0, a) ? clojure.string.pop_last_while_empty.call(null, b) : b
-};
-clojure.string.split_with_empty_regex = function(a, b) {
-  var c;
-  c = (c = 0 >= b) ? c : b >= 2 + cljs.core.count.call(null, a);
-  if(c) {
-    return cljs.core.conj.call(null, cljs.core.vec.call(null, cljs.core.cons.call(null, "", cljs.core.map.call(null, cljs.core.str, cljs.core.seq.call(null, a)))), "")
-  }
-  c = cljs.core._EQ_;
-  if(c.call(null, 1, b)) {
-    return cljs.core.vector.call(null, a)
-  }
-  if(c.call(null, 2, b)) {
-    return cljs.core.vector.call(null, "", a)
-  }
-  c = b - 2;
-  return cljs.core.conj.call(null, cljs.core.vec.call(null, cljs.core.cons.call(null, "", cljs.core.subvec.call(null, cljs.core.vec.call(null, cljs.core.map.call(null, cljs.core.str, cljs.core.seq.call(null, a))), 0, c))), cljs.core.subs.call(null, a, c))
-};
-clojure.string.split = function() {
-  var a = null, b = function(b, c) {
-    return a.call(null, b, c, 0)
-  }, c = function(a, b, c) {
-    return clojure.string.discard_trailing_if_needed.call(null, c, cljs.core._EQ_.call(null, "" + cljs.core.str(b), "/(?:)/") ? clojure.string.split_with_empty_regex.call(null, a, c) : 1 > c ? cljs.core.vec.call(null, ("" + cljs.core.str(a)).split(b)) : function() {
-      for(var g = a, h = c, k = cljs.core.PersistentVector.EMPTY;;) {
-        if(cljs.core._EQ_.call(null, h, 1)) {
-          return cljs.core.conj.call(null, k, g)
-        }
-        var l = cljs.core.re_find.call(null, b, g);
-        if(cljs.core.truth_(l)) {
-          var m = l, l = g.indexOf(m), m = g.substring(l + cljs.core.count.call(null, m)), h = h - 1, k = cljs.core.conj.call(null, k, g.substring(0, l)), g = m
-        }else {
-          return cljs.core.conj.call(null, k, g)
-        }
-      }
-    }())
-  }, a = function(a, e, f) {
-    switch(arguments.length) {
-      case 2:
-        return b.call(this, a, e);
-      case 3:
-        return c.call(this, a, e, f)
-    }
-    throw Error("Invalid arity: " + arguments.length);
-  };
-  a.cljs$core$IFn$_invoke$arity$2 = b;
-  a.cljs$core$IFn$_invoke$arity$3 = c;
-  return a
-}();
-clojure.string.split_lines = function(a) {
-  return clojure.string.split.call(null, a, /\n|\r\n/)
-};
-clojure.string.trim = function(a) {
-  return goog.string.trim(a)
-};
-clojure.string.triml = function(a) {
-  return goog.string.trimLeft(a)
-};
-clojure.string.trimr = function(a) {
-  return goog.string.trimRight(a)
-};
-clojure.string.trim_newline = function(a) {
-  for(var b = a.length;;) {
-    if(0 === b) {
-      return""
-    }
-    var c = cljs.core.get.call(null, a, b - 1);
-    var d = cljs.core._EQ_.call(null, c, "\n"), c = d ? d : cljs.core._EQ_.call(null, c, "\r");
-    if(c) {
-      b -= 1
-    }else {
-      return a.substring(0, b)
-    }
-  }
-};
-clojure.string.blank_QMARK_ = function(a) {
-  return goog.string.isEmptySafe(a)
-};
-clojure.string.escape = function(a, b) {
-  for(var c = new goog.string.StringBuffer, d = a.length, e = 0;;) {
-    if(cljs.core._EQ_.call(null, d, e)) {
-      return c.toString()
-    }
-    var f = a.charAt(e), g = cljs.core.get.call(null, b, f);
-    cljs.core.truth_(g) ? c.append("" + cljs.core.str(g)) : c.append(f);
-    e += 1
-  }
-};
 var cemerick = {cljs:{}};
 cemerick.cljs.test = {};
 cemerick.cljs.test._STAR_report_counters_STAR_ = null;
@@ -16185,13 +16191,13 @@ try {
   Window.prototype.dommy$template$PElement$ = !0, Window.prototype.dommy$template$PElement$_elem$arity$1 = function(a) {
     return a
   }
-}catch(e8271) {
-  if(e8271 instanceof ReferenceError) {
-    var __8272 = e8271;
+}catch(e8285) {
+  if(e8285 instanceof ReferenceError) {
+    var __8286 = e8285;
     console.log("PElement: js/Window not defined by browser, skipping it... (running on phantomjs?)")
   }else {
     if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-      throw e8271;
+      throw e8285;
     }
   }
 }
@@ -16425,30 +16431,30 @@ dommy.core.selector_map = function selector_map(b, c) {
   return cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "container", "container", 602947571), d], !0), cljs.core.into.call(null, cljs.core.PersistentArrayMap.EMPTY, cljs.core.map.call(null, function(e) {
     var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null);
     return cljs.core.PersistentVector.fromArray([f, cljs.core.truth_((new cljs.core.Keyword(null, "live", "live", 1017226334)).call(null, cljs.core.meta.call(null, g))) ? function() {
-      "undefined" === typeof dommy.core.t7804 && (dommy.core.t7804 = {}, dommy.core.t7804 = function(b, c, d, e, f, g, q, r, s) {
+      "undefined" === typeof dommy.core.t7818 && (dommy.core.t7818 = {}, dommy.core.t7818 = function(b, c, d, e, f, g, q, r, s) {
         this.v = b;
         this.k = c;
-        this.vec__7803 = d;
-        this.p__7802 = e;
+        this.vec__7817 = d;
+        this.p__7816 = e;
         this.container = f;
         this.key_selectors_map = g;
         this.template = q;
         this.selector_map = r;
-        this.meta7805 = s;
+        this.meta7819 = s;
         this.cljs$lang$protocol_mask$partition1$ = 0;
         this.cljs$lang$protocol_mask$partition0$ = 425984
-      }, dommy.core.t7804.cljs$lang$type = !0, dommy.core.t7804.cljs$lang$ctorStr = "dommy.core/t7804", dommy.core.t7804.cljs$lang$ctorPrWriter = function(b, c, d) {
-        return cljs.core._write.call(null, c, "dommy.core/t7804")
-      }, dommy.core.t7804.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
+      }, dommy.core.t7818.cljs$lang$type = !0, dommy.core.t7818.cljs$lang$ctorStr = "dommy.core/t7818", dommy.core.t7818.cljs$lang$ctorPrWriter = function(b, c, d) {
+        return cljs.core._write.call(null, c, "dommy.core/t7818")
+      }, dommy.core.t7818.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
         return dommy.utils.__GT_Array.call(null, dommy.template.__GT_node_like.call(null, this.container).querySelectorAll(dommy.core.selector.call(null, this.v)))
-      }, dommy.core.t7804.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-        return this.meta7805
-      }, dommy.core.t7804.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-        return new dommy.core.t7804(this.v, this.k, this.vec__7803, this.p__7802, this.container, this.key_selectors_map, this.template, this.selector_map, c)
-      }, dommy.core.__GT_t7804 = function(b, c, d, e, f, g, q, r, s) {
-        return new dommy.core.t7804(b, c, d, e, f, g, q, r, s)
+      }, dommy.core.t7818.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+        return this.meta7819
+      }, dommy.core.t7818.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+        return new dommy.core.t7818(this.v, this.k, this.vec__7817, this.p__7816, this.container, this.key_selectors_map, this.template, this.selector_map, c)
+      }, dommy.core.__GT_t7818 = function(b, c, d, e, f, g, q, r, s) {
+        return new dommy.core.t7818(b, c, d, e, f, g, q, r, s)
       });
-      return new dommy.core.t7804(g, f, e, e, d, c, b, selector_map, null)
+      return new dommy.core.t7818(g, f, e, e, d, c, b, selector_map, null)
     }() : dommy.template.__GT_node_like.call(null, d).querySelector(dommy.core.selector.call(null, g))], !0)
   }, c)))
 };
@@ -18226,6 +18232,7 @@ lucuma.examples.alert_fn = function(a) {
   return window.alert([cljs.core.str("Hello methods from '"), cljs.core.str(a.id), cljs.core.str("' !")].join(""))
 };
 lucuma.examples.ex_methods = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-methods"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "methods", "methods", 1969438500), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "alert", "alert", 1106803918), lucuma.examples.alert_fn], !0)], !0));
+lucuma.examples.ex_constructor = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-constructor"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "constructor", "constructor", 3720465260), "MyConstructor", new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), "Hello constructor!"], !0)], !0));
 lucuma.examples.register_all = function() {
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_hello);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_lifecycle);
@@ -18235,8 +18242,9 @@ lucuma.examples.register_all = function() {
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_style_garden);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_style_scope);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_extend);
-  lucuma.custom_elements.register.call(null, lucuma.examples.ex_methods);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_attributes);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_methods);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_constructor);
   lucuma.custom_elements.register.call(null, lucuma.range_with_threshold.lucu_range_with_threshold);
   lucuma.custom_elements.register.call(null, lucuma.overlay.lucu_overlay);
   return lucuma.custom_elements.register.call(null, lucuma.flipbox.lucu_flipbox)

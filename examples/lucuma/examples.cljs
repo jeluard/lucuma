@@ -79,6 +79,10 @@
 (defwebcomponent ex-methods
   :methods {:alert alert-fn})
 
+(defwebcomponent ex-constructor
+  :constructor "MyConstructor"
+  :content [:div "Hello constructor!"])
+
 (defn ^:export register-all
   []
   (register ex-hello)
@@ -89,8 +93,9 @@
   (register ex-style-garden)
   (register ex-style-scope)
   (register ex-extend)
-  (register ex-methods)
   (register ex-attributes)
+  (register ex-methods)
+  (register ex-constructor)
 
   (register lucu-range-with-threshold)
   (register lucu-overlay)
