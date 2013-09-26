@@ -1,12 +1,14 @@
 (ns lucuma.examples
-  (:require [dommy.core :refer [prepend!]]
-            [lucuma.custom-elements :refer [register render-content render-style]]
+  (:require [lucuma.custom-elements :refer [get-chan register render-content render-style]]
             [lucuma.range-with-threshold :refer [lucu-range-with-threshold]]
             [lucuma.overlay :refer [lucu-overlay]]
             [lucuma.flipbox :refer [lucu-flipbox]]
-            [garden.core :refer [css]])
+            [dommy.core :refer [prepend!]]
+            [garden.core :refer [css]]
+            [cljs.core.async :as async :refer [<!]])
   (:require-macros [lucuma :refer [defwebcomponent]]
-                   [dommy.macros :refer [node sel1]]))
+                   [dommy.macros :refer [node sel1]]
+                   [cljs.core.async.macros :refer [go]]))
 
 (defwebcomponent ex-hello
   :content "Hello world!")
@@ -48,6 +50,28 @@
 (defwebcomponent ex-attributes
   :attributes #{:ex-attribute})
 
+(defn ^:export delegate-attributes2
+  [el f]
+  (let [c (get-chan el)]
+    (.log js/console (str "delegate " c))
+    (go
+      (.log js/console "go")
+      (loop []
+        (do
+        (.log js/console "loop")
+        (when-let [u (clj->js (<! c))]
+          (do
+            (.log js/console u)
+            (f u)
+            (recur))))))))
+
+(defn ^:export delegate-attributes
+  [el f]
+  (let [c (get-chan el)]
+    (go (while true
+          (let [u (<! c)]
+            (.log js/console u))))))
+
 (defn alert-fn
   [el]
   (.alert js/window  (str "Hello methods from '" (.-id el) "' !")))
@@ -66,6 +90,7 @@
   (register ex-style-scope)
   (register ex-extend)
   (register ex-methods)
+  (register ex-attributes)
 
   (register lucu-range-with-threshold)
   (register lucu-overlay)

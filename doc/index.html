@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Lucuma - A Web Components library for ClojureScript</title>
-    <script src="assets/platform.min.js"></script>
+    <script src="assets/platform.js"></script>
     <script src="assets/spin.min.js"></script>
     <script src="assets/ladda.min.js"></script>
     <script src="assets/lucuma+tests.js"></script>
@@ -330,8 +330,28 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <p>
             </p>
             <div class="example-live">
-              <ex-attributes id="ex-attributes" ex-attribute="value"></ex-attributes>
-              <button onclick="document.getElementById('ex-methods').alert()">Toggle attribute</button>
+              <ex-attributes id="ex-attributes"></ex-attributes>
+              <button onclick="toggle()">Toggle attribute</button>
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                  /*
+                  lucuma.examples.delegate_attributes(document.getElementById('ex-attributes'), function(update) {
+                    console.log(update);
+                  });
+                  */
+                }, false);
+
+                function toggle() {
+                  var attribute = "attribute";
+                  var el = document.getElementById('ex-attributes');
+                  var value = el.getAttribute(attribute);
+                  if (value != null) {
+                    el.removeAttribute(attribute);
+                  } else {
+                    el.setAttribute(attribute, Math.random());
+                  }
+                }
+              </script>
             </div>
             <pre class="example-markup">
               <code class="language-markup">

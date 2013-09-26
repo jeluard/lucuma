@@ -1,5 +1,6 @@
 (ns lucuma.custom-elements
-  (:require [lucuma.shadow-dom :as sd])
+  (:require [cljs.core.async :refer [chan close! put!]]
+            [lucuma.shadow-dom :as sd])
   (:refer-clojure :exclude [methods]))
 
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
@@ -58,7 +59,7 @@
   [o]
   (if (fn? o) (o) o))
 
-(defn- initialize
+(defn- create-shadow-root!
   [e content style reset-style-inheritance apply-author-styles]
   (when (or style content)
     (let [sr (sd/create e reset-style-inheritance apply-author-styles)]
@@ -92,28 +93,33 @@
       (.shimStyling js/Platform.ShadowCSS sr n base-type)
       (.shimStyling js/Platform.ShadowCSS sr n))))
 
-(defn- initialize-and-set-callback!
+(defn get-chan
+  [el]
+  (aget el "chan"))
+
+(defn- initialize!
   [f m]
   (fn []
     (this-as
       this
       (do
-        (let [{:keys [content style reset-style-inheritance apply-author-styles]} m]
-          (initialize this content style reset-style-inheritance apply-author-styles)
+        (let [{:keys [chan-fn content style reset-style-inheritance apply-author-styles] :or {chan-fn chan}} m]
+          (aset this "chan" (chan-fn))
+          (create-shadow-root! this content style reset-style-inheritance apply-author-styles)
           (when style (install-shadow-css-shim-when-needed (.-shadowRoot this) (:name m) (:base-type m))))
-        (when f
-          (call-with-this-argument f this []))))))
+        (when f (call-with-this-argument f this []))))))
 
 (defn- attribute-changed-fn
   [el o n]
-  (.log js/console (str o " " n)))
+  (let [c (get-chan el)]
+    (put! c {:type ::attribute-changed :before o :after n})))
 
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
   (let [{:keys [base-type created-fn entered-view-fn left-view-fn methods]} m
         proto (.create js/Object (find-prototype base-type))]
-    (aset proto "createdCallback" (initialize-and-set-callback! created-fn m))
+    (aset proto "createdCallback" (initialize! created-fn m))
     (set-callback! proto "enteredViewCallback" entered-view-fn)
     (set-callback! proto "leftViewCallback" left-view-fn)
     (set-callback! proto "attributeChangedCallback" attribute-changed-fn)

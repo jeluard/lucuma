@@ -1735,42 +1735,42 @@ cljs.core._invoke = function() {
     if(a ? a.cljs$core$IFn$_invoke$arity$18 : a) {
       return a.cljs$core$IFn$_invoke$arity$18(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v)
     }
-    var u;
-    u = cljs.core._invoke[goog.typeOf(null == a ? null : a)];
-    if(!u && (u = cljs.core._invoke._, !u)) {
-      throw cljs.core.missing_protocol.call(null, "IFn.-invoke", a);
-    }
-    return u.call(null, a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v)
-  }, v = function(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u) {
-    if(a ? a.cljs$core$IFn$_invoke$arity$19 : a) {
-      return a.cljs$core$IFn$_invoke$arity$19(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u)
-    }
     var w;
     w = cljs.core._invoke[goog.typeOf(null == a ? null : a)];
     if(!w && (w = cljs.core._invoke._, !w)) {
       throw cljs.core.missing_protocol.call(null, "IFn.-invoke", a);
     }
-    return w.call(null, a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u)
-  }, B = function(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u, w) {
+    return w.call(null, a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v)
+  }, v = function(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w) {
+    if(a ? a.cljs$core$IFn$_invoke$arity$19 : a) {
+      return a.cljs$core$IFn$_invoke$arity$19(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w)
+    }
+    var u;
+    u = cljs.core._invoke[goog.typeOf(null == a ? null : a)];
+    if(!u && (u = cljs.core._invoke._, !u)) {
+      throw cljs.core.missing_protocol.call(null, "IFn.-invoke", a);
+    }
+    return u.call(null, a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w)
+  }, B = function(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w, u) {
     if(a ? a.cljs$core$IFn$_invoke$arity$20 : a) {
-      return a.cljs$core$IFn$_invoke$arity$20(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u, w)
+      return a.cljs$core$IFn$_invoke$arity$20(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w, u)
     }
     var B;
     B = cljs.core._invoke[goog.typeOf(null == a ? null : a)];
     if(!B && (B = cljs.core._invoke._, !B)) {
       throw cljs.core.missing_protocol.call(null, "IFn.-invoke", a);
     }
-    return B.call(null, a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u, w)
-  }, G = function(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u, w, B) {
+    return B.call(null, a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w, u)
+  }, G = function(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w, u, B) {
     if(a ? a.cljs$core$IFn$_invoke$arity$21 : a) {
-      return a.cljs$core$IFn$_invoke$arity$21(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u, w, B)
+      return a.cljs$core$IFn$_invoke$arity$21(a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w, u, B)
     }
     var G;
     G = cljs.core._invoke[goog.typeOf(null == a ? null : a)];
     if(!G && (G = cljs.core._invoke._, !G)) {
       throw cljs.core.missing_protocol.call(null, "IFn.-invoke", a);
     }
-    return G.call(null, a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, u, w, B)
+    return G.call(null, a, b, c, d, e, f, g, h, k, l, m, n, p, q, r, s, t, v, w, u, B)
   }, a = function(a, x, y, z, A, C, D, E, F, H, I, J, K, L, M, N, O, P, Q, S, T) {
     switch(arguments.length) {
       case 1:
@@ -3506,16 +3506,16 @@ cljs.core.with_meta = function with_meta(b, c) {
     c && (b ? (c = (c = b.cljs$lang$protocol_mask$partition0$ & 262144) ? c : b.cljs$core$IWithMeta$, c = c ? !0 : b.cljs$lang$protocol_mask$partition0$ ? !1 : cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b)) : c = cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b), c = !c);
     return c
   }() ? with_meta.call(null, function() {
-    "undefined" === typeof cljs.core.t5294 && (cljs.core.t5294 = {}, cljs.core.t5294 = function(b, c, f, g) {
+    "undefined" === typeof cljs.core.t6609 && (cljs.core.t6609 = {}, cljs.core.t6609 = function(b, c, f, g) {
       this.meta = b;
       this.o = c;
       this.with_meta = f;
-      this.meta5295 = g;
+      this.meta6610 = g;
       this.cljs$lang$protocol_mask$partition1$ = 0;
       this.cljs$lang$protocol_mask$partition0$ = 393217
-    }, cljs.core.t5294.cljs$lang$type = !0, cljs.core.t5294.cljs$lang$ctorStr = "cljs.core/t5294", cljs.core.t5294.cljs$lang$ctorPrWriter = function(b, c, f) {
-      return cljs.core._write.call(null, c, "cljs.core/t5294")
-    }, cljs.core.t5294.prototype.call = function() {
+    }, cljs.core.t6609.cljs$lang$type = !0, cljs.core.t6609.cljs$lang$ctorStr = "cljs.core/t6609", cljs.core.t6609.cljs$lang$ctorPrWriter = function(b, c, f) {
+      return cljs.core._write.call(null, c, "cljs.core/t6609")
+    }, cljs.core.t6609.prototype.call = function() {
       var b = function(b, c) {
         return cljs.core.apply.call(null, b.o, c)
       }, c = function(c, e) {
@@ -3532,17 +3532,17 @@ cljs.core.with_meta = function with_meta(b, c) {
       };
       c.cljs$core$IFn$_invoke$arity$variadic = b;
       return c
-    }(), cljs.core.t5294.prototype.apply = function(b, c) {
+    }(), cljs.core.t6609.prototype.apply = function(b, c) {
       b = this;
       return b.call.apply(b, [b].concat(c.slice()))
-    }, cljs.core.t5294.prototype.cljs$core$Fn$ = !0, cljs.core.t5294.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-      return this.meta5295
-    }, cljs.core.t5294.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-      return new cljs.core.t5294(this.meta, this.o, this.with_meta, c)
-    }, cljs.core.__GT_t5294 = function(b, c, f, g) {
-      return new cljs.core.t5294(b, c, f, g)
+    }, cljs.core.t6609.prototype.cljs$core$Fn$ = !0, cljs.core.t6609.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+      return this.meta6610
+    }, cljs.core.t6609.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+      return new cljs.core.t6609(this.meta, this.o, this.with_meta, c)
+    }, cljs.core.__GT_t6609 = function(b, c, f, g) {
+      return new cljs.core.t6609(b, c, f, g)
     });
-    return new cljs.core.t5294(c, b, with_meta, null)
+    return new cljs.core.t6609(c, b, with_meta, null)
   }(), c) : cljs.core._with_meta.call(null, b, c)
 };
 cljs.core.meta = function(a) {
@@ -13744,6 +13744,1227 @@ cljs.core.special_symbol_QMARK_ = function(a) {
   new cljs.core.Symbol(null, "recur", "recur", -1532142362, null), null, new cljs.core.Symbol(null, ".", ".", -1640531481, null), null, new cljs.core.Symbol(null, "ns", "ns", -1640528002, null), null, new cljs.core.Symbol(null, "do", "do", -1640528316, null), null, new cljs.core.Symbol(null, "fn*", "fn*", -1640430053, null), null, new cljs.core.Symbol(null, "throw", "throw", -1530191713, null), null, new cljs.core.Symbol(null, "letfn*", "letfn*", 1548249632, null), null, new cljs.core.Symbol(null, 
   "js*", "js*", -1640426054, null), null, new cljs.core.Symbol(null, "defrecord*", "defrecord*", 774272013, null), null, new cljs.core.Symbol(null, "let*", "let*", -1637213400, null), null, new cljs.core.Symbol(null, "loop*", "loop*", -1537374273, null), null, new cljs.core.Symbol(null, "if", "if", -1640528170, null), null, new cljs.core.Symbol(null, "def", "def", -1640432194, null), null], !0), a)
 };
+cljs.core.async = {};
+cljs.core.async.impl = {};
+cljs.core.async.impl.protocols = {};
+cljs.core.async.impl.protocols.MAX_QUEUE_SIZE = 1024;
+cljs.core.async.impl.protocols.ReadPort = {};
+cljs.core.async.impl.protocols.take_BANG_ = function(a, b) {
+  if(a ? a.cljs$core$async$impl$protocols$ReadPort$take_BANG_$arity$2 : a) {
+    return a.cljs$core$async$impl$protocols$ReadPort$take_BANG_$arity$2(a, b)
+  }
+  var c;
+  c = cljs.core.async.impl.protocols.take_BANG_[goog.typeOf(null == a ? null : a)];
+  if(!c && (c = cljs.core.async.impl.protocols.take_BANG_._, !c)) {
+    throw cljs.core.missing_protocol.call(null, "ReadPort.take!", a);
+  }
+  return c.call(null, a, b)
+};
+cljs.core.async.impl.protocols.WritePort = {};
+cljs.core.async.impl.protocols.put_BANG_ = function(a, b, c) {
+  if(a ? a.cljs$core$async$impl$protocols$WritePort$put_BANG_$arity$3 : a) {
+    return a.cljs$core$async$impl$protocols$WritePort$put_BANG_$arity$3(a, b, c)
+  }
+  var d;
+  d = cljs.core.async.impl.protocols.put_BANG_[goog.typeOf(null == a ? null : a)];
+  if(!d && (d = cljs.core.async.impl.protocols.put_BANG_._, !d)) {
+    throw cljs.core.missing_protocol.call(null, "WritePort.put!", a);
+  }
+  return d.call(null, a, b, c)
+};
+cljs.core.async.impl.protocols.Channel = {};
+cljs.core.async.impl.protocols.close_BANG_ = function(a) {
+  if(a ? a.cljs$core$async$impl$protocols$Channel$close_BANG_$arity$1 : a) {
+    return a.cljs$core$async$impl$protocols$Channel$close_BANG_$arity$1(a)
+  }
+  var b;
+  b = cljs.core.async.impl.protocols.close_BANG_[goog.typeOf(null == a ? null : a)];
+  if(!b && (b = cljs.core.async.impl.protocols.close_BANG_._, !b)) {
+    throw cljs.core.missing_protocol.call(null, "Channel.close!", a);
+  }
+  return b.call(null, a)
+};
+cljs.core.async.impl.protocols.Handler = {};
+cljs.core.async.impl.protocols.active_QMARK_ = function(a) {
+  if(a ? a.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 : a) {
+    return a.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1(a)
+  }
+  var b;
+  b = cljs.core.async.impl.protocols.active_QMARK_[goog.typeOf(null == a ? null : a)];
+  if(!b && (b = cljs.core.async.impl.protocols.active_QMARK_._, !b)) {
+    throw cljs.core.missing_protocol.call(null, "Handler.active?", a);
+  }
+  return b.call(null, a)
+};
+cljs.core.async.impl.protocols.commit = function(a) {
+  if(a ? a.cljs$core$async$impl$protocols$Handler$commit$arity$1 : a) {
+    return a.cljs$core$async$impl$protocols$Handler$commit$arity$1(a)
+  }
+  var b;
+  b = cljs.core.async.impl.protocols.commit[goog.typeOf(null == a ? null : a)];
+  if(!b && (b = cljs.core.async.impl.protocols.commit._, !b)) {
+    throw cljs.core.missing_protocol.call(null, "Handler.commit", a);
+  }
+  return b.call(null, a)
+};
+cljs.core.async.impl.protocols.Buffer = {};
+cljs.core.async.impl.protocols.full_QMARK_ = function(a) {
+  if(a ? a.cljs$core$async$impl$protocols$Buffer$full_QMARK_$arity$1 : a) {
+    return a.cljs$core$async$impl$protocols$Buffer$full_QMARK_$arity$1(a)
+  }
+  var b;
+  b = cljs.core.async.impl.protocols.full_QMARK_[goog.typeOf(null == a ? null : a)];
+  if(!b && (b = cljs.core.async.impl.protocols.full_QMARK_._, !b)) {
+    throw cljs.core.missing_protocol.call(null, "Buffer.full?", a);
+  }
+  return b.call(null, a)
+};
+cljs.core.async.impl.protocols.remove_BANG_ = function(a) {
+  if(a ? a.cljs$core$async$impl$protocols$Buffer$remove_BANG_$arity$1 : a) {
+    return a.cljs$core$async$impl$protocols$Buffer$remove_BANG_$arity$1(a)
+  }
+  var b;
+  b = cljs.core.async.impl.protocols.remove_BANG_[goog.typeOf(null == a ? null : a)];
+  if(!b && (b = cljs.core.async.impl.protocols.remove_BANG_._, !b)) {
+    throw cljs.core.missing_protocol.call(null, "Buffer.remove!", a);
+  }
+  return b.call(null, a)
+};
+cljs.core.async.impl.protocols.add_BANG_ = function(a, b) {
+  if(a ? a.cljs$core$async$impl$protocols$Buffer$add_BANG_$arity$2 : a) {
+    return a.cljs$core$async$impl$protocols$Buffer$add_BANG_$arity$2(a, b)
+  }
+  var c;
+  c = cljs.core.async.impl.protocols.add_BANG_[goog.typeOf(null == a ? null : a)];
+  if(!c && (c = cljs.core.async.impl.protocols.add_BANG_._, !c)) {
+    throw cljs.core.missing_protocol.call(null, "Buffer.add!", a);
+  }
+  return c.call(null, a, b)
+};
+cljs.core.async.impl.ioc_helpers = {};
+cljs.core.async.impl.ioc_helpers.FN_IDX = 0;
+cljs.core.async.impl.ioc_helpers.STATE_IDX = 1;
+cljs.core.async.impl.ioc_helpers.VALUE_IDX = 2;
+cljs.core.async.impl.ioc_helpers.BINDINGS_IDX = 3;
+cljs.core.async.impl.ioc_helpers.USER_START_IDX = 4;
+cljs.core.async.impl.ioc_helpers.aset_object = function(a, b, c) {
+  return a[b][c]
+};
+cljs.core.async.impl.ioc_helpers.aget_object = function(a, b) {
+  return a[b]
+};
+cljs.core.async.impl.ioc_helpers.finished_QMARK_ = function(a) {
+  return a[cljs.core.async.impl.ioc_helpers.STATE_IDX] === new cljs.core.Keyword(null, "finished", "finished", 4635210724)
+};
+cljs.core.async.impl.ioc_helpers.fn_handler = function fn_handler(b) {
+  "undefined" === typeof cljs.core.async.impl.ioc_helpers.t7447 && (cljs.core.async.impl.ioc_helpers.t7447 = {}, cljs.core.async.impl.ioc_helpers.t7447 = function(b, d, e) {
+    this.f = b;
+    this.fn_handler = d;
+    this.meta7448 = e;
+    this.cljs$lang$protocol_mask$partition1$ = 0;
+    this.cljs$lang$protocol_mask$partition0$ = 393216
+  }, cljs.core.async.impl.ioc_helpers.t7447.cljs$lang$type = !0, cljs.core.async.impl.ioc_helpers.t7447.cljs$lang$ctorStr = "cljs.core.async.impl.ioc-helpers/t7447", cljs.core.async.impl.ioc_helpers.t7447.cljs$lang$ctorPrWriter = function(b, d, e) {
+    return cljs.core._write.call(null, d, "cljs.core.async.impl.ioc-helpers/t7447")
+  }, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
+    return!0
+  }, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
+    return this.f
+  }, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7448
+  }, cljs.core.async.impl.ioc_helpers.t7447.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
+    return new cljs.core.async.impl.ioc_helpers.t7447(this.f, this.fn_handler, d)
+  }, cljs.core.async.impl.ioc_helpers.__GT_t7447 = function(b, d, e) {
+    return new cljs.core.async.impl.ioc_helpers.t7447(b, d, e)
+  });
+  return new cljs.core.async.impl.ioc_helpers.t7447(b, fn_handler, null)
+};
+cljs.core.async.impl.ioc_helpers.run_state_machine = function(a) {
+  return cljs.core.async.impl.ioc_helpers.aget_object.call(null, a, cljs.core.async.impl.ioc_helpers.FN_IDX).call(null, a)
+};
+cljs.core.async.impl.ioc_helpers.run_state_machine_wrapped = function(a) {
+  try {
+    return cljs.core.async.impl.ioc_helpers.run_state_machine.call(null, a)
+  }catch(b) {
+    if(b instanceof Object) {
+      throw cljs.core.async.impl.protocols.close_BANG_.call(null, cljs.core.async.impl.ioc_helpers.aget_object.call(null, a, cljs.core.async.impl.ioc_helpers.USER_START_IDX)), b;
+    }
+    if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+      throw b;
+    }
+    return null
+  }
+};
+cljs.core.async.impl.ioc_helpers.take_BANG_ = function(a, b, c) {
+  c = cljs.core.async.impl.protocols.take_BANG_.call(null, c, cljs.core.async.impl.ioc_helpers.fn_handler.call(null, function(c) {
+    a[cljs.core.async.impl.ioc_helpers.VALUE_IDX] = c;
+    a[cljs.core.async.impl.ioc_helpers.STATE_IDX] = b;
+    return cljs.core.async.impl.ioc_helpers.run_state_machine_wrapped.call(null, a)
+  }));
+  return cljs.core.truth_(c) ? (a[cljs.core.async.impl.ioc_helpers.VALUE_IDX] = cljs.core.deref.call(null, c), a[cljs.core.async.impl.ioc_helpers.STATE_IDX] = b, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : null
+};
+cljs.core.async.impl.ioc_helpers.put_BANG_ = function(a, b, c, d) {
+  c = cljs.core.async.impl.protocols.put_BANG_.call(null, c, d, cljs.core.async.impl.ioc_helpers.fn_handler.call(null, function() {
+    a[cljs.core.async.impl.ioc_helpers.VALUE_IDX] = null;
+    a[cljs.core.async.impl.ioc_helpers.STATE_IDX] = b;
+    return cljs.core.async.impl.ioc_helpers.run_state_machine_wrapped.call(null, a)
+  }));
+  return cljs.core.truth_(c) ? (a[cljs.core.async.impl.ioc_helpers.VALUE_IDX] = cljs.core.deref.call(null, c), a[cljs.core.async.impl.ioc_helpers.STATE_IDX] = b, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : null
+};
+cljs.core.async.impl.ioc_helpers.ioc_alts_BANG_ = function() {
+  var a = function(a, b, e, f) {
+    f = cljs.core.seq_QMARK_.call(null, f) ? cljs.core.apply.call(null, cljs.core.hash_map, f) : f;
+    a[cljs.core.async.impl.ioc_helpers.STATE_IDX] = b;
+    b = cljs.core.async.do_alts.call(null, function(b) {
+      a[cljs.core.async.impl.ioc_helpers.VALUE_IDX] = b;
+      return cljs.core.async.impl.ioc_helpers.run_state_machine_wrapped.call(null, a)
+    }, e, f);
+    return cljs.core.truth_(b) ? (a[cljs.core.async.impl.ioc_helpers.VALUE_IDX] = cljs.core.deref.call(null, b), new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : null
+  }, b = function(b, d, e, f) {
+    var g = null;
+    3 < arguments.length && (g = cljs.core.array_seq(Array.prototype.slice.call(arguments, 3), 0));
+    return a.call(this, b, d, e, g)
+  };
+  b.cljs$lang$maxFixedArity = 3;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b);
+    b = cljs.core.next(b);
+    var e = cljs.core.first(b);
+    b = cljs.core.next(b);
+    var f = cljs.core.first(b);
+    b = cljs.core.rest(b);
+    return a(d, e, f, b)
+  };
+  b.cljs$core$IFn$_invoke$arity$variadic = a;
+  return b
+}();
+cljs.core.async.impl.ioc_helpers.return_chan = function(a, b) {
+  var c = a[cljs.core.async.impl.ioc_helpers.USER_START_IDX];
+  null != b && cljs.core.async.impl.protocols.put_BANG_.call(null, c, b, cljs.core.async.impl.ioc_helpers.fn_handler.call(null, function() {
+    return null
+  }));
+  cljs.core.async.impl.protocols.close_BANG_.call(null, c);
+  return c
+};
+cljs.core.async.impl.buffers = {};
+cljs.core.async.impl.buffers.acopy = function(a, b, c, d, e) {
+  for(var f = 0;;) {
+    if(f < e) {
+      c[d + f] = a[b + f], f += 1
+    }else {
+      return null
+    }
+  }
+};
+cljs.core.async.impl.buffers.RingBuffer = function(a, b, c, d) {
+  this.head = a;
+  this.tail = b;
+  this.length = c;
+  this.arr = d
+};
+cljs.core.async.impl.buffers.RingBuffer.cljs$lang$type = !0;
+cljs.core.async.impl.buffers.RingBuffer.cljs$lang$ctorStr = "cljs.core.async.impl.buffers/RingBuffer";
+cljs.core.async.impl.buffers.RingBuffer.cljs$lang$ctorPrWriter = function(a, b, c) {
+  return cljs.core._write.call(null, b, "cljs.core.async.impl.buffers/RingBuffer")
+};
+cljs.core.async.impl.buffers.RingBuffer.prototype.pop = function() {
+  if(0 === this.length) {
+    return null
+  }
+  var a = this.arr[this.tail];
+  this.arr[this.tail] = null;
+  this.tail = (this.tail + 1) % this.arr.length;
+  this.length -= 1;
+  return a
+};
+cljs.core.async.impl.buffers.RingBuffer.prototype.unshift = function(a) {
+  this.arr[this.head] = a;
+  this.head = (this.head + 1) % this.arr.length;
+  this.length += 1;
+  return null
+};
+cljs.core.async.impl.buffers.RingBuffer.prototype.unbounded_unshift = function(a) {
+  this.length + 1 === this.arr.length && this.resize();
+  return this.unshift(a)
+};
+cljs.core.async.impl.buffers.RingBuffer.prototype.resize = function() {
+  var a = Array(2 * this.arr.length);
+  return this.tail < this.head ? (cljs.core.async.impl.buffers.acopy.call(null, this.arr, this.tail, a, 0, this.length), this.tail = 0, this.head = this.length, this.arr = a) : this.tail > this.head ? (cljs.core.async.impl.buffers.acopy.call(null, this.arr, this.tail, a, 0, this.arr.length - this.tail), cljs.core.async.impl.buffers.acopy.call(null, this.arr, 0, a, this.arr.length - this.tail, this.head), this.tail = 0, this.head = this.length, this.arr = a) : this.tail === this.head ? (this.head = 
+  this.tail = 0, this.arr = a) : null
+};
+cljs.core.async.impl.buffers.RingBuffer.prototype.cleanup = function(a) {
+  for(var b = this.length, c = 0;;) {
+    if(c < b) {
+      var d = this.pop();
+      a.call(null, d) && this.unshift(d);
+      c += 1
+    }else {
+      return null
+    }
+  }
+};
+cljs.core.async.impl.buffers.__GT_RingBuffer = function(a, b, c, d) {
+  return new cljs.core.async.impl.buffers.RingBuffer(a, b, c, d)
+};
+cljs.core.async.impl.buffers.ring_buffer = function(a) {
+  if(!(0 < a)) {
+    throw Error([cljs.core.str("Assert failed: "), cljs.core.str("Can't create a ring buffer of size 0"), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "\x3e", "\x3e", -1640531465, null), new cljs.core.Symbol(null, "n", "n", -1640531417, null), 0)))].join(""));
+  }
+  return new cljs.core.async.impl.buffers.RingBuffer(0, 0, 0, Array(a))
+};
+cljs.core.async.impl.buffers.FixedBuffer = function(a, b) {
+  this.buf = a;
+  this.n = b;
+  this.cljs$lang$protocol_mask$partition1$ = 0;
+  this.cljs$lang$protocol_mask$partition0$ = 2
+};
+cljs.core.async.impl.buffers.FixedBuffer.cljs$lang$type = !0;
+cljs.core.async.impl.buffers.FixedBuffer.cljs$lang$ctorStr = "cljs.core.async.impl.buffers/FixedBuffer";
+cljs.core.async.impl.buffers.FixedBuffer.cljs$lang$ctorPrWriter = function(a, b, c) {
+  return cljs.core._write.call(null, b, "cljs.core.async.impl.buffers/FixedBuffer")
+};
+cljs.core.async.impl.buffers.FixedBuffer.prototype.cljs$core$ICounted$_count$arity$1 = function(a) {
+  return this.buf.length
+};
+cljs.core.async.impl.buffers.FixedBuffer.prototype.cljs$core$async$impl$protocols$Buffer$ = !0;
+cljs.core.async.impl.buffers.FixedBuffer.prototype.cljs$core$async$impl$protocols$Buffer$full_QMARK_$arity$1 = function(a) {
+  return this.buf.length === this.n
+};
+cljs.core.async.impl.buffers.FixedBuffer.prototype.cljs$core$async$impl$protocols$Buffer$remove_BANG_$arity$1 = function(a) {
+  return this.buf.pop()
+};
+cljs.core.async.impl.buffers.FixedBuffer.prototype.cljs$core$async$impl$protocols$Buffer$add_BANG_$arity$2 = function(a, b) {
+  if(!cljs.core.not.call(null, a.cljs$core$async$impl$protocols$Buffer$full_QMARK_$arity$1(a))) {
+    throw Error([cljs.core.str("Assert failed: "), cljs.core.str("Can't add to a full buffer"), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol("impl", "full?", "impl/full?", -1337857039, null), new cljs.core.Symbol(null, "this", "this", -1636972457, null)))))].join(""));
+  }
+  return this.buf.unshift(b)
+};
+cljs.core.async.impl.buffers.__GT_FixedBuffer = function(a, b) {
+  return new cljs.core.async.impl.buffers.FixedBuffer(a, b)
+};
+cljs.core.async.impl.buffers.fixed_buffer = function(a) {
+  return new cljs.core.async.impl.buffers.FixedBuffer(cljs.core.async.impl.buffers.ring_buffer.call(null, a), a)
+};
+cljs.core.async.impl.buffers.DroppingBuffer = function(a, b) {
+  this.buf = a;
+  this.n = b;
+  this.cljs$lang$protocol_mask$partition1$ = 0;
+  this.cljs$lang$protocol_mask$partition0$ = 2
+};
+cljs.core.async.impl.buffers.DroppingBuffer.cljs$lang$type = !0;
+cljs.core.async.impl.buffers.DroppingBuffer.cljs$lang$ctorStr = "cljs.core.async.impl.buffers/DroppingBuffer";
+cljs.core.async.impl.buffers.DroppingBuffer.cljs$lang$ctorPrWriter = function(a, b, c) {
+  return cljs.core._write.call(null, b, "cljs.core.async.impl.buffers/DroppingBuffer")
+};
+cljs.core.async.impl.buffers.DroppingBuffer.prototype.cljs$core$ICounted$_count$arity$1 = function(a) {
+  return this.buf.length
+};
+cljs.core.async.impl.buffers.DroppingBuffer.prototype.cljs$core$async$impl$protocols$Buffer$ = !0;
+cljs.core.async.impl.buffers.DroppingBuffer.prototype.cljs$core$async$impl$protocols$Buffer$full_QMARK_$arity$1 = function(a) {
+  return!1
+};
+cljs.core.async.impl.buffers.DroppingBuffer.prototype.cljs$core$async$impl$protocols$Buffer$remove_BANG_$arity$1 = function(a) {
+  return this.buf.pop()
+};
+cljs.core.async.impl.buffers.DroppingBuffer.prototype.cljs$core$async$impl$protocols$Buffer$add_BANG_$arity$2 = function(a, b) {
+  return this.buf.length === this.n ? null : this.buf.unshift(b)
+};
+cljs.core.async.impl.buffers.__GT_DroppingBuffer = function(a, b) {
+  return new cljs.core.async.impl.buffers.DroppingBuffer(a, b)
+};
+cljs.core.async.impl.buffers.dropping_buffer = function(a) {
+  return new cljs.core.async.impl.buffers.DroppingBuffer(cljs.core.async.impl.buffers.ring_buffer.call(null, a), a)
+};
+cljs.core.async.impl.buffers.SlidingBuffer = function(a, b) {
+  this.buf = a;
+  this.n = b;
+  this.cljs$lang$protocol_mask$partition1$ = 0;
+  this.cljs$lang$protocol_mask$partition0$ = 2
+};
+cljs.core.async.impl.buffers.SlidingBuffer.cljs$lang$type = !0;
+cljs.core.async.impl.buffers.SlidingBuffer.cljs$lang$ctorStr = "cljs.core.async.impl.buffers/SlidingBuffer";
+cljs.core.async.impl.buffers.SlidingBuffer.cljs$lang$ctorPrWriter = function(a, b, c) {
+  return cljs.core._write.call(null, b, "cljs.core.async.impl.buffers/SlidingBuffer")
+};
+cljs.core.async.impl.buffers.SlidingBuffer.prototype.cljs$core$ICounted$_count$arity$1 = function(a) {
+  return this.buf.length
+};
+cljs.core.async.impl.buffers.SlidingBuffer.prototype.cljs$core$async$impl$protocols$Buffer$ = !0;
+cljs.core.async.impl.buffers.SlidingBuffer.prototype.cljs$core$async$impl$protocols$Buffer$full_QMARK_$arity$1 = function(a) {
+  return!1
+};
+cljs.core.async.impl.buffers.SlidingBuffer.prototype.cljs$core$async$impl$protocols$Buffer$remove_BANG_$arity$1 = function(a) {
+  return this.buf.pop()
+};
+cljs.core.async.impl.buffers.SlidingBuffer.prototype.cljs$core$async$impl$protocols$Buffer$add_BANG_$arity$2 = function(a, b) {
+  this.buf.length === this.n && a.cljs$core$async$impl$protocols$Buffer$remove_BANG_$arity$1(a);
+  return this.buf.unshift(b)
+};
+cljs.core.async.impl.buffers.__GT_SlidingBuffer = function(a, b) {
+  return new cljs.core.async.impl.buffers.SlidingBuffer(a, b)
+};
+cljs.core.async.impl.buffers.sliding_buffer = function(a) {
+  return new cljs.core.async.impl.buffers.SlidingBuffer(cljs.core.async.impl.buffers.ring_buffer.call(null, a), a)
+};
+cljs.core.async.impl.dispatch = {};
+cljs.core.async.impl.dispatch.message_channel = null;
+cljs.core.async.impl.dispatch.tasks = cljs.core.async.impl.buffers.ring_buffer.call(null, 32);
+cljs.core.async.impl.dispatch.running_QMARK_ = !1;
+cljs.core.async.impl.dispatch.queued_QMARK_ = !1;
+cljs.core.async.impl.dispatch.TASK_BATCH_SIZE = 1024;
+cljs.core.async.impl.dispatch.process_messages = function() {
+  cljs.core.async.impl.dispatch.running_QMARK_ = !0;
+  cljs.core.async.impl.dispatch.queued_QMARK_ = !1;
+  for(var a = 0;;) {
+    var b = cljs.core.async.impl.dispatch.tasks.pop();
+    if(null != b && (b.call(null), a < cljs.core.async.impl.dispatch.TASK_BATCH_SIZE)) {
+      a += 1;
+      continue
+    }
+    break
+  }
+  cljs.core.async.impl.dispatch.running_QMARK_ = !1;
+  return 0 < cljs.core.async.impl.dispatch.tasks.length ? cljs.core.async.impl.dispatch.queue_dispatcher.call(null) : null
+};
+"undefined" !== typeof MessageChannel && (cljs.core.async.impl.dispatch.message_channel = new MessageChannel, cljs.core.async.impl.dispatch.message_channel.port1.onmessage = function(a) {
+  return cljs.core.async.impl.dispatch.process_messages.call(null)
+});
+cljs.core.async.impl.dispatch.queue_dispatcher = function() {
+  if(cljs.core.truth_(function() {
+    var a = cljs.core.async.impl.dispatch.queued_QMARK_;
+    return cljs.core.truth_(a) ? cljs.core.async.impl.dispatch.running_QMARK_ : a
+  }())) {
+    return null
+  }
+  cljs.core.async.impl.dispatch.queued_QMARK_ = !0;
+  return"undefined" !== typeof MessageChannel ? cljs.core.async.impl.dispatch.message_channel.port2.postMessage(0) : "undefined" !== typeof setImmediate ? setImmediate(cljs.core.async.impl.dispatch.process_messages) : new cljs.core.Keyword(null, "else", "else", 1017020587) ? setTimeout(cljs.core.async.impl.dispatch.process_messages, 0) : null
+};
+cljs.core.async.impl.dispatch.run = function(a) {
+  cljs.core.async.impl.dispatch.tasks.unbounded_unshift(a);
+  return cljs.core.async.impl.dispatch.queue_dispatcher.call(null)
+};
+cljs.core.async.impl.dispatch.queue_delay = function(a, b) {
+  return setTimeout(a, b)
+};
+cljs.core.async.impl.channels = {};
+cljs.core.async.impl.channels.box = function box(b) {
+  "undefined" === typeof cljs.core.async.impl.channels.t7436 && (cljs.core.async.impl.channels.t7436 = {}, cljs.core.async.impl.channels.t7436 = function(b, d, e) {
+    this.val = b;
+    this.box = d;
+    this.meta7437 = e;
+    this.cljs$lang$protocol_mask$partition1$ = 0;
+    this.cljs$lang$protocol_mask$partition0$ = 425984
+  }, cljs.core.async.impl.channels.t7436.cljs$lang$type = !0, cljs.core.async.impl.channels.t7436.cljs$lang$ctorStr = "cljs.core.async.impl.channels/t7436", cljs.core.async.impl.channels.t7436.cljs$lang$ctorPrWriter = function(b, d, e) {
+    return cljs.core._write.call(null, d, "cljs.core.async.impl.channels/t7436")
+  }, cljs.core.async.impl.channels.t7436.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
+    return this.val
+  }, cljs.core.async.impl.channels.t7436.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7437
+  }, cljs.core.async.impl.channels.t7436.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
+    return new cljs.core.async.impl.channels.t7436(this.val, this.box, d)
+  }, cljs.core.async.impl.channels.__GT_t7436 = function(b, d, e) {
+    return new cljs.core.async.impl.channels.t7436(b, d, e)
+  });
+  return new cljs.core.async.impl.channels.t7436(b, box, null)
+};
+cljs.core.async.impl.channels.PutBox = function(a, b) {
+  this.handler = a;
+  this.val = b
+};
+cljs.core.async.impl.channels.PutBox.cljs$lang$type = !0;
+cljs.core.async.impl.channels.PutBox.cljs$lang$ctorStr = "cljs.core.async.impl.channels/PutBox";
+cljs.core.async.impl.channels.PutBox.cljs$lang$ctorPrWriter = function(a, b, c) {
+  return cljs.core._write.call(null, b, "cljs.core.async.impl.channels/PutBox")
+};
+cljs.core.async.impl.channels.__GT_PutBox = function(a, b) {
+  return new cljs.core.async.impl.channels.PutBox(a, b)
+};
+cljs.core.async.impl.channels.put_active_QMARK_ = function(a) {
+  return cljs.core.async.impl.protocols.active_QMARK_.call(null, a.handler)
+};
+cljs.core.async.impl.channels.MAX_DIRTY = 64;
+cljs.core.async.impl.channels.ManyToManyChannel = function(a, b, c, d, e, f) {
+  this.takes = a;
+  this.dirty_takes = b;
+  this.puts = c;
+  this.dirty_puts = d;
+  this.buf = e;
+  this.closed = f
+};
+cljs.core.async.impl.channels.ManyToManyChannel.cljs$lang$type = !0;
+cljs.core.async.impl.channels.ManyToManyChannel.cljs$lang$ctorStr = "cljs.core.async.impl.channels/ManyToManyChannel";
+cljs.core.async.impl.channels.ManyToManyChannel.cljs$lang$ctorPrWriter = function(a, b, c) {
+  return cljs.core._write.call(null, b, "cljs.core.async.impl.channels/ManyToManyChannel")
+};
+cljs.core.async.impl.channels.ManyToManyChannel.prototype.cljs$core$async$impl$protocols$Channel$ = !0;
+cljs.core.async.impl.channels.ManyToManyChannel.prototype.cljs$core$async$impl$protocols$Channel$close_BANG_$arity$1 = function(a) {
+  if(!this.closed) {
+    for(this.closed = !0;;) {
+      if(a = this.takes.pop(), null != a) {
+        if(cljs.core.async.impl.protocols.active_QMARK_.call(null, a)) {
+          var b = cljs.core.async.impl.protocols.commit.call(null, a);
+          cljs.core.async.impl.dispatch.run.call(null, function(a, b) {
+            return function() {
+              return a.call(null, null)
+            }
+          }(b, a))
+        }
+      }else {
+        break
+      }
+    }
+  }
+  return null
+};
+cljs.core.async.impl.channels.ManyToManyChannel.prototype.cljs$core$async$impl$protocols$ReadPort$ = !0;
+cljs.core.async.impl.channels.ManyToManyChannel.prototype.cljs$core$async$impl$protocols$ReadPort$take_BANG_$arity$2 = function(a, b) {
+  if(cljs.core.async.impl.protocols.active_QMARK_.call(null, b)) {
+    var c;
+    c = (c = null != this.buf) ? 0 < cljs.core.count.call(null, this.buf) : c;
+    if(c) {
+      return cljs.core.async.impl.protocols.commit.call(null, b), cljs.core.async.impl.channels.box.call(null, cljs.core.async.impl.protocols.remove_BANG_.call(null, this.buf))
+    }
+    for(;;) {
+      var d = this.puts.pop();
+      if(null != d) {
+        if(c = d.handler, d = d.val, cljs.core.async.impl.protocols.active_QMARK_.call(null, c)) {
+          return c = cljs.core.async.impl.protocols.commit.call(null, c), cljs.core.async.impl.protocols.commit.call(null, b), cljs.core.async.impl.dispatch.run.call(null, c), cljs.core.async.impl.channels.box.call(null, d)
+        }
+      }else {
+        if(this.closed) {
+          return cljs.core.async.impl.protocols.commit.call(null, b), cljs.core.async.impl.channels.box.call(null, null)
+        }
+        this.dirty_takes > cljs.core.async.impl.channels.MAX_DIRTY ? (this.dirty_takes = 0, this.takes.cleanup(cljs.core.async.impl.protocols.active_QMARK_)) : this.dirty_takes += 1;
+        if(!(this.takes.length < cljs.core.async.impl.protocols.MAX_QUEUE_SIZE)) {
+          throw Error([cljs.core.str("Assert failed: "), cljs.core.str([cljs.core.str("No more than "), cljs.core.str(cljs.core.async.impl.protocols.MAX_QUEUE_SIZE), cljs.core.str(" pending takes are allowed on a single channel.")].join("")), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "\x3c", "\x3c", -1640531467, null), cljs.core.list(new cljs.core.Symbol(null, ".-length", ".-length", 1395928862, null), new cljs.core.Symbol(null, "takes", 
+          "takes", -1530407291, null)), new cljs.core.Symbol("impl", "MAX-QUEUE-SIZE", "impl/MAX-QUEUE-SIZE", -1989946393, null))))].join(""));
+        }
+        this.takes.unbounded_unshift(b);
+        return null
+      }
+    }
+  }else {
+    return null
+  }
+};
+cljs.core.async.impl.channels.ManyToManyChannel.prototype.cljs$core$async$impl$protocols$WritePort$ = !0;
+cljs.core.async.impl.channels.ManyToManyChannel.prototype.cljs$core$async$impl$protocols$WritePort$put_BANG_$arity$3 = function(a, b, c) {
+  var d = this;
+  if(null == b) {
+    throw Error([cljs.core.str("Assert failed: "), cljs.core.str("Can't put nil in on a channel"), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "not", "not", -1640422260, null), cljs.core.list(new cljs.core.Symbol(null, "nil?", "nil?", -1637150201, null), new cljs.core.Symbol(null, "val", "val", -1640415014, null)))))].join(""));
+  }
+  if((a = d.closed) ? a : !cljs.core.async.impl.protocols.active_QMARK_.call(null, c)) {
+    return cljs.core.async.impl.channels.box.call(null, null)
+  }
+  for(;;) {
+    if(a = d.takes.pop(), null != a) {
+      if(cljs.core.async.impl.protocols.active_QMARK_.call(null, a)) {
+        var e = cljs.core.async.impl.protocols.commit.call(null, a);
+        c = cljs.core.async.impl.protocols.commit.call(null, c);
+        cljs.core.async.impl.dispatch.run.call(null, function(a, c, d) {
+          return function() {
+            return a.call(null, b)
+          }
+        }(e, c, a));
+        return cljs.core.async.impl.channels.box.call(null, null)
+      }
+    }else {
+      if(function() {
+        var a = null == d.buf;
+        return a ? a : cljs.core.async.impl.protocols.full_QMARK_.call(null, d.buf)
+      }()) {
+        d.dirty_puts > cljs.core.async.impl.channels.MAX_DIRTY ? (d.dirty_puts = 0, d.puts.cleanup(cljs.core.async.impl.channels.put_active_QMARK_)) : d.dirty_puts += 1;
+        if(!(d.puts.length < cljs.core.async.impl.protocols.MAX_QUEUE_SIZE)) {
+          throw Error([cljs.core.str("Assert failed: "), cljs.core.str([cljs.core.str("No more than "), cljs.core.str(cljs.core.async.impl.protocols.MAX_QUEUE_SIZE), cljs.core.str(" pending puts are allowed on a single channel."), cljs.core.str(" Consider using a windowed buffer.")].join("")), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "\x3c", "\x3c", -1640531467, null), cljs.core.list(new cljs.core.Symbol(null, ".-length", ".-length", 
+          1395928862, null), new cljs.core.Symbol(null, "puts", "puts", -1637078787, null)), new cljs.core.Symbol("impl", "MAX-QUEUE-SIZE", "impl/MAX-QUEUE-SIZE", -1989946393, null))))].join(""));
+        }
+        d.puts.unbounded_unshift(new cljs.core.async.impl.channels.PutBox(c, b));
+        return null
+      }
+      c = cljs.core.async.impl.protocols.commit.call(null, c);
+      cljs.core.async.impl.protocols.add_BANG_.call(null, d.buf, b);
+      return cljs.core.async.impl.channels.box.call(null, null)
+    }
+  }
+};
+cljs.core.async.impl.channels.__GT_ManyToManyChannel = function(a, b, c, d, e, f) {
+  return new cljs.core.async.impl.channels.ManyToManyChannel(a, b, c, d, e, f)
+};
+cljs.core.async.impl.channels.chan = function(a) {
+  return new cljs.core.async.impl.channels.ManyToManyChannel(cljs.core.async.impl.buffers.ring_buffer.call(null, 32), 0, cljs.core.async.impl.buffers.ring_buffer.call(null, 32), 0, a, null)
+};
+cljs.core.async.impl.timers = {};
+cljs.core.async.impl.timers.MAX_LEVEL = 15;
+cljs.core.async.impl.timers.P = 0.5;
+cljs.core.async.impl.timers.random_level = function() {
+  var a = null, b = function() {
+    return a.call(null, 0)
+  }, c = function(a) {
+    for(;;) {
+      var b;
+      b = (b = Math.random() < cljs.core.async.impl.timers.P) ? a < cljs.core.async.impl.timers.MAX_LEVEL : b;
+      if(b) {
+        a += 1
+      }else {
+        return a
+      }
+    }
+  }, a = function(a) {
+    switch(arguments.length) {
+      case 0:
+        return b.call(this);
+      case 1:
+        return c.call(this, a)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$0 = b;
+  a.cljs$core$IFn$_invoke$arity$1 = c;
+  return a
+}();
+cljs.core.async.impl.timers.SkipListNode = function(a, b, c) {
+  this.key = a;
+  this.val = b;
+  this.forward = c;
+  this.cljs$lang$protocol_mask$partition1$ = 0;
+  this.cljs$lang$protocol_mask$partition0$ = 2155872256
+};
+cljs.core.async.impl.timers.SkipListNode.cljs$lang$type = !0;
+cljs.core.async.impl.timers.SkipListNode.cljs$lang$ctorStr = "cljs.core.async.impl.timers/SkipListNode";
+cljs.core.async.impl.timers.SkipListNode.cljs$lang$ctorPrWriter = function(a, b, c) {
+  return cljs.core._write.call(null, b, "cljs.core.async.impl.timers/SkipListNode")
+};
+cljs.core.async.impl.timers.SkipListNode.prototype.cljs$core$IPrintWithWriter$_pr_writer$arity$3 = function(a, b, c) {
+  return cljs.core.pr_sequential_writer.call(null, b, cljs.core.pr_writer, "[", " ", "]", c, a)
+};
+cljs.core.async.impl.timers.SkipListNode.prototype.cljs$core$ISeqable$_seq$arity$1 = function(a) {
+  return cljs.core.list.call(null, this.key, this.val)
+};
+cljs.core.async.impl.timers.__GT_SkipListNode = function(a, b, c) {
+  return new cljs.core.async.impl.timers.SkipListNode(a, b, c)
+};
+cljs.core.async.impl.timers.skip_list_node = function() {
+  var a = null, b = function(b) {
+    return a.call(null, null, null, b)
+  }, c = function(a, b, c) {
+    c = Array(c + 1);
+    for(var g = 0;;) {
+      if(g < c.length) {
+        c[g] = null, g += 1
+      }else {
+        break
+      }
+    }
+    return new cljs.core.async.impl.timers.SkipListNode(a, b, c)
+  }, a = function(a, e, f) {
+    switch(arguments.length) {
+      case 1:
+        return b.call(this, a);
+      case 3:
+        return c.call(this, a, e, f)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$1 = b;
+  a.cljs$core$IFn$_invoke$arity$3 = c;
+  return a
+}();
+cljs.core.async.impl.timers.least_greater_node = function() {
+  var a = null, b = function(b, c, f) {
+    return a.call(null, b, c, f, null)
+  }, c = function(a, b, c, g) {
+    for(;;) {
+      if(0 > c) {
+        return a
+      }
+      a: {
+        for(;;) {
+          var h = a.forward[c];
+          if(cljs.core.truth_(h)) {
+            if(h.key < b) {
+              a = h
+            }else {
+              break a
+            }
+          }else {
+            break a
+          }
+        }
+        a = void 0
+      }
+      null != g && (g[c] = a);
+      c -= 1
+    }
+  }, a = function(a, e, f, g) {
+    switch(arguments.length) {
+      case 3:
+        return b.call(this, a, e, f);
+      case 4:
+        return c.call(this, a, e, f, g)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$3 = b;
+  a.cljs$core$IFn$_invoke$arity$4 = c;
+  return a
+}();
+cljs.core.async.impl.timers.SkipList = function(a, b) {
+  this.header = a;
+  this.level = b;
+  this.cljs$lang$protocol_mask$partition1$ = 0;
+  this.cljs$lang$protocol_mask$partition0$ = 2155872256
+};
+cljs.core.async.impl.timers.SkipList.cljs$lang$type = !0;
+cljs.core.async.impl.timers.SkipList.cljs$lang$ctorStr = "cljs.core.async.impl.timers/SkipList";
+cljs.core.async.impl.timers.SkipList.cljs$lang$ctorPrWriter = function(a, b, c) {
+  return cljs.core._write.call(null, b, "cljs.core.async.impl.timers/SkipList")
+};
+cljs.core.async.impl.timers.SkipList.prototype.cljs$core$IPrintWithWriter$_pr_writer$arity$3 = function(a, b, c) {
+  return cljs.core.pr_sequential_writer.call(null, b, function(a) {
+    return cljs.core.pr_sequential_writer.call(null, b, cljs.core.pr_writer, "", " ", "", c, a)
+  }, "{", ", ", "}", c, a)
+};
+cljs.core.async.impl.timers.SkipList.prototype.cljs$core$ISeqable$_seq$arity$1 = function(a) {
+  return function c(a) {
+    return new cljs.core.LazySeq(null, !1, function() {
+      return null == a ? null : cljs.core.cons.call(null, cljs.core.PersistentVector.fromArray([a.key, a.val], !0), c.call(null, a.forward[0]))
+    }, null)
+  }.call(null, this.header.forward[0])
+};
+cljs.core.async.impl.timers.SkipList.prototype.put = function(a, b) {
+  var c = Array(cljs.core.async.impl.timers.MAX_LEVEL), d = cljs.core.async.impl.timers.least_greater_node.call(null, this.header, a, this.level, c).forward[0], e;
+  e = (e = null != d) ? d.key === a : e;
+  if(e) {
+    return d.val = b
+  }
+  d = cljs.core.async.impl.timers.random_level.call(null);
+  if(d > this.level) {
+    for(e = this.level + 1;;) {
+      if(e <= d + 1) {
+        c[e] = this.header, e += 1
+      }else {
+        break
+      }
+    }
+    this.level = d
+  }
+  for(d = cljs.core.async.impl.timers.skip_list_node.call(null, a, b, Array(d));;) {
+    return 0 <= this.level ? (c = c[0].forward, d.forward[0] = c[0], c[0] = d) : null
+  }
+};
+cljs.core.async.impl.timers.SkipList.prototype.remove = function(a) {
+  var b = this, c = Array(cljs.core.async.impl.timers.MAX_LEVEL), d = cljs.core.async.impl.timers.least_greater_node.call(null, b.header, a, b.level, c).forward[0];
+  if(function() {
+    var b = null != d;
+    return b ? d.key === a : b
+  }()) {
+    for(var e = 0;;) {
+      if(e <= b.level) {
+        var f = c[e].forward;
+        f[e] === d && (f[e] = d.forward[e]);
+        e += 1
+      }else {
+        break
+      }
+    }
+    for(;;) {
+      if(function() {
+        var a = 0 < b.level;
+        return a ? null == b.header.forward[b.level] : a
+      }()) {
+        b.level -= 1
+      }else {
+        return null
+      }
+    }
+  }else {
+    return null
+  }
+};
+cljs.core.async.impl.timers.SkipList.prototype.ceilingEntry = function(a) {
+  for(var b = this.header, c = this.level;;) {
+    if(0 > c) {
+      return b === this.header ? null : b
+    }
+    var d;
+    a: {
+      for(d = b;;) {
+        if(d = d.forward[c], null == d) {
+          d = null;
+          break a
+        }else {
+          if(d.key >= a) {
+            break a
+          }
+        }
+      }
+      d = void 0
+    }
+    null != d ? (c -= 1, b = d) : c -= 1
+  }
+};
+cljs.core.async.impl.timers.SkipList.prototype.floorEntry = function(a) {
+  for(var b = this.header, c = this.level;;) {
+    if(0 > c) {
+      return b === this.header ? null : b
+    }
+    var d;
+    a: {
+      for(d = b;;) {
+        var e = d.forward[c];
+        if(null != e) {
+          if(e.key > a) {
+            break a
+          }
+          d = e
+        }else {
+          d = 0 === c ? d : null;
+          break a
+        }
+      }
+      d = void 0
+    }
+    cljs.core.truth_(d) ? (c -= 1, b = d) : c -= 1
+  }
+};
+cljs.core.async.impl.timers.__GT_SkipList = function(a, b) {
+  return new cljs.core.async.impl.timers.SkipList(a, b)
+};
+cljs.core.async.impl.timers.skip_list = function() {
+  return new cljs.core.async.impl.timers.SkipList(cljs.core.async.impl.timers.skip_list_node.call(null, 0), 0)
+};
+cljs.core.async.impl.timers.timeouts_map = cljs.core.async.impl.timers.skip_list.call(null);
+cljs.core.async.impl.timers.TIMEOUT_RESOLUTION_MS = 10;
+cljs.core.async.impl.timers.timeout = function(a) {
+  var b = (new Date).valueOf() + a, c = cljs.core.async.impl.timers.timeouts_map.ceilingEntry(b), c = cljs.core.truth_(cljs.core.truth_(c) ? c.key < b + cljs.core.async.impl.timers.TIMEOUT_RESOLUTION_MS : c) ? c.val : null;
+  if(cljs.core.truth_(c)) {
+    return c
+  }
+  var d = cljs.core.async.impl.channels.chan.call(null, null);
+  cljs.core.async.impl.timers.timeouts_map.put(b, d);
+  cljs.core.async.impl.dispatch.queue_delay.call(null, function() {
+    cljs.core.async.impl.timers.timeouts_map.remove(b);
+    return cljs.core.async.impl.protocols.close_BANG_.call(null, d)
+  }, a);
+  return d
+};
+cljs.core.async.fn_handler = function fn_handler$$0(b) {
+  "undefined" === typeof cljs.core.async.t7380 && (cljs.core.async.t7380 = {}, cljs.core.async.t7380 = function(b, d, e) {
+    this.f = b;
+    this.fn_handler = d;
+    this.meta7381 = e;
+    this.cljs$lang$protocol_mask$partition1$ = 0;
+    this.cljs$lang$protocol_mask$partition0$ = 393216
+  }, cljs.core.async.t7380.cljs$lang$type = !0, cljs.core.async.t7380.cljs$lang$ctorStr = "cljs.core.async/t7380", cljs.core.async.t7380.cljs$lang$ctorPrWriter = function(b, d, e) {
+    return cljs.core._write.call(null, d, "cljs.core.async/t7380")
+  }, cljs.core.async.t7380.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7380.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
+    return!0
+  }, cljs.core.async.t7380.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
+    return this.f
+  }, cljs.core.async.t7380.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7381
+  }, cljs.core.async.t7380.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
+    return new cljs.core.async.t7380(this.f, this.fn_handler, d)
+  }, cljs.core.async.__GT_t7380 = function(b, d, e) {
+    return new cljs.core.async.t7380(b, d, e)
+  });
+  return new cljs.core.async.t7380(b, fn_handler$$0, null)
+};
+cljs.core.async.buffer = function(a) {
+  return cljs.core.async.impl.buffers.fixed_buffer.call(null, a)
+};
+cljs.core.async.dropping_buffer = function(a) {
+  return cljs.core.async.impl.buffers.dropping_buffer.call(null, a)
+};
+cljs.core.async.sliding_buffer = function(a) {
+  return cljs.core.async.impl.buffers.sliding_buffer.call(null, a)
+};
+cljs.core.async.chan = function() {
+  var a = null, b = function() {
+    return a.call(null, null)
+  }, c = function(a) {
+    return cljs.core.async.impl.channels.chan.call(null, "number" === typeof a ? cljs.core.async.buffer.call(null, a) : a)
+  }, a = function(a) {
+    switch(arguments.length) {
+      case 0:
+        return b.call(this);
+      case 1:
+        return c.call(this, a)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$0 = b;
+  a.cljs$core$IFn$_invoke$arity$1 = c;
+  return a
+}();
+cljs.core.async.timeout = function(a) {
+  return cljs.core.async.impl.timers.timeout.call(null, a)
+};
+cljs.core.async._LT__BANG_ = function(a) {
+  throw Error([cljs.core.str("Assert failed: "), cljs.core.str("\x3c! used not in (go ...) block"), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, null))].join(""));
+};
+cljs.core.async.take_BANG_ = function() {
+  var a = null, b = function(b, c) {
+    return a.call(null, b, c, !0)
+  }, c = function(a, b, c) {
+    a = cljs.core.async.impl.protocols.take_BANG_.call(null, a, cljs.core.async.fn_handler.call(null, b));
+    if(cljs.core.truth_(a)) {
+      var g = cljs.core.deref.call(null, a);
+      cljs.core.truth_(c) ? b.call(null, g) : cljs.core.async.impl.dispatch.run.call(null, function() {
+        return b.call(null, g)
+      })
+    }
+    return null
+  }, a = function(a, e, f) {
+    switch(arguments.length) {
+      case 2:
+        return b.call(this, a, e);
+      case 3:
+        return c.call(this, a, e, f)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$2 = b;
+  a.cljs$core$IFn$_invoke$arity$3 = c;
+  return a
+}();
+cljs.core.async.nop = function() {
+  return null
+};
+cljs.core.async._GT__BANG_ = function(a, b) {
+  throw Error([cljs.core.str("Assert failed: "), cljs.core.str("\x3e! used not in (go ...) block"), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, null))].join(""));
+};
+cljs.core.async.put_BANG_ = function() {
+  var a = null, b = function(b, c) {
+    return a.call(null, b, c, cljs.core.async.nop)
+  }, c = function(b, c, d) {
+    return a.call(null, b, c, d, !0)
+  }, d = function(a, b, c, d) {
+    a = cljs.core.async.impl.protocols.put_BANG_.call(null, a, b, cljs.core.async.fn_handler.call(null, c));
+    cljs.core.truth_(cljs.core.truth_(a) ? cljs.core.not_EQ_.call(null, c, cljs.core.async.nop) : a) && (cljs.core.truth_(d) ? c.call(null) : cljs.core.async.impl.dispatch.run.call(null, c));
+    return null
+  }, a = function(a, f, g, h) {
+    switch(arguments.length) {
+      case 2:
+        return b.call(this, a, f);
+      case 3:
+        return c.call(this, a, f, g);
+      case 4:
+        return d.call(this, a, f, g, h)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$2 = b;
+  a.cljs$core$IFn$_invoke$arity$3 = c;
+  a.cljs$core$IFn$_invoke$arity$4 = d;
+  return a
+}();
+cljs.core.async.close_BANG_ = function(a) {
+  return cljs.core.async.impl.protocols.close_BANG_.call(null, a)
+};
+cljs.core.async.random_array = function(a) {
+  for(var b = Array(a), c = 0;;) {
+    if(c < a) {
+      b[c] = 0, c += 1
+    }else {
+      break
+    }
+  }
+  for(c = 1;;) {
+    if(cljs.core._EQ_.call(null, c, a)) {
+      return b
+    }
+    var d = cljs.core.rand_int.call(null, c);
+    b[c] = b[d];
+    b[d] = c;
+    c += 1
+  }
+};
+cljs.core.async.alt_flag = function alt_flag() {
+  var b = cljs.core.atom.call(null, !0);
+  "undefined" === typeof cljs.core.async.t7391 && (cljs.core.async.t7391 = {}, cljs.core.async.t7391 = function(b, d, e) {
+    this.flag = b;
+    this.alt_flag = d;
+    this.meta7392 = e;
+    this.cljs$lang$protocol_mask$partition1$ = 0;
+    this.cljs$lang$protocol_mask$partition0$ = 393216
+  }, cljs.core.async.t7391.cljs$lang$type = !0, cljs.core.async.t7391.cljs$lang$ctorStr = "cljs.core.async/t7391", cljs.core.async.t7391.cljs$lang$ctorPrWriter = function(b, d, e) {
+    return cljs.core._write.call(null, d, "cljs.core.async/t7391")
+  }, cljs.core.async.t7391.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7391.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
+    return cljs.core.deref.call(null, this.flag)
+  }, cljs.core.async.t7391.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
+    cljs.core.reset_BANG_.call(null, this.flag, null);
+    return!0
+  }, cljs.core.async.t7391.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7392
+  }, cljs.core.async.t7391.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, d) {
+    return new cljs.core.async.t7391(this.flag, this.alt_flag, d)
+  }, cljs.core.async.__GT_t7391 = function(b, d, e) {
+    return new cljs.core.async.t7391(b, d, e)
+  });
+  return new cljs.core.async.t7391(b, alt_flag, null)
+};
+cljs.core.async.alt_handler = function alt_handler(b, c) {
+  "undefined" === typeof cljs.core.async.t7397 && (cljs.core.async.t7397 = {}, cljs.core.async.t7397 = function(b, c, f, g) {
+    this.cb = b;
+    this.flag = c;
+    this.alt_handler = f;
+    this.meta7398 = g;
+    this.cljs$lang$protocol_mask$partition1$ = 0;
+    this.cljs$lang$protocol_mask$partition0$ = 393216
+  }, cljs.core.async.t7397.cljs$lang$type = !0, cljs.core.async.t7397.cljs$lang$ctorStr = "cljs.core.async/t7397", cljs.core.async.t7397.cljs$lang$ctorPrWriter = function(b, c, f) {
+    return cljs.core._write.call(null, c, "cljs.core.async/t7397")
+  }, cljs.core.async.t7397.prototype.cljs$core$async$impl$protocols$Handler$ = !0, cljs.core.async.t7397.prototype.cljs$core$async$impl$protocols$Handler$active_QMARK_$arity$1 = function(b) {
+    return cljs.core.async.impl.protocols.active_QMARK_.call(null, this.flag)
+  }, cljs.core.async.t7397.prototype.cljs$core$async$impl$protocols$Handler$commit$arity$1 = function(b) {
+    cljs.core.async.impl.protocols.commit.call(null, this.flag);
+    return this.cb
+  }, cljs.core.async.t7397.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+    return this.meta7398
+  }, cljs.core.async.t7397.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+    return new cljs.core.async.t7397(this.cb, this.flag, this.alt_handler, c)
+  }, cljs.core.async.__GT_t7397 = function(b, c, f, g) {
+    return new cljs.core.async.t7397(b, c, f, g)
+  });
+  return new cljs.core.async.t7397(c, b, alt_handler, null)
+};
+cljs.core.async.do_alts = function(a, b, c) {
+  var d = cljs.core.async.alt_flag.call(null), e = cljs.core.count.call(null, b), f = cljs.core.async.random_array.call(null, e), g = (new cljs.core.Keyword(null, "priority", "priority", 4143410454)).call(null, c), h = function() {
+    for(var c = 0;;) {
+      if(c < e) {
+        var h = cljs.core.truth_(g) ? c : f[c], m = cljs.core.nth.call(null, b, h), n = cljs.core.vector_QMARK_.call(null, m) ? m.call(null, 0) : null, p = cljs.core.truth_(n) ? function() {
+          var b = m.call(null, 1);
+          return cljs.core.async.impl.protocols.put_BANG_.call(null, n, b, cljs.core.async.alt_handler.call(null, d, function(b, c, d, e, f, g, h, k, l) {
+            return function() {
+              return a.call(null, cljs.core.PersistentVector.fromArray([null, f], !0))
+            }
+          }(c, b, h, m, n, d, e, f, g)))
+        }() : cljs.core.async.impl.protocols.take_BANG_.call(null, m, cljs.core.async.alt_handler.call(null, d, function(b, c, d, e, f, g, h, k) {
+          return function(b) {
+            return a.call(null, cljs.core.PersistentVector.fromArray([b, d], !0))
+          }
+        }(c, h, m, n, d, e, f, g)));
+        if(cljs.core.truth_(p)) {
+          return cljs.core.async.impl.channels.box.call(null, cljs.core.PersistentVector.fromArray([cljs.core.deref.call(null, p), function() {
+            var a = n;
+            return cljs.core.truth_(a) ? a : m
+          }()], !0))
+        }
+        c += 1
+      }else {
+        return null
+      }
+    }
+  }();
+  return cljs.core.truth_(h) ? h : cljs.core.contains_QMARK_.call(null, c, new cljs.core.Keyword(null, "default", "default", 2558708147)) ? (h = function() {
+    var a = cljs.core.async.impl.protocols.active_QMARK_.call(null, d);
+    return cljs.core.truth_(a) ? cljs.core.async.impl.protocols.commit.call(null, d) : a
+  }(), cljs.core.truth_(h) ? cljs.core.async.impl.channels.box.call(null, cljs.core.PersistentVector.fromArray([(new cljs.core.Keyword(null, "default", "default", 2558708147)).call(null, c), new cljs.core.Keyword(null, "default", "default", 2558708147)], !0)) : null) : null
+};
+cljs.core.async.alts_BANG_ = function() {
+  var a = function(a, b) {
+    cljs.core.seq_QMARK_.call(null, b) && cljs.core.apply.call(null, cljs.core.hash_map, b);
+    throw Error([cljs.core.str("Assert failed: "), cljs.core.str("alts! used not in (go ...) block"), cljs.core.str("\n"), cljs.core.str(cljs.core.pr_str.call(null, null))].join(""));
+  }, b = function(b, d) {
+    var e = null;
+    1 < arguments.length && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b);
+    b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$core$IFn$_invoke$arity$variadic = a;
+  return b
+}();
+var lucuma = {shadow_dom:{}};
+lucuma.shadow_dom.create = function(a, b, c) {
+  a = a.createShadowRoot();
+  cljs.core.truth_(b) && (a.resetStyleInheritance = !0);
+  cljs.core.truth_(c) && (a.applyAuthorStyles = !0);
+  return a
+};
+lucuma.custom_elements = {};
+lucuma.custom_elements.forbidden_names = cljs.core.PersistentHashSet.fromArray(["missing-glyph", null, "font-face-format", null, "font-face-src", null, "annotation-xml", null, "font-face-uri", null, "font-face", null, "font-face-name", null, "color-profile", null], !0);
+lucuma.custom_elements.valid_name_QMARK_ = function(a) {
+  var b = cljs.core.not_EQ_.call(null, -1, a.indexOf("-"));
+  return b ? !cljs.core.contains_QMARK_.call(null, lucuma.custom_elements.forbidden_names, a) : b
+};
+lucuma.custom_elements.render_content = function() {
+  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
+  return new cljs.core.MultiFn("render-content", function(a) {
+    return a instanceof HTMLTemplateElement ? HTMLTemplateElement : cljs.core.type.call(null, a)
+  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
+}();
+cljs.core._add_method.call(null, lucuma.custom_elements.render_content, String, function(a) {
+  return a
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.render_content, HTMLTemplateElement, function(a) {
+  return a.content.cloneNode(!0)
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.render_content, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
+  throw[cljs.core.str("No render-content implementation for "), cljs.core.str(a)].join("");
+});
+lucuma.custom_elements.append_content_BANG_ = function() {
+  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
+  return new cljs.core.MultiFn("append-content!", function(a, b) {
+    return b instanceof HTMLElement ? HTMLElement : cljs.core.type.call(null, b)
+  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
+}();
+cljs.core._add_method.call(null, lucuma.custom_elements.append_content_BANG_, String, function(a, b) {
+  return a.innerHTML = b
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.append_content_BANG_, HTMLElement, function(a, b) {
+  return a.appendChild(b)
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.append_content_BANG_, DocumentFragment, function(a, b) {
+  return a.appendChild(b)
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.append_content_BANG_, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a, b) {
+  throw[cljs.core.str("No append! implementation for "), cljs.core.str(b)].join("");
+});
+lucuma.custom_elements.render_style = function() {
+  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
+  return new cljs.core.MultiFn("render-style", cljs.core.type, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
+}();
+cljs.core._add_method.call(null, lucuma.custom_elements.render_style, String, function(a) {
+  return a
+});
+cljs.core._add_method.call(null, lucuma.custom_elements.render_style, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
+  throw[cljs.core.str("No render-style implementation for "), cljs.core.str(a)].join("");
+});
+lucuma.custom_elements.append_style_BANG_ = function() {
+  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
+  return new cljs.core.MultiFn("append-style!", function(a, b) {
+    return b instanceof HTMLElement ? HTMLElement : cljs.core.type.call(null, b)
+  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
+}();
+cljs.core._add_method.call(null, lucuma.custom_elements.append_style_BANG_, String, function(a, b) {
+  var c = document.createElement("style");
+  c.textContent = b;
+  return a.appendChild(c)
+});
+lucuma.custom_elements.render_then_append_BANG_ = function(a, b, c, d) {
+  b = b.call(null, d);
+  return cljs.core.truth_(b) ? c.call(null, a, b) : null
+};
+lucuma.custom_elements.invoke_if_fn = function(a) {
+  return cljs.core.fn_QMARK_.call(null, a) ? a.call(null) : a
+};
+lucuma.custom_elements.create_shadow_root_BANG_ = function(a, b, c, d, e) {
+  return cljs.core.truth_(cljs.core.truth_(c) ? c : b) ? (a = lucuma.shadow_dom.create.call(null, a, d, e), cljs.core.truth_(c) && lucuma.custom_elements.render_then_append_BANG_.call(null, a, lucuma.custom_elements.render_style, lucuma.custom_elements.append_style_BANG_, lucuma.custom_elements.invoke_if_fn.call(null, c)), cljs.core.truth_(b) ? lucuma.custom_elements.render_then_append_BANG_.call(null, a, lucuma.custom_elements.render_content, lucuma.custom_elements.append_content_BANG_, lucuma.custom_elements.invoke_if_fn.call(null, 
+  b)) : null) : null
+};
+lucuma.custom_elements.find_prototype = function(a) {
+  return cljs.core.truth_(a) ? Object.getPrototypeOf(document.createElement(a)) : HTMLElement.prototype
+};
+lucuma.custom_elements.call_with_this_argument = function(a, b, c) {
+  return cljs.core.apply.call(null, a, cljs.core.conj.call(null, c, b))
+};
+lucuma.custom_elements.wrap_with_callback_this_value = function(a) {
+  return function() {
+    var b = function(b) {
+      return lucuma.custom_elements.call_with_this_argument.call(null, a, this, b)
+    }, c = function(a) {
+      var c = null;
+      0 < arguments.length && (c = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0), 0));
+      return b.call(this, c)
+    };
+    c.cljs$lang$maxFixedArity = 0;
+    c.cljs$lang$applyTo = function(a) {
+      a = cljs.core.seq(a);
+      return b(a)
+    };
+    c.cljs$core$IFn$_invoke$arity$variadic = b;
+    return c
+  }()
+};
+lucuma.custom_elements.set_callback_BANG_ = function(a, b, c) {
+  return cljs.core.truth_(c) ? a[b] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, c) : null
+};
+lucuma.custom_elements.install_shadow_css_shim_when_needed = function(a, b, c) {
+  return cljs.core.truth_(ShadowDOMPolyfill) ? cljs.core.truth_(c) ? Platform.ShadowCSS.shimStyling(a, b, c) : Platform.ShadowCSS.shimStyling(a, b) : null
+};
+lucuma.custom_elements.get_chan = function(a) {
+  return a.chan
+};
+lucuma.custom_elements.initialize_BANG_ = function(a, b) {
+  return function() {
+    var c = cljs.core.seq_QMARK_.call(null, b) ? cljs.core.apply.call(null, cljs.core.hash_map, b) : b, d = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967)), e = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "reset-style-inheritance", "reset-style-inheritance", 1435321634)), f = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "style", "style", 1123684643)), g = cljs.core.get.call(null, c, new cljs.core.Keyword(null, 
+    "content", "content", 1965434859));
+    this.chan = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "chan-fn", "chan-fn", 1752792213), cljs.core.async.chan).call(null);
+    lucuma.custom_elements.create_shadow_root_BANG_.call(null, this, g, f, e, d);
+    cljs.core.truth_(f) && lucuma.custom_elements.install_shadow_css_shim_when_needed.call(null, this.shadowRoot, (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, b), (new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b));
+    return cljs.core.truth_(a) ? lucuma.custom_elements.call_with_this_argument.call(null, a, this, cljs.core.PersistentVector.EMPTY) : null
+  }
+};
+lucuma.custom_elements.attribute_changed_fn = function(a, b, c) {
+  a = lucuma.custom_elements.get_chan.call(null, a);
+  return cljs.core.async.put_BANG_.call(null, a, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("lucuma.custom-elements", "attribute-changed", "lucuma.custom-elements/attribute-changed", 4608723558), new cljs.core.Keyword(null, "before", "before", 3915985649), b, new cljs.core.Keyword(null, "after", "after", 1106639182), c], !0))
+};
+lucuma.custom_elements.create_prototype = function(a) {
+  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, c = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "methods", "methods", 1969438500)), d = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772)), e = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "entered-view-fn", "entered-view-fn", 3505744396)), f = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "created-fn", "created-fn", 
+  2383536447)), b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)), b = Object.create(lucuma.custom_elements.find_prototype.call(null, b));
+  b.createdCallback = lucuma.custom_elements.initialize_BANG_.call(null, f, a);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "enteredViewCallback", e);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "leftViewCallback", d);
+  lucuma.custom_elements.set_callback_BANG_.call(null, b, "attributeChangedCallback", lucuma.custom_elements.attribute_changed_fn);
+  a = cljs.core.seq.call(null, c);
+  c = null;
+  for(e = d = 0;;) {
+    if(e < d) {
+      f = cljs.core._nth.call(null, c, e), b[cljs.core.name.call(null, cljs.core.key.call(null, f))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, f)), e += 1
+    }else {
+      if(a = cljs.core.seq.call(null, a)) {
+        c = a, cljs.core.chunked_seq_QMARK_.call(null, c) ? (a = cljs.core.chunk_first.call(null, c), e = cljs.core.chunk_rest.call(null, c), c = a, d = cljs.core.count.call(null, a), a = e) : (a = cljs.core.first.call(null, c), b[cljs.core.name.call(null, cljs.core.key.call(null, a))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, a)), a = cljs.core.next.call(null, c), c = null, d = 0), e = 0
+      }else {
+        break
+      }
+    }
+  }
+  return b
+};
+lucuma.custom_elements.register = function() {
+  var a = null, b = function(b) {
+    return a.call(null, (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, b), b)
+  }, c = function(a, b) {
+    if(!cljs.core.truth_(lucuma.custom_elements.valid_name_QMARK_.call(null, a))) {
+      throw Error([cljs.core.str("Assert failed: "), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), new cljs.core.Symbol(null, "n", "n", -1640531417, null))))].join(""));
+    }
+    return document.register(a, cljs.core.clj__GT_js.call(null, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "prototype", "prototype", 4710078612), lucuma.custom_elements.create_prototype.call(null, b)], !0), cljs.core.truth_((new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b)) ? cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "extends", "extends", 4003207179), (new cljs.core.Keyword(null, "base-type", 
+    "base-type", 3446290472)).call(null, b)], !0) : null)))
+  }, a = function(a, e) {
+    switch(arguments.length) {
+      case 1:
+        return b.call(this, a);
+      case 2:
+        return c.call(this, a, e)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$1 = b;
+  a.cljs$core$IFn$_invoke$arity$2 = c;
+  return a
+}();
+lucuma.custom_elements.create = function() {
+  var a = null, b = function(b) {
+    return a.call(null, b, null)
+  }, c = function(a, b) {
+    return document.createElement(a, b)
+  }, a = function(a, e) {
+    switch(arguments.length) {
+      case 1:
+        return b.call(this, a);
+      case 2:
+        return c.call(this, a, e)
+    }
+    throw Error("Invalid arity: " + arguments.length);
+  };
+  a.cljs$core$IFn$_invoke$arity$1 = b;
+  a.cljs$core$IFn$_invoke$arity$2 = c;
+  return a
+}();
 var clojure = {string:{}};
 clojure.string.seq_reverse = function(a) {
   return cljs.core.reduce.call(null, cljs.core.conj, cljs.core.List.EMPTY, a)
@@ -13890,188 +15111,6 @@ clojure.string.escape = function(a, b) {
     e += 1
   }
 };
-var lucuma = {shadow_dom:{}};
-lucuma.shadow_dom.create = function(a, b, c) {
-  a = a.createShadowRoot();
-  cljs.core.truth_(b) && (a.resetStyleInheritance = !0);
-  cljs.core.truth_(c) && (a.applyAuthorStyles = !0);
-  return a
-};
-lucuma.custom_elements = {};
-lucuma.custom_elements.forbidden_names = cljs.core.PersistentHashSet.fromArray(["missing-glyph", null, "font-face-format", null, "font-face-src", null, "annotation-xml", null, "font-face-uri", null, "font-face", null, "font-face-name", null, "color-profile", null], !0);
-lucuma.custom_elements.valid_name_QMARK_ = function(a) {
-  var b = cljs.core.not_EQ_.call(null, -1, a.indexOf("-"));
-  return b ? !cljs.core.contains_QMARK_.call(null, lucuma.custom_elements.forbidden_names, a) : b
-};
-lucuma.custom_elements.render_content = function() {
-  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
-  return new cljs.core.MultiFn("render-content", function(a) {
-    return a instanceof HTMLTemplateElement ? HTMLTemplateElement : cljs.core.type.call(null, a)
-  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
-}();
-cljs.core._add_method.call(null, lucuma.custom_elements.render_content, String, function(a) {
-  return a
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.render_content, HTMLTemplateElement, function(a) {
-  return a.content.cloneNode(!0)
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.render_content, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
-  throw[cljs.core.str("No render-content implementation for "), cljs.core.str(a)].join("");
-});
-lucuma.custom_elements.append_content_BANG_ = function() {
-  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
-  return new cljs.core.MultiFn("append-content!", function(a, b) {
-    return b instanceof HTMLElement ? HTMLElement : cljs.core.type.call(null, b)
-  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
-}();
-cljs.core._add_method.call(null, lucuma.custom_elements.append_content_BANG_, String, function(a, b) {
-  return a.innerHTML = b
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.append_content_BANG_, HTMLElement, function(a, b) {
-  return a.appendChild(b)
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.append_content_BANG_, DocumentFragment, function(a, b) {
-  return a.appendChild(b)
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.append_content_BANG_, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a, b) {
-  throw[cljs.core.str("No append! implementation for "), cljs.core.str(b)].join("");
-});
-lucuma.custom_elements.render_style = function() {
-  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
-  return new cljs.core.MultiFn("render-style", cljs.core.type, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
-}();
-cljs.core._add_method.call(null, lucuma.custom_elements.render_style, String, function(a) {
-  return a
-});
-cljs.core._add_method.call(null, lucuma.custom_elements.render_style, new cljs.core.Keyword(null, "default", "default", 2558708147), function(a) {
-  throw[cljs.core.str("No render-style implementation for "), cljs.core.str(a)].join("");
-});
-lucuma.custom_elements.append_style_BANG_ = function() {
-  var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
-  return new cljs.core.MultiFn("append-style!", function(a, b) {
-    return b instanceof HTMLElement ? HTMLElement : cljs.core.type.call(null, b)
-  }, new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
-}();
-cljs.core._add_method.call(null, lucuma.custom_elements.append_style_BANG_, String, function(a, b) {
-  var c = document.createElement("style");
-  c.textContent = b;
-  return a.appendChild(c)
-});
-lucuma.custom_elements.render_then_append_BANG_ = function(a, b, c, d) {
-  b = b.call(null, d);
-  return cljs.core.truth_(b) ? c.call(null, a, b) : null
-};
-lucuma.custom_elements.invoke_if_fn = function(a) {
-  return cljs.core.fn_QMARK_.call(null, a) ? a.call(null) : a
-};
-lucuma.custom_elements.initialize = function(a, b, c, d, e) {
-  return cljs.core.truth_(cljs.core.truth_(c) ? c : b) ? (a = lucuma.shadow_dom.create.call(null, a, d, e), cljs.core.truth_(c) && lucuma.custom_elements.render_then_append_BANG_.call(null, a, lucuma.custom_elements.render_style, lucuma.custom_elements.append_style_BANG_, lucuma.custom_elements.invoke_if_fn.call(null, c)), cljs.core.truth_(b) ? lucuma.custom_elements.render_then_append_BANG_.call(null, a, lucuma.custom_elements.render_content, lucuma.custom_elements.append_content_BANG_, lucuma.custom_elements.invoke_if_fn.call(null, 
-  b)) : null) : null
-};
-lucuma.custom_elements.find_prototype = function(a) {
-  return cljs.core.truth_(a) ? Object.getPrototypeOf(document.createElement(a)) : HTMLElement.prototype
-};
-lucuma.custom_elements.call_with_this_argument = function(a, b, c) {
-  return cljs.core.apply.call(null, a, cljs.core.conj.call(null, c, b))
-};
-lucuma.custom_elements.wrap_with_callback_this_value = function(a) {
-  return function() {
-    var b = function(b) {
-      return lucuma.custom_elements.call_with_this_argument.call(null, a, this, b)
-    }, c = function(a) {
-      var c = null;
-      0 < arguments.length && (c = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0), 0));
-      return b.call(this, c)
-    };
-    c.cljs$lang$maxFixedArity = 0;
-    c.cljs$lang$applyTo = function(a) {
-      a = cljs.core.seq(a);
-      return b(a)
-    };
-    c.cljs$core$IFn$_invoke$arity$variadic = b;
-    return c
-  }()
-};
-lucuma.custom_elements.set_callback_BANG_ = function(a, b, c) {
-  return cljs.core.truth_(c) ? a[b] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, c) : null
-};
-lucuma.custom_elements.install_shadow_css_shim_when_needed = function(a, b, c) {
-  return cljs.core.truth_(ShadowDOMPolyfill) ? cljs.core.truth_(c) ? Platform.ShadowCSS.shimStyling(a, b, c) : Platform.ShadowCSS.shimStyling(a, b) : null
-};
-lucuma.custom_elements.initialize_and_set_callback_BANG_ = function(a, b) {
-  return function() {
-    var c = cljs.core.seq_QMARK_.call(null, b) ? cljs.core.apply.call(null, cljs.core.hash_map, b) : b, d = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967)), e = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "reset-style-inheritance", "reset-style-inheritance", 1435321634)), f = cljs.core.get.call(null, c, new cljs.core.Keyword(null, "style", "style", 1123684643)), c = cljs.core.get.call(null, c, new cljs.core.Keyword(null, 
-    "content", "content", 1965434859));
-    lucuma.custom_elements.initialize.call(null, this, c, f, e, d);
-    cljs.core.truth_(f) && lucuma.custom_elements.install_shadow_css_shim_when_needed.call(null, this.shadowRoot, (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, b), (new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b));
-    return cljs.core.truth_(a) ? lucuma.custom_elements.call_with_this_argument.call(null, a, this, cljs.core.PersistentVector.EMPTY) : null
-  }
-};
-lucuma.custom_elements.attribute_changed_fn = function(a, b, c) {
-  return console.log([cljs.core.str(b), cljs.core.str(" "), cljs.core.str(c)].join(""))
-};
-lucuma.custom_elements.create_prototype = function(a) {
-  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, c = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "methods", "methods", 1969438500)), d = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772)), e = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "entered-view-fn", "entered-view-fn", 3505744396)), f = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "created-fn", "created-fn", 
-  2383536447)), b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)), b = Object.create(lucuma.custom_elements.find_prototype.call(null, b));
-  b.createdCallback = lucuma.custom_elements.initialize_and_set_callback_BANG_.call(null, f, a);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "enteredViewCallback", e);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "leftViewCallback", d);
-  lucuma.custom_elements.set_callback_BANG_.call(null, b, "attributeChangedCallback", lucuma.custom_elements.attribute_changed_fn);
-  a = cljs.core.seq.call(null, c);
-  c = null;
-  for(e = d = 0;;) {
-    if(e < d) {
-      f = cljs.core._nth.call(null, c, e), b[cljs.core.name.call(null, cljs.core.key.call(null, f))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, f)), e += 1
-    }else {
-      if(a = cljs.core.seq.call(null, a)) {
-        c = a, cljs.core.chunked_seq_QMARK_.call(null, c) ? (a = cljs.core.chunk_first.call(null, c), e = cljs.core.chunk_rest.call(null, c), c = a, d = cljs.core.count.call(null, a), a = e) : (a = cljs.core.first.call(null, c), b[cljs.core.name.call(null, cljs.core.key.call(null, a))] = lucuma.custom_elements.wrap_with_callback_this_value.call(null, cljs.core.val.call(null, a)), a = cljs.core.next.call(null, c), c = null, d = 0), e = 0
-      }else {
-        break
-      }
-    }
-  }
-  return b
-};
-lucuma.custom_elements.register = function() {
-  var a = null, b = function(b) {
-    return a.call(null, (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, b), b)
-  }, c = function(a, b) {
-    if(!cljs.core.truth_(lucuma.custom_elements.valid_name_QMARK_.call(null, a))) {
-      throw Error([cljs.core.str("Assert failed: "), cljs.core.str(cljs.core.pr_str.call(null, cljs.core.list(new cljs.core.Symbol(null, "valid-name?", "valid-name?", -190511172, null), new cljs.core.Symbol(null, "n", "n", -1640531417, null))))].join(""));
-    }
-    return document.register(a, cljs.core.clj__GT_js.call(null, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "prototype", "prototype", 4710078612), lucuma.custom_elements.create_prototype.call(null, b)], !0), cljs.core.truth_((new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, b)) ? cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "extends", "extends", 4003207179), (new cljs.core.Keyword(null, "base-type", 
-    "base-type", 3446290472)).call(null, b)], !0) : null)))
-  }, a = function(a, e) {
-    switch(arguments.length) {
-      case 1:
-        return b.call(this, a);
-      case 2:
-        return c.call(this, a, e)
-    }
-    throw Error("Invalid arity: " + arguments.length);
-  };
-  a.cljs$core$IFn$_invoke$arity$1 = b;
-  a.cljs$core$IFn$_invoke$arity$2 = c;
-  return a
-}();
-lucuma.custom_elements.create = function() {
-  var a = null, b = function(b) {
-    return a.call(null, b, null)
-  }, c = function(a, b) {
-    return document.createElement(a, b)
-  }, a = function(a, e) {
-    switch(arguments.length) {
-      case 1:
-        return b.call(this, a);
-      case 2:
-        return c.call(this, a, e)
-    }
-    throw Error("Invalid arity: " + arguments.length);
-  };
-  a.cljs$core$IFn$_invoke$arity$1 = b;
-  a.cljs$core$IFn$_invoke$arity$2 = c;
-  return a
-}();
 var cemerick = {cljs:{}};
 cemerick.cljs.test = {};
 cemerick.cljs.test._STAR_report_counters_STAR_ = null;
@@ -15146,13 +16185,13 @@ try {
   Window.prototype.dommy$template$PElement$ = !0, Window.prototype.dommy$template$PElement$_elem$arity$1 = function(a) {
     return a
   }
-}catch(e6868) {
-  if(e6868 instanceof ReferenceError) {
-    var __6869 = e6868;
+}catch(e8271) {
+  if(e8271 instanceof ReferenceError) {
+    var __8272 = e8271;
     console.log("PElement: js/Window not defined by browser, skipping it... (running on phantomjs?)")
   }else {
     if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-      throw e6868;
+      throw e8271;
     }
   }
 }
@@ -15386,30 +16425,30 @@ dommy.core.selector_map = function selector_map(b, c) {
   return cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "container", "container", 602947571), d], !0), cljs.core.into.call(null, cljs.core.PersistentArrayMap.EMPTY, cljs.core.map.call(null, function(e) {
     var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null);
     return cljs.core.PersistentVector.fromArray([f, cljs.core.truth_((new cljs.core.Keyword(null, "live", "live", 1017226334)).call(null, cljs.core.meta.call(null, g))) ? function() {
-      "undefined" === typeof dommy.core.t6401 && (dommy.core.t6401 = {}, dommy.core.t6401 = function(b, c, d, e, f, g, q, r, s) {
+      "undefined" === typeof dommy.core.t7804 && (dommy.core.t7804 = {}, dommy.core.t7804 = function(b, c, d, e, f, g, q, r, s) {
         this.v = b;
         this.k = c;
-        this.vec__6400 = d;
-        this.p__6399 = e;
+        this.vec__7803 = d;
+        this.p__7802 = e;
         this.container = f;
         this.key_selectors_map = g;
         this.template = q;
         this.selector_map = r;
-        this.meta6402 = s;
+        this.meta7805 = s;
         this.cljs$lang$protocol_mask$partition1$ = 0;
         this.cljs$lang$protocol_mask$partition0$ = 425984
-      }, dommy.core.t6401.cljs$lang$type = !0, dommy.core.t6401.cljs$lang$ctorStr = "dommy.core/t6401", dommy.core.t6401.cljs$lang$ctorPrWriter = function(b, c, d) {
-        return cljs.core._write.call(null, c, "dommy.core/t6401")
-      }, dommy.core.t6401.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
+      }, dommy.core.t7804.cljs$lang$type = !0, dommy.core.t7804.cljs$lang$ctorStr = "dommy.core/t7804", dommy.core.t7804.cljs$lang$ctorPrWriter = function(b, c, d) {
+        return cljs.core._write.call(null, c, "dommy.core/t7804")
+      }, dommy.core.t7804.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
         return dommy.utils.__GT_Array.call(null, dommy.template.__GT_node_like.call(null, this.container).querySelectorAll(dommy.core.selector.call(null, this.v)))
-      }, dommy.core.t6401.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-        return this.meta6402
-      }, dommy.core.t6401.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-        return new dommy.core.t6401(this.v, this.k, this.vec__6400, this.p__6399, this.container, this.key_selectors_map, this.template, this.selector_map, c)
-      }, dommy.core.__GT_t6401 = function(b, c, d, e, f, g, q, r, s) {
-        return new dommy.core.t6401(b, c, d, e, f, g, q, r, s)
+      }, dommy.core.t7804.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+        return this.meta7805
+      }, dommy.core.t7804.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+        return new dommy.core.t7804(this.v, this.k, this.vec__7803, this.p__7802, this.container, this.key_selectors_map, this.template, this.selector_map, c)
+      }, dommy.core.__GT_t7804 = function(b, c, d, e, f, g, q, r, s) {
+        return new dommy.core.t7804(b, c, d, e, f, g, q, r, s)
       });
-      return new dommy.core.t6401(g, f, e, e, d, c, b, selector_map, null)
+      return new dommy.core.t7804(g, f, e, e, d, c, b, selector_map, null)
     }() : dommy.template.__GT_node_like.call(null, d).querySelector(dommy.core.selector.call(null, g))], !0)
   }, c)))
 };
@@ -17075,6 +18114,114 @@ lucuma.examples.ex_style_scope = cljs.core.merge.call(null, cljs.core.Persistent
 lucuma.examples.ex_extend = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-extend"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "icon-exclamation-sign"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
 "content", "content", 1965434859)], !0)], !0), new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967), !0, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472), "button", new cljs.core.Keyword(null, "style", "style", 1123684643), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "button", "button", 3931183780), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "color", "color", 1108746965), "red"], !0)], !0)], !0));
 lucuma.examples.ex_attributes = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-attributes"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "attributes", "attributes", 1419549897), cljs.core.PersistentHashSet.fromArray([new cljs.core.Keyword(null, "ex-attribute", "ex-attribute", 4335438196), null], !0)], !0));
+lucuma.examples.delegate_attributes2 = function(a, b) {
+  var c = lucuma.custom_elements.get_chan.call(null, a);
+  console.log([cljs.core.str("delegate "), cljs.core.str(c)].join(""));
+  var d = cljs.core.async.chan.call(null, 1);
+  cljs.core.async.impl.dispatch.run.call(null, function() {
+    var a = function() {
+      return function(a) {
+        return function() {
+          var b = null, c = function() {
+            var a = Array(10);
+            a[0] = b;
+            a[1] = 1;
+            return a
+          }, d = function(b) {
+            for(;;) {
+              var c = a.call(null, b);
+              if(c !== new cljs.core.Keyword(null, "recur", "recur", 1122293407)) {
+                return c
+              }
+            }
+          }, b = function(a) {
+            switch(arguments.length) {
+              case 0:
+                return c.call(this);
+              case 1:
+                return d.call(this, a)
+            }
+            throw Error("Invalid arity: " + arguments.length);
+          };
+          b.cljs$core$IFn$_invoke$arity$0 = c;
+          b.cljs$core$IFn$_invoke$arity$1 = d;
+          return b
+        }()
+      }(function(a) {
+        var d = a[1];
+        if(7 === d) {
+          return d = a, d[2] = a[2], d[1] = 3, new cljs.core.Keyword(null, "recur", "recur", 1122293407)
+        }
+        if(6 === d) {
+          return a[2] = null, a[1] = 7, new cljs.core.Keyword(null, "recur", "recur", 1122293407)
+        }
+        if(5 === d) {
+          var e = a[5], d = console.log(e), e = b.call(null, e);
+          a[6] = e;
+          a[7] = d;
+          a[2] = null;
+          a[1] = 2;
+          return new cljs.core.Keyword(null, "recur", "recur", 1122293407)
+        }
+        return 4 === d ? (d = cljs.core.clj__GT_js.call(null, a[2]), a[5] = d, cljs.core.truth_(d) ? a[1] = 5 : a[1] = 6, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : 3 === d ? (d = a[2], cljs.core.async.impl.ioc_helpers.return_chan.call(null, a, d)) : 2 === d ? (d = console.log("loop"), a[8] = d, cljs.core.async.impl.ioc_helpers.take_BANG_.call(null, a, 4, c)) : 1 === d ? (d = console.log("go"), a[9] = d, a[2] = null, a[1] = 2, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : 
+        null
+      })
+    }(), f = function() {
+      var b = a.call(null);
+      b[cljs.core.async.impl.ioc_helpers.USER_START_IDX] = d;
+      return b
+    }();
+    return cljs.core.async.impl.ioc_helpers.run_state_machine_wrapped.call(null, f)
+  });
+  return d
+};
+goog.exportSymbol("lucuma.examples.delegate_attributes2", lucuma.examples.delegate_attributes2);
+lucuma.examples.delegate_attributes = function(a, b) {
+  var c = lucuma.custom_elements.get_chan.call(null, a), d = cljs.core.async.chan.call(null, 1);
+  cljs.core.async.impl.dispatch.run.call(null, function() {
+    var a = function() {
+      return function(a) {
+        return function() {
+          var b = null, c = function() {
+            var a = Array(6);
+            a[0] = b;
+            a[1] = 1;
+            return a
+          }, d = function(b) {
+            for(;;) {
+              var c = a.call(null, b);
+              if(c !== new cljs.core.Keyword(null, "recur", "recur", 1122293407)) {
+                return c
+              }
+            }
+          }, b = function(a) {
+            switch(arguments.length) {
+              case 0:
+                return c.call(this);
+              case 1:
+                return d.call(this, a)
+            }
+            throw Error("Invalid arity: " + arguments.length);
+          };
+          b.cljs$core$IFn$_invoke$arity$0 = c;
+          b.cljs$core$IFn$_invoke$arity$1 = d;
+          return b
+        }()
+      }(function(a) {
+        var b = a[1];
+        return 7 === b ? (b = console.log(a[2]), a[5] = b, a[2] = null, a[1] = 2, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : 6 === b ? (b = a[2], a[2] = b, a[1] = 3, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : 5 === b ? (a[2] = null, a[1] = 6, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : 4 === b ? cljs.core.async.impl.ioc_helpers.take_BANG_.call(null, a, 7, c) : 3 === b ? (b = a[2], cljs.core.async.impl.ioc_helpers.return_chan.call(null, a, b)) : 
+        2 === b ? (a[1] = 4, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : 1 === b ? (a[2] = null, a[1] = 2, new cljs.core.Keyword(null, "recur", "recur", 1122293407)) : null
+      })
+    }(), b = function() {
+      var b = a.call(null);
+      b[cljs.core.async.impl.ioc_helpers.USER_START_IDX] = d;
+      return b
+    }();
+    return cljs.core.async.impl.ioc_helpers.run_state_machine_wrapped.call(null, b)
+  });
+  return d
+};
+goog.exportSymbol("lucuma.examples.delegate_attributes", lucuma.examples.delegate_attributes);
 lucuma.examples.alert_fn = function(a) {
   return window.alert([cljs.core.str("Hello methods from '"), cljs.core.str(a.id), cljs.core.str("' !")].join(""))
 };
@@ -17089,6 +18236,7 @@ lucuma.examples.register_all = function() {
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_style_scope);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_extend);
   lucuma.custom_elements.register.call(null, lucuma.examples.ex_methods);
+  lucuma.custom_elements.register.call(null, lucuma.examples.ex_attributes);
   lucuma.custom_elements.register.call(null, lucuma.range_with_threshold.lucu_range_with_threshold);
   lucuma.custom_elements.register.call(null, lucuma.overlay.lucu_overlay);
   return lucuma.custom_elements.register.call(null, lucuma.flipbox.lucu_flipbox)
