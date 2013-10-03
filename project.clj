@@ -16,5 +16,6 @@
                                    :source-map "target/cljs/lucuma+tests.js.map"
                                    :optimizations :simple
                                    :pretty-print true}}]
-              :test-commands {"unit-tests" ["phantomjs" "runners/phantomjs.js" "target/cljs/lucuma+tests.js"]}}
+              :test-commands {"unit-tests" ["phantomjs" "runners/phantomjs.js" "target/cljs/lucuma+tests.js"
+                                            "slimerjs" "runners/phantomjs.js" "target/cljs/lucuma+tests.js"]}}
   :min-lein-version "2.3.0")
