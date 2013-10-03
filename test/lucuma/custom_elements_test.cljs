@@ -10,6 +10,10 @@
   (is (not (ce/valid-name? "ex_name")))
   (is (not (ce/valid-name? "color-profile"))))
 
+(deftest default-constructor-names
+  (is (= "EXName" (ce/default-constructor-name "ex-name")))
+  (is (= "EXComplexName" (ce/default-constructor-name "ex-complex-name"))))
+
 (deftest register
   nil)
 
