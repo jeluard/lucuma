@@ -116,7 +116,8 @@
     (let [c (get-chan el)]
       (cond
         (contains? attributes a) (put! c {:type ::attribute :name a :before o :after n})
-        (contains? handlers a) (put! c {:type ::handler :name a :before o :after n})))))
+        (contains? handlers a) (let [handler (.substr a 2)]
+                                 (put! c {:type ::handler :name handler :before o :after n}))))))
 
 (defn- attribute-properties
   [a]
