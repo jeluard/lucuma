@@ -111,19 +111,31 @@
         (when f (call-with-this-argument f this []))))))
 
 (defn- attribute-changed-fn
-  [el o n]
-  (let [c (get-chan el)]
-    (put! c {:type ::attribute-changed :before o :after n})))
+  [attributes handlers]
+  (fn [el a o n]
+    (let [c (get-chan el)]
+      (cond
+        (contains? attributes a) (put! c {:type ::attribute :name a :before o :after n})
+        (contains? handlers a) (put! c {:type ::handler :name a :before o :after n})))))
+
+(defn- attribute-properties
+  [a]
+  {:configurable true :enumerable true :writable true :get #(str) :set #(str)})
+
+;;TODO atom protocol?
+;;atom based on setAttribute, getAttribute and removeAttribute
 
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
-  (let [{:keys [base-type created-fn entered-view-fn left-view-fn methods]} m
-        proto (.create js/Object (find-prototype base-type))]
+  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods handlers]} m
+        attributes (set (map name attributes))
+        handlers (set (map #(str "on" (name %)) handlers))
+        proto (.create js/Object (find-prototype base-type) (map #(clj->js (attribute-properties %)) attributes))]
     (aset proto "createdCallback" (initialize! created-fn m))
     (set-callback! proto "enteredViewCallback" entered-view-fn)
     (set-callback! proto "leftViewCallback" left-view-fn)
-    (set-callback! proto "attributeChangedCallback" attribute-changed-fn)
+    (set-callback! proto "attributeChangedCallback" (attribute-changed-fn attributes handlers))
     (doseq [method methods]
       (aset proto (name (key method)) (wrap-with-callback-this-value (val method))))
     proto))

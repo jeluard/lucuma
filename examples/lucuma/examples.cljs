@@ -49,7 +49,7 @@
             (.log js/console u))))))
 
 (defwebcomponent ex-attributes
-  :attributes #{:ex-attribute})
+  :attributes #{:attribute})
 
 (defn alert-fn
   [el]

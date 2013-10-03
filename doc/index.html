@@ -378,7 +378,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
      (.alert js/window (str "Hello " el " !")))
 
    (defwebcomponent ex-methods
-    :attributes #{:ex-attribute})
+    :attributes #{:attribute})
               </code>
             </pre>
           </section>
@@ -555,6 +555,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 var example = document.querySelector(selector);
                 if (example != null) {
                   example.innerHTML = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join("\n");
+                  Prism.highlightElement(example);
                 }
               }
             });
@@ -569,6 +570,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
 
             fetchExample(name, function (c) {
               example.innerHTML = c;
+              Prism.highlightElement(example);
             });
           }
 
@@ -611,8 +613,6 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                               {id: "#custom-element-methods", lines: [54, 59]},
                               {id: "#custom-element-constructor", lines: [61, 63]},
                               {id: "#custom-element-extend", lines: [65, 69]}]);
-
-          Prism.highlightAll();
         </script>
       </section>
 
