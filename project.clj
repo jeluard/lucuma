@@ -11,11 +11,11 @@
   :plugins [[lein-cljsbuild "0.3.3"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src" "test"]
-                        :compiler {:output-to "target/cljs/lucuma+tests.js"
+                        :compiler {:output-to "target/cljs/lucuma.js"
                                    :output-dir "target/cljs/"
-                                   :source-map "target/cljs/lucuma+tests.js.map"
+                                   :source-map "target/cljs/lucuma.js.map"
                                    :optimizations :simple
                                    :pretty-print true}}]
-              :test-commands {"unit-tests" ["phantomjs" "runners/phantomjs.js" "target/cljs/lucuma+tests.js"
-                                            "slimerjs" "runners/phantomjs.js" "target/cljs/lucuma+tests.js"]}}
+              :test-commands {"unit-tests" ["phantomjs" "runners/phantomjs.js" "target/cljs/lucuma.js"
+                                            "slimerjs" "runners/phantomjs.js" "target/cljs/lucuma.js"]}}
   :min-lein-version "2.3.0")

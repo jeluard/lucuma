@@ -6,7 +6,7 @@
   :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src"]
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
-                                   :optimizations :simple
-                                   :pretty-print true}}]}
+                                   :optimizations :advanced
+                                   :pretty-print false}}]}
   :min-lein-version "2.3.0"
   :repositories  {"sonatype-oss-public" "https://oss.sonatype.org/content/groups/public/"})
