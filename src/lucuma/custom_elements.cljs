@@ -56,9 +56,7 @@
   (if-let [rc (render-fn c)]
     (append-fn sr rc)))
 
-(defn- invoke-if-fn
-  [o]
-  (if (fn? o) (o) o))
+(defn- invoke-if-fn [o] (if (fn? o) (o) o))
 
 (defn- create-shadow-root!
   [e content style reset-style-inheritance apply-author-styles]
@@ -74,8 +72,8 @@
     (.-prototype js/HTMLElement)))
 
 (defn- call-with-this-argument
-  [f this args]
-  (apply f (conj args this)))
+  ([f this] (call-with-this-argument f this []))
+  ([f this args] (apply f (conj args this))))
 
 (defn- wrap-with-callback-this-value
   [f]
@@ -94,30 +92,31 @@
       (.shimStyling js/Platform.ShadowCSS sr n base-type)
       (.shimStyling js/Platform.ShadowCSS sr n))))
 
-(defn get-chan
-  [el]
-  (aget el "chan"))
+(defn get-chan [el] (aget el "chan"))
 
-(defn- initialize!
-  [f m]
-  (fn []
-    (this-as
-      this
-      (do
-        (let [{:keys [chan-fn content style reset-style-inheritance apply-author-styles] :or {chan-fn chan}} m]
-          (aset this "chan" (chan-fn))
-          (create-shadow-root! this content style reset-style-inheritance apply-author-styles)
-          (when style (install-shadow-css-shim-when-needed (.-shadowRoot this) (:name m) (:base-type m))))
-        (when f (call-with-this-argument f this []))))))
+(defn- onhandler
+  [el h o n]
+  (let [f (aget js/window (or o n))]
+    (if (nil? o)
+      (.addEventListener el h f)
+      (.removeEventListener el h f))))
+
+(defn- handler->attribute [h] (str "on" (name h)))
+(defn- attribute->handler [a] (.substr a 2))
+
+(defn attribute-change
+  [el a o n attributes handlers]
+  (let [c (get-chan el)]
+    (cond
+      (contains? attributes a) (put! c {:type ::attribute :name a :before o :after n})
+      (contains? handlers a) (let [handler (attribute->handler a)]
+                               (onhandler el handler o n)
+                               (put! c {:type ::handler :name handler :before o :after n})))))
 
 (defn- attribute-changed-fn
   [attributes handlers]
   (fn [el a o n]
-    (let [c (get-chan el)]
-      (cond
-        (contains? attributes a) (put! c {:type ::attribute :name a :before o :after n})
-        (contains? handlers a) (let [handler (.substr a 2)]
-                                 (put! c {:type ::handler :name handler :before o :after n}))))))
+    (attribute-change el a o n attributes handlers)))
 
 (defn- attribute-properties
   [a]
@@ -126,14 +125,29 @@
 ;;TODO atom protocol?
 ;;atom based on setAttribute, getAttribute and removeAttribute
 
+(defn- initialize!
+  [f m attributes handlers]
+  ;;TODO simplify with wrap-with-callback-this-value
+  (fn []
+    (this-as
+      this
+      (do
+        (let [{:keys [chan-fn content style reset-style-inheritance apply-author-styles] :or {chan-fn chan}} m]
+          (aset this "chan" (chan-fn))
+          (doseq [attribute (array-seq (.attributes this))]
+            (attribute-change this (.-name attribute) nil (.-value attribute) attributes handlers))
+          (create-shadow-root! this content style reset-style-inheritance apply-author-styles)
+          (when style (install-shadow-css-shim-when-needed (.-shadowRoot this) (:name m) (:base-type m))))
+        (when f (call-with-this-argument f this))))))
+
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
   (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods handlers]} m
         attributes (set (map name attributes))
-        handlers (set (map #(str "on" (name %)) handlers))
+        handlers (set (map handler->attribute handlers))
         proto (.create js/Object (find-prototype base-type) (map #(clj->js (attribute-properties %)) attributes))]
-    (aset proto "createdCallback" (initialize! created-fn m))
+    (aset proto "createdCallback" (initialize! created-fn m attributes handlers))
     (set-callback! proto "enteredViewCallback" entered-view-fn)
     (set-callback! proto "leftViewCallback" left-view-fn)
     (set-callback! proto "attributeChangedCallback" (attribute-changed-fn attributes handlers))
