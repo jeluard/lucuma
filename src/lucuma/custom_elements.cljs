@@ -120,7 +120,7 @@
 
 (defn- attribute-properties
   [a]
-  {:configurable true :enumerable true :writable true :get #(str) :set #(str)})
+  {:configurable true :enumerable true :writable true :aget str :aset str})
 
 ;;TODO atom protocol?
 ;;atom based on setAttribute, getAttribute and removeAttribute
@@ -134,19 +134,25 @@
       (do
         (let [{:keys [chan-fn content style reset-style-inheritance apply-author-styles] :or {chan-fn chan}} m]
           (aset this "chan" (chan-fn))
-          (doseq [attribute (array-seq (.attributes this))]
+          (doseq [attribute (array-seq (.-attributes this))]
             (attribute-change this (.-name attribute) nil (.-value attribute) attributes handlers))
           (create-shadow-root! this content style reset-style-inheritance apply-author-styles)
           (when style (install-shadow-css-shim-when-needed (.-shadowRoot this) (:name m) (:base-type m))))
         (when f (call-with-this-argument f this))))))
 
+(defn- properties
+  [attributes]
+  (clj->js (apply merge (map #(hash-map (keyword %) (attribute-properties %)) attributes))))
+
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
   (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods handlers]} m
+        base-prototype (find-prototype base-type)
         attributes (set (map name attributes))
         handlers (set (map handler->attribute handlers))
-        proto (.create js/Object (find-prototype base-type) (map #(clj->js (attribute-properties %)) attributes))]
+        properties (properties attributes)
+        proto (if properties (.create js/Object base-prototype properties) (.create js/Object base-prototype))]
     (aset proto "createdCallback" (initialize! created-fn m attributes handlers))
     (set-callback! proto "enteredViewCallback" entered-view-fn)
     (set-callback! proto "leftViewCallback" left-view-fn)
