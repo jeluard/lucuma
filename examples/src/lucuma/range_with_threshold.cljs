@@ -39,7 +39,6 @@
 ;;TODO https://code.google.com/p/chromium/issues/detail?id=263940
 
 (defwebcomponent lucu-range-with-threshold
-  ;;[min-threshold max-threshold]
   :extends "input"
   :style "input[type='range'] .threshold-crossed { background-color: red; }"
   :created-fn #(initialize % (or min-threshold 10) (or max-threshold 30))
