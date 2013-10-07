@@ -4,6 +4,7 @@
             [lucuma.overlay :as o]
             [lucuma.custom-elements-test :as cet]
             [lucuma.shadow-dom-test :as sdt]
+            [lucuma.util-test :as ut]
             [cemerick.cljs.test :refer [report *testing-vars* *testing-contexts*] :as t])
   (:require-macros [dommy.macros :refer [sel1]]))
 
