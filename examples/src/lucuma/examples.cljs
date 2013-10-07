@@ -49,17 +49,24 @@
             (.log js/console u))))))
 
 (defwebcomponent ex-attributes
-  :attributes #{:attribute})
+  :attributes #{:ex-attribute})
 
 (defn alert-fn
   [el]
   (.alert js/window  (str "Hello methods from '" (.-id el) "' !")))
 
 (defwebcomponent ex-methods
-  :methods {:alert alert-fn})
+  :methods {:ex-method alert-fn})
+
+(defn ^:export handler
+  [el]
+  (.alert js/window (str "Hello handlers from '" (.-id el) "' !")))
+
+(defwebcomponent ex-handlers
+  :handlers #{:ex-handler})
 
 (defwebcomponent ex-constructor
-  :constructor "MyConstructor"
+  :constructor "CustomConstructor"
   :content [:div "Hello constructor!"])
 
 (defwebcomponent ex-extend
@@ -80,6 +87,7 @@
   (register ex-extend)
   (register ex-attributes)
   (register ex-methods)
+  (register ex-handlers)
   (register ex-constructor)
 
   (register lucu-range-with-threshold)

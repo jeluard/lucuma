@@ -1,5 +1,6 @@
 (ns lucuma.custom-elements
   (:require [lucuma.shadow-dom :as sd]
+            [lucuma.util :as u]
             [clojure.string :as string]
             [cljs.core.async :refer [chan close! put!]])
   (:refer-clojure :exclude [methods]))
@@ -96,7 +97,7 @@
 
 (defn- onhandler
   [el h o n]
-  (let [f (aget js/window (or o n))]
+  (let [f (u/str->fn (or o n))]
     (if (nil? o)
       (.addEventListener el h f)
       (.removeEventListener el h f))))
@@ -153,6 +154,7 @@
         handlers (set (map handler->attribute handlers))
         properties (properties attributes)
         proto (if properties (.create js/Object base-prototype properties) (.create js/Object base-prototype))]
+    (aset proto "ns" (:ns m))
     (aset proto "createdCallback" (initialize! created-fn m attributes handlers))
     (set-callback! proto "enteredViewCallback" entered-view-fn)
     (set-callback! proto "leftViewCallback" left-view-fn)
@@ -174,7 +176,7 @@
    (let [p (create-prototype m)]
      (.register js/document n (clj->js (merge {:prototype p} (when (:base-type m) {:extends (:base-type m)}))))
      (let [c (get m :constructor (default-constructor-name n))]
-       (when c (aset js/window c (.-constructor p)))))))
+       (when c (aset (u/*ns*->goog-ns (:ns m)) c (.-constructor p)))))))
 
 (defn create
   "create an HTML element from it's name. 'is' value is used as second argument to document.createElement"
