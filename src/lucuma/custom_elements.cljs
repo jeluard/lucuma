@@ -95,36 +95,43 @@
 
 (defn get-chan [el] (aget el "chan"))
 
-(defn- onhandler
-  [el h o n]
-  (let [f (u/str->fn (or o n))]
+(defn- adjust-listener
+  [el e o n]
+  (let [v (or o n)
+        f (u/str->fn v)]
     (if (nil? o)
-      (.addEventListener el h f)
-      (.removeEventListener el h f))))
+      (.addEventListener el e f)
+      (.removeEventListener el e f))))
 
-(defn- handler->attribute [h] (str "on" (name h)))
-(defn- attribute->handler [a] (.substr a 2))
+(defn- event->handler [h] (str "on" (name h)))
+(defn- handler->event [a] (.substr a 2))
 
 (defn attribute-change
   [el a o n attributes handlers]
   (let [c (get-chan el)]
     (cond
       (contains? attributes a) (put! c {:type ::attribute :name a :before o :after n})
-      (contains? handlers a) (let [handler (attribute->handler a)]
-                               (onhandler el handler o n)
-                               (put! c {:type ::handler :name handler :before o :after n})))))
+      (contains? handlers a) (let [e (handler->event a)]
+                               (adjust-listener el e o n)))))
 
 (defn- attribute-changed-fn
   [attributes handlers]
   (fn [el a o n]
     (attribute-change el a o n attributes handlers)))
 
-(defn- attribute-properties
-  [a]
-  {:configurable true :enumerable true :writable true :aget str :aset str})
+(defn- get-attribute
+  [el n]
+  (if (.hasAttribute el n)
+    (.getAttribute el n)
+    nil))
 
-;;TODO atom protocol?
-;;atom based on setAttribute, getAttribute and removeAttribute
+(defn- set-attribute
+  [el n v]
+  (.setAttribute el n v))
+
+(defn- as-property
+  [n]
+  {:configurable true :enumerable true :writable true :aget (wrap-with-callback-this-value #(get-attribute % n)) :aset (wrap-with-callback-this-value #(set-attribute %1 n %2))})
 
 (defn- initialize!
   [f m attributes handlers]
@@ -143,16 +150,16 @@
 
 (defn- properties
   [attributes]
-  (clj->js (apply merge (map #(hash-map (keyword %) (attribute-properties %)) attributes))))
+  (clj->js (apply merge (map #(hash-map (keyword %) (as-property %)) attributes))))
 
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
-  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods handlers]} m
+  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods events]} m
         base-prototype (find-prototype base-type)
         attributes (set (map name attributes))
-        handlers (set (map handler->attribute handlers))
-        properties (properties attributes)
+        handlers (set (map event->handler events))
+        properties (properties (concat attributes handlers))
         proto (if properties (.create js/Object base-prototype properties) (.create js/Object base-prototype))]
     (aset proto "ns" (:ns m))
     (aset proto "createdCallback" (initialize! created-fn m attributes handlers))

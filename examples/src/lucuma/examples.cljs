@@ -49,21 +49,17 @@
             (.log js/console u))))))
 
 (defwebcomponent ex-attributes
-  :attributes #{:ex-attribute})
+  :attributes #{:attribute})
 
-(defn alert-fn
+(defn alert
   [el]
   (.alert js/window  (str "Hello methods from '" (.-id el) "' !")))
 
 (defwebcomponent ex-methods
-  :methods {:ex-method alert-fn})
-
-(defn ^:export handler
-  [el]
-  (.alert js/window (str "Hello handlers from '" (.-id el) "' !")))
+  :methods {:method alert})
 
 (defwebcomponent ex-handlers
-  :handlers #{:ex-handler})
+  :events #{:event})
 
 (defwebcomponent ex-constructor
   :constructor "CustomConstructor"

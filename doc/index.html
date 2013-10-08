@@ -47,6 +47,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <li><a href="#custom-element-style">Style</a></li>
               <li><a href="#custom-element-attributes">Attributes</a></li>
               <li><a href="#custom-element-methods">Methods</a></li>
+              <li><a href="#custom-element-handlers">Handlers</a></li>
               <li><a href="#custom-element-constructor">Constructor</a></li>
               <li><a href="#custom-element-extend">Extension</a></li>
             </ul>
@@ -356,9 +357,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 }, false);
 
                 function toggle() {
-                  var attribute = "attribute";
                   var el = document.getElementById('ex-attributes');
-                  var value = el.getAttribute(attribute);
+                  var value = el.attribute;
                   if (value != null) {
                     el.removeAttribute(attribute);
                   } else {
@@ -373,11 +373,11 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
             <pre class="example-cljs">
               <code class="language-clojure">
-   (defn alert-fn
+   (defn alert
      [el]
      (.alert js/window (str "Hello " el " !")))
 
-   (defwebcomponent ex-methods
+   (defwebcomponent ex-attributes
     :attributes #{:attribute})
               </code>
             </pre>
@@ -392,22 +392,66 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </p>
             <div class="example-live">
               <ex-methods id="ex-methods"></ex-methods>
-              <button onclick="document.getElementById('ex-methods').alert()">Call alert</button>
+              <button onclick="document.getElementById('ex-methods').method()">Call alert</button>
             </div>
             <pre class="example-markup">
               <code class="language-markup">
   &lt;ex-methods id="ex-methods"&gt;&lt;/ex-methods&gt;
-  &lt;button onclick="document.getElementById('ex-methods').alert()"&gt;Call alert&lt;/button&gt;
+  &lt;button onclick="document.getElementById('ex-methods').method()"&gt;Call alert&lt;/button&gt;
               </code>
             </pre>
             <pre class="example-cljs">
               <code class="language-clojure">
-   (defn alert-fn
+   (defn alert
      [el]
      (.alert js/window (str "Hello " el " !")))
 
    (defwebcomponent ex-methods
-    :methods {:alert alert-fn})
+    :methods {:method alert})
+              </code>
+            </pre>
+          </section>
+
+          <section id="custom-element-handlers">
+            <h2>Handlers</h2>
+            <p>
+            </p>
+            <div class="example-live">
+              <ex-handlers id="ex-handlers" onevent="onEvent()"></ex-handlers>
+              <script>
+                function onEvent(evt) {
+                  alert(evt.detail);
+                }
+                function fire() {
+                  var event = new CustomEvent("event", {detail: "Message details"});
+                  document.getElementById('ex-handlers').dispatchEvent(event);
+                }
+                function addHandler() {
+                  //document.getElementById('ex-handlers').onevent = "onEvent";
+                  document.getElementById('ex-handlers').setAttribute("onevent", "onEvent");
+                  document.getElementById('btn-add-handler').disabled = "disabled";
+                  document.getElementById('btn-remove-handler').disabled = null;
+                }
+                function removeHandler() {
+                  //document.getElementById('ex-handlers').onevent = null;
+                  document.getElementById('ex-handlers').removeAttribute("onevent");
+                  document.getElementById('btn-add-handler').disabled = null;
+                  document.getElementById('btn-remove-handler').disabled = "disabled";
+                }
+              </script>
+              <div class="btn-group" style="float: left;">
+                <button type="button" class="btn btn-default" onclick="fire()">Fire event</button>
+                <button id="btn-add-handler" type="button" class="btn btn-success" onclick="addHandler()" disabled="disabled">Add handler</button>
+                <button id="btn-remove-handler" type="button" class="btn btn-danger" onclick="removeHandler()">Remove handler</button>
+              </div>
+              <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
+            </div>
+            <pre class="example-markup">
+              <code class="language-markup">
+              </code>
+            </pre>
+            <pre class="example-cljs">
+              <code class="language-clojure">
               </code>
             </pre>
           </section>
@@ -415,12 +459,12 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <section id="custom-element-constructor">
             <h2>Constructor</h2>
             <p>
-              New instances of an element can be created using a JavaScript constructor available globally. Constructor name can be provided via the <strong>constructor</strong> key. When not provided a default name is generated based on the element name (e.g. <strong>EXMyElement</strong> if the tag name is <strong>ex-my-element</strong>). Constructor is not registered when <strong>constructor</strong> is set to <strong>nil</strong>.
+              New instances of an element can be created using a JavaScript constructor available in the namespace defining the element. Constructor name can be provided via the <strong>constructor</strong> key. When not provided a default name is generated based on the element name (e.g. <strong>EXMyElement</strong> if the tag name is <strong>ex-my-element</strong>). No constructor is registered when <strong>constructor</strong> is set to <strong>nil</strong>.
             </p>
             <div class="example-live">
               <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                  var el = new MyConstructor();
+                  var el = new lucuma.examples.CustomConstructor();
                   document.querySelector("#custom-element-constructor .example-live").appendChild(el);
                 });
               </script>
@@ -428,7 +472,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <pre class="example-markup">
               <code class="language-markup">
   &lt;script&gt;
-    var el = new MyConstructor();
+    var el = new lucuma.examples.CustomConstructor();
     document.querySelector("#custom-element-constructor .example-live").appendChild(el);
   &lt;/script&gt;
               </code>
@@ -436,7 +480,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <pre class="example-cljs">
               <code class="language-clojure">
    (defwebcomponent ex-constructor
-    :constructor "MyConstructor"
+    :constructor "CustomConstructor"
     :content [:div "Hello constructor!"])
               </code>
             </pre>
