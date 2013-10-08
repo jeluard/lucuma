@@ -15,6 +15,6 @@
 
 (defn str->fn
   [s]
-  (if-let [f (second (re-find #"(.*)\(\);?$" s))]
+  (if-let [f (second (re-find #"([A-z]*)(?:\([A-z]*\))?;?$" s))]
     (let [parts (string/split f #"\.")]
       (aget (resolve-goog-ns (butlast parts)) (last parts)))))
