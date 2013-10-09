@@ -125,19 +125,14 @@
   {:configurable true :enumerable true :get (wrap-with-callback-this-value #(get-attribute % n)) :set (wrap-with-callback-this-value #(set-attribute %1 n %2))})
 
 (defn- initialize!
-  [f m attributes handlers]
-  ;;TODO simplify with wrap-with-callback-this-value
-  (fn []
-    (this-as
-      this
-      (do
-        (let [{:keys [chan-fn content style reset-style-inheritance apply-author-styles] :or {chan-fn chan}} m]
-          (aset this "chan" (chan-fn))
-          (doseq [attribute (array-seq (.-attributes this))]
-            (attribute-change this (.-name attribute) nil (.-value attribute) attributes handlers))
-          (create-shadow-root! this content style reset-style-inheritance apply-author-styles)
-          (when style (install-shadow-css-shim-when-needed (.-shadowRoot this) (:name m) (:base-type m))))
-        (when f (call-with-this-argument f this))))))
+  [el f m attributes handlers]
+  (let [{:keys [chan-fn content style reset-style-inheritance apply-author-styles] :or {chan-fn chan}} m]
+    (aset el "chan" (chan-fn))
+    (doseq [attribute (array-seq (.-attributes el))]
+      (attribute-change el (.-name attribute) nil (.-value attribute) attributes handlers))
+    (create-shadow-root! el content style reset-style-inheritance apply-author-styles)
+    (when style (install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m)))
+    (when f (call-with-this-argument f el))))
 
 (defn- properties
   [attributes]
@@ -153,7 +148,7 @@
         properties (properties (concat attributes handlers))
         proto (if properties (.create js/Object base-prototype properties) (.create js/Object base-prototype))]
     (aset proto "ns" (:ns m))
-    (aset proto "createdCallback" (initialize! created-fn m attributes handlers))
+    (aset proto "createdCallback" (wrap-with-callback-this-value #(initialize! % created-fn m attributes handlers)))
     (set-callback! proto "enteredViewCallback" entered-view-fn)
     (set-callback! proto "leftViewCallback" left-view-fn)
     (set-callback! proto "attributeChangedCallback" (attribute-changed-fn attributes handlers))
