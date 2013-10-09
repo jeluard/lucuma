@@ -4,4 +4,4 @@
   (:require-macros [cemerick.cljs.test :refer [deftest is testing]]))
 
 (deftest create
-  (is (not (nil? (sd/create (.createElement js/document "a") true true)))))
+  (is (not (nil? (sd/create (.createElement js/document "a"))))))

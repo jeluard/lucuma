@@ -1,12 +1,13 @@
 (ns lucuma.shadow-dom)
 
-;;http://html5-demos.appspot.com/static/shadowdom-visualizer/index.html
-;;http://updates.html5rocks.com/2013/03/Visualizing-Shadow-DOM-Concepts
-;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/shadow/
-
 (defn create
-  [el reset-style-inheritance apply-author-styles]
-  (let [sr (.createShadowRoot el)]
-    (when reset-style-inheritance (aset sr "resetStyleInheritance" true))
-    (when apply-author-styles (aset sr "applyAuthorStyles" true))
-    sr))
+  ([el] (create el {}))
+  ([el m]
+   (let [{:keys [apply-author-styles reset-style-inheritance]} m
+         sr (.createShadowRoot el)]
+     (when apply-author-styles (set! (.-applyAuthorStyles sr) apply-author-styles))
+     (when reset-style-inheritance (set! (.-resetStyleInheritance sr) reset-style-inheritance))
+     sr)))
+
+;; Chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/shadow/
+;; W3C tests: https://github.com/w3c/web-platform-tests/tree/master/shadow-dom

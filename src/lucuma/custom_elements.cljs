@@ -7,6 +7,12 @@
   (:refer-clojure :exclude [methods]))
 
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
+;; https://github.com/w3c/web-platform-tests
+;; https://github.com/blossom/bee
+;; https://github.com/x-tag
+;; https://github.com/sethladd/dart-polymer-dart-examples/
+;; https://github.com/mozilla/brick
+;; https://code.google.com/p/dart/source/browse/branches/bleeding_edge/dart/pkg/#pkg%2Fpolymer
 
 (def ^:private forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
 
@@ -24,14 +30,14 @@
   (fn [c] (if (instance? js/HTMLTemplateElement c) js/HTMLTemplateElement (type c))))
 
 (defmethod render-content js/String [s] s)
-(defmethod render-content js/HTMLTemplateElement [t] (.cloneNode (aget t "content") true))
+(defmethod render-content js/HTMLTemplateElement [t] (.cloneNode (.-content t) true))
 (defmethod render-content :default [c] (throw (str "No render-content implementation for " c) (ex-info {:type (type c)})))
 
 (defmulti append-content!
   "append rendered 'content' to provided ShadowRoot"
   (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
-(defmethod append-content! js/String [sr s] (aset sr "innerHTML" s))
+(defmethod append-content! js/String [sr s] (set! (.-innerHTML sr) s))
 (defmethod append-content! js/HTMLElement [sr e] (.appendChild sr e))
 (defmethod append-content! js/DocumentFragment [sr e] (.appendChild sr e))
 (defmethod append-content! :default [sr e] (throw (str "No append! implementation for " e) (ex-info {:type (type e)})))
@@ -50,7 +56,7 @@
 (defmethod append-style! js/String
   [sr s]
   (let [style (.createElement js/document "style")]
-    (aset style "textContent" s)
+    (set! (.-textContent style) s)
     (.appendChild sr style)))
 
 (defn- render-then-append!
@@ -61,9 +67,9 @@
 (defn- invoke-if-fn [o] (if (fn? o) (o) o))
 
 (defn- create-shadow-root!
-  [e content style reset-style-inheritance apply-author-styles]
+  [e content style m]
   (when (or style content)
-    (let [sr (sd/create e reset-style-inheritance apply-author-styles)]
+    (let [sr (sd/create e m)]
       (when style (render-then-append! sr render-style append-style! (invoke-if-fn style)))
       (when content (render-then-append! sr render-content append-content! (invoke-if-fn content))))))
 
@@ -126,11 +132,11 @@
 
 (defn- initialize!
   [el f m attributes handlers]
-  (let [{:keys [chan-fn content style reset-style-inheritance apply-author-styles] :or {chan-fn chan}} m]
+  (let [{:keys [chan-fn content style] :or {chan-fn chan}} m]
     (aset el "chan" (chan-fn))
     (doseq [attribute (array-seq (.-attributes el))]
       (attribute-change el (.-name attribute) nil (.-value attribute) attributes handlers))
-    (create-shadow-root! el content style reset-style-inheritance apply-author-styles)
+    (create-shadow-root! el content style m)
     (when style (install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m)))
     (when f (call-with-this-argument f el))))
 
