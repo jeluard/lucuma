@@ -127,11 +127,13 @@
 
 (defn- set-attribute
   [el n v]
-  (.setAttribute el n v))
+  (if v
+    (.setAttribute el n v)
+    (.removeAttribute el n)))
 
 (defn- as-property
   [n]
-  {:configurable true :enumerable true :writable true :aget (wrap-with-callback-this-value #(get-attribute % n)) :aset (wrap-with-callback-this-value #(set-attribute %1 n %2))})
+  {:configurable true :enumerable true :get (wrap-with-callback-this-value #(get-attribute % n)) :set (wrap-with-callback-this-value #(set-attribute %1 n %2))})
 
 (defn- initialize!
   [f m attributes handlers]
@@ -155,10 +157,10 @@
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
-  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods events]} m
+  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods handlers]} m
         base-prototype (find-prototype base-type)
         attributes (set (map name attributes))
-        handlers (set (map event->handler events))
+        handlers (set (map event->handler handlers))
         properties (properties (concat attributes handlers))
         proto (if properties (.create js/Object base-prototype properties) (.create js/Object base-prototype))]
     (aset proto "ns" (:ns m))
