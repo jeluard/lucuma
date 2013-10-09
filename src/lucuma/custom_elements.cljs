@@ -85,11 +85,7 @@
 
 (defn- wrap-with-callback-this-value
   [f]
-  (fn [& args] (this-as this (call-with-this-argument f this args))))
-
-(defn- set-callback!
-  [proto n f]
-  (when f (aset proto n (wrap-with-callback-this-value f))))
+  (when f (fn [& args] (this-as this (call-with-this-argument f this args)))))
 
 (defn- install-shadow-css-shim-when-needed
   "Make sure styles do not leak when using polymer polyfill.
@@ -133,7 +129,7 @@
 (defn- initialize!
   [el f m attributes handlers]
   (let [{:keys [chan-fn content style] :or {chan-fn chan}} m]
-    (aset el "chan" (chan-fn))
+    (set! (.-chan  el) (chan-fn))
     (doseq [attribute (array-seq (.-attributes el))]
       (attribute-change el (.-name attribute) nil (.-value attribute) attributes handlers))
     (create-shadow-root! el content style m)
@@ -144,23 +140,30 @@
   [attributes]
   (clj->js (apply merge (map #(hash-map (keyword %) (as-property %)) attributes))))
 
+(deftype LucumaElement [])
+
+(defn- create-lucuma-prototype
+  [base-prototype]
+  (set! (.-prototype LucumaElement) base-prototype)
+  (.-prototype LucumaElement))
+
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
   (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods handlers]} m
-        base-prototype (find-prototype base-type)
         attributes (set (map name attributes))
         handlers (set (map event->handler handlers))
         properties (properties (concat attributes handlers))
-        proto (if properties (.create js/Object base-prototype properties) (.create js/Object base-prototype))]
-    (aset proto "ns" (:ns m))
-    (aset proto "createdCallback" (wrap-with-callback-this-value #(initialize! % created-fn m attributes handlers)))
-    (set-callback! proto "enteredViewCallback" entered-view-fn)
-    (set-callback! proto "leftViewCallback" left-view-fn)
-    (set-callback! proto "attributeChangedCallback" (attribute-changed-fn attributes handlers))
+        lucuma-prototype (create-lucuma-prototype (find-prototype base-type))
+        prototype (if properties (.create js/Object lucuma-prototype properties) (.create js/Object lucuma-prototype))]
+    (set! (.-ns prototype) (:ns m))
+    (set! (.-createdCallback prototype) (wrap-with-callback-this-value #(initialize! % created-fn m attributes handlers)))
+    (set! (.-enteredViewCallback prototype) (wrap-with-callback-this-value entered-view-fn))
+    (set! (.-leftViewCallback prototype) (wrap-with-callback-this-value left-view-fn))
+    (set! (.-attributeChangedCallback prototype) (wrap-with-callback-this-value (attribute-changed-fn attributes handlers)))
     (doseq [method methods]
-      (aset proto (name (key method)) (wrap-with-callback-this-value (val method))))
-    proto))
+      (aset prototype (name (key method)) (wrap-with-callback-this-value (val method))))
+    prototype))
 
 (defn default-constructor-name
   [n]

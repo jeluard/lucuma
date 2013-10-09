@@ -1,4 +1,4 @@
-//Default extern files as defined by google closure can be found here: https://code.google.com/p/closure-compiler/source/browse/externs/
+//Default externs files as defined by google closure can be found here: https://code.google.com/p/closure-compiler/source/browse/externs/
 
 /**
  * @param {string} type
@@ -35,3 +35,39 @@ var HTMLTemplateElement = {};
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html#api-html-template-element-content
  */
 HTMLTemplateElement.prototype.content;
+
+var lucuma = {};
+var lucuma.LucumaElement = {};
+
+/**
+ * @type {string}
+ */
+LucumaElement.prototype.ns;
+
+/**
+ * @type {Object}
+ */
+LucumaElement.prototype.chan;
+
+/**
+ * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-created-callback
+ */
+LucumaElement.prototype.createdCallback = function() {};
+
+/**
+ * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-entered-view-callback
+ */
+LucumaElement.prototype.enteredViewCallback = function() {};
+
+/**
+ * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-left-view-callback
+ */
+LucumaElement.prototype.leftViewCallback = function() {};
+
+/**
+ * @param {string} name
+ * @param {Object} oldValue
+ * @param {Object} newValue
+ * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-attribute-changed-callback
+ */
+LucumaElement.prototype.attributeChangedCallback = function(name, oldValue, newValue) {};
