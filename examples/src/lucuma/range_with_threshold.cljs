@@ -1,26 +1,22 @@
 (ns lucuma.range-with-threshold
-  (:require [lucuma.event :refer [fire]])
+  (:require [lucuma.attribute :refer [get-attribute set-attribute]]
+            [lucuma.event :refer [fire]])
   (:require-macros [lucuma :refer [defwebcomponent]]))
 
 (def ^:private previous-value (atom nil))
 
-(defn- add-threshold-crossed-class
-  [el]
-  (.add (.-classList el) "threshold-crossed"))
-
-(defn- remove-threshold-crossed-class
-  [el]
-  (.remove (.-classList el) "threshold-crossed"))
+(defn- add-threshold-crossed-class [el] (.add (.-classList el) "threshold-crossed"))
+(defn- remove-threshold-crossed-class [el] (.remove (.-classList el) "threshold-crossed"))
 
 (defn- breach-threshold
   [el v t]
   (add-threshold-crossed-class el)
-  (fire el "threshold-crossed" {:type :breached :value v :threshold t}))
+  (fire el :threshold-crossed {:type :breached :value v :threshold t}))
 
 (defn- clear-threshold
   [el v]
   (remove-threshold-crossed-class el)
-  (fire el "threshold-cleared" {:type :cleared :value v}))
+  (fire el :threshold-cleared {:type :cleared :value v}))
 
 (defn- fire-event-on-threshold-cross
   [el value min-threshold max-threshold]
@@ -33,13 +29,12 @@
   [el min-threshold max-threshold]
   (.addEventListener el "change" #(fire-event-on-threshold-cross (aget % "target") (aget % "target" "value") min-threshold max-threshold) false))
 
-;;Extending native element currently fails with polymer polyfill.
-;;TODO https://github.com/Polymer/ShadowDOM/issues/190
-;;Also chrome doesn't support dynamically created shadow root on input element so the style is not applied.
-;;TODO https://code.google.com/p/chromium/issues/detail?id=263940
-
 (defwebcomponent lucu-range-with-threshold
   :extends "input"
   :style "input[type='range'] .threshold-crossed { background-color: red; }"
-  :created-fn #(initialize % (or min-threshold 10) (or max-threshold 30))
-  :event-handlers #{:threshold-crossed})
+  :created-fn #(initialize % (or (get-attribute % "min-threshold") 10) (or (get-attribute % "max-threshold") 30))
+  :handlers #{:threshold-crossed})
+
+;; Chrome doesn't support dynamically created shadow root on input element so the style is not applied.
+;; TODO https://code.google.com/p/chromium/issues/detail?id=263940
+
