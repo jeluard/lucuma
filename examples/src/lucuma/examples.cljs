@@ -58,8 +58,8 @@
 (defwebcomponent ex-methods
   :methods {:method alert})
 
-(defwebcomponent ex-handlers
-  :events #{:event})
+(defwebcomponent ex-events
+  :handlers #{:event})
 
 (defwebcomponent ex-constructor
   :constructor "CustomConstructor"
@@ -83,7 +83,7 @@
   (register ex-extend)
   (register ex-attributes)
   (register ex-methods)
-  (register ex-handlers)
+  (register ex-events)
   (register ex-constructor)
 
   (register lucu-range-with-threshold)
