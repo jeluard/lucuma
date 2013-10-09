@@ -47,7 +47,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <li><a href="#custom-element-style">Style</a></li>
               <li><a href="#custom-element-attributes">Attributes</a></li>
               <li><a href="#custom-element-methods">Methods</a></li>
-              <li><a href="#custom-element-handlers">Handlers</a></li>
+              <li><a href="#custom-element-events">Events</a></li>
               <li><a href="#custom-element-constructor">Constructor</a></li>
               <li><a href="#custom-element-extend">Extension</a></li>
             </ul>
@@ -166,17 +166,17 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               function createLifecycle() {
                 e = document.createElement('ex-lifecycle');
                 document.getElementById('btn-append').disabled = null;
-                document.getElementById('btn-remove').disabled = "disabled";
+                document.getElementById('btn-remove').disabled = 'disabled';
               }
               function appendLifecycle() {
                 document.body.appendChild(e);
-                document.getElementById('btn-append').disabled = "disabled";
+                document.getElementById('btn-append').disabled = 'disabled';
                 document.getElementById('btn-remove').disabled = null;
               }
               function removeLifecycle() {
                 document.body.removeChild(e);
                 document.getElementById('btn-append').disabled = null;
-                document.getElementById('btn-remove').disabled = "disabled";
+                document.getElementById('btn-remove').disabled = 'disabled';
               }
               </script>
               <div class="btn-group" style="float: left;">
@@ -412,48 +412,83 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
           </section>
 
-          <section id="custom-element-handlers">
-            <h2>Handlers</h2>
+          <section id="custom-element-events">
+            <h2>Events</h2>
             <p>
+              Custom events can be created and dispatched as with regular elements.
             </p>
             <div class="example-live">
-              <ex-handlers id="ex-handlers" onevent="onEvent()"></ex-handlers>
+              <ex-events id="ex-events"></ex-events>
+              <div class="btn-group" style="float: left;">
+                <button type="button" class="btn btn-default" onclick="fire()">Fire event</button>
+                <button id="btn-add-event" type="button" class="btn btn-success" onclick="addListener()" disabled="disabled">Add listener</button>
+                <button id="btn-remove-event" type="button" class="btn btn-danger" onclick="removeListener()">Remove listener</button>
+              </div>
+              <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
               <script>
                 function onEvent(evt) {
                   alert(evt.detail);
                 }
                 function fire() {
-                  var event = new CustomEvent("event", {detail: "Message details"});
-                  document.getElementById('ex-handlers').dispatchEvent(event);
+                  var event = new CustomEvent('event', {detail: 'Event received by listener'});
+                  document.getElementById('ex-events').dispatchEvent(event);
                 }
-                function addHandler() {
-                  //document.getElementById('ex-handlers').onevent = "onEvent";
-                  document.getElementById('ex-handlers').setAttribute("onevent", "onEvent");
-                  document.getElementById('btn-add-handler').disabled = "disabled";
-                  document.getElementById('btn-remove-handler').disabled = null;
+                function addListener() {
+                  document.getElementById('ex-events').addEventListener('event', onEvent, false);
+                  document.getElementById('btn-add-event').disabled = 'disabled';
+                  document.getElementById('btn-remove-event').disabled = null;
                 }
-                function removeHandler() {
-                  //document.getElementById('ex-handlers').onevent = null;
-                  document.getElementById('ex-handlers').removeAttribute("onevent");
-                  document.getElementById('btn-add-handler').disabled = null;
-                  document.getElementById('btn-remove-handler').disabled = "disabled";
+                function removeListener() {
+                  document.getElementById('ex-events').removeEventListener('event', onEvent, false);
+                  document.getElementById('btn-add-event').disabled = null;
+                  document.getElementById('btn-remove-event').disabled = 'disabled';
                 }
+
+                addListener();
               </script>
-              <div class="btn-group" style="float: left;">
-                <button type="button" class="btn btn-default" onclick="fire()">Fire event</button>
-                <button id="btn-add-handler" type="button" class="btn btn-success" onclick="addHandler()" disabled="disabled">Add handler</button>
-                <button id="btn-remove-handler" type="button" class="btn btn-danger" onclick="removeHandler()">Remove handler</button>
-              </div>
-              <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
             </div>
-            <pre class="example-markup">
-              <code class="language-markup">
-              </code>
-            </pre>
-            <pre class="example-cljs">
-              <code class="language-clojure">
-              </code>
-            </pre>
+
+            <section>
+              <h4 id="custom-element-events-handlers">Event handlers</h4>
+              <p>
+                 Starting DOM level 2 events are preferably intercepted via <strong>addEventListener</strong> /<strong>removeEventListener</strong>. DOM level 1 style handlers will be available as attribute for <strong>handlers</strong> values (as on<em>event</em>).
+              </p>
+              <div class="example-live">
+                <ex-events id="ex-handlers" onevent="onEventHandler"></ex-events>
+                <script>
+                  function onEventHandler(evt) {
+                    alert(evt.detail);
+                  }
+                  function fireHandler() {
+                    var event = new CustomEvent('event', {detail: 'Event received by handler'});
+                    document.getElementById('ex-handlers').dispatchEvent(event);
+                  }
+                  function addHandler() {
+                    document.getElementById('ex-handlers').onevent = 'onEventHandler';
+                    document.getElementById('btn-add-handler').disabled = 'disabled';
+                    document.getElementById('btn-remove-handler').disabled = null;
+                  }
+                  function removeHandler() {
+                    document.getElementById('ex-handlers').onevent = null;
+                    document.getElementById('btn-add-handler').disabled = null;
+                    document.getElementById('btn-remove-handler').disabled = 'disabled';
+                  }
+                </script>
+                <div class="btn-group" style="float: left;">
+                  <button type="button" class="btn btn-default" onclick="fireHandler()">Fire event</button>
+                  <button id="btn-add-handler" type="button" class="btn btn-success" onclick="addHandler()" disabled="disabled">Add handler</button>
+                  <button id="btn-remove-handler" type="button" class="btn btn-danger" onclick="removeHandler()">Remove handler</button>
+                </div>
+                <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
+              </div>
+              <pre class="example-cljs">
+                <code class="language-clojure">
+   (defwebcomponent ex-handlers
+    :handlers #{:event})
+                </code>
+              </pre>
+            </section>
+
           </section>
 
           <section id="custom-element-constructor">
@@ -465,7 +500,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <script>
                 document.addEventListener('DOMContentLoaded', function() {
                   var el = new lucuma.examples.CustomConstructor();
-                  document.querySelector("#custom-element-constructor .example-live").appendChild(el);
+                  document.querySelector('#custom-element-constructor .example-live').appendChild(el);
                 });
               </script>
             </div>
@@ -520,7 +555,6 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <h2>Range with threshold</h2>
           <div class="example-live">
             <input is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5" />
-            <!--lucu-range-with-threshold type="range" value="25" min="0" max="50" step="5" /-->
           </div>
           <pre class="example-markup">
             <code class="language-markup">
@@ -592,13 +626,13 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         <script>
           function appendExampleUsage(usages) {
             fetchExample("examples", function(c) {
-              var contentArray = c.split("\n");
+              var contentArray = c.split('\n');
               for (var i = 0; i < usages.length; i++) {
                 var usage = usages[k];
                 var selector = '#' + usage.id + ' .example-cljs code';
                 var example = document.querySelector(selector);
                 if (example != null) {
-                  example.innerHTML = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join("\n");
+                  example.innerHTML = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join('\n');
                   Prism.highlightElement(example);
                 }
               }
@@ -619,44 +653,44 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           }
 
           function fetchExample(name, fn) {
-            var owner = "jeluard";
-            var repo = "lucuma";
-            var url_sha = "https://api.github.com/repos/" + owner + "/" + repo + "/contents/examples/lucuma/" + name + ".cljs";
+            var owner = 'jeluard';
+            var repo = 'lucuma';
+            var url_sha = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/examples/lucuma/' + name + '.cljs';
             var xhr_sha = new XMLHttpRequest();
             xhr_sha.onreadystatechange = function() {
               if (xhr_sha.readyState == 4 && xhr_sha.status == 200) {
                 var name = JSON.parse(xhr_sha.responseText).sha;
-                var url = "https://api.github.com/repos/" + owner + "/" + repo + "/git/blobs/" + name;
+                var url = 'https://api.github.com/repos/' + owner + '/' + repo + '/git/blobs/' + name;
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                   if (xhr.readyState == 4 && xhr.status == 200) {
-                    fn(window.atob(JSON.parse(xhr.responseText).content.replace(/\n/g, "")));
+                    fn(window.atob(JSON.parse(xhr.responseText).content.replace(/\n/g, '')));
                   }
                 };
-                xhr.open("GET", url, true);
+                xhr.open('GET', url, true);
                 xhr.send(null);
               }
             };
-            xhr_sha.open("GET", url_sha, true);
+            xhr_sha.open('GET', url_sha, true);
             xhr_sha.send(null);
           }
 
-          appendExample("example-range-with-threshold", "range_with_threshold");
-          appendExample("example-overlay", "overlay");
-          appendExample("example-flipbox", "flipbox");
+          appendExample('example-range-with-threshold', 'range_with_threshold');
+          appendExample('example-overlay', "overlay");
+          appendExample('example-flipbox', "flipbox");
 
-          appendExampleUsage([{id: "#custom-element-definition", lines: [13, 14]},
-                              {id: "#custom-element-lifecycle", lines: [16, 19]},
-                              {id: "#custom-element-content", line: [13, 14]},
-                              {id: "#custom-element-content-template-support", lines: [21, 22]},
-                              {id: "#custom-element-content-custom-logic", lines: [24, 28]},
-                              {id: "#custom-element-style", lines: [30, 32]},
-                              {id: "#custom-element-style-custom-logic", lines: [34, 38]},
-                              {id: "#custom-element-style-scope", lines: [40, 42]},
-                              {id: "#custom-element-attributes", lines: [44, 52]},
-                              {id: "#custom-element-methods", lines: [54, 59]},
-                              {id: "#custom-element-constructor", lines: [61, 63]},
-                              {id: "#custom-element-extend", lines: [65, 69]}]);
+          appendExampleUsage([{id: '#custom-element-definition', lines: [13, 14]},
+                              {id: '#custom-element-lifecycle', lines: [16, 19]},
+                              {id: '#custom-element-content', line: [13, 14]},
+                              {id: '#custom-element-content-template-support', lines: [21, 22]},
+                              {id: '#custom-element-content-custom-logic', lines: [24, 28]},
+                              {id: '#custom-element-style', lines: [30, 32]},
+                              {id: '#custom-element-style-custom-logic', lines: [34, 38]},
+                              {id: '#custom-element-style-scope', lines: [40, 42]},
+                              {id: '#custom-element-attributes', lines: [44, 52]},
+                              {id: '#custom-element-methods', lines: [54, 59]},
+                              {id: '#custom-element-constructor', lines: [61, 63]},
+                              {id: '#custom-element-extend', lines: [65, 69]}]);
         </script>
       </section>
 
