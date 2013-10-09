@@ -186,8 +186,3 @@
      (.register js/document n (clj->js (merge {:prototype p} (when (:base-type m) {:extends (:base-type m)}))))
      (let [c (get m :constructor (default-constructor-name n))]
        (when c (aset (u/*ns*->goog-ns (:ns m)) c (.-constructor p)))))))
-
-(defn create
-  "create an HTML element from it's name. 'is' value is used as second argument to document.createElement"
-  ([n] (create n nil))
-  ([n is] (.createElement js/document n is)))

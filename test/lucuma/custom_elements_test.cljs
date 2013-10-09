@@ -16,6 +16,3 @@
 
 (deftest register
   nil)
-
-(deftest create
-  nil)
