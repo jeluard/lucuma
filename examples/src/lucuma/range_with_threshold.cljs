@@ -36,5 +36,4 @@
   :handlers #{:threshold-crossed})
 
 ;; Chrome doesn't support dynamically created shadow root on input element so the style is not applied.
-;; TODO https://code.google.com/p/chromium/issues/detail?id=263940
-
+;; https://code.google.com/p/chromium/issues/detail?id=263940
