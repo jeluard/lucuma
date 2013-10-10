@@ -6,4 +6,5 @@
 (defn ^:export two [] 2)
 
 (deftest str->fn
+  (is (= 2 ((u/str->fn "lucuma.util_test.two"))))
   (is (= 2 ((u/str->fn "lucuma.util_test.two()")))))

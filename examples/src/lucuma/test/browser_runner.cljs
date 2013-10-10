@@ -1,11 +1,12 @@
 (ns lucuma.test.browser-runner
-  (:require [clojure.string :as s]
-            [dommy.core :as dommy]
-            [lucuma.overlay :as o]
+  (:require [cemerick.cljs.test :refer [report *testing-vars* *testing-contexts*] :as t]
+            [lucuma-test :as l]
             [lucuma.custom-elements-test :as cet]
+            [lucuma.overlay :as o]
             [lucuma.shadow-dom-test :as sdt]
             [lucuma.util-test :as ut]
-            [cemerick.cljs.test :refer [report *testing-vars* *testing-contexts*] :as t])
+            [clojure.string :as s]
+            [dommy.core :as dommy])
   (:require-macros [dommy.macros :refer [sel1]]))
 
 (def ^:private current-ns (atom nil))

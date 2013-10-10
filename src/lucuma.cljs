@@ -1,7 +1,8 @@
 (ns lucuma
   (:require [lucuma.custom-elements :as ce]
             [lucuma.shadow-dom :as sd]
-            [lucuma.util :as u]))
+            [lucuma.util :as u]
+            [clojure.string :as string]))
 
 (deftype LucumaElement [])
 
@@ -41,14 +42,12 @@
 (defmethod append-content! js/String [sr s] (set! (.-innerHTML sr) s))
 (defmethod append-content! js/HTMLElement [sr e] (.appendChild sr e))
 (defmethod append-content! js/DocumentFragment [sr e] (.appendChild sr e))
-(defmethod append-content! :default [sr e] (throw (str "No append! implementation for " e) (ex-info {:type (type e)})))
 
 (defmulti render-style
   "render 'style' to something that can be added to the DOM"
   type)
 
 (defmethod render-style js/String [s] s)
-(defmethod render-style :default [s] (throw (str "No render-style implementation for " s) (ex-info {:type (type s)})))
 
 (defmulti append-style!
   "append rendered 'style' to provided ShadowRoot"
@@ -74,8 +73,7 @@
 
 (defn- adjust-listener
   [el e o n]
-  (let [v (or o n)
-        f (u/str->fn v)]
+  (let [f (u/str->fn (or o n))]
     (if (nil? o)
       (.addEventListener el e f)
       (.removeEventListener el e f))))
@@ -117,12 +115,15 @@
       (aset prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
     prototype))
 
+(defn- default-constructor-name
+  [n]
+  (when (not (nil? n))
+    (let [v (string/split n #"-")]
+      (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1)))))))
+
 (defn register
   [m]
   (let [n (:name m)
-        ns (:ns m)
-        c (:constructor m (ce/default-constructor-name n))
-        p (create-prototype m)
-        extends (:base-type m)
-        cf (ce/register n ns c p extends)]
-    (when c (aset (u/*ns*->goog-ns ns) c cf))))
+        c (:constructor m (default-constructor-name n))
+        cf (ce/register n (create-prototype m) (:base-type m))]
+    (when c (aset (u/*ns*->goog-ns (:ns m)) c cf))))

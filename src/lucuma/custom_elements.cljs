@@ -1,7 +1,6 @@
 (ns lucuma.custom-elements
   (:require [lucuma.attribute :as att]
-            [lucuma.util :as u]
-            [clojure.string :as string]))
+            [lucuma.util :as u]))
 
 (def ^:private forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
 
@@ -17,12 +16,6 @@
     (.getPrototypeOf js/Object (.createElement js/document t))
     (.-prototype js/HTMLElement)))
 
-(defn default-constructor-name
-  [n]
-  (when (not (nil? n))
-    (let [v (string/split n #"-")]
-      (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1)))))))
-
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
@@ -37,7 +30,7 @@
 
 (defn register
   "register a Custom Element from an abstract definition"
-  [n ns c p extends]
+  [n p extends]
   {:pre [(valid-name? n)]}
   (.register js/document n (clj->js (merge {:prototype p} (when extends {:extends extends})))))
 
