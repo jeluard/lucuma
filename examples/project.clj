@@ -6,9 +6,8 @@
   :plugins [[lein-cljsbuild "0.3.3"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src"]
-                        :compiler {:output-dir "target/cljs"
-                                   :output-to "lucuma+examples.js"
-                                   :source-map "lucuma+examples.js.map"
+                        :compiler {:output-to "target/cljs/lucuma+examples.js"
+                                   :source-map "target/cljs/lucuma+examples.js.map"
                                    :optimizations :simple
                                    :pretty-print true}}
                        {:id "production"
