@@ -11,8 +11,6 @@
   :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma.js"
-                                   :output-dir "target/cljs/"
-                                   :source-map "target/cljs/lucuma.js.map"
                                    :optimizations :simple
                                    :pretty-print true}}]
               :test-commands {"unit-tests" ["phantomjs" "runners/phantomjs.js" "target/cljs/lucuma.js"
