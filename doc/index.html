@@ -120,15 +120,6 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </pre>
             <pre class="example-cljs">
               <code class="language-clojure">
-  ;;First define your new element
-  (use 'lucuma)
-  (def m {:content "Hello world!")
-  
-  ;;then register it
-  (register "ex-hello" m)
-  
-  ;;alternatively you can use the defwebcomponent macro
-
   (use 'lucuma)
   (defwebcomponent ex-hello
     :content "Hello World!")

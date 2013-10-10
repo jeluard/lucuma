@@ -39,16 +39,6 @@ HTMLTemplateElement.prototype.content;
 var LucumaElement = {};
 
 /**
- * @type {string}
- */
-LucumaElement.prototype.ns;
-
-/**
- * @type {Object}
- */
-LucumaElement.prototype.chan;
-
-/**
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-created-callback
  */
 LucumaElement.prototype.createdCallback = function() {};

@@ -113,7 +113,7 @@
         properties (att/properties (concat attributes handlers))
         lucuma-prototype (create-lucuma-prototype (ce/find-prototype base-type))
         prototype (if properties (.create js/Object lucuma-prototype properties) (.create js/Object lucuma-prototype))]
-    (set! (.-ns prototype) (:ns m))
+   ;; (set! (.-ns prototype) (:ns m))
     (set! (.-createdCallback prototype) (u/wrap-with-callback-this-value #(initialize! % created-fn m attributes handlers)))
     (set! (.-enteredViewCallback prototype) (u/wrap-with-callback-this-value entered-view-fn))
     (set! (.-leftViewCallback prototype) (u/wrap-with-callback-this-value left-view-fn))
@@ -123,11 +123,11 @@
     prototype))
 
 (defn register
-  "register a Custom Element from an abstract definition"
-  ([m] (register (:name m) m))
-  ([n m]
-   {:pre [(ce/valid-name? n)]}
-   (let [p (create-prototype m)]
-     (.register js/document n (clj->js (merge {:prototype p} (when (:base-type m) {:extends (:base-type m)}))))
-     (let [c (get m :constructor (ce/default-constructor-name n))]
-       (when c (aset (u/*ns*->goog-ns (:ns m)) c (.-constructor p)))))))
+  [m]
+  (let [n (:name m)
+        ns (:ns m)
+        c (:constructor m (ce/default-constructor-name n))
+        p (create-prototype m)
+        extends (:base-type m)
+        cf (ce/register n ns c p extends)]
+    (when c (aset (u/*ns*->goog-ns ns) c cf))))

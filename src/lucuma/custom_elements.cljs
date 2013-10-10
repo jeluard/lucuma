@@ -17,8 +17,15 @@
 
 (defn default-constructor-name
   [n]
-  (let [v (string/split n #"-")]
-    (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1))))))
+  (when (not (nil? n))
+    (let [v (string/split n #"-")]
+      (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1)))))))
+
+(defn register
+  "register a Custom Element from an abstract definition"
+  [n ns c p extends]
+  {:pre [(valid-name? n)]}
+  (.register js/document n (clj->js (merge {:prototype p} (when extends {:extends extends})))))
 
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
 ;; https://github.com/w3c/web-platform-tests
