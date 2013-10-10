@@ -81,22 +81,17 @@
 (defn- event->handler [h] (str "on" (name h)))
 (defn- handler->event [a] (.substr a 2))
 
-(defn attribute-change
+(defn attribute-changed
   [el a o n attributes handlers]
   (cond
     (contains? handlers a) (let [e (handler->event a)]
                              (adjust-listener el e o n))))
 
-(defn- attribute-changed-fn
-  [attributes handlers]
-  (fn [el a o n]
-    (attribute-change el a o n attributes handlers)))
-
 (defn- initialize!
   [el f m attributes handlers]
   (let [{:keys [content style]} m]
     (doseq [attribute (array-seq (.-attributes el))]
-      (attribute-change el (.-name attribute) nil (.-value attribute) attributes handlers))
+      (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
     (create-shadow-root! el content style m)
     (when style (install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m)))
     (when f (u/call-with-this-argument f el))))
@@ -105,12 +100,12 @@
   "create a Custom Element prototype from a map definition"
   [m]
   (let [{:keys [base-type created-fn attributes methods handlers]} m
-        created-fn #(initialize! % created-fn m attributes handlers)
-        attribute-changed-fn #(attribute-changed-fn attributes handlers)
         attributes (set (map name attributes))
         handlers (set (map event->handler handlers))
+        created-fn #(initialize! % created-fn m attributes handlers)
+        attribute-changed-fn #(attribute-changed %1 %2 %3 %4 attributes handlers)
         p (create-lucuma-prototype (ce/find-prototype base-type))
-        prototype (ce/create-prototype (merge m {:prototype p :properties (concat attributes handlers) :created-fn created-fn}))]
+        prototype (ce/create-prototype (merge m {:prototype p :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
     (doseq [method methods]
       (aset prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
     prototype))
