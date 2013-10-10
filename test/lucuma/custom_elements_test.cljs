@@ -13,6 +13,3 @@
 (deftest default-constructor-names
   (is (= "EXName" (ce/default-constructor-name "ex-name")))
   (is (= "EXComplexName" (ce/default-constructor-name "ex-complex-name"))))
-
-(deftest register
-  nil)

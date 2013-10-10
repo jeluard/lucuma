@@ -105,6 +105,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <h2>Custom Element definition</h2>
             <p>
               Custom elements are defined as maps of keyword / value. This map serves as the abstract definition for the element prototype. Once registered the element can be manipulated by the DOM.
+              Element instances have <strong>lucuma.LucumaElement</strong> in their prototype chain.
             </p>
             <p>
               For encapsulation purpoise content and style are appended to a Shadow DOM.
@@ -120,7 +121,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <pre class="example-cljs">
               <code class="language-clojure">
   ;;First define your new element
-  (use 'lucuma.custom-elements)
+  (use 'lucuma)
   (def m {:content "Hello world!")
   
   ;;then register it
@@ -204,8 +205,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <p>The rendering process consists of:</p>
             <ol>
               <li>if content is a function evaluate it; otherwise use content value as-is</li>
-              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L15">render-content</a> multimethod (dispatch on content type) to generate the rendered html</li>
-              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L38">append-content!</a> multimethod (dispatch on rendered content type) to insert content in the DOM</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L27">render-content</a> multimethod (dispatch on content type) to generate the rendered html</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L38">append-content!</a> multimethod (dispatch on rendered content type) to insert content in the DOM</li>
             </ol>
             <p>
             <p>
@@ -279,8 +280,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <p>The rendering process consists of:</p>
             <ol>
               <li>if style is a function evaluate it; otherwise use style value as-is</li>
-              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L28">render-style</a> multimethod (dispatch on content type) to generate the rendered html</li>
-              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma/custom_elements.cljs#L38">append-style!</a> multimethod (dispatch on rendered style type) to insert content in the DOM</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L47">render-style</a> multimethod (dispatch on content type) to generate the rendered html</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L54">append-style!</a> multimethod (dispatch on rendered style type) to insert content in the DOM</li>
             </ol>
             <p>
             <p>

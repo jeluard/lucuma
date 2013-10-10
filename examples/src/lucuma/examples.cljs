@@ -1,15 +1,13 @@
 (ns lucuma.examples
-  (:require [lucuma.custom-elements :refer [get-chan register render-content render-style]]
+  (:require [lucuma :refer [register render-content render-style]]
             [lucuma.event :refer [fire]]
             [lucuma.range-with-threshold :refer [lucu-range-with-threshold]]
             [lucuma.overlay :refer [lucu-overlay]]
             [lucuma.flipbox :refer [lucu-flipbox]]
             [dommy.core :refer [prepend!]]
-            [garden.core :refer [css]]
-            [cljs.core.async :as async :refer [<!]])
+            [garden.core :refer [css]])
   (:require-macros [lucuma :refer [defwebcomponent]]
-                   [dommy.macros :refer [node sel1]]
-                   [cljs.core.async.macros :refer [go]]))
+                   [dommy.macros :refer [node sel1]]))
 
 (defwebcomponent ex-hello
   :content "Hello world!")
@@ -41,13 +39,6 @@
 (defwebcomponent ex-style-scope
   :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
   :apply-author-styles true)
-
-(defn ^:export delegate-attributes
-  [el f]
-  (let [c (get-chan el)]
-    (go (while true
-          (let [u (<! c)]
-            (.log js/console u))))))
 
 (defwebcomponent ex-attributes
   :attributes #{:attribute})

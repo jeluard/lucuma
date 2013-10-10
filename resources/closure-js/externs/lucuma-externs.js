@@ -36,8 +36,7 @@ var HTMLTemplateElement = {};
  */
 HTMLTemplateElement.prototype.content;
 
-var lucuma = {};
-var lucuma.LucumaElement = {};
+var LucumaElement = {};
 
 /**
  * @type {string}
