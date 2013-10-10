@@ -343,26 +343,19 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <section id="custom-element-attributes">
             <h2>Attributes</h2>
             <p>
+              Attributes declared via <strong>attributes</strong> are accessible via regular <strong>hasAttribute</strong> / <strong>getAttribute</strong> / <strong>removeAttribute</strong> at the node level as well as <strong>property</strong> on the element itself.
             </p>
             <div class="example-live">
               <ex-attributes id="ex-attributes"></ex-attributes>
               <button onclick="toggle()">Toggle attribute</button>
               <script>
-                document.addEventListener("WebComponentsReady", function() {
-                  /*
-                  lucuma.examples.delegate_attributes(document.getElementById('ex-attributes'), function(update) {
-                    console.log(update);
-                  });
-                  */
-                }, false);
-
                 function toggle() {
                   var el = document.getElementById('ex-attributes');
                   var value = el.attribute;
                   if (value != null) {
-                    el.removeAttribute(attribute);
+                    el.attribute = null;
                   } else {
-                    el.setAttribute(attribute, Math.random());
+                    el.attribute = Math.random();
                   }
                 }
               </script>
@@ -451,7 +444,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <section>
               <h4 id="custom-element-events-handlers">Event handlers</h4>
               <p>
-                 Starting DOM level 2 events are preferably intercepted via <strong>addEventListener</strong> /<strong>removeEventListener</strong>. DOM level 1 style handlers will be available as attribute for <strong>handlers</strong> values (as on<em>event</em>).
+                 Starting DOM level 2 events are preferably intercepted via <strong>addEventListener</strong> /<strong>removeEventListener</strong>. Each handler defined via <strong>handlers</strong> will be exposed as DOM level 1 style handlers (i.e. as on<strong>event</strong> property).
               </p>
               <div class="example-live">
                 <ex-events id="ex-handlers" onevent="onEventHandler"></ex-events>
