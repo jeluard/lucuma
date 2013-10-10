@@ -13,6 +13,6 @@
                         :compiler {:output-to "target/cljs/lucuma.js"
                                    :optimizations :simple
                                    :pretty-print true}}]
-              :test-commands {"unit-tests" ["phantomjs" "runners/phantomjs.js" "target/cljs/lucuma.js"
-                                            "slimerjs" "runners/phantomjs.js" "target/cljs/lucuma.js"]}}
+              :test-commands {"phantomjs" ["phantomjs" "runners/phantomjs.js" "target/cljs/lucuma.js"]
+                              "slimerjs" ["slimerjs" "runners/phantomjs.js" "target/cljs/lucuma.js"]}}
   :min-lein-version "2.3.0")
