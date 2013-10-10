@@ -1,5 +1,6 @@
 var p = require('webpage').create();
 var sys = require('system');
+p.injectJs("http://www.polymer-project.org/polymer/polymer.js");
 p.injectJs(sys.args[1]);
 
 p.onConsoleMessage = function (x) {
