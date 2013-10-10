@@ -64,7 +64,6 @@
 (defwebcomponent ex-extend
   :base-type "button"
   :content [:span {:class "icon-exclamation-sign"} [:content]]
-  :style [:button {:color "red"}]
   :apply-author-styles true)
 
 (defn ^:export register-all
