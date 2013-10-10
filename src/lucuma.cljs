@@ -1,6 +1,5 @@
 (ns lucuma
-  (:require [lucuma.attribute :as att]
-            [lucuma.custom-elements :as ce]
+  (:require [lucuma.custom-elements :as ce]
             [lucuma.shadow-dom :as sd]
             [lucuma.util :as u]))
 
@@ -107,17 +106,13 @@
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
   [m]
-  (let [{:keys [base-type created-fn entered-view-fn left-view-fn attributes methods handlers]} m
+  (let [{:keys [base-type created-fn attributes methods handlers]} m
+        created-fn #(initialize! % created-fn m attributes handlers)
+        attribute-changed-fn #(attribute-changed-fn attributes handlers)
         attributes (set (map name attributes))
         handlers (set (map event->handler handlers))
-        properties (att/properties (concat attributes handlers))
-        lucuma-prototype (create-lucuma-prototype (ce/find-prototype base-type))
-        prototype (if properties (.create js/Object lucuma-prototype properties) (.create js/Object lucuma-prototype))]
-   ;; (set! (.-ns prototype) (:ns m))
-    (set! (.-createdCallback prototype) (u/wrap-with-callback-this-value #(initialize! % created-fn m attributes handlers)))
-    (set! (.-enteredViewCallback prototype) (u/wrap-with-callback-this-value entered-view-fn))
-    (set! (.-leftViewCallback prototype) (u/wrap-with-callback-this-value left-view-fn))
-    (set! (.-attributeChangedCallback prototype) (u/wrap-with-callback-this-value (attribute-changed-fn attributes handlers)))
+        p (create-lucuma-prototype (ce/find-prototype base-type))
+        prototype (ce/create-prototype (merge m {:prototype p :properties (concat attributes handlers) :created-fn created-fn}))]
     (doseq [method methods]
       (aset prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
     prototype))

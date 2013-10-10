@@ -1,5 +1,7 @@
 (ns lucuma.custom-elements
-  (:require [clojure.string :as string]))
+  (:require [lucuma.attribute :as att]
+            [lucuma.util :as u]
+            [clojure.string :as string]))
 
 (def ^:private forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
 
@@ -20,6 +22,18 @@
   (when (not (nil? n))
     (let [v (string/split n #"-")]
       (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1)))))))
+
+(defn- create-prototype
+  "create a Custom Element prototype from a map definition"
+  [m]
+  (let [{:keys [prototype properties created-fn entered-view-fn left-view-fn attribute-changed-fn]} m
+        properties (att/properties properties)
+        prototype (if properties (.create js/Object prototype properties) (.create js/Object prototype))]
+    (set! (.-createdCallback prototype) (u/wrap-with-callback-this-value created-fn))
+    (set! (.-enteredViewCallback prototype) (u/wrap-with-callback-this-value entered-view-fn))
+    (set! (.-leftViewCallback prototype) (u/wrap-with-callback-this-value left-view-fn))
+    (set! (.-attributeChangedCallback prototype) (u/wrap-with-callback-this-value attribute-changed-fn))
+    prototype))
 
 (defn register
   "register a Custom Element from an abstract definition"
