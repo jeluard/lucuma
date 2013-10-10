@@ -408,23 +408,27 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <section id="custom-element-events">
             <h2>Events</h2>
             <p>
-              Custom events can be created and dispatched as with regular elements.
+              Custom events can be created and dispatched as with regular elements. <strong>lucuma.event.fire</strong> can be used to simplify event firing.
             </p>
             <div class="example-live">
               <ex-events id="ex-events"></ex-events>
               <div class="btn-group" style="float: left;">
-                <button type="button" class="btn btn-default" onclick="fire()">Fire event</button>
+                <button type="button" class="btn btn-default" onclick="fireJS()">Fire event via JS</button>
+                <button type="button" class="btn btn-default" onclick="fireCLJS()">Fire event via CLJS</button>
                 <button id="btn-add-event" type="button" class="btn btn-success" onclick="addListener()" disabled="disabled">Add listener</button>
                 <button id="btn-remove-event" type="button" class="btn btn-danger" onclick="removeListener()">Remove listener</button>
               </div>
               <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
               <script>
                 function onEvent(evt) {
-                  alert(evt.detail);
+                  alert(evt.detail.msg);
                 }
-                function fire() {
-                  var event = new CustomEvent('event', {detail: 'Event received by listener'});
+                function fireJS() {
+                  var event = new CustomEvent('event', {detail: {msg: 'Sent from JS'}});
                   document.getElementById('ex-events').dispatchEvent(event);
+                }
+                function fireCLJS() {
+                  document.getElementById('ex-events').fire();
                 }
                 function addListener() {
                   document.getElementById('ex-events').addEventListener('event', onEvent, false);

@@ -1,5 +1,6 @@
 (ns lucuma.examples
   (:require [lucuma.custom-elements :refer [get-chan register render-content render-style]]
+            [lucuma.event :refer [fire]]
             [lucuma.range-with-threshold :refer [lucu-range-with-threshold]]
             [lucuma.overlay :refer [lucu-overlay]]
             [lucuma.flipbox :refer [lucu-flipbox]]
@@ -58,7 +59,12 @@
 (defwebcomponent ex-methods
   :methods {:method alert})
 
+(defn fire-event
+  [el]
+  (fire el :event {:msg "Sent from CLJS"}))
+
 (defwebcomponent ex-events
+  :methods {:fire fire-event}
   :handlers #{:event})
 
 (defwebcomponent ex-constructor
