@@ -50,12 +50,11 @@
 (defwebcomponent ex-methods
   :methods {:method alert})
 
-(defn fire-event
-  [el]
-  (fire el :event {:msg "Sent from CLJS"}))
+(defn ^:export fire-event
+  [id]
+  (fire (sel1 (keyword id)) :event {:msg "Sent from CLJS"}))
 
 (defwebcomponent ex-events
-  :methods {:fire fire-event}
   :handlers #{:event})
 
 (defwebcomponent ex-constructor

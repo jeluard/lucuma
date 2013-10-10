@@ -420,7 +420,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                   document.getElementById('ex-events').dispatchEvent(event);
                 }
                 function fireCLJS() {
-                  document.getElementById('ex-events').fire();
+                  lucuma.examples.fire_event('#ex-events');
                 }
                 function addListener() {
                   document.getElementById('ex-events').addEventListener('event', onEvent, false);
