@@ -95,7 +95,7 @@
       (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
     (create-shadow-root! el content style m)
     (when style (install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m)))
-    (when f (u/call-with-this-argument f el))))
+    (when f (u/call-with-first-argument f el))))
 
 (defn- create-prototype
   "create a Custom Element prototype from a map definition"
