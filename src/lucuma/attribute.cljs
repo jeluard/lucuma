@@ -1,13 +1,13 @@
 (ns lucuma.attribute
   (:require [lucuma.util :as u]))
 
-(defn get-attribute
+(defn get-attr
   [el n]
   (if (.hasAttribute el n)
     (.getAttribute el n)
     nil))
 
-(defn set-attribute
+(defn set-attr!
   [el n v]
   (if v
     (.setAttribute el n v)
@@ -15,7 +15,7 @@
 
 (defn- as-property
   [n]
-  {:configurable true :enumerable true :get (u/wrap-with-callback-this-value #(get-attribute % n)) :set (u/wrap-with-callback-this-value #(set-attribute %1 n %2))})
+  {:configurable true :enumerable true :get (u/wrap-with-callback-this-value #(get-attr % n)) :set (u/wrap-with-callback-this-value #(set-attr! %1 n %2))})
 
 (defn properties
   [attributes]
