@@ -526,7 +526,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <pre class="example-cljs">
               <code class="language-clojure">
    (defwebcomponent ex-extend
-    :base-type "button"
+    :base-type :button
     :content [:span {:class "icon-exclamation-sign"} [:content]]
     :style [:button {:color "red"}]
     :apply-author-styles true)
@@ -544,6 +544,12 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <h2>Range with threshold</h2>
           <div class="example-live">
             <input is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5" />
+            <scripta>
+              var el = document.getElementById('lucu-range-with-threshold');
+              el.addEventListener('breach', function(evt) {
+                console.log(evt);
+              }, false);
+            </script>
           </div>
           <pre class="example-markup">
             <code class="language-markup">

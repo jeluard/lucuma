@@ -62,7 +62,7 @@
   :content [:div "Hello constructor!"])
 
 (defwebcomponent ex-extend
-  :base-type "button"
+  :base-type :button
   :content [:span {:class "icon-exclamation-sign"} [:content]]
   :apply-author-styles true)
 

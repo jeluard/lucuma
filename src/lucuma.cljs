@@ -21,7 +21,7 @@
   [sr n base-type]
   (when js/ShadowDOMPolyfill
     (if base-type
-      (.shimStyling js/Platform.ShadowCSS sr n base-type)
+      (.shimStyling js/Platform.ShadowCSS sr n (name base-type))
       (.shimStyling js/Platform.ShadowCSS sr n))))
 
 (defmulti render-content
@@ -105,6 +105,7 @@
         handlers (set (map event->handler handlers))
         created-fn #(initialize! % created-fn m attributes handlers)
         attribute-changed-fn #(attribute-changed %1 %2 %3 %4 attributes handlers)
+        base-type (when base-type (name base-type))
         p (create-lucuma-prototype (ce/find-prototype base-type))
         prototype (ce/create-prototype (merge m {:prototype p :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
     (doseq [method methods]
