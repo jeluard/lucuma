@@ -7,7 +7,7 @@
                    [dommy.macros :refer [sel1]]))
 
 (def style [[:body {:overflow "visible" :overflow-y "scroll"}]
-            [:.overlay-backdrop-active :body {:overflow "hidden"}]
+            [:.overlay-backdrop-active [:body {:overflow "hidden"}]]
             [:.b-overlay-backdrop {:background-color (rgba 252 252 252 0.7) :position "fixed" :top 0 :left 0 :right 0 :bottom 0 :z-index 998
                                    :overflow-x "auto" :overflow-y "scroll" :display "none"}]
             [:.b-overlay-backdrop-close {:color "#aaa" :font-size (px 30) :width (px 30) :height (px 30) :text-align "center" :border "0" :position "fixed"
