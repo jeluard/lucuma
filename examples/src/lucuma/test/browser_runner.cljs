@@ -2,7 +2,6 @@
   (:require [cemerick.cljs.test :refer [report *testing-vars* *testing-contexts*] :as t]
             [lucuma-test :as l]
             [lucuma.custom-elements-test :as cet]
-            [lucuma.overlay :as o]
             [lucuma.shadow-dom-test :as sdt]
             [lucuma.util-test :as ut]
             [clojure.string :as s]
