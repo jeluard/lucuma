@@ -23,14 +23,14 @@
 (defn hide
   [el]
   (display! (backdrop el) "none")
-  (fire el "hide"))
+  (fire el :hide))
 
 (defn show
   [el]
   (display! (backdrop el) "block")
   (dommy/add-class! (sel1 :html) :overlay-backdrop-active)
   (.addEventListener el "click" #(hide el))
-  (fire el "show"))
+  (fire el :show))
 
 (defwebcomponent lucu-overlay
   :extends :div
