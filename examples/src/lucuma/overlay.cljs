@@ -16,7 +16,7 @@
                                :box-shadow "0 2px 4px rgba(0, 0, 0,.2)" :background "#ffffff" :position "static" :margin "60px auto" :padding (px 60)}]
             [:.q-overlay {:width (px 600)}]])
 
-(defn- display! [el t] (aset el "style" "display" t))
+(defn- display! [el t] (aset (.-style el) "display" t))
 
 (defn- backdrop [el] (.querySelector (.-shadowRoot el)  ".q-b-overlay-backdrop"))
 
