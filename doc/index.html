@@ -157,24 +157,24 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               var e;
               function createLifecycle() {
                 e = document.createElement('ex-lifecycle');
-                document.getElementById('btn-append').disabled = null;
-                document.getElementById('btn-remove').disabled = 'disabled';
+                document.getElementById('btn-append').disabled = false;
+                document.getElementById('btn-remove').disabled = true;
               }
               function appendLifecycle() {
                 document.body.appendChild(e);
-                document.getElementById('btn-append').disabled = 'disabled';
-                document.getElementById('btn-remove').disabled = null;
+                document.getElementById('btn-append').disabled = false;
+                document.getElementById('btn-remove').disabled = true;
               }
               function removeLifecycle() {
                 document.body.removeChild(e);
-                document.getElementById('btn-append').disabled = null;
-                document.getElementById('btn-remove').disabled = 'disabled';
+                document.getElementById('btn-append').disabled = false;
+                document.getElementById('btn-remove').disabled = true;
               }
               </script>
               <div class="btn-group" style="float: left;">
                 <button type="button" class="btn btn-default" onclick="createLifecycle()">Create</button>
-                <button id="btn-append" type="button" class="btn btn-success" onclick="appendLifecycle()" disabled="disabled">Append</button>
-                <button id="btn-remove" type="button" class="btn btn-danger" onclick="removeLifecycle()" disabled="disabled">Remove</button>
+                <button id="btn-append" type="button" class="btn btn-success" onclick="appendLifecycle()" disabled>Append</button>
+                <button id="btn-remove" type="button" class="btn btn-danger" onclick="removeLifecycle()" disabled>Remove</button>
               </div>
               <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
             </div>
@@ -407,7 +407,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <div class="btn-group" style="float: left;">
                 <button type="button" class="btn btn-default" onclick="fireJS()">Fire event via JS</button>
                 <button type="button" class="btn btn-default" onclick="fireCLJS()">Fire event via CLJS</button>
-                <button id="btn-add-event" type="button" class="btn btn-success" onclick="addListener()" disabled="disabled">Add listener</button>
+                <button id="btn-add-event" type="button" class="btn btn-success" onclick="addListener()" disabled>Add listener</button>
                 <button id="btn-remove-event" type="button" class="btn btn-danger" onclick="removeListener()">Remove listener</button>
               </div>
               <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
@@ -424,13 +424,13 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 }
                 function addListener() {
                   document.getElementById('ex-events').addEventListener('event', onEvent, false);
-                  document.getElementById('btn-add-event').disabled = 'disabled';
-                  document.getElementById('btn-remove-event').disabled = null;
+                  document.getElementById('btn-add-event').disabled = true;
+                  document.getElementById('btn-remove-event').disabled = false;
                 }
                 function removeListener() {
                   document.getElementById('ex-events').removeEventListener('event', onEvent, false);
-                  document.getElementById('btn-add-event').disabled = null;
-                  document.getElementById('btn-remove-event').disabled = 'disabled';
+                  document.getElementById('btn-add-event').disabled = false;
+                  document.getElementById('btn-remove-event').disabled = true;
                 }
 
                 addListener();
@@ -454,18 +454,18 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                   }
                   function addHandler() {
                     document.getElementById('ex-handlers').onevent = 'onEventHandler';
-                    document.getElementById('btn-add-handler').disabled = 'disabled';
-                    document.getElementById('btn-remove-handler').disabled = null;
+                    document.getElementById('btn-add-handler').disabled = true;
+                    document.getElementById('btn-remove-handler').disabled = false;
                   }
                   function removeHandler() {
                     document.getElementById('ex-handlers').onevent = null;
-                    document.getElementById('btn-add-handler').disabled = null;
-                    document.getElementById('btn-remove-handler').disabled = 'disabled';
+                    document.getElementById('btn-add-handler').disabled = false;
+                    document.getElementById('btn-remove-handler').disabled = true;
                   }
                 </script>
                 <div class="btn-group" style="float: left;">
                   <button type="button" class="btn btn-default" onclick="fireHandler()">Fire event</button>
-                  <button id="btn-add-handler" type="button" class="btn btn-success" onclick="addHandler()" disabled="disabled">Add handler</button>
+                  <button id="btn-add-handler" type="button" class="btn btn-success" onclick="addHandler()" disabled>Add handler</button>
                   <button id="btn-remove-handler" type="button" class="btn btn-danger" onclick="removeHandler()">Remove handler</button>
                 </div>
                 <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
@@ -599,11 +599,32 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <div>This is front</div>
               <div>This is back</div>
             </lucu-flipbox>
-            <span class="btn-group">
-              <button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').toggle()">Toggle</button>
-              <button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').showFront()">Show front</button>
-              <button type="button" class="btn btn-default" onclick="document.getElementById('flipbox').showBack()">Show back</button>
-            </span>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default" onclick="toggle()">Toggle</button>
+              <button id="btn-flipbox-front" type="button" class="btn btn-default" onclick="showFront()" disabled>Show front</button>
+              <button id="btn-flipbox-back" type="button" class="btn btn-default" onclick="showBack()">Show back</button>
+            </div>
+            <script>
+              function toggleButton(btn) {
+                btn.disabled == true ? btn.disabled = false : btn.disabled = true;
+              }
+              function toggleButtons() {
+                toggleButton(document.getElementById('btn-flipbox-front'));
+                toggleButton(document.getElementById('btn-flipbox-back'));
+              }
+              function toggle() {
+                document.getElementById('flipbox').toggle();
+                toggleButtons();
+              }
+              function showFront() {
+                document.getElementById('flipbox').showFront();
+                toggleButtons();
+              }
+              function showBack() {
+                document.getElementById('flipbox').showBack();
+                toggleButtons();
+              }
+            </script>
           </div>
           <pre class="example-markup">
             <code class="language-markup">
