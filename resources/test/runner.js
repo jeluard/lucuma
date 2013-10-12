@@ -1,7 +1,13 @@
 var p = require('webpage').create();
 var sys = require('system');
-p.injectJs("http://www.polymer-project.org/polymer/polymer.js");
-p.injectJs(sys.args[1]);
+
+for (var i = 1; i < sys.args.length; i++) {
+  var file = sys.args[i];
+  if (!p.injectJs(file)) {
+    phantom.exit(1);
+    throw new Error("Failed to inject " + file);
+  }
+}
 
 p.onConsoleMessage = function (x) {
   var line = x;
