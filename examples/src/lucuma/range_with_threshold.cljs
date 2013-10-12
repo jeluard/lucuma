@@ -11,27 +11,33 @@
 (defn- breach-threshold
   [el v t]
   (add-threshold-crossed-class el)
-  (fire el :threshold-cross {:type :breached :value v :threshold t}))
+  (fire el :threshold-cross {:type ::breached :value v :threshold t}))
 
 (defn- clear-threshold
   [el v]
   (remove-threshold-crossed-class el)
-  (fire el :threshold-cross {:type :cleared :value v}))
+  (fire el :threshold-cross {:type ::cleared :value v}))
 
 (defn- fire-event-on-threshold-cross
   [el min-threshold max-threshold]
-  (let [value (or (aget el "value") (aget el "impl" "value"))] ;; TODO get polymer GeneratedWrapper. Bug?
+  (let [c (or (aget el "value") (aget el "impl" "value")) ;; TODO get polymer GeneratedWrapper. Bug?
+        o @previous-value]
     (cond
-      (> min-threshold value) (breach-threshold el value min-threshold)
-      (> value max-threshold) (breach-threshold el value max-threshold)
-      :default (clear-threshold el value))))
+      (or
+        (and (< o min-threshold) (>= c min-threshold))
+        (and (> o max-threshold) (<= c max-threshold))) (clear-threshold el c)
+      (and (> o min-threshold) (< o max-threshold) (<= c min-threshold)) (breach-threshold el c min-threshold)
+      (and (> o min-threshold) (< o max-threshold) (>= c max-threshold)) (breach-threshold el c max-threshold))
+    (reset! previous-value c)))
 
 (defn initialize
   [el min-threshold max-threshold]
+  (let [v (or (aget el "value") (aget el "impl" "value"))]
+    (reset! previous-value v))
   (.addEventListener el "change" #(fire-event-on-threshold-cross (aget % "target") min-threshold max-threshold) false))
 
 (defwebcomponent lucu-range-with-threshold
-  :extends "input"
+  :extends :input
   :style "input[type='range'] .threshold-crossed { background-color: red; }"
   :created-fn #(initialize % (or (att/get-attr % "min-threshold") 10) (or (att/get-attr % "max-threshold") 30))
   :handlers #{:threshold-cross})

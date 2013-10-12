@@ -543,14 +543,16 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         <section id="example-range-with-threshold">
           <h2>Range with threshold</h2>
           <div class="example-live">
-            <input id="lucu-range-with-threshold" is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5" />
+            <input id="lucu-range-with-threshold" is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5"/>
+            <span>Value: </span><span id="lucu-range-with-threshold-value" style="color: green"></span>
             <script>
               var el = document.getElementById('lucu-range-with-threshold');
+              document.getElementById('lucu-range-with-threshold-value').innerHTML = el.value;
               el.addEventListener('threshold-cross', function(evt) {
-                console.log(evt.detail);
+                document.getElementById('lucu-range-with-threshold-value').impl.style.color = (evt.detail.type === "breached") ? "red" : "green";
               }, false);
               el.addEventListener('change', function(evt) {
-                //console.log(evt.target.value);
+                document.getElementById('lucu-range-with-threshold-value').innerHTML = evt.target.impl.value;
               }, false);
             </script>
           </div>
