@@ -5,7 +5,8 @@
             [lucuma.overlay :refer [lucu-overlay]]
             [lucuma.flipbox :refer [lucu-flipbox]]
             [dommy.core :refer [prepend!]]
-            [garden.core :refer [css]])
+            [garden.core :refer [css]]
+            [garden.units :refer [px]])
   (:require-macros [lucuma :refer [defwebcomponent]]
                    [dommy.macros :refer [node sel1]]))
 
@@ -34,7 +35,7 @@
 
 (defwebcomponent ex-style-garden
   :content [:button "Hello garden!"]
-  :style [:button {:background "#3d7c45" :color "white" :border 0 :border-radius "4px"}])
+  :style [:button {:background "#3d7c45" :color "white" :border 0 :border-radius (px 4)}])
 
 (defwebcomponent ex-style-scope
   :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
