@@ -1,8 +1,7 @@
 (ns lucuma.flipbox
-  (:require [lucuma.event :refer [fire]]
-            [dommy.core :as dommy])
-  (:require-macros [lucuma :refer [defwebcomponent]]
-                   [dommy.macros :refer [sel1]]))
+  (:require [lucuma.attribute :refer [get-attr set-attr!]]
+            [lucuma.event :refer [fire]])
+  (:require-macros [lucuma :refer [defwebcomponent]]))
 
 (def style
   "
@@ -27,17 +26,18 @@ lucu-flipbox[_anim-direction=\"down\"][flipped] > *:last-child{-webkit-transform
 
 (defn toggle
   [el]
-  nil)
+  (set-attr! el :flipped (not (get-attr el :flipped))))
 
 (defn show-front
   [el]
-  nil)
+  (set-attr! el :flipped true))
 
 (defn show-back
   [el]
-  nil)
+  (set-attr! el :flipped false))
 
 (defwebcomponent lucu-flipbox
-  :content [:content]
+  :content [:div [:content]]
   :style style
+  :attributes #{:flipped}
   :methods {:showFront show-front :showBack show-back :toggle toggle})

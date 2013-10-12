@@ -3,15 +3,15 @@
 
 (defn get-attr
   [el n]
-  (if (.hasAttribute el n)
-    (.getAttribute el n)
+  (if (.hasAttribute el (name n))
+    (.getAttribute el (name n))
     nil))
 
 (defn set-attr!
   [el n v]
   (if v
-    (.setAttribute el n v)
-    (.removeAttribute el n)))
+    (.setAttribute el (name n) v)
+    (.removeAttribute el (name n))))
 
 (defn- as-property
   [n]

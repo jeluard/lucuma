@@ -39,7 +39,8 @@
 (defwebcomponent lucu-range-with-threshold
   :extends :input
   :style "input[type='range'] .threshold-crossed { background-color: red; }"
-  :created-fn #(initialize % (or (att/get-attr % "min-threshold") 10) (or (att/get-attr % "max-threshold") 30))
+  :created-fn #(initialize % (or (att/get-attr % :min-threshold) 10) (or (att/get-attr % :max-threshold) 30))
+  :attributes #{:min-threshold :max-threshold}
   :handlers #{:threshold-cross})
 
 ;; Chrome doesn't support dynamically created shadow root on input element so the style is not applied.
