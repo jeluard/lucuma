@@ -547,12 +547,15 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <span>Value: </span><span id="lucu-range-with-threshold-value" style="color: green"></span>
             <script>
               var el = document.getElementById('lucu-range-with-threshold');
-              document.getElementById('lucu-range-with-threshold-value').innerHTML = el.value;
+              var valueEl = document.getElementById('lucu-range-with-threshold-value');
+              valueEl = valueEl.impl != null ? valueEl.impl : valueEl;
+              valueEl.innerHTML = el.value;
               el.addEventListener('threshold-cross', function(evt) {
-                document.getElementById('lucu-range-with-threshold-value').impl.style.color = (evt.detail.type === "breached") ? "red" : "green";
+                valueEl.style.color = (evt.detail.type === "breached") ? "red" : "green";
               }, false);
               el.addEventListener('change', function(evt) {
-                document.getElementById('lucu-range-with-threshold-value').innerHTML = evt.target.impl.value;
+                var evt = evt.impl != null ? evt.impl : evt;
+                valueEl.innerHTML = evt.target.value;
               }, false);
             </script>
           </div>
