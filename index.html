@@ -387,6 +387,9 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 addListener();
               </script>
             </div>
+            <pre class="example-cljs">
+              <code class="language-clojure"></code>
+            </pre>
 
             <section id="custom-element-events-handlers">
               <h4>Event handlers</h4>
@@ -600,7 +603,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                   return;
                 }
 
-                example.innerHTML = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join('\n');
+                var content = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join('\n');
+                example.innerHTML = '\n' + content;
                 Prism.highlightElement(example);
               }
             });
@@ -615,7 +619,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             }
 
             fetchExample(name, function (c) {
-              example.innerHTML = c;
+              example.innerHTML = '\n' + c;
               Prism.highlightElement(example);
             });
           }
@@ -645,21 +649,21 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
 
           appendExample('#example-range-with-threshold', 'range_with_threshold');
           appendExample('#example-overlay', "overlay");
-          appendExample('#example-flipbox', "flipbox");
+          //appendExample('#example-flipbox', "flipbox");
 
-          appendExampleUsage([{id: '#custom-element-lifecycle', lines: [17, 20]},
-                              {id: '#custom-element-content', lines: [14, 15]},
-                              {id: '#custom-element-content-template-support', lines: [22, 23]},
-                              {id: '#custom-element-content-custom-logic', lines: [25, 29]},
-                              {id: '#custom-element-style', lines: [31, 33]},
-                              {id: '#custom-element-style-custom-logic', lines: [35, 39]},
-                              {id: '#custom-element-style-scope', lines: [41, 43]},
-                              {id: '#custom-element-attributes', lines: [45, 46]},
-                              {id: '#custom-element-methods', lines: [48, 53]},
-                              {id: '#custom-element-events', lines: [55, 57]},
-                              {id: '#custom-element-events-handlers', lines: [59, 60]},
-                              {id: '#custom-element-constructor', lines: [62, 64]},
-                              {id: '#custom-element-extend', lines: [66, 69]}]);
+          appendExampleUsage([{id: '#custom-element-lifecycle', lines: [16, 19]},
+                              {id: '#custom-element-content', lines: [13, 14]},
+                              {id: '#custom-element-content-template-support', lines: [21, 22]},
+                              {id: '#custom-element-content-custom-logic', lines: [24, 28]},
+                              {id: '#custom-element-style', lines: [30, 32]},
+                              {id: '#custom-element-style-custom-logic', lines: [34, 38]},
+                              {id: '#custom-element-style-scope', lines: [40, 42]},
+                              {id: '#custom-element-attributes', lines: [44, 45]},
+                              {id: '#custom-element-methods', lines: [47, 52]},
+                              {id: '#custom-element-events', lines: [54, 56]},
+                              {id: '#custom-element-events-handlers', lines: [58, 59]},
+                              {id: '#custom-element-constructor', lines: [61, 63]},
+                              {id: '#custom-element-extend', lines: [65, 68]}]);
         </script>
       </section>
 
