@@ -11,6 +11,7 @@
 (def ^:private current-ns (atom nil))
 (def ^:private report-details (atom {}))
 
+(defn- test-class-name [t] (s/replace t #"[<>]" "")) ;; Something, somewhere does not like those characters
 (defn- sel-current-ns [] (.getElementById js/document (str "collapse-" @current-ns)))
 (defn- sel-current-ns-header [] (.getElementById js/document (str "collapse-" @current-ns "-header")))
 (defn- sel-test [t] (.item (.getElementsByClassName (sel-current-ns) t) 0))
@@ -75,19 +76,21 @@
 (defmethod report :begin-test-var [m]
   (let [n (str (:name (meta (:var m))))]
     (swap! report-details assoc-in [@current-ns n :start-time] (js/Date.))
-    (dommy/append! (sel-current-ns) [:ul {:class (str n " panel-body test-running")} [:h4 n]])))
+    (dommy/append! (sel-current-ns) [:ul {:class (str (test-class-name n) " panel-body test-running")} [:h4 n]])))
 
 (defmethod report :end-test-var
   [m]
-  (let [n (str (:name (meta (:var m))))]
-    (swap! report-details assoc-in [@current-ns n :end-time] (js/Date.))
-    (dommy/remove-class! (sel-test n) "test-running")
-    (dommy/add-class! (sel-test n) (if (failed-test? @current-ns n) "test-fail" "test-pass"))
-    (dommy/insert-after! [:i {:class (if (failed-test? @current-ns n) "icon-remove" "icon-ok") :data-toggle "tooltip" :data-placement "right" :title (str "executed in " (elapsed (reports @current-ns n)) "ms")}] (sel-test-header n))))
+  (let [n (str (:name (meta (:var m))))
+        ns @current-ns
+        t (sel-test (test-class-name n))]
+    (swap! report-details assoc-in [ns n :end-time] (js/Date.))
+    (dommy/remove-class! t "test-running")
+    (dommy/add-class! t (if (failed-test? ns n) "test-fail" "test-pass"))
+    (dommy/insert-after! [:i {:class (if (failed-test? ns n) "icon-remove" "icon-ok") :data-toggle "tooltip" :data-placement "right" :title (str "executed in " (elapsed (reports ns n)) "ms")}] (sel-test-header (test-class-name n)))))
 
 (defn- append-test-result
   [m n c]
-  (dommy/append! (sel-test n) [:li {:class c}
+  (dommy/append! (sel-test (test-class-name n)) [:li {:class c}
                                  [:em {:class "test-message"} (:message m)]
                                  [:span {:class "test-result"}
                                   [:span {:class "test-expected-value"}
