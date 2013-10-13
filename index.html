@@ -655,7 +655,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             fetchExample("examples", function(c) {
               var contentArray = c.split('\n');
               for (var i = 0; i < usages.length; i++) {
-                var usage = usages[k];
+                var usage = usages[i];
                 var selector = '#' + usage.id + ' .example-cljs code';
                 var example = document.querySelector(selector);
                 if (example != null) {
