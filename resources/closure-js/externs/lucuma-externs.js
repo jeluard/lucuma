@@ -36,22 +36,22 @@ var HTMLTemplateElement = {};
  */
 HTMLTemplateElement.prototype.content;
 
-var LucumaElement = {};
+var lucuma = {};
 
 /**
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-created-callback
  */
-LucumaElement.prototype.createdCallback = function() {};
+lucuma.LucumaElement.prototype.createdCallback = function() {};
 
 /**
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-entered-view-callback
  */
-LucumaElement.prototype.enteredViewCallback = function() {};
+lucuma.LucumaElement.prototype.enteredViewCallback = function() {};
 
 /**
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-left-view-callback
  */
-LucumaElement.prototype.leftViewCallback = function() {};
+lucuma.LucumaElement.prototype.leftViewCallback = function() {};
 
 /**
  * @param {string} name
@@ -59,4 +59,4 @@ LucumaElement.prototype.leftViewCallback = function() {};
  * @param {Object} newValue
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-attribute-changed-callback
  */
-LucumaElement.prototype.attributeChangedCallback = function(name, oldValue, newValue) {};
+lucuma.LucumaElement.prototype.attributeChangedCallback = function(name, oldValue, newValue) {};
