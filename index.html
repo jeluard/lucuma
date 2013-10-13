@@ -317,10 +317,6 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 }
               </script>
             </div>
-            <pre class="example-markup">
-              <code class="language-markup">
-              </code>
-            </pre>
             <pre class="example-cljs">
               <code class="language-clojure"></code>
             </pre>
@@ -502,6 +498,21 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           </div>
           <pre class="example-markup">
             <code class="language-markup">
+  &lt;input id="lucu-range-with-threshold" is="lucu-range-with-threshold" type="range" value="25" min="0" max="50" step="5"/&gt;
+  &lt;span&gt;Value: &lt;/span&gt;&lt;span id="lucu-range-with-threshold-value" style="color: green"&gt;&lt;/span&gt;
+  &lt;script&gt;
+    var el = document.getElementById('lucu-range-with-threshold');
+    var valueEl = document.getElementById('lucu-range-with-threshold-value');
+    valueEl = valueEl.impl != null ? valueEl.impl : valueEl;
+    valueEl.innerHTML = el.value;
+    el.addEventListener('threshold-cross', function(evt) {
+      valueEl.style.color = (evt.detail.type === "breached") ? "red" : "green";
+    }, false);
+    el.addEventListener('change', function(evt) {
+      var evt = evt.impl != null ? evt.impl : evt;
+      valueEl.innerHTML = evt.target.value;
+    }, false);
+  &lt;/script&gt;
             </code>
           </pre>
           <pre class="example-cljs">
