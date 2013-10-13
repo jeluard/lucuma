@@ -656,7 +656,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               var contentArray = c.split('\n');
               for (var i = 0; i < usages.length; i++) {
                 var usage = usages[i];
-                var selector = '#' + usage.id + ' .example-cljs code';
+                var selector = usage.id + ' .example-cljs code';
                 var example = document.querySelector(selector);
                 if (example != null) {
                   example.innerHTML = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join('\n');
@@ -667,7 +667,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           }
 
           function appendExample(id, name) {
-            var selector = '#' + id + ' .example-cljs code';
+            var selector = id + ' .example-cljs code';
             var example = document.querySelector(selector);
             if (example == null) {
               return;
@@ -702,9 +702,9 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             xhr_sha.send(null);
           }
 
-          appendExample('example-range-with-threshold', 'range_with_threshold');
-          appendExample('example-overlay', "overlay");
-          appendExample('example-flipbox', "flipbox");
+          appendExample('#example-range-with-threshold', 'range_with_threshold');
+          appendExample('#example-overlay', "overlay");
+          appendExample('#example-flipbox', "flipbox");
 
           appendExampleUsage([{id: '#custom-element-definition', lines: [13, 14]},
                               {id: '#custom-element-lifecycle', lines: [16, 19]},
