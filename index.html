@@ -179,12 +179,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
             </div>
             <pre class="example-cljs">
-              <code class="language-clojure">
-  (defwebcomponent ex-lifecycle
-    :created-fn #(prepend! (sel1 :#lifecycle-events) [:li "element created"])
-    :entered-view-fn #(prepend! (sel1 :#lifecycle-events) [:li "element entered view"])
-    :left-view-fn #(prepend! (sel1 :#lifecycle-events) [:li "element left view"]))
-              </code>
+              <code class="language-clojure"></code>
             </pre>
           </section>
 
@@ -210,12 +205,10 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </div>
             <pre class="example-cljs">
               <code class="language-clojure">
-  (defwebcomponent ex-hello
-    :content "Hello world!")
               </code>
             </pre>
 
-            <section id="custom-element-template-support">
+            <section id="custom-element-content-template-support">
               <h4>Template support</h4>
               <p>
                 <a href="http://docs.webplatform.org/wiki/html/elements/template">HTML template</a> can be directly used as content (its content will be cloned during the <a href="#custom-element-lifecycle">creation phase</a>):
@@ -235,10 +228,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 </code>
               </pre>
               <pre class="example-cljs">
-                <code class="language-clojure">
-    (defwebcomponent ex-content-template
-      :content #(dommy.macros/sel1 :#template-id))
-                </code>
+                <code class="language-clojure"></code>
               </pre>
             </section>
 
@@ -251,15 +241,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 <ex-content-hiccup></ex-content-hiccup>
               </div>
               <pre class="example-cljs">
-                <code class="language-clojure">
-    ;; Use dommy.macros/node to render hiccup style vector as a DocumentFragment.
-
-    (derive PersistentVector ::vector)
-    (defmethod render-content ::vector [v] (node v))
-
-    (defwebcomponent ex-content-hiccup
-      :content [:div "Hello hiccup!"])
-                </code>
+                <code class="language-clojure"></code>
               </pre>
             </section>
 
@@ -284,15 +266,11 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <ex-style></ex-style>
             </div>
             <pre class="example-cljs">
-              <code class="language-clojure">
-  (defwebcomponent ex-style
-    :content [:button "Hello styled!"]
-    :style "button {background: blue; color: white; border: 0; border-radius: 4px;}")
-              </code>
+              <code class="language-clojure"></code>
             </pre>
 
-            <section>
-              <h4 id="custom-element-style-custom-logic">Custom logic support</h4>
+            <section id="custom-element-style-custom-logic">
+              <h4>Custom logic support</h4>
               <p>
                 As rendering is delegated to the render-style multimethod custom logic can be hooked. A common use-case is to use a <a href="https://github.com/noprompt/garden">garden</a> to render vectors.
               </p>
@@ -300,21 +278,12 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 <ex-style-garden></ex-style-garden>
               </div>
               <pre class="example-cljs">
-                <code class="language-clojure">
-    ;; Use garden.core/css to render garden style vector as a String.
-
-    (derive PersistentVector ::vector)
-    (defmethod render-style ::vector [v] (css v))
-
-    (defwebcomponent ex-style-garden
-      :content [:button "Hello garden!"]
-      :style [:button {:background "#3d7c45" :color "white" :border "0" :border-radius "4px"}])
-                </code>
+                <code class="language-clojure"></code>
               </pre>
             </section>
 
-            <section>
-              <h4 id="custom-element-style-scope">Style scope</h4>
+            <section id="custom-element-style-scope">
+              <h4>Style scope</h4>
               <p>
                 By default global styles are not applied to the Shadow DOM (concept of shadow boundary). <strong>apply-author-styles</strong> and <strong>reset-style-inheritance</strong> allow to control this behaviour. Check this <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/#style-inherit-cheetsheet">cheatsheet</a> for a comprehensive explanation.
               </p>
@@ -322,11 +291,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 <ex-style-scope></ex-style-scope>
               </div>
               <pre class="example-cljs">
-                <code class="language-clojure">
-    (defwebcomponent ex-style-scope
-      :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
-      :apply-author-styles true)
-                </code>
+                <code class="language-clojure"></code>
               </pre>
             </section>
 
@@ -357,14 +322,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               </code>
             </pre>
             <pre class="example-cljs">
-              <code class="language-clojure">
-   (defn alert
-     [el]
-     (.alert js/window (str "Hello " el " !")))
-
-   (defwebcomponent ex-attributes
-    :attributes #{:attribute})
-              </code>
+              <code class="language-clojure"></code>
             </pre>
           </section>
 
@@ -386,14 +344,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               </code>
             </pre>
             <pre class="example-cljs">
-              <code class="language-clojure">
-   (defn alert
-     [el]
-     (.alert js/window (str "Hello " el " !")))
-
-   (defwebcomponent ex-methods
-    :methods {:method alert})
-              </code>
+              <code class="language-clojure"></code>
             </pre>
           </section>
 
@@ -437,8 +388,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               </script>
             </div>
 
-            <section>
-              <h4 id="custom-element-events-handlers">Event handlers</h4>
+            <section id="custom-element-events-handlers">
+              <h4>Event handlers</h4>
               <p>
                  Starting DOM level 2 events are preferably intercepted via <strong>addEventListener</strong> /<strong>removeEventListener</strong>. Each handler defined via <strong>handlers</strong> will be exposed as DOM level 1 style handlers (i.e. as on<strong>event</strong> property).
               </p>
@@ -471,10 +422,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 <ul id="lifecycle-events" style="height: 40px; width: 200px; overflow-y: auto;"></ul>
               </div>
               <pre class="example-cljs">
-                <code class="language-clojure">
-   (defwebcomponent ex-handlers
-    :handlers #{:event})
-                </code>
+                <code class="language-clojure"></code>
               </pre>
             </section>
 
@@ -502,11 +450,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               </code>
             </pre>
             <pre class="example-cljs">
-              <code class="language-clojure">
-   (defwebcomponent ex-constructor
-    :constructor "CustomConstructor"
-    :content [:div "Hello constructor!"])
-              </code>
+              <code class="language-clojure"></code>
             </pre>
           </section>
 
@@ -524,13 +468,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               </code>
             </pre>
             <pre class="example-cljs">
-              <code class="language-clojure">
-   (defwebcomponent ex-extend
-    :base-type :button
-    :content [:span {:class "icon-exclamation-sign"} [:content]]
-    :style [:button {:color "red"}]
-    :apply-author-styles true)
-              </code>
+              <code class="language-clojure"></code>
             </pre>
           </section>
 
@@ -589,8 +527,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </code>
           </pre>
           <pre class="example-cljs">
-            <code class="language-clojure">
-            </code>
+            <code class="language-clojure"></code>
           </pre>
         </section>
 
@@ -658,10 +595,13 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
                 var usage = usages[i];
                 var selector = usage.id + ' .example-cljs code';
                 var example = document.querySelector(selector);
-                if (example != null) {
-                  example.innerHTML = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join('\n');
-                  Prism.highlightElement(example);
+                if (example == null) {
+                  console.warn("Failed to select " + selector);
+                  return;
                 }
+
+                example.innerHTML = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join('\n');
+                Prism.highlightElement(example);
               }
             });
           }
@@ -670,6 +610,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             var selector = id + ' .example-cljs code';
             var example = document.querySelector(selector);
             if (example == null) {
+              console.warn("Failed to select " + selector);
               return;
             }
 
@@ -706,18 +647,19 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           appendExample('#example-overlay', "overlay");
           appendExample('#example-flipbox', "flipbox");
 
-          appendExampleUsage([{id: '#custom-element-definition', lines: [13, 14]},
-                              {id: '#custom-element-lifecycle', lines: [16, 19]},
-                              {id: '#custom-element-content', lines: [13, 14]},
-                              {id: '#custom-element-content-template-support', lines: [21, 22]},
-                              {id: '#custom-element-content-custom-logic', lines: [24, 28]},
-                              {id: '#custom-element-style', lines: [30, 32]},
-                              {id: '#custom-element-style-custom-logic', lines: [34, 38]},
-                              {id: '#custom-element-style-scope', lines: [40, 42]},
-                              {id: '#custom-element-attributes', lines: [44, 52]},
-                              {id: '#custom-element-methods', lines: [54, 59]},
-                              {id: '#custom-element-constructor', lines: [61, 63]},
-                              {id: '#custom-element-extend', lines: [65, 69]}]);
+          appendExampleUsage([{id: '#custom-element-lifecycle', lines: [17, 20]},
+                              {id: '#custom-element-content', lines: [14, 15]},
+                              {id: '#custom-element-content-template-support', lines: [22, 23]},
+                              {id: '#custom-element-content-custom-logic', lines: [25, 29]},
+                              {id: '#custom-element-style', lines: [31, 33]},
+                              {id: '#custom-element-style-custom-logic', lines: [35, 39]},
+                              {id: '#custom-element-style-scope', lines: [41, 43]},
+                              {id: '#custom-element-attributes', lines: [45, 46]},
+                              {id: '#custom-element-methods', lines: [48, 53]},
+                              {id: '#custom-element-events', lines: [55, 57]},
+                              {id: '#custom-element-events-handlers', lines: [59, 60]},
+                              {id: '#custom-element-constructor', lines: [62, 64]},
+                              {id: '#custom-element-extend', lines: [66, 69]}]);
         </script>
       </section>
 
