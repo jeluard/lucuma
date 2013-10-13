@@ -682,7 +682,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           function fetchExample(name, fn) {
             var owner = 'jeluard';
             var repo = 'lucuma';
-            var url_sha = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/examples/lucuma/' + name + '.cljs';
+            var url_sha = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/examples/src/lucuma/' + name + '.cljs';
             var xhr_sha = new XMLHttpRequest();
             xhr_sha.onreadystatechange = function() {
               if (xhr_sha.readyState == 4 && xhr_sha.status == 200) {
