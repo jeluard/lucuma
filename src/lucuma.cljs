@@ -34,7 +34,6 @@
 (defmethod render-content js/String [s] s)
 (when (exists? js/HTMLTemplateElement)
   (defmethod render-content js/HTMLTemplateElement [t] (.cloneNode (.-content t) true)))
-(defmethod render-content :default [c] (throw (str "No render-content implementation for " c) (ex-info {:type (type c)})))
 
 (defmulti append-content!
   "append rendered 'content' to provided ShadowRoot"
