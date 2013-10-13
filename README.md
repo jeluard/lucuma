@@ -8,7 +8,7 @@ Lucuma is available in Clojars. Add `[lucuma "0.1.0"]` dependency to your `proje
 
 ## Use
 
-Find the complete documentation [here](https://jeluard.github.io/lucuma).
+Find the complete documentation [here](http://jeluard.github.io/lucuma).
 
 ## License
 
