@@ -3,7 +3,7 @@
                  [lucuma "0.1.0-SNAPSHOT"]
                  [prismatic/dommy "0.1.2-SNAPSHOT"]
                  [garden "1.0.0"]]
-  :plugins [[lein-cljsbuild "0.3.3"]]
+  :plugins [[lein-cljsbuild "0.3.4"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src"]
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
