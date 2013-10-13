@@ -37,7 +37,7 @@ lucu-flipbox[_anim-direction=\"down\"][flipped] > *:last-child{-webkit-transform
   (set-attr! el :flipped false))
 
 (defwebcomponent lucu-flipbox
-  :content [:div [:content]]
+  :content [:content]
   :style style
   :attributes #{:flipped}
   :methods {:showFront show-front :showBack show-back :toggle toggle})
