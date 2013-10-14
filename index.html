@@ -162,8 +162,8 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               }
               function appendLifecycle() {
                 document.body.appendChild(e);
-                document.getElementById('btn-append').disabled = false;
-                document.getElementById('btn-remove').disabled = true;
+                document.getElementById('btn-append').disabled = true;
+                document.getElementById('btn-remove').disabled = false;
               }
               function removeLifecycle() {
                 document.body.removeChild(e);
