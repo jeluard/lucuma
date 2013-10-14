@@ -192,7 +192,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <ol>
               <li>if content is a function evaluate it; otherwise use content value as-is</li>
               <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L27">render-content</a> multimethod (dispatch on content type) to generate the rendered html</li>
-              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L38">append-content!</a> multimethod (dispatch on rendered content type) to insert content in the DOM</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L38">append-content!</a> multimethod (dispatch on rendered content type) to insert content in the DOM. If <strong>render-content</strong> returned a collection each element is passed to <strong>append-content!</strong>.</li>
             </ol>
             <p>
             <p>
@@ -254,13 +254,13 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <ol>
               <li>if style is a function evaluate it; otherwise use style value as-is</li>
               <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L47">render-style</a> multimethod (dispatch on content type) to generate the rendered html</li>
-              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L54">append-style!</a> multimethod (dispatch on rendered style type) to insert content in the DOM</li>
+              <li>call <a href="https://github.com/jeluard/lucuma/blob/master/src/lucuma.cljs#L54">set-style!</a> multimethod (dispatch on rendered style type) to insert content in the DOM</li>
             </ol>
             <p>
             <p>
               <strong>render-style</strong> has implementations for String (identity).
               <br>
-              <strong>append-style!</strong> has an implementation for String (set as <strong>textContent</strong> of a newly created <strong>style</strong> element, itself appended to the ShadowRoot).
+              <strong>render-style!</strong> has an implementation for String (set as <strong>textContent</strong> of a newly created <strong>style</strong> element, itself appended to the ShadowRoot).
             </p>
             <div class="example-live">
               <ex-style></ex-style>
