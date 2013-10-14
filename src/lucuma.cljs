@@ -39,9 +39,18 @@
   "append rendered 'content' to provided ShadowRoot"
   (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
+(derive js/HTMLElement ::node)
+(derive js/DocumentFragment ::node)
+
 (defmethod append-content! js/String [sr s] (set! (.-innerHTML sr) s))
-(defmethod append-content! js/HTMLElement [sr e] (.appendChild sr e))
-(defmethod append-content! js/DocumentFragment [sr e] (.appendChild sr e))
+(defmethod append-content! ::node [sr e] (.appendChild sr e))
+
+(defn- render-then-append-content!
+  [sr c]
+  (if-let [rc (render-content c)]
+    (if (coll? rc)
+      (map #(append-content! sr %) rc)
+      (append-content! sr rc))))
 
 (defmulti render-style
   "render 'style' to something that can be added to the DOM"
@@ -49,27 +58,27 @@
 
 (defmethod render-style js/String [s] s)
 
-(defmulti append-style!
+(defmulti set-style!
   "append rendered 'style' to provided ShadowRoot"
-  (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
+  (fn [_ e] (type e)))
 
-(defmethod append-style! js/String
+(defmethod set-style! js/String
   [sr s]
   (let [style (.createElement js/document "style")]
     (set! (.-textContent style) s)
     (.appendChild sr style)))
 
-(defn- render-then-append!
-  [sr render-fn append-fn c]
-  (if-let [rc (render-fn c)]
-    (append-fn sr rc)))
+(defn- render-then-set-style!
+  [sr c]
+  (if-let [rs (render-style c)]
+    (set-style! sr rs)))
 
 (defn- create-shadow-root!
   [e content style m]
   (when (or style content)
     (let [sr (sd/create e m)]
-      (when style (render-then-append! sr render-style append-style! (u/invoke-if-fn style)))
-      (when content (render-then-append! sr render-content append-content! (u/invoke-if-fn content))))))
+      (when style (render-then-set-style! sr (u/invoke-if-fn style)))
+      (when content (render-then-append-content! sr (u/invoke-if-fn content))))))
 
 (defn- adjust-listener
   [el e o n]

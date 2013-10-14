@@ -4,6 +4,7 @@
             [lucuma.range-with-threshold :refer [lucu-range-with-threshold]]
             [lucuma.overlay :refer [lucu-overlay]]
             [lucuma.flipbox :refer [lucu-flipbox]]
+            [lucuma.example :refer [lucu-example]]
             [dommy.core :refer [prepend!]]
             [garden.core :refer [css]]
             [garden.units :refer [px]])
@@ -22,7 +23,7 @@
   :content #(sel1 :#template-id))
 
 (derive PersistentVector ::vector)
-(defmethod render-content ::vector [v] (node v))
+(defmethod render-content ::vector [v] (if (vector? (first v)) (map node v) (node v)))
 
 (defwebcomponent ex-content-hiccup
   :content [:div "Hello hiccup!"])
@@ -84,4 +85,5 @@
 
   (register lucu-range-with-threshold)
   (register lucu-overlay)
-  (register lucu-flipbox))
+  (register lucu-flipbox)
+  (register lucu-example))
