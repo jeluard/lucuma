@@ -9,6 +9,12 @@
 DOMImplementation.prototype.register = function(type, options) {};
 
 /**
+ * @type {ShadowRoot}
+ * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-shadow-root
+ */
+Element.prototype.shadowRoot;
+
+/**
  * @return {ShadowRoot}
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root
  */
@@ -60,3 +66,8 @@ lucuma.LucumaElement.prototype.leftViewCallback = function() {};
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-attribute-changed-callback
  */
 lucuma.LucumaElement.prototype.attributeChangedCallback = function(name, oldValue, newValue) {};
+
+//Polymer polyfill
+var Platform = {};
+Platform.ShadowCSS.prototype.shimStyling = function(root, name) {};
+Platform.ShadowCSS.prototype.shimStyling = function(root, name, extendsName) {};
