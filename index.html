@@ -600,83 +600,83 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         </section-->
 
         <!-- TODO Port https://www.dartlang.org/docs/tutorials/polymer-intro/  -->
-
-        <script>
-          function appendExampleUsage(usages) {
-            fetchExample("examples", function(c) {
-              var contentArray = c.split('\n');
-              for (var i = 0; i < usages.length; i++) {
-                var usage = usages[i];
-                var selector = usage.id + ' .example-cljs code';
-                var example = document.querySelector(selector);
-                if (example == null) {
-                  console.warn("Failed to select " + selector);
-                  return;
-                }
-
-                var content = contentArray.slice(usage.lines[0] - 1, usage.lines[1]).join('\n');
-                example.innerHTML = '\n' + content;
-                Prism.highlightElement(example);
-              }
-            });
-          }
-
-          function appendExample(id, name) {
-            var selector = id + ' .example-cljs code';
-            var example = document.querySelector(selector);
-            if (example == null) {
-              console.warn("Failed to select " + selector);
-              return;
-            }
-
-            fetchExample(name, function (c) {
-              example.innerHTML = '\n' + c;
-              Prism.highlightElement(example);
-            });
-          }
-
-          function fetchExample(name, fn) {
-            var owner = 'jeluard';
-            var repo = 'lucuma';
-            var url_sha = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/examples/src/lucuma/' + name + '.cljs';
-            var xhr_sha = new XMLHttpRequest();
-            xhr_sha.onreadystatechange = function() {
-              if (xhr_sha.readyState == 4 && xhr_sha.status == 200) {
-                var name = JSON.parse(xhr_sha.responseText).sha;
-                var url = 'https://api.github.com/repos/' + owner + '/' + repo + '/git/blobs/' + name;
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                  if (xhr.readyState == 4 && xhr.status == 200) {
-                    fn(window.atob(JSON.parse(xhr.responseText).content.replace(/\n/g, '')));
-                  }
-                };
-                xhr.open('GET', url, true);
-                xhr.send(null);
-              }
-            };
-            xhr_sha.open('GET', url_sha, true);
-            xhr_sha.send(null);
-          }
-
-          appendExample('#example-range-with-threshold', 'range_with_threshold');
-          appendExample('#example-overlay', "overlay");
-          //appendExample('#example-flipbox', "flipbox");
-
-          appendExampleUsage([{id: '#custom-element-lifecycle', lines: [16, 19]},
-                              {id: '#custom-element-content', lines: [13, 14]},
-                              {id: '#custom-element-content-template-support', lines: [21, 22]},
-                              {id: '#custom-element-content-custom-logic', lines: [24, 28]},
-                              {id: '#custom-element-style', lines: [30, 32]},
-                              {id: '#custom-element-style-custom-logic', lines: [34, 38]},
-                              {id: '#custom-element-style-scope', lines: [40, 42]},
-                              {id: '#custom-element-attributes', lines: [44, 45]},
-                              {id: '#custom-element-methods', lines: [47, 52]},
-                              {id: '#custom-element-events', lines: [54, 56]},
-                              {id: '#custom-element-events-handlers', lines: [58, 59]},
-                              {id: '#custom-element-constructor', lines: [61, 63]},
-                              {id: '#custom-element-extend', lines: [65, 68]}]);
-        </script>
       </section>
+
+      <script>
+        function appendExampleUsage(usages) {
+          fetchExample("examples", function(c) {
+            var contentArray = c.split('\n');
+            for (var i = 0; i < usages.length; i++) {
+              var usage = usages[i];
+              var selector = usage.id + ' .example-cljs code';
+              var example = document.querySelector(selector);
+              if (example == null) {
+                console.warn("Failed to select " + selector);
+                return;
+              }
+
+              var content = contentArray.slice(usage.lines[0] - 1, usage.lines[1] + 1).join('\n');
+              example.innerHTML = '\n' + content;
+              Prism.highlightElement(example);
+            }
+          });
+        }
+
+        function appendExample(id, name) {
+          var selector = id + ' .example-cljs code';
+          var example = document.querySelector(selector);
+          if (example == null) {
+            console.warn("Failed to select " + selector);
+            return;
+          }
+
+          fetchExample(name, function (c) {
+            example.innerHTML = '\n' + c;
+            Prism.highlightElement(example);
+          });
+        }
+
+        function fetchExample(name, fn) {
+          var owner = 'jeluard';
+          var repo = 'lucuma';
+          var url_sha = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/examples/src/lucuma/' + name + '.cljs';
+          var xhr_sha = new XMLHttpRequest();
+          xhr_sha.onreadystatechange = function() {
+            if (xhr_sha.readyState == 4 && xhr_sha.status == 200) {
+              var name = JSON.parse(xhr_sha.responseText).sha;
+              var url = 'https://api.github.com/repos/' + owner + '/' + repo + '/git/blobs/' + name;
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                  fn(window.atob(JSON.parse(xhr.responseText).content.replace(/\n/g, '')));
+                }
+              };
+              xhr.open('GET', url, true);
+              xhr.send(null);
+            }
+          };
+          xhr_sha.open('GET', url_sha, true);
+          xhr_sha.send(null);
+        }
+
+        appendExample('#example-range-with-threshold', 'range_with_threshold');
+        appendExample('#example-overlay', "overlay");
+        //appendExample('#example-flipbox', "flipbox");
+
+        appendExampleUsage([{id: '#custom-element-lifecycle', lines: [16, 19]},
+                            {id: '#custom-element-content', lines: [13, 14]},
+                            {id: '#custom-element-content-template-support', lines: [21, 22]},
+                            {id: '#custom-element-content-custom-logic', lines: [24, 28]},
+                            {id: '#custom-element-style', lines: [30, 32]},
+                            {id: '#custom-element-style-custom-logic', lines: [34, 38]},
+                            {id: '#custom-element-style-scope', lines: [40, 42]},
+                            {id: '#custom-element-attributes', lines: [44, 45]},
+                            {id: '#custom-element-methods', lines: [47, 52]},
+                            {id: '#custom-element-events', lines: [54, 56]},
+                            {id: '#custom-element-events-handlers', lines: [58, 59]},
+                            {id: '#custom-element-constructor', lines: [61, 63]},
+                            {id: '#custom-element-extend', lines: [65, 68]}]);
+      </script>
 
       <section id="tests" class="main-section" >
         <h1>Tests</h1>
