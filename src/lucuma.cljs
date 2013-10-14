@@ -92,6 +92,7 @@
 
 (defn attribute-changed
   [el a o n attributes handlers]
+  ;;TODO not called with proper args when using polyfill?
   (cond
     (contains? handlers a) (let [e (handler->event a)]
                              (adjust-listener el e o n))))
@@ -115,7 +116,7 @@
         attribute-changed-fn #(attribute-changed %1 %2 %3 %4 attributes handlers)
         base-type (when base-type (name base-type))
         p (create-lucuma-prototype (ce/find-prototype base-type))
-        prototype (ce/create-prototype (merge m {:prototype p :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
+        prototype (ce/create-prototype (merge m {:prototype p :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))] ;; TODO properties not exported when using polyfill?
     (doseq [method methods]
       (aset prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
     prototype))
