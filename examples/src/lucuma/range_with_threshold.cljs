@@ -20,7 +20,7 @@
 
 (defn- fire-event-on-threshold-cross
   [el min-threshold max-threshold]
-  (let [c (or (aget el "value") (aget el "impl" "value")) ;; TODO get polymer GeneratedWrapper. Bug?
+  (let [c (or (aget el "value") (aget el "impl" "value"))
         o @previous-value]
     (cond
       (or
