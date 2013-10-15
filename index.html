@@ -2,7 +2,7 @@
 <html itemscope itemtype="http://schema.org/Person">
   <head>
     <meta charset="utf-8">
-    <meta name="Description" content="At its core lucuma helps with creating custom HTML tag elements (Web Component) encapsulating content, style and logic. It is not a fancy MV* framework and aims at being a thin layer building on top of next generation web standards (mainly Custom Elements and Shadow DOM).">
+    <meta name="Description" content="Lucuma helps with creating reusable HTML elements (Web Component) encapsulating content, style and logic. It is not a fancy MV* framework and aims at being a thin layer building on top of next generation web standards (mainly Custom Elements and Shadow DOM).">
     <meta itemprop="name" content="Julien Eluard">
     <meta itemprop="address" content="Buenos Aires">
     <meta itemprop="image" content="https://1.gravatar.com/avatar/2674ec9e762bcd011c9542c1b787ce13">
@@ -71,13 +71,13 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         </ul>
       </div>
     </nav>
-    
+
     <main class="container">
       <section id="introduction" class="main-section">
         <div class="lead">
           <p>A Web Components library for <a href="http://clojurescript.com">ClojureScript</a>.</p>
           <p>
-            At its core lucuma helps with creating custom HTML tag elements (Web Component) encapsulating content, style and logic. It is <strong>not</strong> a fancy <em>MV*</em> framework and aims at being a thin layer building on top of next generation web standards (mainly <span class="text-muted">Custom Elements</span> and <span class="text-muted">Shadow DOM</span>).
+            Lucuma helps with creating reusable HTML elements (Web Components) encapsulating content, style and logic. It is <strong>not</strong> a fancy <em>MV*</em> framework and aims at being a thin layer building on top of next generation web standards (mainly <span class="text-muted">Custom Elements</span> and <span class="text-muted">Shadow DOM</span>).
             <br>
             It also makes the extra effort of being flexible and open to existing ClojureScript standards and libraries.</p>
           <p>
@@ -89,7 +89,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
           <p>Technologies involved are pre-alpha (specs are not frozen yet). Use cautiously!</p>
         </div>
       </section>
-    
+
       <section id="installation" class="main-section">
         <h1>Installation</h1>
         <p>Lucuma is available in <a href="https://clojars.org/lucuma">Clojars</a>. Add <strong>[lucuma "0.1.0"]</strong> dependency to your <strong>project.clj</strong>.</p>
@@ -128,11 +128,11 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
   (use 'lucuma)
   (defwebcomponent ex-hello
     :content "Hello World!")
-  
+
   (register ex-hello)
               </code>
             </pre>
-  
+
             <p>
              Custom Elements can be manipulated programmatically as any other regular element.
             </p>
@@ -140,7 +140,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <code class="language-clojure">
   ;;append a my-element node to body
   (.appendChild js/document.body (.createElement js/document "my-element"))
-  
+
   ;;or using hiccup syntax and dommy
   (dommy/append! (dommy/sel1 :body) [:my-element])
               </code>
@@ -696,7 +696,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         </button>
         <div id="tests-results"></div>
       </section>
-    
+
       <section id="native-browser-support" class="main-section">
         <h1>Native browser support</h1>
         <p>
