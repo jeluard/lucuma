@@ -49,7 +49,7 @@
   [sr c]
   (if-let [rc (render-content c)]
     (if (coll? rc)
-      (map #(append-content! sr %) rc)
+      (doseq [el rc] (append-content! sr el))
       (append-content! sr rc))))
 
 (defmulti render-style
