@@ -3506,16 +3506,16 @@ cljs.core.with_meta = function with_meta(b, c) {
     c && (b ? (c = (c = b.cljs$lang$protocol_mask$partition0$ & 262144) ? c : b.cljs$core$IWithMeta$, c = c ? !0 : b.cljs$lang$protocol_mask$partition0$ ? !1 : cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b)) : c = cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b), c = !c);
     return c
   }() ? with_meta.call(null, function() {
-    "undefined" === typeof cljs.core.t7716 && (cljs.core.t7716 = {}, cljs.core.t7716 = function(b, c, f, g) {
+    "undefined" === typeof cljs.core.t7736 && (cljs.core.t7736 = {}, cljs.core.t7736 = function(b, c, f, g) {
       this.meta = b;
       this.o = c;
       this.with_meta = f;
-      this.meta7717 = g;
+      this.meta7737 = g;
       this.cljs$lang$protocol_mask$partition1$ = 0;
       this.cljs$lang$protocol_mask$partition0$ = 393217
-    }, cljs.core.t7716.cljs$lang$type = !0, cljs.core.t7716.cljs$lang$ctorStr = "cljs.core/t7716", cljs.core.t7716.cljs$lang$ctorPrWriter = function(b, c, f) {
-      return cljs.core._write.call(null, c, "cljs.core/t7716")
-    }, cljs.core.t7716.prototype.call = function() {
+    }, cljs.core.t7736.cljs$lang$type = !0, cljs.core.t7736.cljs$lang$ctorStr = "cljs.core/t7736", cljs.core.t7736.cljs$lang$ctorPrWriter = function(b, c, f) {
+      return cljs.core._write.call(null, c, "cljs.core/t7736")
+    }, cljs.core.t7736.prototype.call = function() {
       var b = function(b, c) {
         return cljs.core.apply.call(null, b.o, c)
       }, c = function(c, e) {
@@ -3532,17 +3532,17 @@ cljs.core.with_meta = function with_meta(b, c) {
       };
       c.cljs$core$IFn$_invoke$arity$variadic = b;
       return c
-    }(), cljs.core.t7716.prototype.apply = function(b, c) {
+    }(), cljs.core.t7736.prototype.apply = function(b, c) {
       b = this;
       return b.call.apply(b, [b].concat(c.slice()))
-    }, cljs.core.t7716.prototype.cljs$core$Fn$ = !0, cljs.core.t7716.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-      return this.meta7717
-    }, cljs.core.t7716.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-      return new cljs.core.t7716(this.meta, this.o, this.with_meta, c)
-    }, cljs.core.__GT_t7716 = function(b, c, f, g) {
-      return new cljs.core.t7716(b, c, f, g)
+    }, cljs.core.t7736.prototype.cljs$core$Fn$ = !0, cljs.core.t7736.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+      return this.meta7737
+    }, cljs.core.t7736.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+      return new cljs.core.t7736(this.meta, this.o, this.with_meta, c)
+    }, cljs.core.__GT_t7736 = function(b, c, f, g) {
+      return new cljs.core.t7736(b, c, f, g)
     });
-    return new cljs.core.t7716(c, b, with_meta, null)
+    return new cljs.core.t7736(c, b, with_meta, null)
   }(), c) : cljs.core._with_meta.call(null, b, c)
 };
 cljs.core.meta = function(a) {
@@ -15402,13 +15402,13 @@ try {
   Window.prototype.dommy$template$PElement$ = !0, Window.prototype.dommy$template$PElement$_elem$arity$1 = function(a) {
     return a
   }
-}catch(e9305) {
-  if(e9305 instanceof ReferenceError) {
-    var __9306 = e9305;
+}catch(e9329) {
+  if(e9329 instanceof ReferenceError) {
+    var __9330 = e9329;
     console.log("PElement: js/Window not defined by browser, skipping it... (running on phantomjs?)")
   }else {
     if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-      throw e9305;
+      throw e9329;
     }
   }
 }
@@ -15642,30 +15642,30 @@ dommy.core.selector_map = function selector_map(b, c) {
   return cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "container", "container", 602947571), d], !0), cljs.core.into.call(null, cljs.core.PersistentArrayMap.EMPTY, cljs.core.map.call(null, function(e) {
     var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null);
     return cljs.core.PersistentVector.fromArray([f, cljs.core.truth_((new cljs.core.Keyword(null, "live", "live", 1017226334)).call(null, cljs.core.meta.call(null, g))) ? function() {
-      "undefined" === typeof dommy.core.t8838 && (dommy.core.t8838 = {}, dommy.core.t8838 = function(b, c, d, e, f, g, q, r, s) {
+      "undefined" === typeof dommy.core.t8862 && (dommy.core.t8862 = {}, dommy.core.t8862 = function(b, c, d, e, f, g, q, r, s) {
         this.v = b;
         this.k = c;
-        this.vec__8837 = d;
-        this.p__8836 = e;
+        this.vec__8861 = d;
+        this.p__8860 = e;
         this.container = f;
         this.key_selectors_map = g;
         this.template = q;
         this.selector_map = r;
-        this.meta8839 = s;
+        this.meta8863 = s;
         this.cljs$lang$protocol_mask$partition1$ = 0;
         this.cljs$lang$protocol_mask$partition0$ = 425984
-      }, dommy.core.t8838.cljs$lang$type = !0, dommy.core.t8838.cljs$lang$ctorStr = "dommy.core/t8838", dommy.core.t8838.cljs$lang$ctorPrWriter = function(b, c, d) {
-        return cljs.core._write.call(null, c, "dommy.core/t8838")
-      }, dommy.core.t8838.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
+      }, dommy.core.t8862.cljs$lang$type = !0, dommy.core.t8862.cljs$lang$ctorStr = "dommy.core/t8862", dommy.core.t8862.cljs$lang$ctorPrWriter = function(b, c, d) {
+        return cljs.core._write.call(null, c, "dommy.core/t8862")
+      }, dommy.core.t8862.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
         return dommy.utils.__GT_Array.call(null, dommy.template.__GT_node_like.call(null, this.container).querySelectorAll(dommy.core.selector.call(null, this.v)))
-      }, dommy.core.t8838.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-        return this.meta8839
-      }, dommy.core.t8838.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-        return new dommy.core.t8838(this.v, this.k, this.vec__8837, this.p__8836, this.container, this.key_selectors_map, this.template, this.selector_map, c)
-      }, dommy.core.__GT_t8838 = function(b, c, d, e, f, g, q, r, s) {
-        return new dommy.core.t8838(b, c, d, e, f, g, q, r, s)
+      }, dommy.core.t8862.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+        return this.meta8863
+      }, dommy.core.t8862.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+        return new dommy.core.t8862(this.v, this.k, this.vec__8861, this.p__8860, this.container, this.key_selectors_map, this.template, this.selector_map, c)
+      }, dommy.core.__GT_t8862 = function(b, c, d, e, f, g, q, r, s) {
+        return new dommy.core.t8862(b, c, d, e, f, g, q, r, s)
       });
-      return new dommy.core.t8838(g, f, e, e, d, c, b, selector_map, null)
+      return new dommy.core.t8862(g, f, e, e, d, c, b, selector_map, null)
     }() : dommy.template.__GT_node_like.call(null, d).querySelector(dommy.core.selector.call(null, g))], !0)
   }, c)))
 };
@@ -17219,14 +17219,14 @@ garden.units.resolution_QMARK_ = function(a) {
   var b = garden.units.unit_QMARK_.call(null, a);
   return cljs.core.truth_(b) ? cljs.core.contains_QMARK_.call(null, garden.units.resolution_units, (new cljs.core.Keyword(null, "unit", "unit", 1017498870)).call(null, a)) : b
 };
-garden.units.conversions = cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null, "in", "in", 1013907607), new cljs.core.Keyword(null, "rad", "rad", 1014016903), new cljs.core.Keyword(null, "kHz", "kHz", 1014009423), new cljs.core.Keyword(null, "px", "px", 1013907834), new cljs.core.Keyword(null, "Hz", "Hz", 1013906596), new cljs.core.Keyword(null, "cm", "cm", 1013907420), new cljs.core.Keyword(null, "deg", "deg", 1014003576), new cljs.core.Keyword(null, "pt", "pt", 1013907830), new cljs.core.Keyword(null, 
-"mm", "mm", 1013907730), new cljs.core.Keyword(null, "grad", "grad", 1017085376), new cljs.core.Keyword(null, "ms", "ms", 1013907736), new cljs.core.Keyword(null, "turn", "turn", 1017476079), new cljs.core.Keyword(null, "s", "s", 1013904357), new cljs.core.Keyword(null, "pc", "pc", 1013907813)], [cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "in", "in", 1013907607), 1, new cljs.core.Keyword(null, "cm", "cm", 1013907420), 2.54, new cljs.core.Keyword(null, "pc", "pc", 1013907813), 
-6, new cljs.core.Keyword(null, "mm", "mm", 1013907730), 25.4, new cljs.core.Keyword(null, "pt", "pt", 1013907830), 72, new cljs.core.Keyword(null, "px", "px", 1013907834), 96], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "rad", "rad", 1014016903), 1, new cljs.core.Keyword(null, "turn", "turn", 1017476079), 0.159154943], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "kHz", "kHz", 1014009423), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
-"px", "px", 1013907834), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "Hz", "Hz", 1013906596), 1, new cljs.core.Keyword(null, "kHz", "kHz", 1014009423), 0.001], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "cm", "cm", 1013907420), 1, new cljs.core.Keyword(null, "pc", "pc", 1013907813), 2.36220473, new cljs.core.Keyword(null, "mm", "mm", 1013907730), 10, new cljs.core.Keyword(null, "pt", "pt", 1013907830), 28.3464567, new cljs.core.Keyword(null, 
-"px", "px", 1013907834), 37.795275591], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "deg", "deg", 1014003576), 1, new cljs.core.Keyword(null, "grad", "grad", 1017085376), 1.111111111, new cljs.core.Keyword(null, "rad", "rad", 1014016903), 0.0174532925, new cljs.core.Keyword(null, "turn", "turn", 1017476079), 0.002777778], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "pt", "pt", 1013907830), 1, new cljs.core.Keyword(null, "px", "px", 1013907834), 
-1.3333333333], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "mm", "mm", 1013907730), 1, new cljs.core.Keyword(null, "pt", "pt", 1013907830), 2.83464567, new cljs.core.Keyword(null, "px", "px", 1013907834), 3.7795275591], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "grad", "grad", 1017085376), 1, new cljs.core.Keyword(null, "rad", "rad", 1014016903), 63.661977237, new cljs.core.Keyword(null, "turn", "turn", 1017476079), 0.0025], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
-"ms", "ms", 1013907736), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "turn", "turn", 1017476079), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "s", "s", 1013904357), 1, new cljs.core.Keyword(null, "ms", "ms", 1013907736), 1E3], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "pc", "pc", 1013907813), 1, new cljs.core.Keyword(null, "mm", "mm", 1013907730), 4.23333333, new cljs.core.Keyword(null, "pt", "pt", 1013907830), 
-12, new cljs.core.Keyword(null, "px", "px", 1013907834), 16], !0)]);
+garden.units.conversions = cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null, "in", "in", 1013907607), new cljs.core.Keyword(null, "em", "em", 1013907482), new cljs.core.Keyword(null, "rad", "rad", 1014016903), new cljs.core.Keyword(null, "kHz", "kHz", 1014009423), cljs.core.keyword.call(null, "%"), new cljs.core.Keyword(null, "px", "px", 1013907834), new cljs.core.Keyword(null, "Hz", "Hz", 1013906596), new cljs.core.Keyword(null, "cm", "cm", 1013907420), new cljs.core.Keyword(null, 
+"deg", "deg", 1014003576), new cljs.core.Keyword(null, "pt", "pt", 1013907830), new cljs.core.Keyword(null, "mm", "mm", 1013907730), new cljs.core.Keyword(null, "grad", "grad", 1017085376), new cljs.core.Keyword(null, "ms", "ms", 1013907736), new cljs.core.Keyword(null, "turn", "turn", 1017476079), new cljs.core.Keyword(null, "s", "s", 1013904357), new cljs.core.Keyword(null, "pc", "pc", 1013907813)], [cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "in", "in", 1013907607), 1, 
+new cljs.core.Keyword(null, "cm", "cm", 1013907420), 2.54, new cljs.core.Keyword(null, "pc", "pc", 1013907813), 6, new cljs.core.Keyword(null, "mm", "mm", 1013907730), 25.4, new cljs.core.Keyword(null, "pt", "pt", 1013907830), 72, new cljs.core.Keyword(null, "px", "px", 1013907834), 96], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "em", "em", 1013907482), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "rad", "rad", 1014016903), 1, new cljs.core.Keyword(null, 
+"turn", "turn", 1017476079), 0.159154943], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "kHz", "kHz", 1014009423), 1], !0), cljs.core.PersistentArrayMap.fromArray([cljs.core.keyword.call(null, "%"), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "px", "px", 1013907834), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "Hz", "Hz", 1013906596), 1, new cljs.core.Keyword(null, "kHz", "kHz", 1014009423), 0.001], !0), 
+cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "cm", "cm", 1013907420), 1, new cljs.core.Keyword(null, "pc", "pc", 1013907813), 2.36220473, new cljs.core.Keyword(null, "mm", "mm", 1013907730), 10, new cljs.core.Keyword(null, "pt", "pt", 1013907830), 28.3464567, new cljs.core.Keyword(null, "px", "px", 1013907834), 37.795275591], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "deg", "deg", 1014003576), 1, new cljs.core.Keyword(null, "grad", "grad", 1017085376), 
+1.111111111, new cljs.core.Keyword(null, "rad", "rad", 1014016903), 0.0174532925, new cljs.core.Keyword(null, "turn", "turn", 1017476079), 0.002777778], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "pt", "pt", 1013907830), 1, new cljs.core.Keyword(null, "px", "px", 1013907834), 1.3333333333], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "mm", "mm", 1013907730), 1, new cljs.core.Keyword(null, "pt", "pt", 1013907830), 2.83464567, new cljs.core.Keyword(null, 
+"px", "px", 1013907834), 3.7795275591], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "grad", "grad", 1017085376), 1, new cljs.core.Keyword(null, "rad", "rad", 1014016903), 63.661977237, new cljs.core.Keyword(null, "turn", "turn", 1017476079), 0.0025], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ms", "ms", 1013907736), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "turn", "turn", 1017476079), 1], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
+"s", "s", 1013904357), 1, new cljs.core.Keyword(null, "ms", "ms", 1013907736), 1E3], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "pc", "pc", 1013907813), 1, new cljs.core.Keyword(null, "mm", "mm", 1013907730), 4.23333333, new cljs.core.Keyword(null, "pt", "pt", 1013907830), 12, new cljs.core.Keyword(null, "px", "px", 1013907834), 16], !0)]);
 garden.units.convertable_QMARK_ = function(a) {
   return cljs.core.contains_QMARK_.call(null, garden.units.conversions, a)
 };
@@ -18575,6 +18575,10 @@ cljs.core.RSeq.prototype.garden$compiler$IExpandable$ = !0;
 cljs.core.RSeq.prototype.garden$compiler$IExpandable$expand$arity$1 = function(a) {
   return garden.compiler.expand_seqs.call(null, a)
 };
+garden.color.CSSColor.prototype.garden$compiler$IExpandable$ = !0;
+garden.color.CSSColor.prototype.garden$compiler$IExpandable$expand$arity$1 = function(a) {
+  return cljs.core.list.call(null, a)
+};
 cljs.core.NodeSeq.prototype.garden$compiler$IExpandable$ = !0;
 cljs.core.NodeSeq.prototype.garden$compiler$IExpandable$expand$arity$1 = function(a) {
   return garden.compiler.expand_seqs.call(null, a)
@@ -18756,7 +18760,7 @@ garden.compiler.render_rule = function(a) {
 garden.compiler.render_media_expr_part = function(a) {
   var b = cljs.core.nth.call(null, a, 0, null);
   a = cljs.core.nth.call(null, a, 1, null);
-  var c = cljs.core.map.call(null, garden.util.to_str, cljs.core.PersistentVector.fromArray([b, a], !0)), b = cljs.core.nth.call(null, c, 0, null), c = cljs.core.nth.call(null, c, 1, null);
+  var c = cljs.core.map.call(null, garden.compiler.render_value, cljs.core.PersistentVector.fromArray([b, a], !0)), b = cljs.core.nth.call(null, c, 0, null), c = cljs.core.nth.call(null, c, 1, null);
   return!0 === a ? b : !1 === a ? [cljs.core.str("not "), cljs.core.str(b)].join("") : cljs.core._EQ_.call(null, "only", c) ? [cljs.core.str("only "), cljs.core.str(b)].join("") : new cljs.core.Keyword(null, "else", "else", 1017020587) ? cljs.core.truth_(cljs.core.truth_(a) ? cljs.core.seq.call(null, c) : a) ? [cljs.core.str("("), cljs.core.str(b), cljs.core.str(garden.compiler.colon), cljs.core.str(c), cljs.core.str(")")].join("") : [cljs.core.str("("), cljs.core.str(b), cljs.core.str(")")].join("") : 
   null
 };
@@ -18776,7 +18780,20 @@ garden.compiler.render_function = function(a) {
   a = cljs.core.sequential_QMARK_.call(null, a) ? garden.compiler.comma_separated_list.call(null, a) : garden.util.to_str.call(null, a);
   return garden.util.format.call(null, "%s(%s)", garden.util.to_str.call(null, b), a)
 };
-garden.compiler.render_color = garden.color.as_hex;
+garden.compiler.render_color = function(a) {
+  var b = (new cljs.core.Keyword(null, "alpha", "alpha", 1106814160)).call(null, a);
+  if(cljs.core.truth_(b)) {
+    a = garden.color.as_hsl.call(null, a);
+    a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
+    var c = cljs.core.get.call(null, a, new cljs.core.Keyword(null, "lightness", "lightness", 1700345823)), d = cljs.core.get.call(null, a, new cljs.core.Keyword(null, "saturation", "saturation", 783413060));
+    a = cljs.core.get.call(null, a, new cljs.core.Keyword(null, "hue", "hue", 1014007914));
+    d = cljs.core.map.call(null, garden.units.percent, cljs.core.PersistentVector.fromArray([d, c], !0));
+    c = cljs.core.nth.call(null, d, 0, null);
+    d = cljs.core.nth.call(null, d, 1, null);
+    return garden.util.format.call(null, "hsla(%s)", garden.compiler.comma_separated_list.call(null, cljs.core.PersistentVector.fromArray([a, c, d, b], !0)))
+  }
+  return garden.color.as_hex.call(null, a)
+};
 garden.compiler.render_at_rule = function() {
   var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
   return new cljs.core.MultiFn("render-at-rule", new cljs.core.Keyword(null, "identifier", "identifier", 3690438683), new cljs.core.Keyword(null, "default", "default", 2558708147), e, a, b, c, d)
@@ -19007,14 +19024,13 @@ cljs.core._add_method.call(null, lucuma.render_content, new cljs.core.Keyword("l
   return cljs.core.vector_QMARK_.call(null, cljs.core.first.call(null, a)) ? cljs.core.map.call(null, lucuma.examples.node, a) : dommy.template.__GT_node_like.call(null, a)
 });
 lucuma.examples.ex_content_hiccup = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-hiccup"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), "Hello hiccup!"], !0)], !0));
-lucuma.examples.ex_style = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "button", "button", 3931183780), "Hello styled!"], !0), new cljs.core.Keyword(null, "style", 
-"style", 1123684643), "button { background: blue; color: white; border: 0; border-radius: 4px;}"], !0));
+lucuma.examples.ex_style = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), "Hello styled!"], !0), new cljs.core.Keyword(null, "style", "style", 
+1123684643), "span { background: blue; color: white; border: 0; border-radius: 4px;}"], !0));
 cljs.core._add_method.call(null, lucuma.render_style, new cljs.core.Keyword("lucuma.examples", "vector", "lucuma.examples/vector", 4458923423), function(a) {
   return garden.core.css.call(null, a)
 });
-lucuma.examples.ex_style_garden = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style-garden"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "button", "button", 3931183780), "Hello garden!"], !0), new cljs.core.Keyword(null, 
-"style", "style", 1123684643), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "button", "button", 3931183780), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "background", "background", 3976677536), "#3d7c45", new cljs.core.Keyword(null, "color", "color", 1108746965), "white", new cljs.core.Keyword(null, "border", "border", 3925567390), 0, new cljs.core.Keyword(null, "border-radius", "border-radius", 1894943941), garden.units.px.call(null, 4)], !0)], !0)], 
-!0));
+lucuma.examples.ex_style_garden = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style-garden"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), "Hello garden!"], !0), new cljs.core.Keyword(null, 
+"style", "style", 1123684643), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "background", "background", 3976677536), "#3d7c45", new cljs.core.Keyword(null, "color", "color", 1108746965), "white", new cljs.core.Keyword(null, "border", "border", 3925567390), 0, new cljs.core.Keyword(null, "border-radius", "border-radius", 1894943941), garden.units.px.call(null, 4)], !0)], !0)], !0));
 lucuma.examples.ex_style_scope = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style-scope"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
 "class", "class", 1108647146), "icon-exclamation-sign"], !0), "Hello style scope!"], !0), new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967), !0], !0));
 lucuma.examples.ex_attributes = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-attributes"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "attributes", "attributes", 1419549897), cljs.core.PersistentHashSet.fromArray([new cljs.core.Keyword(null, "attribute", "attribute", 1026989582), null], !0)], !0));
@@ -19030,7 +19046,7 @@ lucuma.examples.ex_events = cljs.core.merge.call(null, cljs.core.PersistentArray
 lucuma.examples.ex_constructor = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-constructor"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "constructor", "constructor", 3720465260), "CustomConstructor", new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
 "div", "div", 1014003715), "Hello constructor!"], !0)], !0));
 lucuma.examples.ex_extend = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-extend"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
-"class", "class", 1108647146), "icon-exclamation-sign"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859)], !0)], !0), new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967), !0, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472), new cljs.core.Keyword(null, "button", "button", 3931183780)], !0));
+"class", "class", 1108647146), "icon-exclamation-sign"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859)], !0)], !0), new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967), !0, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472), new cljs.core.Keyword(null, "div", "div", 1014003715)], !0));
 lucuma.examples.register_all = function() {
   lucuma.register.call(null, lucuma.examples.ex_hello);
   lucuma.register.call(null, lucuma.examples.ex_lifecycle);
