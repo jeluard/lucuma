@@ -29,3 +29,7 @@
   (when f (fn [& args] (this-as this (call-with-first-argument f this args)))))
 
 (defn invoke-if-fn [o] (if (fn? o) (o) o))
+
+(defn warn
+  [s]
+  (.warn js/console (clj->js s)))

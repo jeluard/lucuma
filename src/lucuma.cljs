@@ -130,5 +130,8 @@
   [m]
   (let [n (:name m)
         c (:constructor m (default-constructor-name n))
-        cf (ce/register n (create-prototype m) (:base-type m))]
-    (when c (aset (u/*ns*->goog-ns (:ns m)) c cf))))
+        cf (ce/register n (create-prototype m) (:base-type m))
+        goog-ns (u/*ns*->goog-ns (:ns m))]
+    (if goog-ns
+      (when c (aset goog-ns c cf))
+      (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))))
