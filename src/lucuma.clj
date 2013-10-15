@@ -4,4 +4,4 @@
 
 (defmacro defwebcomponent
   [n & m]
-  `(def ~n (merge {:name ~(name n) :ns ~(str *cljs-ns*)} ~(apply hash-map m))))
+  `(def ~(vary-meta n assoc :export true) (merge {:name ~(name n) :ns ~(str *cljs-ns*)} ~(apply hash-map m))))
