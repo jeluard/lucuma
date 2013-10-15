@@ -29,14 +29,14 @@
   :content [:div "Hello hiccup!"])
 
 (defwebcomponent ex-style
-  :content [:button "Hello styled!"]
-  :style "button { background: blue; color: white; border: 0; border-radius: 4px;}")
+  :content [:span "Hello styled!"]
+  :style "span { background: blue; color: white; border: 0; border-radius: 4px;}")
 
 (defmethod render-style ::vector [v] (css v))
 
 (defwebcomponent ex-style-garden
-  :content [:button "Hello garden!"]
-  :style [:button {:background "#3d7c45" :color "white" :border 0 :border-radius (px 4)}])
+  :content [:span "Hello garden!"]
+  :style [:span {:background "#3d7c45" :color "white" :border 0 :border-radius (px 4)}])
 
 (defwebcomponent ex-style-scope
   :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
@@ -64,7 +64,7 @@
   :content [:div "Hello constructor!"])
 
 (defwebcomponent ex-extend
-  :base-type :button
+  :base-type :div
   :content [:span {:class "icon-exclamation-sign"} [:content]]
   :apply-author-styles true)
 
