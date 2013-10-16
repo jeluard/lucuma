@@ -77,7 +77,7 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
         <div class="lead">
           <p>A Web Components library for <a href="http://clojurescript.com">ClojureScript</a>.</p>
           <p>
-            Lucuma helps with creating reusable HTML elements (Web Components) encapsulating content, style and logic. It is <strong>not</strong> a fancy <em>MV*</em> framework and aims at being a thin layer building on top of next generation web standards (mainly <span class="text-muted">Custom Elements</span> and <span class="text-muted">Shadow DOM</span>).
+          Lucuma helps with creating reusable HTML elements (<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html">Web Components</a>) encapsulating content, style and logic. It is <strong>not</strong> a fancy <em>MV*</em> framework and aims at being a thin layer building on top of next generation web standards (mainly <span class="text-muted">Custom Elements</span> and <span class="text-muted">Shadow DOM</span>).
             <br>
             It also makes the extra effort of being flexible and open to existing ClojureScript standards and libraries.</p>
           <p>
@@ -113,6 +113,9 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               Element instances have <strong>lucuma.LucumaElement</strong> in their prototype chain.
             </p>
             <p>
+              Once a Web Component is defined and registered in the current document a new HTML tag is available (named after the Web Component). It can be inserted in the DOM as any regular HTML element (including programmatically).
+            </p>
+            <p>
               For encapsulation purpoise content and style are appended to a Shadow DOM.
             </p>
             <div class="example-live">
@@ -138,11 +141,11 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             </p>
             <pre class="example-cljs">
               <code class="language-clojure">
-  ;;append a my-element node to body
-  (.appendChild js/document.body (.createElement js/document "my-element"))
+  ;;append a 'ex-hello' node to body
+  (.appendChild js/document.body (.createElement js/document "ex-hello"))
 
   ;;or using hiccup syntax and dommy
-  (dommy/append! (dommy/sel1 :body) [:my-element])
+  (dommy/append! (dommy/sel1 :body) [:ex-hello])
               </code>
             </pre>
           </section>
@@ -208,6 +211,11 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <div class="example-live">
               <ex-hello></ex-hello>
             </div>
+            <pre class="example-markup">
+              <code class="language-markup">
+  &lt;ex-hello&gt;&lt;/ex-hello&gt;
+              </code>
+            </pre>
             <pre class="example-cljs">
               <code class="language-clojure">
               </code>
@@ -245,6 +253,11 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <div class="example-live">
                 <ex-content-hiccup></ex-content-hiccup>
               </div>
+              <pre class="example-markup">
+                <code class="language-markup">
+  &lt;ex-content-hiccup&gt;&lt;/ex-content-hiccup&gt;
+                </code>
+              </pre>
               <pre class="example-cljs">
                 <code class="language-clojure"></code>
               </pre>
@@ -265,11 +278,16 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
             <p>
               <strong>render-style</strong> has implementations for String (identity).
               <br>
-              <strong>render-style!</strong> has an implementation for String (set as <strong>textContent</strong> of a newly created <strong>style</strong> element, itself appended to the ShadowRoot).
+              <strong>set-style!</strong> has an implementation for String (set as <strong>textContent</strong> of a newly created <strong>style</strong> element, itself appended to the ShadowRoot).
             </p>
             <div class="example-live">
               <ex-style></ex-style>
             </div>
+            <pre class="example-markup">
+              <code class="language-markup">
+  &lt;ex-style&gt;&lt;/ex-style&gt;
+              </code>
+            </pre>
             <pre class="example-cljs">
               <code class="language-clojure"></code>
             </pre>
@@ -282,6 +300,11 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <div class="example-live">
                 <ex-style-garden></ex-style-garden>
               </div>
+              <pre class="example-markup">
+                <code class="language-markup">
+    &lt;ex-style-garden&gt;&lt;/ex-style-garden&gt;
+                </code>
+              </pre>
               <pre class="example-cljs">
                 <code class="language-clojure"></code>
               </pre>
@@ -295,6 +318,11 @@ allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"><
               <div class="example-live">
                 <ex-style-scope></ex-style-scope>
               </div>
+              <pre class="example-markup">
+                <code class="language-markup">
+    &lt;ex-style-scope&gt;&lt;/ex-style-scope&gt;
+                </code>
+              </pre>
               <pre class="example-cljs">
                 <code class="language-clojure"></code>
               </pre>
