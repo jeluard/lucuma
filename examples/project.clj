@@ -2,7 +2,7 @@
   :dependencies [[org.clojure/clojurescript "0.0-1934"]
                  [lucuma "0.2.0-SNAPSHOT"]
                  [prismatic/dommy "0.1.2"]
-                 [garden "1.1.2"]]
+                 [garden "1.1.3"]]
   :plugins [[lein-cljsbuild "0.3.4"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src"]
