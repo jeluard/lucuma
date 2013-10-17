@@ -3506,16 +3506,16 @@ cljs.core.with_meta = function with_meta(b, c) {
     c && (b ? (c = (c = b.cljs$lang$protocol_mask$partition0$ & 262144) ? c : b.cljs$core$IWithMeta$, c = c ? !0 : b.cljs$lang$protocol_mask$partition0$ ? !1 : cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b)) : c = cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b), c = !c);
     return c
   }() ? with_meta.call(null, function() {
-    "undefined" === typeof cljs.core.t7736 && (cljs.core.t7736 = {}, cljs.core.t7736 = function(b, c, f, g) {
+    "undefined" === typeof cljs.core.t7758 && (cljs.core.t7758 = {}, cljs.core.t7758 = function(b, c, f, g) {
       this.meta = b;
       this.o = c;
       this.with_meta = f;
-      this.meta7737 = g;
+      this.meta7759 = g;
       this.cljs$lang$protocol_mask$partition1$ = 0;
       this.cljs$lang$protocol_mask$partition0$ = 393217
-    }, cljs.core.t7736.cljs$lang$type = !0, cljs.core.t7736.cljs$lang$ctorStr = "cljs.core/t7736", cljs.core.t7736.cljs$lang$ctorPrWriter = function(b, c, f) {
-      return cljs.core._write.call(null, c, "cljs.core/t7736")
-    }, cljs.core.t7736.prototype.call = function() {
+    }, cljs.core.t7758.cljs$lang$type = !0, cljs.core.t7758.cljs$lang$ctorStr = "cljs.core/t7758", cljs.core.t7758.cljs$lang$ctorPrWriter = function(b, c, f) {
+      return cljs.core._write.call(null, c, "cljs.core/t7758")
+    }, cljs.core.t7758.prototype.call = function() {
       var b = function(b, c) {
         return cljs.core.apply.call(null, b.o, c)
       }, c = function(c, e) {
@@ -3532,17 +3532,17 @@ cljs.core.with_meta = function with_meta(b, c) {
       };
       c.cljs$core$IFn$_invoke$arity$variadic = b;
       return c
-    }(), cljs.core.t7736.prototype.apply = function(b, c) {
+    }(), cljs.core.t7758.prototype.apply = function(b, c) {
       b = this;
       return b.call.apply(b, [b].concat(c.slice()))
-    }, cljs.core.t7736.prototype.cljs$core$Fn$ = !0, cljs.core.t7736.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-      return this.meta7737
-    }, cljs.core.t7736.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-      return new cljs.core.t7736(this.meta, this.o, this.with_meta, c)
-    }, cljs.core.__GT_t7736 = function(b, c, f, g) {
-      return new cljs.core.t7736(b, c, f, g)
+    }, cljs.core.t7758.prototype.cljs$core$Fn$ = !0, cljs.core.t7758.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+      return this.meta7759
+    }, cljs.core.t7758.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+      return new cljs.core.t7758(this.meta, this.o, this.with_meta, c)
+    }, cljs.core.__GT_t7758 = function(b, c, f, g) {
+      return new cljs.core.t7758(b, c, f, g)
     });
-    return new cljs.core.t7736(c, b, with_meta, null)
+    return new cljs.core.t7758(c, b, with_meta, null)
   }(), c) : cljs.core._with_meta.call(null, b, c)
 };
 cljs.core.meta = function(a) {
@@ -13956,6 +13956,9 @@ lucuma.util.wrap_with_callback_this_value = function(a) {
 lucuma.util.invoke_if_fn = function(a) {
   return cljs.core.fn_QMARK_.call(null, a) ? a.call(null) : a
 };
+lucuma.util.warn = function(a) {
+  return console.warn(cljs.core.clj__GT_js.call(null, a))
+};
 lucuma.attribute = {};
 lucuma.attribute.get_attr = function(a, b) {
   return cljs.core.truth_(a.hasAttribute(cljs.core.name.call(null, b))) ? a.getAttribute(cljs.core.name.call(null, b)) : null
@@ -14447,9 +14450,27 @@ cljs.core._add_method.call(null, lucuma.append_content_BANG_, new cljs.core.Keyw
 });
 lucuma.render_then_append_content_BANG_ = function(a, b) {
   var c = lucuma.render_content.call(null, b);
-  return cljs.core.truth_(c) ? cljs.core.coll_QMARK_.call(null, c) ? cljs.core.map.call(null, function(b) {
-    return lucuma.append_content_BANG_.call(null, a, b)
-  }, c) : lucuma.append_content_BANG_.call(null, a, c) : null
+  if(cljs.core.truth_(c)) {
+    if(cljs.core.coll_QMARK_.call(null, c)) {
+      for(var c = cljs.core.seq.call(null, c), d = null, e = 0, f = 0;;) {
+        if(f < e) {
+          var g = cljs.core._nth.call(null, d, f);
+          lucuma.append_content_BANG_.call(null, a, g);
+          f += 1
+        }else {
+          if(c = cljs.core.seq.call(null, c)) {
+            d = c, cljs.core.chunked_seq_QMARK_.call(null, d) ? (c = cljs.core.chunk_first.call(null, d), e = cljs.core.chunk_rest.call(null, d), d = c, g = cljs.core.count.call(null, c), c = e, e = g) : (g = cljs.core.first.call(null, d), lucuma.append_content_BANG_.call(null, a, g), c = cljs.core.next.call(null, d), d = null, e = 0), f = 0
+          }else {
+            return null
+          }
+        }
+      }
+    }else {
+      return lucuma.append_content_BANG_.call(null, a, c)
+    }
+  }else {
+    return null
+  }
 };
 lucuma.render_style = function() {
   var a = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), b = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), c = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), d = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.EMPTY), e = cljs.core.get.call(null, cljs.core.PersistentArrayMap.EMPTY, new cljs.core.Keyword(null, "hierarchy", "hierarchy", 3129050535), cljs.core.get_global_hierarchy.call(null));
@@ -14535,8 +14556,9 @@ lucuma.default_constructor_name = function(a) {
   return null != a ? (a = clojure.string.split.call(null, a, /-/), [cljs.core.str(clojure.string.upper_case.call(null, cljs.core.get.call(null, a, 0))), cljs.core.str(clojure.string.join.call(null, cljs.core.map.call(null, clojure.string.capitalize, cljs.core.subvec.call(null, a, 1))))].join("")) : null
 };
 lucuma.register = function(a) {
-  var b = (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, a), c = (new cljs.core.Keyword(null, "constructor", "constructor", 3720465260)).call(null, a, lucuma.default_constructor_name.call(null, b)), b = lucuma.custom_elements.register.call(null, b, lucuma.create_prototype.call(null, a), (new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, a));
-  return cljs.core.truth_(c) ? lucuma.util._STAR_ns_STAR___GT_goog_ns.call(null, (new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, a))[c] = b : null
+  var b = (new cljs.core.Keyword(null, "name", "name", 1017277949)).call(null, a), c = (new cljs.core.Keyword(null, "constructor", "constructor", 3720465260)).call(null, a, lucuma.default_constructor_name.call(null, b)), d = lucuma.custom_elements.register.call(null, b, lucuma.create_prototype.call(null, a), (new cljs.core.Keyword(null, "base-type", "base-type", 3446290472)).call(null, a)), e = lucuma.util._STAR_ns_STAR___GT_goog_ns.call(null, (new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, 
+  a));
+  return cljs.core.truth_(e) ? cljs.core.truth_(c) ? e[c] = d : null : lucuma.util.warn.call(null, [cljs.core.str("Couldn't export constructor for "), cljs.core.str(b), cljs.core.str(" as ns "), cljs.core.str((new cljs.core.Keyword(null, "ns", "ns", 1013907767)).call(null, a)), cljs.core.str(" is inaccessible")].join(""))
 };
 var lucuma_test = {default_constructor_names:function() {
   return cemerick.cljs.test.test_var.call(null, lucuma_test.default_constructor_names)
@@ -14581,10 +14603,9 @@ lucuma.util_test.two = function() {
   return 2
 };
 goog.exportSymbol("lucuma.util_test.two", lucuma.util_test.two);
-lucuma.util_test.resolve_goog_ns = function() {
+cljs.core.truth_(window.lucuma) && (lucuma.util_test.resolve_goog_ns = function() {
   return cemerick.cljs.test.test_var.call(null, lucuma.util_test.resolve_goog_ns)
-};
-lucuma.util_test.resolve_goog_ns = cljs.core.vary_meta.call(null, lucuma.util_test.resolve_goog_ns, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "resolve-goog-ns", "resolve-goog-ns", 1905373386, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
+}, lucuma.util_test.resolve_goog_ns = cljs.core.vary_meta.call(null, lucuma.util_test.resolve_goog_ns, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "resolve-goog-ns", "resolve-goog-ns", 1905373386, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
   try {
     var a = cljs.core.list.call(null, null == lucuma.util.resolve_goog_ns.call(null, cljs.core.list.call(null, "lucuma"))), b = cljs.core.apply.call(null, cljs.core.not, a);
     cljs.core.truth_(b) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
@@ -14666,12 +14687,9 @@ lucuma.util_test.resolve_goog_ns = cljs.core.vary_meta.call(null, lucuma.util_te
     }
     return null
   }
-});
-cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.util-test", "lucuma.util-test", 216413335, null), lucuma.util_test.resolve_goog_ns);
-lucuma.util_test.str__GT_fn = function() {
+}), cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.util-test", "lucuma.util-test", 216413335, null), lucuma.util_test.resolve_goog_ns), lucuma.util_test.str__GT_fn = function() {
   return cemerick.cljs.test.test_var.call(null, lucuma.util_test.str__GT_fn)
-};
-lucuma.util_test.str__GT_fn = cljs.core.vary_meta.call(null, lucuma.util_test.str__GT_fn, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "str-\x3efn", "str-\x3efn", 770843043, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
+}, lucuma.util_test.str__GT_fn = cljs.core.vary_meta.call(null, lucuma.util_test.str__GT_fn, cljs.core.assoc, new cljs.core.Keyword(null, "name", "name", 1017277949), new cljs.core.Symbol(null, "str-\x3efn", "str-\x3efn", 770843043, null), new cljs.core.Keyword(null, "test", "test", 1017460740), function() {
   try {
     var a = cljs.core.list.call(null, null == lucuma.util.str__GT_fn.call(null, "lucuma.util_test.two")), b = cljs.core.apply.call(null, cljs.core.not, a);
     cljs.core.truth_(b) ? cemerick.cljs.test.do_report.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "actual", "actual", 3885931776), cljs.core.cons.call(null, cljs.core.not, a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword(null, "pass", "pass", 1017337731), new cljs.core.Keyword(null, "message", "message", 1968829305), null, new cljs.core.Keyword(null, "expected", "expected", 3373152810), cljs.core.list(new cljs.core.Symbol(null, 
@@ -14719,8 +14737,7 @@ lucuma.util_test.str__GT_fn = cljs.core.vary_meta.call(null, lucuma.util_test.st
     }
     return null
   }
-});
-cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.util-test", "lucuma.util-test", 216413335, null), lucuma.util_test.str__GT_fn);
+}), cemerick.cljs.test.register_test_BANG_.call(null, new cljs.core.Symbol(null, "lucuma.util-test", "lucuma.util-test", 216413335, null), lucuma.util_test.str__GT_fn));
 lucuma.shadow_dom_test = {};
 lucuma.shadow_dom_test.create = function() {
   return cemerick.cljs.test.test_var.call(null, lucuma.shadow_dom_test.create)
@@ -15402,13 +15419,13 @@ try {
   Window.prototype.dommy$template$PElement$ = !0, Window.prototype.dommy$template$PElement$_elem$arity$1 = function(a) {
     return a
   }
-}catch(e9329) {
-  if(e9329 instanceof ReferenceError) {
-    var __9330 = e9329;
+}catch(e9370) {
+  if(e9370 instanceof ReferenceError) {
+    var __9371 = e9370;
     console.log("PElement: js/Window not defined by browser, skipping it... (running on phantomjs?)")
   }else {
     if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-      throw e9329;
+      throw e9370;
     }
   }
 }
@@ -15642,30 +15659,30 @@ dommy.core.selector_map = function selector_map(b, c) {
   return cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "container", "container", 602947571), d], !0), cljs.core.into.call(null, cljs.core.PersistentArrayMap.EMPTY, cljs.core.map.call(null, function(e) {
     var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null);
     return cljs.core.PersistentVector.fromArray([f, cljs.core.truth_((new cljs.core.Keyword(null, "live", "live", 1017226334)).call(null, cljs.core.meta.call(null, g))) ? function() {
-      "undefined" === typeof dommy.core.t8862 && (dommy.core.t8862 = {}, dommy.core.t8862 = function(b, c, d, e, f, g, q, r, s) {
+      "undefined" === typeof dommy.core.t8903 && (dommy.core.t8903 = {}, dommy.core.t8903 = function(b, c, d, e, f, g, q, r, s) {
         this.v = b;
         this.k = c;
-        this.vec__8861 = d;
-        this.p__8860 = e;
+        this.vec__8902 = d;
+        this.p__8901 = e;
         this.container = f;
         this.key_selectors_map = g;
         this.template = q;
         this.selector_map = r;
-        this.meta8863 = s;
+        this.meta8904 = s;
         this.cljs$lang$protocol_mask$partition1$ = 0;
         this.cljs$lang$protocol_mask$partition0$ = 425984
-      }, dommy.core.t8862.cljs$lang$type = !0, dommy.core.t8862.cljs$lang$ctorStr = "dommy.core/t8862", dommy.core.t8862.cljs$lang$ctorPrWriter = function(b, c, d) {
-        return cljs.core._write.call(null, c, "dommy.core/t8862")
-      }, dommy.core.t8862.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
+      }, dommy.core.t8903.cljs$lang$type = !0, dommy.core.t8903.cljs$lang$ctorStr = "dommy.core/t8903", dommy.core.t8903.cljs$lang$ctorPrWriter = function(b, c, d) {
+        return cljs.core._write.call(null, c, "dommy.core/t8903")
+      }, dommy.core.t8903.prototype.cljs$core$IDeref$_deref$arity$1 = function(b) {
         return dommy.utils.__GT_Array.call(null, dommy.template.__GT_node_like.call(null, this.container).querySelectorAll(dommy.core.selector.call(null, this.v)))
-      }, dommy.core.t8862.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-        return this.meta8863
-      }, dommy.core.t8862.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-        return new dommy.core.t8862(this.v, this.k, this.vec__8861, this.p__8860, this.container, this.key_selectors_map, this.template, this.selector_map, c)
-      }, dommy.core.__GT_t8862 = function(b, c, d, e, f, g, q, r, s) {
-        return new dommy.core.t8862(b, c, d, e, f, g, q, r, s)
+      }, dommy.core.t8903.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+        return this.meta8904
+      }, dommy.core.t8903.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+        return new dommy.core.t8903(this.v, this.k, this.vec__8902, this.p__8901, this.container, this.key_selectors_map, this.template, this.selector_map, c)
+      }, dommy.core.__GT_t8903 = function(b, c, d, e, f, g, q, r, s) {
+        return new dommy.core.t8903(b, c, d, e, f, g, q, r, s)
       });
-      return new dommy.core.t8862(g, f, e, e, d, c, b, selector_map, null)
+      return new dommy.core.t8903(g, f, e, e, d, c, b, selector_map, null)
     }() : dommy.template.__GT_node_like.call(null, d).querySelector(dommy.core.selector.call(null, g))], !0)
   }, c)))
 };
@@ -18270,6 +18287,7 @@ lucuma.overlay.lucu_overlay = cljs.core.merge.call(null, cljs.core.PersistentArr
 "class", "class", 1108647146), "b-overlay-backdrop q-b-overlay-backdrop"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "b-overlay-backdrop-close q-b-overlay-backdrop-close", new cljs.core.Keyword(null, "title", "title", 1124275658), "Press ESC to close"], !0), "x"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 
 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "b-overlay-body q-overlay"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859)], !0)], !0)], !0), new cljs.core.Keyword(null, "style", "style", 1123684643), lucuma.overlay.style, new cljs.core.Keyword(null, "methods", "methods", 1969438500), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "show", "show", 1017433711), 
 lucuma.overlay.show, new cljs.core.Keyword(null, "hide", "hide", 1017106612), lucuma.overlay.hide], !0), new cljs.core.Keyword(null, "extends", "extends", 4003207179), new cljs.core.Keyword(null, "div", "div", 1014003715)], !0));
+goog.exportSymbol("lucuma.overlay.lucu_overlay", lucuma.overlay.lucu_overlay);
 lucuma.flipbox = {};
 lucuma.flipbox.style = '\nlucu-flipbox{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:block;position:relative;height:100%;width:100%;-webkit-transform-style:preserve-3d;-moz-transform-style:preserve-3d;-ms-transform-style:preserve-3d;-o-transform-style:preserve-3d;transform-style:preserve-3d}\nxlucuflipbox \x3e *{display:block;position:absolute;top:0;left:0;width:100%;height:100%;-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden;-ms-backface-visibility:hidden;-o-backface-visibility:hidden;backface-visibility:hidden;-webkit-transition-property:-webkit-transform;-moz-transition-property:-moz-transform;-ms-transition-property:-ms-transform;-o-transition-property:-o-transform;transition-property:transform;-webkit-transition-duration:.25s;-moz-transition-duration:.25s;-ms-transition-duration:.25s;-o-transition-duration:.25s;transition-duration:.25s;-webkit-transition-timing-function:linear;-moz-transition-timing-function:linear;-ms-transition-timing-function:linear;-o-transition-timing-function:linear;transition-timing-function:linear;-webkit-transition-delay:0;-moz-transition-delay:0;-ms-transition-delay:0;-o-transition-delay:0;transition-delay:0;-webkit-transform-style:preserve-3d;-moz-transform-style:preserve-3d;-ms-transform-style:preserve-3d;-o-transform-style:preserve-3d;transform-style:preserve-3d}\nlucu-flipbox \x3e *:first-child{-webkit-transform:perspective(800px) rotateY(0) translate3d(0,0,2px);-moz-transform:perspective(800px) rotateY(0) translate3d(0,0,2px);-ms-transform:perspective(800px) rotateY(0) translate3d(0,0,2px);-o-transform:perspective(800px) rotateY(0) translate3d(0,0,2px);transform:perspective(800px) rotateY(0) translate3d(0,0,2px);z-index:2}\nlucu-flipbox \x3e *:last-child{-webkit-transform:perspective(800px) rotateY(180deg) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateY(180deg) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateY(180deg) translate3d(0,0,1px);-o-transform:perspective(800px) rotateY(180deg) translate3d(0,0,1px);transform:perspective(800px) rotateY(180deg) translate3d(0,0,1px);z-index:1}\nlucu-flipbox[_anim-direction\x3d"up"] \x3e *:first-child,lucu-flipbox[_anim-direction\x3d"down"] \x3e *:first-child{-webkit-transform:perspective(800px) rotateX(0) translate3d(0,0,2px);-moz-transform:perspective(800px) rotateX(0) translate3d(0,0,2px);-ms-transform:perspective(800px) rotateX(0) translate3d(0,0,2px);-o-transform:perspective(800px) rotateX(0) translate3d(0,0,2px);transform:perspective(800px) rotateX(0) translate3d(0,0,2px)}\nlucu-flipbox[_anim-direction\x3d"up"] \x3e *:last-child{-webkit-transform:perspective(800px) rotateX(-180deg) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateX(-180deg) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateX(-180deg) translate3d(0,0,1px);-o-transform:perspective(800px) rotateX(-180deg) translate3d(0,0,1px);transform:perspective(800px) rotateX(-180deg) translate3d(0,0,1px)}\nlucu-flipbox[_anim-direction\x3d"down"] \x3e *:last-child{-webkit-transform:perspective(800px) rotateX(180deg) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateX(180deg) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateX(180deg) translate3d(0,0,1px);-o-transform:perspective(800px) rotateX(180deg) translate3d(0,0,1px);transform:perspective(800px) rotateX(180deg) translate3d(0,0,1px)}\nlucu-flipbox[flipped]:after{content:"";display:none}\nlucu-flipbox[flipped] \x3e *:first-child{-webkit-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-moz-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-ms-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-o-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);z-index:1}\nlucu-flipbox[flipped] \x3e *:last-child{-webkit-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-o-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);z-index:2}\nlucu-flipbox[_anim-direction\x3d"left"][flipped] \x3e *:first-child{-webkit-transform:perspective(800px) rotateY(-180deg) translate3d(0,0,2px);-moz-transform:perspective(800px) rotateY(-180deg) translate3d(0,0,2px);-ms-transform:perspective(800px) rotateY(-180deg) translate3d(0,0,2px);-o-transform:perspective(800px) rotateY(-180deg) translate3d(0,0,2px);transform:perspective(800px) rotateY(-180deg) translate3d(0,0,2px)}\nlucu-flipbox[_anim-direction\x3d"left"][flipped] \x3e *:last-child{-webkit-transform:perspective(800px) rotateY(0) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateY(0) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateY(0) translate3d(0,0,1px);-o-transform:perspective(800px) rotateY(0) translate3d(0,0,1px);transform:perspective(800px) rotateY(0) translate3d(0,0,1px)}\nlucu-flipbox[_anim-direction\x3d"up"][flipped] \x3e *:first-child{-webkit-transform:perspective(800px) rotateX(180deg) translate3d(0,0,2px);-moz-transform:perspective(800px) rotateX(180deg) translate3d(0,0,2px);-ms-transform:perspective(800px) rotateX(180deg) translate3d(0,0,2px);-o-transform:perspective(800px) rotateX(180deg) translate3d(0,0,2px);transform:perspective(800px) rotateX(180deg) translate3d(0,0,2px)}\nlucu-flipbox[_anim-direction\x3d"up"][flipped] \x3e *:last-child{-webkit-transform:perspective(800px) rotateX(0) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateX(0) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateX(0) translate3d(0,0,1px);-o-transform:perspective(800px) rotateX(0) translate3d(0,0,1px);transform:perspective(800px) rotateX(0) translate3d(0,0,1px)}\nlucu-flipbox[_anim-direction\x3d"down"][flipped] \x3e *:first-child{-webkit-transform:perspective(800px) rotateX(-180deg) translate3d(0,0,2px);-moz-transform:perspective(800px) rotateX(-180deg) translate3d(0,0,2px);-ms-transform:perspective(800px) rotateX(-180deg) translate3d(0,0,2px);-o-transform:perspective(800px) rotateX(-180deg) translate3d(0,0,2px);transform:perspective(800px) rotateX(-180deg) translate3d(0,0,2px)}\nlucu-flipbox[_anim-direction\x3d"down"][flipped] \x3e *:last-child{-webkit-transform:perspective(800px) rotateX(0) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateX(0) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateX(0) translate3d(0,0,1px);-o-transform:perspective(800px) rotateX(0) translate3d(0,0,1px);transform:perspective(800px) rotateX(0) translate3d(0,0,1px)}\n  ';
 lucuma.flipbox.toggle = function(a) {
@@ -18284,6 +18302,7 @@ lucuma.flipbox.show_back = function(a) {
 lucuma.flipbox.lucu_flipbox = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.flipbox", new cljs.core.Keyword(null, "name", "name", 1017277949), "lucu-flipbox"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859)], !0), new cljs.core.Keyword(null, "style", "style", 
 1123684643), lucuma.flipbox.style, new cljs.core.Keyword(null, "methods", "methods", 1969438500), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "showFront", "showFront", 3382402206), lucuma.flipbox.show_front, new cljs.core.Keyword(null, "showBack", "showBack", 674529526), lucuma.flipbox.show_back, new cljs.core.Keyword(null, "toggle", "toggle", 4440567494), lucuma.flipbox.toggle], !0), new cljs.core.Keyword(null, "attributes", "attributes", 1419549897), cljs.core.PersistentHashSet.fromArray([new cljs.core.Keyword(null, 
 "flipped", "flipped", 4537331956), null], !0)], !0));
+goog.exportSymbol("lucuma.flipbox.lucu_flipbox", lucuma.flipbox.lucu_flipbox);
 lucuma.example = {};
 lucuma.example.live = cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "example-live"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "select", "select", 4402849902), ".example-live"], !0)], !0)], !0);
 lucuma.example.markup = function(a) {
@@ -18296,6 +18315,7 @@ lucuma.example.lucu_example = cljs.core.merge.call(null, cljs.core.PersistentArr
 "class", "class", 1108647146), "example-live"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "select", "select", 4402849902), ".example-live"], !0)], !0)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "pre", "pre", 1014015509), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "example-markup"], 
 !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "code", "code", 1016963423), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "language-markup"], !0)], !0)], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "pre", "pre", 1014015509), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "example-cljs"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
 "code", "code", 1016963423), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "class", "class", 1108647146), "language-clojure"], !0)], !0)], !0)], !0)], !0));
+goog.exportSymbol("lucuma.example.lucu_example", lucuma.example.lucu_example);
 lucuma.range_with_threshold = {};
 lucuma.range_with_threshold.previous_value = cljs.core.atom.call(null, null);
 lucuma.range_with_threshold.add_threshold_crossed_class = function(a) {
@@ -18350,6 +18370,7 @@ lucuma.range_with_threshold.lucu_range_with_threshold = cljs.core.merge.call(nul
     return cljs.core.truth_(b) ? b : 30
   }())
 }, new cljs.core.Keyword(null, "extends", "extends", 4003207179), new cljs.core.Keyword(null, "input", "input", 1114262332)], !0));
+goog.exportSymbol("lucuma.range_with_threshold.lucu_range_with_threshold", lucuma.range_with_threshold.lucu_range_with_threshold);
 garden.compiler = {};
 garden.compiler._STAR_flags_STAR_ = cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "pretty-print?", "pretty-print?", 3437152219), !0, new cljs.core.Keyword(null, "output-to", "output-to", 3189532217), null, new cljs.core.Keyword(null, "vendors", "vendors", 1361377181), cljs.core.PersistentVector.EMPTY, new cljs.core.Keyword(null, "media-expressions", "media-expressions", 4652695524), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "nesting-behavior", "nesting-behavior", 
 4235335079), new cljs.core.Keyword(null, "default", "default", 2558708147)], !0)], !0);
@@ -18771,7 +18792,7 @@ garden.compiler.render_unit = function(a) {
   var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
   a = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "unit", "unit", 1017498870));
   b = cljs.core.get.call(null, b, new cljs.core.Keyword(null, "magnitude", "magnitude", 3292087682));
-  return[cljs.core.str(0 === b ? 0 : b), cljs.core.str(0 === b ? null : cljs.core.name.call(null, a))].join("")
+  return[cljs.core.str(b), cljs.core.str(cljs.core.name.call(null, a))].join("")
 };
 garden.compiler.render_function = function(a) {
   var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
@@ -19009,6 +19030,7 @@ garden.core.style = function() {
 }();
 lucuma.examples = {};
 lucuma.examples.ex_hello = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-hello"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), "Hello world!"], !0));
+goog.exportSymbol("lucuma.examples.ex_hello", lucuma.examples.ex_hello);
 lucuma.examples.ex_lifecycle = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-lifecycle"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "left-view-fn", "left-view-fn", 4756847772), function() {
   return dommy.core.prepend_BANG_.call(null, document.getElementById("lifecycle-events"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), "element left view"], !0))
 }, new cljs.core.Keyword(null, "created-fn", "created-fn", 2383536447), function() {
@@ -19016,37 +19038,50 @@ lucuma.examples.ex_lifecycle = cljs.core.merge.call(null, cljs.core.PersistentAr
 }, new cljs.core.Keyword(null, "entered-view-fn", "entered-view-fn", 3505744396), function() {
   return dommy.core.prepend_BANG_.call(null, document.getElementById("lifecycle-events"), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "li", "li", 1013907695), "element entered view"], !0))
 }], !0));
+goog.exportSymbol("lucuma.examples.ex_lifecycle", lucuma.examples.ex_lifecycle);
 lucuma.examples.ex_content_template = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-template"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), function() {
   return document.getElementById("template-id")
 }], !0));
+goog.exportSymbol("lucuma.examples.ex_content_template", lucuma.examples.ex_content_template);
 cljs.core.derive.call(null, cljs.core.PersistentVector, new cljs.core.Keyword("lucuma.examples", "vector", "lucuma.examples/vector", 4458923423));
 cljs.core._add_method.call(null, lucuma.render_content, new cljs.core.Keyword("lucuma.examples", "vector", "lucuma.examples/vector", 4458923423), function(a) {
-  return cljs.core.vector_QMARK_.call(null, cljs.core.first.call(null, a)) ? cljs.core.map.call(null, lucuma.examples.node, a) : dommy.template.__GT_node_like.call(null, a)
+  return cljs.core.vector_QMARK_.call(null, cljs.core.first.call(null, a)) ? cljs.core.map.call(null, function(a) {
+    return dommy.template.__GT_node_like.call(null, a)
+  }, a) : dommy.template.__GT_node_like.call(null, a)
 });
 lucuma.examples.ex_content_hiccup = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-content-hiccup"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "div", "div", 1014003715), "Hello hiccup!"], !0)], !0));
+goog.exportSymbol("lucuma.examples.ex_content_hiccup", lucuma.examples.ex_content_hiccup);
 lucuma.examples.ex_style = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), "Hello styled!"], !0), new cljs.core.Keyword(null, "style", "style", 
 1123684643), "span { background: blue; color: white; border: 0; border-radius: 4px;}"], !0));
+goog.exportSymbol("lucuma.examples.ex_style", lucuma.examples.ex_style);
 cljs.core._add_method.call(null, lucuma.render_style, new cljs.core.Keyword("lucuma.examples", "vector", "lucuma.examples/vector", 4458923423), function(a) {
   return garden.core.css.call(null, a)
 });
 lucuma.examples.ex_style_garden = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style-garden"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), "Hello garden!"], !0), new cljs.core.Keyword(null, 
 "style", "style", 1123684643), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "background", "background", 3976677536), "#3d7c45", new cljs.core.Keyword(null, "color", "color", 1108746965), "white", new cljs.core.Keyword(null, "border", "border", 3925567390), 0, new cljs.core.Keyword(null, "border-radius", "border-radius", 1894943941), garden.units.px.call(null, 4)], !0)], !0)], !0));
+goog.exportSymbol("lucuma.examples.ex_style_garden", lucuma.examples.ex_style_garden);
 lucuma.examples.ex_style_scope = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-style-scope"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
 "class", "class", 1108647146), "icon-exclamation-sign"], !0), "Hello style scope!"], !0), new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967), !0], !0));
+goog.exportSymbol("lucuma.examples.ex_style_scope", lucuma.examples.ex_style_scope);
 lucuma.examples.ex_attributes = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-attributes"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "attributes", "attributes", 1419549897), cljs.core.PersistentHashSet.fromArray([new cljs.core.Keyword(null, "attribute", "attribute", 1026989582), null], !0)], !0));
+goog.exportSymbol("lucuma.examples.ex_attributes", lucuma.examples.ex_attributes);
 lucuma.examples.alert = function(a) {
   return window.alert([cljs.core.str("Hello methods from '"), cljs.core.str(a.id), cljs.core.str("' !")].join(""))
 };
 lucuma.examples.ex_methods = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-methods"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "methods", "methods", 1969438500), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "method", "method", 4231316563), lucuma.examples.alert], !0)], !0));
+goog.exportSymbol("lucuma.examples.ex_methods", lucuma.examples.ex_methods);
 lucuma.examples.fire_event = function(a) {
   return lucuma.event.fire.call(null, document.querySelector(dommy.core.selector.call(null, cljs.core.keyword.call(null, a))), new cljs.core.Keyword(null, "event", "event", 1110795788), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "msg", "msg", 1014012659), "Sent from CLJS"], !0))
 };
 goog.exportSymbol("lucuma.examples.fire_event", lucuma.examples.fire_event);
 lucuma.examples.ex_events = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-events"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "handlers", "handlers", 1015973339), cljs.core.PersistentHashSet.fromArray([new cljs.core.Keyword(null, "event", "event", 1110795788), null], !0)], !0));
+goog.exportSymbol("lucuma.examples.ex_events", lucuma.examples.ex_events);
 lucuma.examples.ex_constructor = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-constructor"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "constructor", "constructor", 3720465260), "CustomConstructor", new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, 
 "div", "div", 1014003715), "Hello constructor!"], !0)], !0));
+goog.exportSymbol("lucuma.examples.ex_constructor", lucuma.examples.ex_constructor);
 lucuma.examples.ex_extend = cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "ns", "ns", 1013907767), "lucuma.examples", new cljs.core.Keyword(null, "name", "name", 1017277949), "ex-extend"], !0), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "span", "span", 1017440956), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, 
 "class", "class", 1108647146), "icon-exclamation-sign"], !0), cljs.core.PersistentVector.fromArray([new cljs.core.Keyword(null, "content", "content", 1965434859)], !0)], !0), new cljs.core.Keyword(null, "apply-author-styles", "apply-author-styles", 4411190967), !0, new cljs.core.Keyword(null, "base-type", "base-type", 3446290472), new cljs.core.Keyword(null, "div", "div", 1014003715)], !0));
+goog.exportSymbol("lucuma.examples.ex_extend", lucuma.examples.ex_extend);
 lucuma.examples.register_all = function() {
   lucuma.register.call(null, lucuma.examples.ex_hello);
   lucuma.register.call(null, lucuma.examples.ex_lifecycle);
