@@ -71,6 +71,7 @@
 (defn ^:export register-all
   []
   (register ex-hello)
+  (register (merge ex-hello {:name "my-hello-with-custom-name"}))
   (register ex-lifecycle)
   (register ex-content-template)
   (register ex-content-hiccup)
