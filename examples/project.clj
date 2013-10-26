@@ -4,7 +4,6 @@
                  [prismatic/dommy "0.1.2"]
                  [garden "1.1.3"]]
   :plugins [[lein-cljsbuild "0.3.4"]]
-  :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:source-paths ["src"]
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
                                    :source-map "target/cljs/lucuma+examples.js.map"
@@ -15,5 +14,6 @@
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
                                    :optimizations :advanced
                                    :pretty-print false}}]}
+  :aliases {"clean-build" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "once"]}
   :min-lein-version "2.3.0"
   :repositories  {"sonatype-oss-public" "https://oss.sonatype.org/content/groups/public/"})

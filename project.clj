@@ -16,6 +16,6 @@
                               ;;SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
                               "slimerjs" ["slimerjs" "resources/test/runner.js" "resources/test/assets/platform.js" "target/cljs/lucuma.js"]}}
 
-  :aliases {"clean-install" ["do" "clean," "install"]
-            "clean-test" ["do" "clean," "cljsbuild" "test"]}
+  :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
+            "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
   :min-lein-version "2.3.0")
