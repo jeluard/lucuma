@@ -74,11 +74,11 @@
     (set-style! sr rs)))
 
 (defn- create-shadow-root!
-  [e content style m]
+  [el content style m]
   (when (or style content)
-    (let [sr (sd/create e m)]
-      (when style (render-then-set-style! sr (u/invoke-if-fn style)))
-      (when content (render-then-append-content! sr (u/invoke-if-fn content))))))
+    (let [sr (sd/create el m)]
+      (when style (render-then-set-style! sr (u/invoke-if-fn el style)))
+      (when content (render-then-append-content! sr (u/invoke-if-fn el content))))))
 
 (defn- adjust-listener
   [el e o n]
