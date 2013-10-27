@@ -14,6 +14,7 @@
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
                                    :optimizations :advanced
                                    :pretty-print false}}]}
-  :aliases {"clean-build" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "once"]}
+  :aliases {"clean-build" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "once" "production"]
+            "clean-dev"  ["do" "clean," "cljsbuild" "clean," "cljsbuild" "auto"]}
   :min-lein-version "2.3.0"
   :repositories  {"sonatype-oss-public" "https://oss.sonatype.org/content/groups/public/"})
