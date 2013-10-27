@@ -82,10 +82,11 @@
 
 (defn- adjust-listener
   [el e o n]
-  (let [f (u/str->fn (or o n))]
+  (if-let [f (u/str->fn (or o n))]
     (if (nil? o)
       (.addEventListener el e f)
-      (.removeEventListener el e f))))
+      (.removeEventListener el e f))
+    (.log js/console (str "Could not access listener fn: " (or o n)))))
 
 (defn- event->handler [h] (str "on" (name h)))
 (defn- handler->event [a] (.substr a 2))
