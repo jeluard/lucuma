@@ -14,7 +14,7 @@
                                    :pretty-print true}}]
               :test-commands {;; Disabled for now: based on too old webkit version. "phantomjs" ["phantomjs" "resources/test/runner.js" "resources/test/assets/platform.js" "target/cljs/lucuma.js"]
                               ;;SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
-                              "slimerjs" ["slimerjs" "test-resources/runner.js" "test-resources/assets/platform.js" "target/cljs/lucuma.js"]}}
+                              "slimerjs" ["slimerjs" "test-resources/runner.js" "test-resources/assets/platform-v0.0.20131025.min.js" "target/cljs/lucuma.js"]}}
 
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
