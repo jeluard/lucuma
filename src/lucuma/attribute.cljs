@@ -1,6 +1,9 @@
 (ns lucuma.attribute
-  (:require [lucuma.util :as u]))
+  (:require [lucuma.util :as u])
+  ;;(:require-macros [cljs.core.typed :refer [ann]])
+  )
 
+;;(ann get-attr [js/HTMLElement (U String Keyword) -> (U nil String)])
 (defn get-attr
   [el n]
   (if (.hasAttribute el (name n))
@@ -19,4 +22,4 @@
 
 (defn properties
   [attributes]
-  (clj->js (apply merge (map #(hash-map (keyword %) (as-property %)) attributes))))
+  (apply merge (map #(hash-map (keyword %) (as-property %)) attributes)))
