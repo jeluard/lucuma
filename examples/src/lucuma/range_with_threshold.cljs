@@ -37,7 +37,7 @@
   (.addEventListener el "change" #(fire-event-on-threshold-cross (aget % "target") min-threshold max-threshold) false))
 
 (defwebcomponent lucu-range-with-threshold
-  :extends :input
+  :base-type :input
   :style "input[type='range'] .threshold-crossed { background-color: red; }"
   :created-fn #(initialize % (or (att/get-attr % :min-threshold) 10) (or (att/get-attr % :max-threshold) 30))
   :attributes #{:min-threshold :max-threshold}
