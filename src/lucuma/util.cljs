@@ -26,7 +26,7 @@
 
 (defn wrap-with-callback-this-value
   [f]
-  (when f (fn [& args] (this-as this (call-with-first-argument f this args)))))
+  (fn [& args] (this-as this (call-with-first-argument f this args))))
 
 (defn invoke-if-fn [el o] (if (fn? o) (o el) o))
 

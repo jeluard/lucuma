@@ -22,10 +22,10 @@
   (let [{:keys [prototype properties created-fn entered-view-fn left-view-fn attribute-changed-fn]} m
         properties (att/properties properties)
         prototype (if properties (.create js/Object prototype properties) (.create js/Object prototype))]
-    (set! (.-createdCallback prototype) (u/wrap-with-callback-this-value created-fn))
-    (set! (.-enteredViewCallback prototype) (u/wrap-with-callback-this-value entered-view-fn))
-    (set! (.-leftViewCallback prototype) (u/wrap-with-callback-this-value left-view-fn))
-    (set! (.-attributeChangedCallback prototype) (u/wrap-with-callback-this-value attribute-changed-fn))
+    (when created-fn (set! (.-createdCallback prototype) (u/wrap-with-callback-this-value created-fn)))
+    (when entered-view-fn (set! (.-enteredViewCallback prototype) (u/wrap-with-callback-this-value entered-view-fn)))
+    (when left-view-fn (set! (.-leftViewCallback prototype) (u/wrap-with-callback-this-value left-view-fn)))
+    (when attribute-changed-fn (set! (.-attributeChangedCallback prototype) (u/wrap-with-callback-this-value attribute-changed-fn)))
     prototype))
 
 (defn register
