@@ -6,6 +6,7 @@
 (deftest names
   (is (ce/valid-name? "ex-name"))
   (is (ce/valid-name? "ex-name-name"))
+  (is (not (ce/valid-name? nil)))
   (is (not (ce/valid-name? "name")))
   (is (not (ce/valid-name? "ex_name")))
   (is (not (ce/valid-name? "color-profile"))))

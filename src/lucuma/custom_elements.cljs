@@ -7,8 +7,9 @@
 (defn valid-name?
   "return true if provided name is a valid Custom Element name"
   [s]
-  (and (not= -1 (.indexOf s "-"))
-       (not (contains? forbidden-names s))))
+  (when s
+    (and (not= -1 (.indexOf s "-"))
+         (not (contains? forbidden-names s)))))
 
 (defn find-prototype
   [t]
