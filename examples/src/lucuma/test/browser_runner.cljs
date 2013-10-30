@@ -126,4 +126,6 @@
   (if-let [trl (sel1 :#tests-results-label)]
     (dommy/remove! trl))
   (t/run-all-tests)
-  (.stopAll js/Ladda))
+  (js/setTimeout
+   #(.stopAll js/Ladda)
+   500))
