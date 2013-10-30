@@ -1,6 +1,8 @@
 (ns lucuma
   (:require [lucuma.custom-elements :as ce]
+            [lucuma.polymer :as p]
             [lucuma.shadow-dom :as sd]
+            [lucuma.template-element :as te]
             [lucuma.util :as u]
             [clojure.string :as string]))
 
@@ -15,28 +17,19 @@
   (set! (.-prototype LucumaElement) base-prototype)
   (.-prototype LucumaElement))
 
-(defn- install-shadow-css-shim-when-needed
-  "Make sure styles do not leak when using polymer polyfill.
-  See https://github.com/Polymer/ShadowDOM/issues/260."
-  [sr n base-type]
-  (when js/ShadowDOMPolyfill
-    (if base-type
-      (.shimStyling js/Platform.ShadowCSS sr n (name base-type))
-      (.shimStyling js/Platform.ShadowCSS sr n))))
-
 (defmulti render-content
-  "render 'content' to something that can be added to the DOM"
+  "Renders 'content' to something that can be added to the DOM."
   ;; Hack to workaround browsers where document.createElement('template').constructor != HTMLTemplateElement but still document.createElement('template') instanceof HTMLTemplateElement
   ;; see https://github.com/Polymer/TemplateBinding/issues/139
   ;; (type c)
   (fn [c] (if (instance? js/HTMLTemplateElement c) js/HTMLTemplateElement (type c))))
 
 (defmethod render-content js/String [s] s)
-(when (exists? js/HTMLTemplateElement)
+(when (te/supported?)
   (defmethod render-content js/HTMLTemplateElement [t] (.cloneNode (.-content t) true)))
 
 (defmulti append-content!
-  "append rendered 'content' to provided ShadowRoot"
+  "Appends rendered 'content' to provided ShadowRoot."
   (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
 (derive js/HTMLElement ::node)
@@ -53,13 +46,13 @@
       (append-content! sr rc))))
 
 (defmulti render-style
-  "render 'style' to something that can be added to the DOM"
+  "Renders 'style' to something that can be added to the DOM."
   type)
 
 (defmethod render-style js/String [s] s)
 
 (defmulti set-style!
-  "append rendered 'style' to provided ShadowRoot"
+  "Appends rendered 'style' to provided ShadowRoot."
   (fn [_ e] (type e)))
 
 (defmethod set-style! js/String
@@ -75,6 +68,7 @@
 
 (defn- create-shadow-root!
   [el content style m]
+  (.log js/console (.-shadowRoot el))
   (when (or style content)
     (let [sr (sd/create el m)]
       (when style (render-then-set-style! sr (u/invoke-if-fn el style)))
@@ -91,7 +85,7 @@
 (defn- event->handler [h] (str "on" (name h)))
 (defn- handler->event [a] (.substr a 2))
 
-(defn attribute-changed
+(defn- attribute-changed
   [el a o n attributes handlers]
   (cond
     (contains? handlers a) (let [e (handler->event a)]
@@ -103,11 +97,11 @@
     (doseq [attribute (array-seq (.-attributes el))]
       (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
     (create-shadow-root! el content style m)
-    (when style (install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m)))
+    (when style (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m)))
     (when f (u/call-with-first-argument f el))))
 
 (defn- create-prototype
-  "create a Custom Element prototype from a map definition"
+  "Creates a Custom Element prototype from a map definition."
   [m]
   (let [{:keys [base-type created-fn attributes methods handlers]} m
         attributes (set (map name attributes))
@@ -123,11 +117,12 @@
 
 (defn- default-constructor-name
   [n]
-  (when (not (nil? n))
+  (when (not (nil? n))/
     (let [v (string/split n #"-")]
       (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1)))))))
 
 (defn register
+  "Registers a new Custom Element from its definition."
   [m]
   (let [n (:name m)
         c (:constructor m (default-constructor-name n))

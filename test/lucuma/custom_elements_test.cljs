@@ -3,6 +3,9 @@
             [lucuma.custom-elements :as ce])
   (:require-macros [cemerick.cljs.test :refer [deftest is testing]]))
 
+(deftest supported
+  (is (ce/supported?)))
+
 (deftest names
   (is (ce/valid-name? "ex-name"))
   (is (ce/valid-name? "ex-name-name"))

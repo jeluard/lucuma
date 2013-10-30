@@ -1,5 +1,11 @@
 (ns lucuma.shadow-dom)
 
+(defn ^:export supported?
+  "Returns true if current platform support Shadow DOM."
+  []
+  ;;(exists? (.-createShadowRoot js/document.documentElement)))
+  (exists? (.-createShadowRoot (.createElement js/document "div"))))
+
 (defn create
   ([el] (create el {}))
   ([el m]

@@ -3,6 +3,7 @@
             [lucuma-test :as l]
             [lucuma.custom-elements-test :as cet]
             [lucuma.shadow-dom-test :as sdt]
+            [lucuma.template-element-test :as tet]
             [lucuma.util-test :as ut]
             [clojure.string :as s]
             [dommy.core :as dommy])
