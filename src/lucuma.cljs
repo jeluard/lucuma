@@ -68,7 +68,6 @@
 
 (defn- create-shadow-root!
   [el content style m]
-  (.log js/console (.-shadowRoot el))
   (when (or style content)
     (let [sr (sd/create el m)]
       (when style (render-then-set-style! sr (u/invoke-if-fn el style)))
