@@ -39,7 +39,7 @@
   :style [:span {:background "#3d7c45" :color "white" :border 0 :border-radius (px 4)}])
 
 (defwebcomponent ex-style-scope
-  :content [:span {:class "icon-exclamation-sign"} "Hello style scope!"]
+  :content [:span {:class "fa fa-exclamation"} "Hello style scope!"]
   :apply-author-styles true)
 
 (defwebcomponent ex-attributes
@@ -65,7 +65,7 @@
 
 (defwebcomponent ex-extend
   :base-type :div
-  :content [:span {:class "icon-exclamation-sign"} [:content]]
+  :content [:span {:class "fa fa-exclamation"} [:content]]
   :apply-author-styles true)
 
 (defn ^:export register-all

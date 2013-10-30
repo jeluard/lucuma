@@ -72,7 +72,7 @@
   (dommy/add-class! (sel-current-ns-header) (if (failed-ns? @current-ns) "test-ns-fail" "test-ns-pass"))
   (let [r (reports @current-ns)
         title (str (agg-ns r tests) " tests (" (agg-ns r failures) " failures, " (agg-ns r errors) " errors) executed in " (elapsed r) "ms")]
-    (dommy/append! (sel-current-ns-header) [:i {:class (if (failed-ns? @current-ns) "icon-remove" "icon-ok") :data-toggle "tooltip" :data-placement "right" :title title}])))
+    (dommy/append! (sel-current-ns-header) [:i {:class (if (failed-ns? @current-ns) "fa fa-times" "fa fa-check") :data-toggle "tooltip" :data-placement "right" :title title}])))
 
 (defmethod report :begin-test-var [m]
   (let [n (str (:name (meta (:var m))))]
@@ -87,7 +87,7 @@
     (swap! report-details assoc-in [ns n :end-time] (js/Date.))
     (dommy/remove-class! t "test-running")
     (dommy/add-class! t (if (failed-test? ns n) "test-fail" "test-pass"))
-    (dommy/insert-after! [:i {:class (if (failed-test? ns n) "icon-remove" "icon-ok") :data-toggle "tooltip" :data-placement "right" :title (str "executed in " (elapsed (reports ns n)) "ms")}] (sel-test-header (test-class-name n)))))
+    (dommy/insert-after! [:i {:class (if (failed-test? ns n) "fa fa-times" "fa fa-check") :data-toggle "tooltip" :data-placement "right" :title (str "executed in " (elapsed (reports ns n)) "ms")}] (sel-test-header (test-class-name n)))))
 
 (defn- append-test-result
   [m n c]
