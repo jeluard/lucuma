@@ -1,7 +1,8 @@
 (ns lucuma.range-with-threshold
   (:require [lucuma.attribute :as att]
             [lucuma.event :refer [fire]])
-  (:require-macros [lucuma :refer [defwebcomponent]]))
+  (:require-macros [lucuma :refer [defwebcomponent]])
+  (:refer-clojure :exclude [min max]))
 
 (def ^:private previous-value (atom nil))
 
@@ -9,25 +10,39 @@
 (defn- remove-threshold-crossed-class [el] (.remove (.-classList el) "threshold-crossed"))
 
 (defn- breach-threshold
-  [el v t]
+  [el v]
   (add-threshold-crossed-class el)
-  (fire el :threshold-cross {:type ::breached :value v :threshold t}))
+  (fire el :threshold-cross {:type ::breached :value v}))
 
 (defn- clear-threshold
   [el v]
   (remove-threshold-crossed-class el)
   (fire el :threshold-cross {:type ::cleared :value v}))
 
+(defn within-boundaries
+  [v min max]
+  (and (>= v min) (<= v max)))
+
+(defn threshold-crossed-type
+  [o c min max]
+  (cond
+   (and (not (within-boundaries o min max)) (within-boundaries c min max))
+   :cleared
+   (and (within-boundaries o min max) (not (within-boundaries c min max)))
+   :breached
+   (or
+    (and (< o min) (> c max))
+    (and (< c min) (> o max)))
+   :breached))
+
 (defn- fire-event-on-threshold-cross
   [el min-threshold max-threshold]
   (let [c (or (aget el "value") (aget el "impl" "value"))
         o @previous-value]
-    (cond
-      (or
-        (and (< o min-threshold) (>= c min-threshold))
-        (and (> o max-threshold) (<= c max-threshold))) (clear-threshold el c)
-      (and (> o min-threshold) (< o max-threshold) (<= c min-threshold)) (breach-threshold el c min-threshold)
-      (and (> o min-threshold) (< o max-threshold) (>= c max-threshold)) (breach-threshold el c max-threshold))
+    (case (threshold-crossed-type o c min-threshold max-threshold)
+      :cleared (clear-threshold el c)
+      :breached (breach-threshold el c)
+      nil)
     (reset! previous-value c)))
 
 (defn initialize
