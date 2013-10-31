@@ -10,8 +10,7 @@
             [com.cemerick/clojurescript.test "0.1.0"]]
   :cljsbuild {:builds [{:source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma.js"
-                                   :optimizations :simple
-                                   :pretty-print true}}]
+                                   :optimizations :simple}}]
               :test-commands {;; Disabled for now: based on too old webkit version. "phantomjs" ["phantomjs" "resources/test/runner.js" "resources/test/assets/platform.js" "target/cljs/lucuma.js"]
                               ;;SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
                               "slimerjs" ["slimerjs" "test-resources/runner.js" "test-resources/assets/platform-v0.0.20131025.min.js" "target/cljs/lucuma.js"]}}
