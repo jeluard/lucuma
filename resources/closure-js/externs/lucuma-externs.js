@@ -71,3 +71,6 @@ lucuma.LucumaElement.prototype.attributeChangedCallback = function(name, oldValu
 var Platform = {};
 Platform.ShadowCSS.prototype.shimStyling = function(root, name) {};
 Platform.ShadowCSS.prototype.shimStyling = function(root, name, extendsName) {};
+
+var MutationObserver = {};
+MutationObserver.prototype.observe = function(el, options) {};

@@ -4,7 +4,7 @@
             [lucuma.range-with-threshold :refer [lucu-range-with-threshold]]
             [lucuma.overlay :refer [lucu-overlay]]
             [lucuma.flipbox :refer [lucu-flipbox]]
-            [lucuma.example :refer [lucu-example]]
+            [lucuma.example :refer [lucu-example lucu-usage]]
             [dommy.core :refer [prepend!]]
             [garden.core :refer [css]]
             [garden.units :refer [px]])
@@ -13,6 +13,22 @@
 
 (defwebcomponent ex-hello
   :content "Hello world!")
+
+(comment
+(defwebcomponent ex-hello
+  :content "Hello world!")
+
+(register ex-hello)
+
+;; Name can be explicitely provided.
+(register (merge ex-hello {:name "my-hello-with-custom-name"}))
+
+;; Append a 'ex-hello' node to body.
+(.appendChild js/document.body (.createElement js/document "ex-hello"))
+
+;; Alternatively using hiccup syntax and dommy.
+(dommy/append! (dommy/sel1 :body) [:ex-hello])
+)
 
 (defwebcomponent ex-lifecycle
   :created-fn #(prepend! (sel1 :#lifecycle-events) [:li "element created"])
@@ -87,4 +103,5 @@
   (register lucu-range-with-threshold)
   (register lucu-overlay)
   (register lucu-flipbox)
-  (register lucu-example))
+  (register lucu-example)
+  (register lucu-usage))
