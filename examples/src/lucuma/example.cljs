@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [cljs.reader :refer [read-string]]
             [lucuma.attribute :as attr]
+            [lucuma.polymer :as p]
             [dommy.core :refer [set-value!]]
             [garden.stylesheet :refer [at-media]]
             [garden.units :refer [px]])
@@ -66,7 +67,8 @@
 
 (defn register-mutation-observer
   [el f]
-  (let [mo (js/MutationObserver. f)]
+  (let [el (if (p/installed?) (sel1 (.-shadowRoot el) :.example-live) el);; Bug?
+        mo (js/MutationObserver. f)]
     (.observe mo el (clj->js {:attributes true :characterData true :subtree true}))))
 
 (defn first-meaningful-line
@@ -81,7 +83,7 @@
   [s]
   (loop [c 0
          l (first-meaningful-line (str/split-lines s))]
-    (if (= " " (.charAt l 0))
+    (if (and (not (empty? l)) (= " " (.charAt l 0)))
       (recur (inc c) (.substr l 1))
       c)))
 
