@@ -1,10 +1,10 @@
 (defproject lucuma-examples "0.2.0-SNAPSHOT"
-  :dependencies [[org.clojure/clojurescript "0.0-1978"]
+  :dependencies [[org.clojure/clojurescript "0.0-2030"]
                  [lucuma "0.2.0-SNAPSHOT"]
                  [prismatic/dommy "0.1.2"]
-                 [garden "1.1.3"]]
-  :plugins [[lein-cljsbuild "1.0.0-SNAPSHOT"]
-            [com.cemerick/clojurescript.test "0.1.0"]]
+                 [garden "1.1.4-SNAPSHOT"]]
+  :plugins [[lein-cljsbuild "1.0.0-alpha2"]
+            [com.cemerick/clojurescript.test "0.2.1"]]
   :cljsbuild {:builds [{:id "prod"
                         :source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
