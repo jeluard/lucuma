@@ -5,15 +5,15 @@
              :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths  ["src" "test"]
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-1978"]]
-  :plugins [[lein-cljsbuild "0.3.4"]
-            [com.cemerick/clojurescript.test "0.1.0"]]
+                 [org.clojure/clojurescript "0.0-2030"]]
+  :plugins [[lein-cljsbuild "1.0.0-alpha2"]
+            [com.cemerick/clojurescript.test "0.2.1"]]
   :cljsbuild {:builds [{:source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma.js"
                                    :optimizations :simple}}]
               :test-commands {;; Disabled for now: based on too old webkit version. "phantomjs" ["phantomjs" "resources/test/runner.js" "resources/test/assets/platform.js" "target/cljs/lucuma.js"]
                               ;; SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
-                              "slimerjs" ["slimerjs" "test-resources/runner.js" "test-resources/assets/platform-v0.0.20131025.min.js" "target/cljs/lucuma.js"]}}
+                              "slimerjs" ["slimerjs" :runner "test-resources/assets/platform-v0.0.20131025.min.js" "target/cljs/lucuma.js"]}}
 
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
