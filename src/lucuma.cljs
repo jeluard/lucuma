@@ -68,7 +68,6 @@
 
 (defn- render-then-append!
   [render-fn append-fn! el o]
-  (.log js/console o)
   (when-let [o (if (fn? o) (o el) o)]
     (letfn [(value [o] (if (fn? o) (o el) o))
             (append [el o] (when-let [v (value o)] (when-let [r (render-fn v)] (append-fn! el r))))]
