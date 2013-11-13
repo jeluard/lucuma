@@ -152,9 +152,9 @@
 
 (defn content
   [el]
-  [[:div {:class "example-live"} [:content {:select "*"}]]
-   [:pre {:class "example-markup"} [:code {:class "language-markup"}]]
-   [:pre {:class "example-cljs"} [:code {:class "language-clojure"}]]])
+  (list [:div {:class "example-live"} [:content {:select "*"}]]
+        [:pre {:class "example-markup"} [:code {:class "language-markup"}]]
+        [:pre {:class "example-cljs"} [:code {:class "language-clojure"}]]))
 
 (defwebcomponent lucu-example
   :base-type :section

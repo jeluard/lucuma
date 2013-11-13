@@ -1,10 +1,10 @@
 (ns lucuma
-  (:require [lucuma.custom-elements :as ce]
+  (:require [clojure.string :as string]
+            [lucuma.custom-elements :as ce]
             [lucuma.polymer :as p]
             [lucuma.shadow-dom :as sd]
             [lucuma.template-element :as te]
-            [lucuma.util :as u]
-            [clojure.string :as string]))
+            [lucuma.util :as u]))
 
 (deftype LucumaElement [])
 
@@ -32,18 +32,12 @@
   "Appends rendered 'content' to provided ShadowRoot."
   (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
+(defmethod append-content! js/String [sr s] (set! (.-innerHTML sr) s))
+
 (derive js/HTMLElement ::node)
 (derive js/DocumentFragment ::node)
 
-(defmethod append-content! js/String [sr s] (set! (.-innerHTML sr) s))
 (defmethod append-content! ::node [sr e] (.appendChild sr e))
-
-(defn- render-then-append-content!
-  [sr c]
-  (if-let [rc (render-content c)]
-    (if (coll? rc)
-      (doseq [el rc] (append-content! sr el))
-      (append-content! sr rc))))
 
 (defmulti render-style
   "Renders 'style' to something that can be added to the DOM."
@@ -51,27 +45,44 @@
 
 (defmethod render-style js/String [s] s)
 
-(defmulti set-style!
-  "Appends rendered 'style' to provided ShadowRoot."
+(defn- render-style-map
+  [s]
+  (if (map? s)
+    (update-in s [:content] render-style)
+    {:content (render-style s)}))
+
+(defmulti append-style!
+  "Appends rendered 'style' to provided 'style' element."
   (fn [_ e] (type e)))
 
-(defmethod set-style! js/String
-  [sr s]
-  (let [style (.createElement js/document "style")]
-    (set! (.-textContent style) s)
-    (.appendChild sr style)))
+(defmethod append-style! js/String [el c] (set! (.-textContent el) c))
 
-(defn- render-then-set-style!
-  [sr c]
-  (if-let [rs (render-style c)]
-    (set-style! sr rs)))
+(defn- append-style-map!
+  [sr m]
+  (let [el (.createElement js/document "style")
+        {:keys [media title content]} m]
+      (when media (set! (.-media el) media))
+      (when title (set! (.-title el) title))
+    (append-style! el content)
+    (.appendChild sr el)))
+
+(defn- render-then-append!
+  [render-fn append-fn! el o]
+  (.log js/console o)
+  (when-let [o (if (fn? o) (o el) o)]
+    (letfn [(value [o] (if (fn? o) (o el) o))
+            (append [el o] (when-let [v (value o)] (when-let [r (render-fn v)] (append-fn! el r))))]
+      (if (list? o)
+        (doseq [o o] (append el o))
+        (append el o)))))
 
 (defn- create-shadow-root!
-  [el content style m]
-  (when (or style content)
-    (let [sr (sd/create el m)]
-      (when style (render-then-set-style! sr (u/invoke-if-fn el style)))
-      (when content (render-then-append-content! sr (u/invoke-if-fn el content))))))
+  [el m]
+  (let [{:keys [style content]} m]
+    (when (or style content)
+      (let [sr (sd/create el m)]
+        (when style (render-then-append! render-style-map append-style-map! sr style))
+        (when content (render-then-append! render-content append-content! sr content))))))
 
 (defn- adjust-listener
   [el e o n]
@@ -92,12 +103,11 @@
 
 (defn- initialize!
   [el f m attributes handlers]
-  (let [{:keys [content style]} m]
-    (doseq [attribute (array-seq (.-attributes el))]
-      (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
-    (create-shadow-root! el content style m)
-    (when style (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m)))
-    (when f (u/call-with-first-argument f el))))
+  (doseq [attribute (array-seq (.-attributes el))]
+    (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
+  (create-shadow-root! el m)
+  (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m))
+  (when f (u/call-with-first-argument f el)))
 
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."

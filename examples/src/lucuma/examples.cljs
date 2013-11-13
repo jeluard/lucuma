@@ -39,7 +39,7 @@
   :content #(sel1 :#template-id))
 
 (derive PersistentVector ::vector)
-(defmethod render-content ::vector [v] (if (vector? (first v)) (map #(node %) v) (node v)))
+(defmethod render-content ::vector [v] (node v))
 
 (defwebcomponent ex-content-hiccup
   :content [:div "Hello hiccup!"])
