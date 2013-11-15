@@ -27,19 +27,18 @@
   "Creates a Custom Element prototype from a map definition."
   [m]
   (let [{:keys [prototype properties created-fn entered-view-fn left-view-fn attribute-changed-fn]} m
-        properties (att/properties properties)
-        prototype (if (seq properties) (.create js/Object prototype (clj->js properties)) (.create js/Object prototype))]
-    (when created-fn (set! (.-createdCallback prototype) (u/wrap-with-callback-this-value created-fn)))
-    (when entered-view-fn (set! (.-enteredViewCallback prototype) (u/wrap-with-callback-this-value entered-view-fn)))
-    (when left-view-fn (set! (.-leftViewCallback prototype) (u/wrap-with-callback-this-value left-view-fn)))
-    (when attribute-changed-fn (set! (.-attributeChangedCallback prototype) (u/wrap-with-callback-this-value attribute-changed-fn)))
-    prototype))
+        ce-prototype (if (seq properties) (.create js/Object prototype (clj->js (att/properties properties))) (.create js/Object prototype))]
+    (when created-fn (set! (.-createdCallback ce-prototype) (u/wrap-with-callback-this-value created-fn)))
+    (when entered-view-fn (set! (.-enteredViewCallback ce-prototype) (u/wrap-with-callback-this-value entered-view-fn)))
+    (when left-view-fn (set! (.-leftViewCallback ce-prototype) (u/wrap-with-callback-this-value left-view-fn)))
+    (when attribute-changed-fn (set! (.-attributeChangedCallback ce-prototype) (u/wrap-with-callback-this-value attribute-changed-fn)))
+    ce-prototype))
 
 (defn register
   "Registers a Custom Element from an abstract definition."
-  [n p extends]
+  [n p e]
   {:pre [(valid-name? n)]}
-  (.register js/document n (clj->js (merge {:prototype p} (when extends {:extends extends})))))
+  (.register js/document n (clj->js (merge {:prototype p} (when e {:extends e})))))
 
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
 ;; https://github.com/w3c/web-platform-tests
