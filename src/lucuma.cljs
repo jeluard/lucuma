@@ -6,7 +6,7 @@
             [lucuma.template-element :as te]
             [lucuma.util :as u]))
 
-(defn lucuma-element? [el] (exists? (aget el "lucuma_definition")))
+(defn lucuma-element? [el] (exists? (.-lucuma_definition el)))
 
 (defmulti render-content
   "Renders 'content' to something that can be added to the DOM."
@@ -111,7 +111,7 @@
         prototype (ce/create-prototype (merge m {:prototype (ce/find-prototype base-type) :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
     (doseq [method methods]
       (aset prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
-    (aset prototype "lucuma_definition" m)
+    (set! (.-lucuma_definition prototype) m)
     prototype))
 
 (defn- default-constructor-name

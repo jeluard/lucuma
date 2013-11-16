@@ -44,6 +44,8 @@ HTMLTemplateElement.prototype.content;
 
 var lucuma = {};
 
+lucuma.LucumaElement.prototype.lucuma_definition;
+
 /**
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-created-callback
  */
