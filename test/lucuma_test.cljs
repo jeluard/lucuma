@@ -63,6 +63,10 @@
   (append "test-sr-2")
   (append "test-sr-3")
 
+  (l/register test-prototype-1)
+  (l/register test-prototype-2)
+  (l/register test-prototype-3)
+
   (f))
 
 (use-fixtures :once wrap-registration)
