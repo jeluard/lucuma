@@ -6,7 +6,14 @@
             [lucuma.template-element :as te]
             [lucuma.util :as u]))
 
-(defn lucuma-element? [el] (exists? (.-lucuma_definition el)))
+(deftype LucumaElement [])
+
+(defn lucuma-element? [el] (instance? LucumaElement el))
+
+(defn- create-lucuma-prototype
+  [base-prototype]
+  (set! (.-prototype LucumaElement) base-prototype)
+  (.-prototype LucumaElement))
 
 (defmulti render-content
   "Renders 'content' to something that can be added to the DOM."
@@ -108,11 +115,12 @@
         created-fn #(initialize! % created-fn m attributes handlers)
         attribute-changed-fn #(attribute-changed %1 %2 %3 %4 attributes handlers)
         base-type (when base-type (name base-type))
-        prototype (ce/create-prototype (merge m {:prototype (ce/find-prototype base-type) :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
+        prototype (create-lucuma-prototype (ce/find-prototype base-type))
+        ce-prototype (ce/create-prototype (merge m {:prototype prototype :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
     (doseq [method methods]
-      (aset prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
-    (set! (.-lucuma_definition prototype) m)
-    prototype))
+      (aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
+    (set! (.-lucuma_definition ce-prototype) m)
+    ce-prototype))
 
 (defn- default-constructor-name
   [n]
