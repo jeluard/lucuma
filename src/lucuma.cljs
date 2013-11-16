@@ -108,7 +108,7 @@
   (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m))
   (when f (u/call-with-first-argument f el)))
 
-(defn- create-prototype
+(defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
   (let [{:keys [base-type created-fn attributes methods handlers]} m
@@ -117,24 +117,27 @@
         created-fn #(initialize! % created-fn m attributes handlers)
         attribute-changed-fn #(attribute-changed %1 %2 %3 %4 attributes handlers)
         base-type (when base-type (name base-type))
-        p (create-lucuma-prototype (ce/find-prototype base-type))
-        prototype (ce/create-prototype (merge m {:prototype p :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
+        prototype (create-lucuma-prototype (ce/find-prototype base-type))
+        ce-prototype (ce/create-prototype (merge m {:prototype prototype :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
     (doseq [method methods]
-      (aset prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
-    prototype))
+      (aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
+    ce-prototype))
 
 (defn- default-constructor-name
   [n]
-  (when (not (nil? n))/
+  (when (not (nil? n))
     (let [v (string/split n #"-")]
       (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1)))))))
 
 (defn register
-  "Registers a new Custom Element from its definition."
+  "Registers a new Custom Element from its definition. Returns true if succesful, false otherwise (e.g. already registered)."
   [m]
-  (let [n (:name m)
-        cf (ce/register n (create-prototype m) (:base-type m))
-        goog-ns (u/*ns*->goog-ns (:ns m))]
-    (if goog-ns
-      (when-let [c (:constructor m (default-constructor-name n))] (aset goog-ns c cf))
-      (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))))
+  (try
+    (let [n (:name m)
+          cf (ce/register n (create-ce-prototype m) (:base-type m))
+          goog-ns (u/*ns*->goog-ns (:ns m))]
+      (if goog-ns
+        (when-let [c (:constructor m (default-constructor-name n))] (aset goog-ns c cf))
+        (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
+      true)
+    (catch js/InvalidStateError e false)))
