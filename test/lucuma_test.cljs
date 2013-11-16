@@ -54,6 +54,13 @@
   (is (l/lucuma-element? (.createElement js/document "test-prototype-2")))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-3"))))
 
+(defwebcomponent test-host-attributes
+  :host-attributes {:a "A" :b #(count (.-nodeName %))})
+
+(deftest host-attributes
+  (is (= "A" (.getAttribute (by-id "test-host-attributes") "a")))
+  (is (= (str (count "test-host-attributes")) (.getAttribute (by-id "test-host-attributes") "b"))))
+
 (defn wrap-registration
   [f]
   (l/register test-sr-1)
@@ -66,6 +73,9 @@
   (l/register test-prototype-1)
   (l/register test-prototype-2)
   (l/register test-prototype-3)
+
+  (l/register test-host-attributes)
+  (append "test-host-attributes")
 
   (f))
 

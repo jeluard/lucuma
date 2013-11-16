@@ -64,11 +64,12 @@
     (append-style! el content)
     (.appendChild sr el)))
 
+(defn invoke-if-fn [o el] (if (fn? o) (o el) o))
+
 (defn- render-then-append!
   [render-fn append-fn! el o]
   (when-let [o (if (fn? o) (o el) o)]
-    (letfn [(value [o] (if (fn? o) (o el) o))
-            (append [el o] (when-let [v (value o)] (when-let [r (render-fn v)] (append-fn! el r))))]
+    (letfn [(append [el o] (when-let [v (invoke-if-fn o el)] (when-let [r (render-fn v)] (append-fn! el r))))]
       (if (list? o)
         (doseq [o o] (append el o))
         (append el o)))))
@@ -102,6 +103,8 @@
   [el f m attributes handlers]
   (doseq [attribute (array-seq (.-attributes el))]
     (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
+  (doseq [a (:host-attributes m)]
+    (.setAttribute el (name (key a)) (invoke-if-fn (val a) el)))
   (create-shadow-root! el m)
   (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m))
   (when f (u/call-with-first-argument f el)))
