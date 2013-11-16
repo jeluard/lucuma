@@ -17,7 +17,7 @@
          (not (contains? forbidden-names s)))))
 
 (defn find-prototype
-  "Returns the prototype associated to an HTML element from its name; HTMLElement if 't' is nil."
+  "Returns the prototype fn associated to an HTML element from its name; HTMLElement's prototype if 't' is nil."
   [t]
   (if t
     (.getPrototypeOf js/Object (.createElement js/document t))
