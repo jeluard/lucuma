@@ -131,4 +131,4 @@
         (when-let [c (:constructor m (default-constructor-name n))] (aset goog-ns c cf))
         (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
       true)
-    (catch js/InvalidStateError e false)))
+    (catch js/DomException e false)))
