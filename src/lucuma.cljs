@@ -124,6 +124,13 @@
   (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m))
   (when f (u/call-with-first-argument f el)))
 
+(defn- find-prototype
+  "Returns the prototype fn associated to an HTML element from its name; HTMLElement's prototype if 't' is nil."
+  [t]
+  (if t
+    (.getPrototypeOf js/Object (.createElement js/document t))
+    (.-prototype js/HTMLElement)))
+
 (defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
@@ -133,7 +140,7 @@
         created-fn #(initialize! % created-fn m attributes handlers)
         attribute-changed-fn #(attribute-changed %1 %2 %3 %4 attributes handlers)
         base-type (host-type host)
-        prototype (create-lucuma-prototype (ce/find-prototype base-type))
+        prototype (create-lucuma-prototype (find-prototype base-type))
         ce-prototype (ce/create-prototype (merge m {:prototype prototype :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
     (doseq [method methods]
       (aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))

@@ -16,13 +16,6 @@
     (and (not= -1 (.indexOf s "-"))
          (not (contains? forbidden-names s)))))
 
-(defn find-prototype
-  "Returns the prototype fn associated to an HTML element from its name; HTMLElement's prototype if 't' is nil."
-  [t]
-  (if t
-    (.getPrototypeOf js/Object (.createElement js/document t))
-    (.-prototype js/HTMLElement)))
-
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
