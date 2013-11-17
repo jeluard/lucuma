@@ -35,6 +35,11 @@
 (defwebcomponent test-prototype-3
   :host :test-prototype-2)
 
+(deftest find-prototype
+  (is (= (.-prototype js/HTMLElement) (l/find-prototype nil)))
+  (is (= (.-prototype js/HTMLButtonElement) (l/find-prototype "button")))
+  (is (= (.-prototype js/HTMLButtonElement) (l/find-prototype "test-prototype-2"))))
+
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
   (is (instance? js/HTMLElement (.createElement js/document "test-unknown")))

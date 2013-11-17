@@ -124,11 +124,21 @@
   (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m))
   (when f (u/call-with-first-argument f el)))
 
+(defn- resolve-root-html-prototype
+  [p]
+  {:pre [(instance? js/HTMLElement p)]}
+  (if (= (.-prototype js/HTMLElement) p)
+    p
+    (let [pp (.getPrototypeOf js/Object p)]
+      (if (= (.-prototype js/HTMLElement) pp)
+        p
+        (resolve-root-html-prototype pp)))))
+
 (defn- find-prototype
   "Returns the prototype fn associated to an HTML element from its name; HTMLElement's prototype if 't' is nil."
   [t]
   (if t
-    (.getPrototypeOf js/Object (.createElement js/document t))
+    (resolve-root-html-prototype(.getPrototypeOf js/Object (.createElement js/document t)))
     (.-prototype js/HTMLElement)))
 
 (defn- create-ce-prototype
