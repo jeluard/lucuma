@@ -31,9 +31,9 @@
 
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
-  :base-type :button)
+  :host :button)
 (defwebcomponent test-prototype-3
-  :base-type :test-prototype-2)
+  :host :test-prototype-2)
 
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
@@ -54,12 +54,26 @@
   (is (l/lucuma-element? (.createElement js/document "test-prototype-2")))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-3"))))
 
+(deftest parse-host-type
+  (is (nil? (l/host-type nil)))
+  (is (= "div" (l/host-type "div")))
+  (is (= "div" (l/host-type :div)))
+  (is (nil? (l/host-type {:att ""})))
+  (is (= "div" (l/host-type [:div {:att ""}]))))
+
+(deftest parse-host-attributes
+  (is (nil? (l/host-attributes nil)))
+  (is (nil? (l/host-attributes :div)))
+  (is (= {:att ""} (l/host-attributes {:att ""})))
+  (is (= {:att ""} (l/host-attributes [:div {:att ""}]))))
+
 (defwebcomponent test-host-attributes
-  :host-attributes {:a "A" :b #(count (.-nodeName %))})
+  :host {:a "A" :b :B :c #(count (.-nodeName %))})
 
 (deftest host-attributes
   (is (= "A" (.getAttribute (by-id "test-host-attributes") "a")))
-  (is (= (str (count "test-host-attributes")) (.getAttribute (by-id "test-host-attributes") "b"))))
+  (is (= "B" (.getAttribute (by-id "test-host-attributes") "b")))
+  (is (= (str (count "test-host-attributes")) (.getAttribute (by-id "test-host-attributes") "c"))))
 
 (defn wrap-registration
   [f]

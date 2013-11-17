@@ -80,7 +80,7 @@
   :content [:div "Hello constructor!"])
 
 (defwebcomponent ex-extend
-  :base-type :div
+  :host :div
   :content [:span {:class "fa fa-exclamation"} [:content]]
   :apply-author-styles true)
 
