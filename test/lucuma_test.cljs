@@ -4,13 +4,26 @@
   (:require-macros [cemerick.cljs.test :refer [deftest is use-fixtures]]
                    [lucuma :refer [defwebcomponent]]))
 
+(def ^:private tests-node "tests-appends")
+
+(defn append-tests-node
+  []
+  (let [el (.createElement js/document "div")]
+    (set! (.-id el) tests-node)
+    (.appendChild js/document.body el)))
+
+(defn delete-tests-node
+  []
+  (let [el (.getElementById js/document tests-node)]
+    (.remove el)))
+
 (defn append
   ([t] (append t nil nil))
   ([t is id]
    (let [id (or id t)
          el (if is (.createElement js/document t is) (.createElement js/document t))]
     (set! (.-id el) id)
-    (.appendChild js/document.body el))))
+    (.appendChild (.getElementById js/document tests-node) el))))
 
 (defn- by-id [id] (.getElementById js/document id))
 
@@ -99,6 +112,8 @@
 
 (defn wrap-registration
   [f]
+  (append-tests-node)
+
   (l/register test-sr-1)
   (l/register test-sr-2)
   (l/register test-sr-3)
@@ -115,6 +130,8 @@
   (l/register test-host-attributes)
   (append "test-host-attributes")
 
-  (f))
+  (f)
+
+  (delete-tests-node))
 
 (use-fixtures :once wrap-registration)
