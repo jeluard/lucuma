@@ -4,7 +4,7 @@
   (:require-macros [cemerick.cljs.test :refer [deftest is use-fixtures]]
                    [lucuma :refer [defwebcomponent]]))
 
-(defn ^:export append
+(defn append
   ([t] (append t nil nil))
   ([t is id]
    (let [id (or id t)
@@ -34,25 +34,42 @@
   :host :button)
 (defwebcomponent test-prototype-3
   :host :test-prototype-2)
+(defwebcomponent test-prototype-4
+  :host :test-prototype-3)
+(defwebcomponent test-prototype-5
+  :host :test-prototype-polymer
+  :extends :button)
 
-(deftest find-prototype
-  (is (= (.-prototype js/HTMLElement) (l/find-prototype nil)))
-  (is (= (.-prototype js/HTMLButtonElement) (l/find-prototype "button")))
-  (is (= (.-prototype js/HTMLButtonElement) (l/find-prototype "test-prototype-2"))))
+(deftest definition->el-id
+  (is (= nil (l/definition->el-id test-prototype-1)))
+  (is (= ["button" nil] (l/definition->el-id test-prototype-2)))
+  (is (= ["button" "test-prototype-2"] (l/definition->el-id test-prototype-3)))
+  (is (= ["button" "test-prototype-3"] (l/definition->el-id test-prototype-4)))
+  (is (= ["button" "test-prototype-polymer"] (l/definition->el-id test-prototype-5))))
+
+(deftest definition->prototype
+  (is (= (.-prototype js/HTMLElement) (l/definition->prototype test-prototype-1)))
+  (is (= (.-prototype js/HTMLButtonElement) (l/definition->prototype test-prototype-2))))
 
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
   (is (instance? js/HTMLElement (.createElement js/document "test-unknown")))
   (is (not (instance? js/HTMLUnknownElement (.createElement js/document "test-unknown"))))
   (is (instance? js/HTMLElement (.createElement js/document "test-prototype-1")))
-  (is (instance? js/HTMLButtonElement (.createElement js/document "test-prototype-2")))
-  (is (instance? js/HTMLButtonElement (.createElement js/document "test-prototype-3"))))
+  (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-2")))
+  (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-3"))))
 
 (defwebcomponent test-register)
 
 (deftest register-is-idempotent
   (is (true? (l/register test-register)) "first registration")
   (is (false? (l/register test-register)) "second registration"))
+
+(deftest valid-standard-element-name
+  (is (not (l/valid-standard-element-name? nil)))
+  (is (l/valid-standard-element-name? "a"))
+  (is (l/valid-standard-element-name? "aa"))
+  (is (not (l/valid-standard-element-name? "my-component"))))
 
 (deftest is-lucuma-element
   (is (l/lucuma-element? (.createElement js/document "test-prototype-1")))
@@ -92,6 +109,8 @@
   (l/register test-prototype-1)
   (l/register test-prototype-2)
   (l/register test-prototype-3)
+  (l/register test-prototype-4)
+  (l/register test-prototype-5)
 
   (l/register test-host-attributes)
   (append "test-host-attributes")

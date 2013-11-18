@@ -6,14 +6,21 @@
             [lucuma.template-element :as te]
             [lucuma.util :as u]))
 
-(deftype LucumaElement [])
+(def ^:private registry (atom {}))
 
+(defn valid-standard-element-name? [n] (when n (= -1 (.indexOf n "-"))))
+
+(deftype LucumaElement [])
 (defn lucuma-element? [el] (instance? LucumaElement el))
 
 (defn- create-lucuma-prototype
   [base-prototype]
   (set! (.-prototype LucumaElement) base-prototype)
   (.-prototype LucumaElement))
+
+;;
+;; content / style rendering
+;;
 
 (defmulti render-content
   "Renders 'content' to something that can be added to the DOM."
@@ -82,6 +89,10 @@
         (when style (render-then-append! render-style-map append-style-map! sr style))
         (when content (render-then-append! render-content append-content! sr content))))))
 
+;;
+;; listener support
+;;
+
 (defn- adjust-listener
   [el e o n]
   (if-let [f (u/str->fn (or o n))]
@@ -102,7 +113,7 @@
 (defn- host-type
   [h]
   {:post [(or (nil? %) (string? %))]}
-  (when-let [t (if (vector? h) (get h 0) h)]
+  (when-let [t (if (vector? h) (first h) h)]
     (cond
      (keyword? t) (name t)
      (string? t) t)))
@@ -111,7 +122,7 @@
   [h]
   {:post [(or (nil? %) (map? %))]}
   (cond
-   (vector? h) (get h 1)
+   (vector? h) (second h)
    (map? h) h))
 
 (defn- initialize!
@@ -124,21 +135,32 @@
   (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m))
   (when f (u/call-with-first-argument f el)))
 
-(defn- resolve-root-html-prototype
-  [p]
-  {:pre [(instance? js/HTMLElement p)]}
-  (if (= (.-prototype js/HTMLElement) p)
-    p
-    (let [pp (.getPrototypeOf js/Object p)]
-      (if (= (.-prototype js/HTMLElement) pp)
-        p
-        (resolve-root-html-prototype pp)))))
+(defn- create-element
+  [n is]
+  (if is
+    (.createElement js/document n is)
+    (.createElement js/document n)))
 
-(defn- find-prototype
-  "Returns the prototype fn associated to an HTML element from its name; HTMLElement's prototype if 't' is nil."
-  [t]
-  (if t
-    (resolve-root-html-prototype(.getPrototypeOf js/Object (.createElement js/document t)))
+(declare definition->el-id)
+
+(defn- host-type->extends
+  [t e]
+  (cond
+   (valid-standard-element-name? t) t
+   (contains? @registry t) (first (definition->el-id (get @registry t)))
+   ;;TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
+   e e))
+
+(defn- definition->el-id
+  [m]
+  (when-let [t (host-type (:host m))]
+    (let [e (when-let [e (:extends m)] (name e))]
+      [(host-type->extends t e) (when (not (valid-standard-element-name? t)) t)])))
+
+(defn- definition->prototype
+  [m]
+  (if-let [[t e] (definition->el-id m)]
+    (.getPrototypeOf js/Object (create-element t e))
     (.-prototype js/HTMLElement)))
 
 (defn- create-ce-prototype
@@ -149,29 +171,28 @@
         handlers (set (map event->handler handlers))
         created-fn #(initialize! % created-fn m attributes handlers)
         attribute-changed-fn #(attribute-changed %1 %2 %3 %4 attributes handlers)
-        base-type (host-type host)
-        prototype (create-lucuma-prototype (find-prototype base-type))
-        ce-prototype (ce/create-prototype (merge m {:prototype prototype :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
+        prototype (definition->prototype m)
+        ce-prototype (ce/create-prototype (merge m {:prototype (create-lucuma-prototype prototype) :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
     (doseq [method methods]
       (aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
-    (set! (.-lucuma_definition ce-prototype) m)
     ce-prototype))
 
 (defn- default-constructor-name
   [n]
   (when (not (nil? n))
     (let [v (string/split n #"-")]
-      (str (string/upper-case (get v 0)) (string/join (map string/capitalize (subvec v 1)))))))
+      (str (string/upper-case (first v)) (string/join (map string/capitalize (subvec v 1)))))))
 
 (defn register
   "Registers a new Custom Element from its definition. Returns true if succesful, false otherwise (e.g. already registered)."
   [m]
   (try
     (let [n (:name m)
-          cf (ce/register n (create-ce-prototype m) (:base-type m))
+          cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))
           goog-ns (u/*ns*->goog-ns (:ns m))]
       (if goog-ns
         (when-let [c (:constructor m (default-constructor-name n))] (aset goog-ns c cf))
         (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
+      (swap! registry assoc n m)
       true)
     (catch js/DOMException e false)))

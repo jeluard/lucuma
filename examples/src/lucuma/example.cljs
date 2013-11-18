@@ -155,14 +155,14 @@
         [:pre {:class "example-cljs"} [:code {:class "language-clojure"}]]))
 
 (defwebcomponent lucu-example
-  :base-type :section
+  :host :section
   :content content
   :style style
   :apply-author-styles true
   :created-fn created-example)
 
 (defwebcomponent lucu-usage
-  :base-type :section
+  :host :section
   :content content
   :style style
   :apply-author-styles true
