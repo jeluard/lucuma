@@ -31,6 +31,11 @@
   (is (= "EXName" (l/default-constructor-name "ex-name")))
   (is (= "EXComplexName" (l/default-constructor-name "ex-complex-name"))))
 
+(deftest ignored-keys
+  (is (empty? (l/ignored-keys {:content ""})))
+  (is (empty? (l/ignored-keys {:content "" :style ""})))
+  (is (= #{:comtent} (l/ignored-keys {:comtent "" :style ""}))))
+
 (defwebcomponent test-sr-1)
 (defwebcomponent test-sr-2
   :content "hello")

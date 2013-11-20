@@ -183,6 +183,15 @@
     (let [v (string/split n #"-")]
       (str (string/upper-case (first v)) (string/join (map string/capitalize (subvec v 1)))))))
 
+(def all-keys
+  #{:name :ns :constructor :host :extends :content :style :attributes :methods :handlers
+    :created-fn :entered-view-fn :left-view-fn :apply-author-styles :reset-style-inheritance})
+
+(defn ignored-keys
+  "Returns a set of ignored keys."
+  [m]
+  (set (filter #(not (contains? all-keys %)) (keys m))))
+
 (defn register
   "Registers a new Custom Element from its definition. Returns true if succesful, false otherwise (e.g. already registered)."
   [m]
