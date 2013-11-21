@@ -2,13 +2,13 @@
   :dependencies [[org.clojure/clojurescript "0.0-2030"]
                  [lucuma "0.2.0-SNAPSHOT"]
                  [prismatic/dommy "0.1.2"]
-                 [garden "1.1.4-SNAPSHOT"]]
-  :plugins [[lein-cljsbuild "1.0.0-alpha2"]
+                 [garden "1.1.4"]]
+  :plugins [[lein-cljsbuild "1.0.0"]
             [com.cemerick/clojurescript.test "0.2.1"]]
   :cljsbuild {:builds [{:id "prod"
                         :source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
-                                   :optimizations :advanced
+                                   :optimizations :simple
                                    :pretty-print false}}
                        {:id "dev"
                         :source-paths ["src" "test"]
