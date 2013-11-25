@@ -1,15 +1,15 @@
 (ns lucuma.polymer)
 
-(defn ^:export installed?
-  "Returns true if polymer polyfill is installed in current platform."
+(defn ^:export shadow-dom-installed?
+  "Returns true if Shadow DOM polyfill is installed in current platform."
   []
-  (exists? js/ShadowDOMPolyfill))
+  (= "polymer" js/Platform.flags.shadow))
 
 (defn install-shadow-css-shim-when-needed
   "Make sure styles do not leak when using polymer polyfill.
   See https://github.com/Polymer/ShadowDOM/issues/260."
   [sr n base-type]
-  (when (installed?)
+  (when js/Platform.ShadowCSS
     (if base-type
       (.shimStyling js/Platform.ShadowCSS sr n (name base-type))
       (.shimStyling js/Platform.ShadowCSS sr n))))
