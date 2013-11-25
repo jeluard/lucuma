@@ -132,7 +132,7 @@
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (let [v (invoke-if-fn (val a) el)] (if (keyword? v) (name v) (str v)))))
   (create-shadow-root! el m)
-  (p/install-shadow-css-shim-when-needed (.-shadowRoot el) (:name m) (:base-type m))
+  (p/shim-styling-when-needed (.-shadowRoot el) (:name m) (:base-type m))
   (when f (u/call-with-first-argument f el)))
 
 (defn- create-element

@@ -5,7 +5,7 @@
   []
   (= "polymer" js/Platform.flags.shadow))
 
-(defn install-shadow-css-shim-when-needed
+(defn shim-styling-when-needed
   "Make sure styles do not leak when using polymer polyfill.
   See https://github.com/Polymer/ShadowDOM/issues/260."
   [sr n base-type]
