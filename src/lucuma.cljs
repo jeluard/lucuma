@@ -132,7 +132,7 @@
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (let [v (invoke-if-fn (val a) el)] (if (keyword? v) (name v) (str v)))))
   (create-shadow-root! el m)
-  (p/shim-styling-when-needed (.-shadowRoot el) (:name m) (:base-type m))
+  (p/shim-styling-when-needed (.-shadowRoot el) (:name m) (host-type (:host m)))
   (when f (u/call-with-first-argument f el)))
 
 (defn- create-element
@@ -204,4 +204,4 @@
         (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
       (swap! registry assoc n m)
       true)
-    (catch js/DOMException e false)))
+    (catch js/Error e false)))
