@@ -63,7 +63,7 @@
 
 (defn alert
   [el]
-  (.alert js/window  (str "Hello methods from '" (.-id el) "' !")))
+  (.alert js/window (str "Hello methods from '" (.-id el) "' !")))
 
 (defwebcomponent ex-methods
   :methods {:method alert})
