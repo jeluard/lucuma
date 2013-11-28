@@ -65,7 +65,7 @@
 
 (defn register-mutation-observer
   [el f]
-  (let [el (if (p/installed?) (sel1 (.-shadowRoot el) :.example-live) el);; Bug?
+  (let [el (if (p/shadow-dom-installed?) (sel1 (.-shadowRoot el) :.example-live) el);; TODO check if bug
         mo (js/MutationObserver. f)]
     (.observe mo el (clj->js {:attributes true :characterData true :subtree true}))))
 
@@ -128,7 +128,6 @@
             v (val kv)]
         (set-source! k (str/join "\n" (subvec l (- (:from v) 1) (:to v))))))))
 
-(fetch-source "examples.cljs" #(set-usages! % @usages))
 
 (defn as-int
   [s]
@@ -167,3 +166,7 @@
   :style style
   :apply-author-styles true
   :created-fn created-usage)
+
+;; TODO make more generic (i.e. also work without polymer)
+(.addEventListener js/document "WebComponentsReady"
+                   (fn [] (fetch-source "examples.cljs" #(set-usages! % @usages))))
