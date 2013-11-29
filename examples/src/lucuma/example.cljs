@@ -65,9 +65,8 @@
 
 (defn register-mutation-observer
   [el f]
-  (let [el (if (p/shadow-dom-installed?) (sel1 (.-shadowRoot el) :.example-live) el);; TODO check if bug
-        mo (js/MutationObserver. f)]
-    (.observe mo el (clj->js {:attributes true :characterData true :subtree true}))))
+  (let [mo (js/MutationObserver. f)]
+    (.observe mo el (clj->js {:attributes true :characterData true :subtree true :childList true}))))
 
 (defn first-meaningful-line
   [ls]
