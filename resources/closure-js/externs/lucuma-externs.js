@@ -69,6 +69,7 @@ lucuma.LucumaElement.prototype.attributeChangedCallback = function(name, oldValu
 
 //Polymer polyfill
 var Platform = {};
+Platform.flags.shadow;
 Platform.ShadowCSS.prototype.shimStyling = function(root, name) {};
 Platform.ShadowCSS.prototype.shimStyling = function(root, name, extendsName) {};
 
