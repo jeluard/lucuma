@@ -28,7 +28,8 @@
    [:.example-markup source
     [:&:after (header "html")]]
    [:.example-cljs (merge source {:border-radius [[0 0 (px 4) (px 4)]]})
-    [:&:after (header "cljs")]]])
+    [:&:after (header "cljs")]
+    [:code {:overflow-wrap :normal}]]])
 
 (def owner "jeluard")
 (def repo "lucuma")
