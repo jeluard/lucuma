@@ -5,8 +5,8 @@
              :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths  ["src" "test"]
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-2080"]]
-  :plugins [[lein-cljsbuild "1.0.0"]
+                 [org.clojure/clojurescript "0.0-2127"]]
+  :plugins [[lein-cljsbuild "1.0.1"]
             [com.cemerick/clojurescript.test "0.2.1"]]
   :cljsbuild {:builds [{:source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma.js"
