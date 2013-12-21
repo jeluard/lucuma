@@ -1,6 +1,5 @@
 (ns lucuma.flipbox
-  (:require [lucuma.attribute :refer [get-attr set-attr!]]
-            [lucuma.event :refer [fire]])
+  (:require [lucuma.attribute :refer [get-attr set-attr!]])
   (:require-macros [lucuma :refer [defwebcomponent]]))
 
 (def style
