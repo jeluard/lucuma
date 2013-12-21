@@ -87,7 +87,8 @@
     (when (or style content)
       (let [sr (sd/create el m)]
         (when style (render-then-append! render-style-map append-style-map! sr style))
-        (when content (render-then-append! render-content append-content! sr content))))))
+        (when content (render-then-append! render-content append-content! sr content))
+        sr))))
 
 ;;
 ;; listener support
@@ -131,9 +132,9 @@
     (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (let [v (invoke-if-fn (val a) el)] (if (keyword? v) (name v) (str v)))))
-  (create-shadow-root! el m)
-  (p/shim-styling-when-needed (.-shadowRoot el) (:name m) (host-type (:host m)))
-  (when f (u/call-with-first-argument f el)))
+  (let [sr (create-shadow-root! el m)]
+    (p/shim-styling-when-needed (.-shadowRoot el) (:name m) (host-type (:host m)))
+    (when f (u/call-with-first-argument f el [sr]))))
 
 (defn- create-element
   [n is]

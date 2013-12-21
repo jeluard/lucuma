@@ -21,8 +21,8 @@
 
 (defn call-with-first-argument
   "inject arg as first argument to f"
-  ([f arg] (call-with-first-argument f arg []))
-  ([f arg args] (apply f (conj args arg))))
+  ([f arg] (call-with-first-argument f arg nil))
+  ([f arg args] (apply f (apply conj [] arg args))))
 
 (defn wrap-with-callback-this-value
   [f]
