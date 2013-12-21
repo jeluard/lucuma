@@ -1,5 +1,4 @@
 (ns lucuma.flipbox
-  (:require [lucuma.attribute :refer [get-attr set-attr!]])
   (:require-macros [lucuma :refer [defwebcomponent]]))
 
 (def style
@@ -10,9 +9,10 @@
    :host[flipped] > *:first-child{-webkit-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-moz-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-ms-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-o-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);z-index:1}
    :host[flipped] > *:last-child{-webkit-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-o-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);z-index:2}")
 
-(defn toggle [el] (set-attr! el :flipped (not (get-attr el :flipped))))
-(defn show-front [el] (set-attr! el :flipped false))
-(defn show-back [el] (set-attr! el :flipped true))
+(defn- set-flipped! [el v] (set! (.-flipped el) v))
+(defn toggle [el] (set-flipped! el (not (.-flipped el))))
+(defn show-front [el] (set-flipped! el false))
+(defn show-back [el] (set-flipped! el true))
 
 (defwebcomponent lucu-flipbox
   :content [:content]
