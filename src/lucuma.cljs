@@ -128,12 +128,14 @@
 
 (defn- initialize!
   [el f m attributes handlers]
+  ;;
   (doseq [attribute (array-seq (.-attributes el))]
     (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
+  ;; Set host attributes extracted from :host element
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (let [v (invoke-if-fn (val a) el)] (if (keyword? v) (name v) (str v)))))
   (let [sr (create-shadow-root! el m)]
-    (p/shim-styling-when-needed (.-shadowRoot el) (:name m) (host-type (:host m)))
+    (p/shim-styling-when-needed sr (:name m) (host-type (:host m)))
     (when f (u/call-with-first-argument f el [sr]))))
 
 (defn- create-element
