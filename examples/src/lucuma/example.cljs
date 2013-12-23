@@ -1,6 +1,7 @@
 (ns lucuma.example
   (:require [clojure.string :as str]
             [cljs.reader :refer [read-string]]
+            [lucuma :refer [shadow-root]]
             [lucuma.attribute :as attr]
             [lucuma.polymer :as p]
             [dommy.core :refer [set-value!]]
@@ -100,13 +101,13 @@
 
 (defn set-markup!
   [el]
-  (let [m (sel1 (.-shadowRoot el) :.language-markup)]
+  (let [m (sel1 (shadow-root el) :.language-markup)]
     (set! (.-innerHTML m) (create-markup el))
     (js/Prism.highlightElement m)))
 
 (defn set-source!
   [el s]
-  (let [m (sel1 (.-shadowRoot el) :.language-clojure)]
+  (let [m (sel1 (shadow-root el) :.language-clojure)]
     (set! (.-innerHTML m) s)
     (js/Prism.highlightElement m)))
 

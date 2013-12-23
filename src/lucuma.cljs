@@ -81,6 +81,11 @@
         (doseq [o o] (append el o))
         (append el o)))))
 
+(defn shadow-root
+  "Returns lucuma ShadowRoot for an element."
+  [el]
+  (.-shadowRoot el)) ;; TODO is this always right?
+
 (defn- create-shadow-root!
   [el m]
   (let [{:keys [style content]} m]
@@ -135,8 +140,8 @@
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (let [v (invoke-if-fn (val a) el)] (if (keyword? v) (name v) (str v)))))
   (let [sr (create-shadow-root! el m)]
-    (p/shim-styling-when-needed sr (:name m) (host-type (:host m)))
-    (when f (u/call-with-first-argument f el [sr]))))
+    (p/shim-styling-when-needed sr (:name m) (host-type (:host m))))
+  (when f (u/call-with-first-argument f el)))
 
 (defn- create-element
   [n is]
