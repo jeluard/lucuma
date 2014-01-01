@@ -88,12 +88,11 @@
 
 (defn- create-shadow-root!
   [el m]
-  (let [{:keys [style content]} m]
-    (when (or style content)
-      (let [sr (sd/create el m)]
-        (when style (render-then-append! render-style-map append-style-map! sr style))
-        (when content (render-then-append! render-content append-content! sr content))
-        sr))))
+  (let [{:keys [style content]} m
+        sr (sd/create el m)]
+    (when style (render-then-append! render-style-map append-style-map! sr style))
+    (when content (render-then-append! render-content append-content! sr content))
+    sr))
 
 ;;
 ;; listener support

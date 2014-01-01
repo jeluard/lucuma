@@ -42,8 +42,8 @@
 (defwebcomponent test-sr-3
   :style "* {background: red;}")
 
-(deftest create-shadow-root-when-needed
-  (is (nil? (.-shadowRoot (by-id "test-sr-1"))))
+(deftest create-shadow-root
+  (is (not (nil? (.-shadowRoot (by-id "test-sr-1")))))
   (is (not (nil? (.-shadowRoot (by-id "test-sr-2")))))
   (is (not (nil? (.-shadowRoot (by-id "test-sr-3"))))))
 
