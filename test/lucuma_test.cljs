@@ -57,6 +57,22 @@
 (defwebcomponent test-prototype-5
   :host :test-prototype-polymer
   :extends :button)
+(defwebcomponent test-prototype-6
+  test-prototype-2)
+(defwebcomponent test-prototype-7
+  [arg]
+  :arg (inc arg))
+(defwebcomponent test-prototype-8
+  [arg]
+  test-prototype-2
+  :arg (inc arg))
+
+(deftest webcomponent-reuse
+  (is (= :button (:host test-prototype-6)))
+  (is (= :button (:host (test-prototype-8 0)))))
+
+(deftest webcomponent-as-fn
+  (is (= 2 (:arg (test-prototype-7 1)))))
 
 (deftest definition->el-id
   (is (= nil (l/definition->el-id test-prototype-1)))
