@@ -159,14 +159,14 @@
   :content content
   :style style
   :apply-author-styles true
-  :created-fn created-example)
+  :on-created created-example)
 
 (defwebcomponent lucu-usage
   :host :section
   :content content
   :style style
   :apply-author-styles true
-  :created-fn created-usage)
+  :on-created created-usage)
 
 ;; TODO make more generic (i.e. also work without polymer)
 (.addEventListener js/document "WebComponentsReady"

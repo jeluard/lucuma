@@ -54,6 +54,6 @@
 (defwebcomponent lucu-range-with-threshold
   :host :input
   ;;:style ":host(.threshold-crossed) {background: blue;}"
-  :created-fn #(initialize % (or (att/get-attr % :min-threshold) 15) (or (att/get-attr % :max-threshold) 85))
+  :on-created #(initialize % (or (att/get-attr % :min-threshold) 15) (or (att/get-attr % :max-threshold) 85))
   :attributes #{:min-threshold :max-threshold}
   :handlers #{:threshold-cross})

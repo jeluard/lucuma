@@ -19,12 +19,12 @@
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
-  (let [{:keys [prototype properties created-fn entered-view-fn attached-fn detached-fn]} m
+  (let [{:keys [prototype properties on-created on-attribute-changed on-attached on-detached]} m
         ce-prototype (if (seq properties) (.create js/Object prototype (clj->js (att/properties properties))) (.create js/Object prototype))]
-    (when created-fn (set! (.-createdCallback ce-prototype) (u/wrap-with-callback-this-value created-fn)))
-    (when entered-view-fn (set! (.-enteredViewCallback ce-prototype) (u/wrap-with-callback-this-value entered-view-fn)))
-    (when attached-fn (set! (.-detachedCallback ce-prototype) (u/wrap-with-callback-this-value attached-fn)))
-    (when detached-fn (set! (.-attachedCallback ce-prototype) (u/wrap-with-callback-this-value detached-fn)))
+    (when on-created (set! (.-createdCallback ce-prototype) (u/wrap-with-callback-this-value on-created)))
+    (when on-attached (set! (.-attachedCallback ce-prototype) (u/wrap-with-callback-this-value on-attached)))
+    (when on-detached (set! (.-detachedCallback ce-prototype) (u/wrap-with-callback-this-value on-detached)))
+    (when on-attribute-changed (set! (.-attributeChangedCallback ce-prototype) (u/wrap-with-callback-this-value on-attribute-changed)))
     ce-prototype))
 
 (defn register

@@ -174,13 +174,15 @@
 (defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
-  (let [{:keys [host created-fn attributes methods handlers]} m
+  (let [{:keys [host on-created attributes methods handlers]} m
         attributes (set (map name attributes))
         handlers (set (map event->handler handlers))
-        created-fn #(initialize! % created-fn m attributes handlers)
-        attribute-changed-fn #(attribute-changed %1 %2 %3 %4 attributes handlers)
+        on-created #(initialize! % on-created m attributes handlers)
+        on-attribute-changed #(attribute-changed %1 %2 %3 %4 attributes handlers)
         prototype (definition->prototype m)
-        ce-prototype (ce/create-prototype (merge m {:prototype (create-lucuma-prototype prototype) :properties (concat attributes handlers) :created-fn created-fn :attribute-changed-fn attribute-changed-fn}))]
+        ce-prototype (ce/create-prototype
+                      (merge m {:prototype (create-lucuma-prototype prototype)
+                                :properties (concat attributes handlers) :on-created on-created :on-attribute-changed on-attribute-changed}))]
     (doseq [method methods]
       (aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
     ce-prototype))
@@ -193,7 +195,7 @@
 
 (def all-keys
   #{:name :ns :constructor :host :extends :content :style :attributes :methods :handlers
-    :created-fn :attached-fn :detached-fn :apply-author-styles :reset-style-inheritance})
+    :on-created :on-attached :on-detached :apply-author-styles :reset-style-inheritance})
 
 (defn ignored-keys
   "Returns a set of ignored keys."

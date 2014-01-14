@@ -50,14 +50,14 @@ var lucuma = {};
 lucuma.LucumaElement.prototype.createdCallback = function() {};
 
 /**
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-entered-view-callback
+ * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-entered-view-callback
  */
-lucuma.LucumaElement.prototype.enteredViewCallback = function() {};
+lucuma.LucumaElement.prototype.attachedCallback = function() {};
 
 /**
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-left-view-callback
+ * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-left-view-callback
  */
-lucuma.LucumaElement.prototype.leftViewCallback = function() {};
+lucuma.LucumaElement.prototype.detachedCallback = function() {};
 
 /**
  * @param {string} name
