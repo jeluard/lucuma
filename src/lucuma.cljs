@@ -193,7 +193,7 @@
 
 (def all-keys
   #{:name :ns :constructor :host :extends :content :style :attributes :methods :handlers
-    :created-fn :entered-view-fn :left-view-fn :apply-author-styles :reset-style-inheritance})
+    :created-fn :attached-fn :detached-fn :apply-author-styles :reset-style-inheritance})
 
 (defn ignored-keys
   "Returns a set of ignored keys."

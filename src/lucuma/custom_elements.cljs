@@ -19,19 +19,19 @@
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
-  (let [{:keys [prototype properties created-fn entered-view-fn left-view-fn attribute-changed-fn]} m
+  (let [{:keys [prototype properties created-fn entered-view-fn attached-fn detached-fn]} m
         ce-prototype (if (seq properties) (.create js/Object prototype (clj->js (att/properties properties))) (.create js/Object prototype))]
     (when created-fn (set! (.-createdCallback ce-prototype) (u/wrap-with-callback-this-value created-fn)))
     (when entered-view-fn (set! (.-enteredViewCallback ce-prototype) (u/wrap-with-callback-this-value entered-view-fn)))
-    (when left-view-fn (set! (.-leftViewCallback ce-prototype) (u/wrap-with-callback-this-value left-view-fn)))
-    (when attribute-changed-fn (set! (.-attributeChangedCallback ce-prototype) (u/wrap-with-callback-this-value attribute-changed-fn)))
+    (when attached-fn (set! (.-detachedCallback ce-prototype) (u/wrap-with-callback-this-value attached-fn)))
+    (when detached-fn (set! (.-attachedCallback ce-prototype) (u/wrap-with-callback-this-value detached-fn)))
     ce-prototype))
 
 (defn register
   "Registers a Custom Element from an abstract definition."
   [n p e]
   {:pre [(valid-name? n)]}
-  (.register js/document n (clj->js (merge {:prototype p} (when e {:extends e})))))
+  (.registerElement js/document n (clj->js (merge {:prototype p} (when e {:extends e})))))
 
 ;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
 ;; https://github.com/w3c/web-platform-tests

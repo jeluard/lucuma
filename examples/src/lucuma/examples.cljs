@@ -32,8 +32,8 @@
 
 (defwebcomponent ex-lifecycle
   :created-fn #(prepend! (sel1 :#lifecycle-events) [:li "element created"])
-  :entered-view-fn #(prepend! (sel1 :#lifecycle-events) [:li "element entered view"])
-  :left-view-fn #(prepend! (sel1 :#lifecycle-events) [:li "element left view"]))
+  :attached-fn #(prepend! (sel1 :#lifecycle-events) [:li "element attached"])
+  :detached-fn #(prepend! (sel1 :#lifecycle-events) [:li "element detached"]))
 
 (defwebcomponent ex-content-template
   :content #(sel1 :#template-id))
