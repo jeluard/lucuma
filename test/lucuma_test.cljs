@@ -36,10 +36,13 @@
   (is (empty? (l/ignored-keys {:content "" :style ""})))
   (is (= #{:comtent} (l/ignored-keys {:comtent "" :style ""}))))
 
-(defwebcomponent test-sr-1)
+(defwebcomponent test-sr-1
+  :ns nil)
 (defwebcomponent test-sr-2
+  :ns nil
   :content "hello")
 (defwebcomponent test-sr-3
+  :ns nil
   :style "* {background: red;}")
 
 (deftest create-shadow-root-when-needed
@@ -47,24 +50,32 @@
   (is (not (nil? (.-shadowRoot (by-id "test-sr-2")))))
   (is (not (nil? (.-shadowRoot (by-id "test-sr-3"))))))
 
-(defwebcomponent test-prototype-1)
+(defwebcomponent test-prototype-1
+  :ns nil)
 (defwebcomponent test-prototype-2
+  :ns nil
   :host :button)
 (defwebcomponent test-prototype-3
+  :ns nil
   :host :test-prototype-2)
 (defwebcomponent test-prototype-4
+  :ns nil
   :host :test-prototype-3)
 (defwebcomponent test-prototype-5
+  :ns nil
   :host :test-prototype-polymer
   :extends :button)
 (defwebcomponent test-prototype-6
-  test-prototype-2)
+  test-prototype-2
+  :ns nil)
 (defwebcomponent test-prototype-7
   [arg]
+  :ns nil
   :arg (inc arg))
 (defwebcomponent test-prototype-8
   [arg]
   test-prototype-2
+  :ns nil
   :arg (inc arg))
 
 (deftest webcomponent-reuse
