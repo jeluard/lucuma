@@ -14,8 +14,8 @@
                                    :optimizations :simple}}]
               :test-commands {;; Disabled for now: based on too old webkit version.
                               ;;"phantomjs" ["phantomjs" :runner "bower_components/polymer-platform/platform.js" "target/cljs/lucuma.js"]
+                              ;; TODO Add support for http://triflejs.org/
                               ;; SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
-                              ;; Add support for http://triflejs.org/
                               "slimerjs" ["slimerjs" :runner "bower_components/polymer-platform/platform.js" "target/cljs/lucuma.js"]}}
   :bower-dependencies [[polymer-platform "0.1.3"]]
   :aliases {"clean-test" ["do" "clean," "bower" "install," "cljsbuild" "clean," "cljsbuild" "test"]
