@@ -6,16 +6,18 @@
   :source-paths  ["src" "test"]
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-2138"]]
-  :plugins [[lein-cljsbuild "1.0.1"]
+  :plugins [[lein-bower "0.2.0"]
+            [lein-cljsbuild "1.0.1"]
             [com.cemerick/clojurescript.test "0.2.2"]]
   :cljsbuild {:builds [{:source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma.js"
                                    :optimizations :simple}}]
-              :test-commands {;; Disabled for now: based on too old webkit version. "phantomjs" ["phantomjs" "resources/test/runner.js" "resources/test/assets/platform.js" "target/cljs/lucuma.js"]
+              :test-commands {;; Disabled for now: based on too old webkit version.
+                              ;;"phantomjs" ["phantomjs" :runner "bower_components/polymer-platform/platform.js" "target/cljs/lucuma.js"]
                               ;; SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
                               ;; Add support for http://triflejs.org/
-                              "slimerjs" ["slimerjs" :runner "test-resources/assets/platform-v0.1.2.js" "target/cljs/lucuma.js"]}}
-
-  :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
+                              "slimerjs" ["slimerjs" :runner "bower_components/polymer-platform/platform.js" "target/cljs/lucuma.js"]}}
+  :bower-dependencies [[polymer-platform "0.1.3"]]
+  :aliases {"clean-test" ["do" "clean," "bower" "install," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
   :min-lein-version "2.3.4")
