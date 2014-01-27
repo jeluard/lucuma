@@ -4,7 +4,8 @@
             [lucuma.polymer :as p]
             [lucuma.shadow-dom :as sd]
             [lucuma.template-element :as te]
-            [lucuma.util :as u]))
+            [lucuma.util :as u])
+  (:refer-clojure :exclude [methods]))
 
 (def ^:private registry (atom {}))
 
