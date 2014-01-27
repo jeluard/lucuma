@@ -154,18 +154,18 @@
         [:pre {:class "example-markup"} [:code {:class "language-markup"}]]
         [:pre {:class "example-cljs"} [:code {:class "language-clojure"}]]))
 
+(def base
+  {:host :section
+   :content content
+   :style style
+   :apply-author-styles true})
+
 (defwebcomponent lucu-example
-  :host :section
-  :content content
-  :style style
-  :apply-author-styles true
+  base
   :on-created created-example)
 
 (defwebcomponent lucu-usage
-  :host :section
-  :content content
-  :style style
-  :apply-author-styles true
+  base
   :on-created created-usage)
 
 ;; TODO make more generic (i.e. also work without polymer)
