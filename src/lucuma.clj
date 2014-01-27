@@ -30,7 +30,7 @@
     :host :div)"
   [n & c]
   (let [[args kvs] (split-args c)
-        default {:name (name n) :ns (str *cljs-ns*)}
+        default {:name (name n) :ns (name *cljs-ns*)}
         m (if (keyword? (first kvs))
              (merge default (apply hash-map kvs))
              `(merge ~default ~(first kvs) ~(apply hash-map (rest kvs))))]

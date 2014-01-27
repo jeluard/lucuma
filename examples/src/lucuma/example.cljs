@@ -1,4 +1,4 @@
-(ns lucuma/example
+(ns lucuma.example
   (:require [clojure.string :as str]
             [cljs.reader :refer [read-string]]
             [lucuma :refer [shadow-root]]

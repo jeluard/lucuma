@@ -122,6 +122,21 @@
   (is (l/lucuma-element? (.createElement js/document "test-prototype-2")))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-3"))))
 
+(defwebcomponent test-constructor-1)
+(defwebcomponent test-constructor-2
+  :ns "lucuma")
+(defwebcomponent test-constructor-3
+  :ns "lucuma"
+  :constructor "Constructor")
+(defwebcomponent test-constructor-4
+  :ns nil)
+
+(deftest constructor
+  (is (exists? js/lucuma_test.TESTConstructor1))
+  (is (exists? js/lucuma.TESTConstructor2))
+  (is (exists? js/lucuma.Constructor))
+  (is (not (exists? js/lucuma_test.TESTConstructor4))))
+
 (deftest parse-host-type
   (is (nil? (l/host-type nil)))
   (is (= "div" (l/host-type "div")))
@@ -160,6 +175,11 @@
   (l/register test-prototype-3)
   (l/register test-prototype-4)
   (l/register test-prototype-5)
+
+  (l/register test-constructor-1)
+  (l/register test-constructor-2)
+  (l/register test-constructor-3)
+  (l/register test-constructor-4)
 
   (l/register test-host-attributes)
   (append "test-host-attributes")
