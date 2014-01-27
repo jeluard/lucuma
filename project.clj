@@ -7,7 +7,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-2138"]]
   :plugins [[lein-cljsbuild "1.0.1"]
-            [com.cemerick/clojurescript.test "0.2.1"]]
+            [com.cemerick/clojurescript.test "0.2.2"]]
   :cljsbuild {:builds [{:source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma.js"
                                    :optimizations :simple}}]
@@ -18,4 +18,4 @@
 
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
-  :min-lein-version "2.3.0")
+  :min-lein-version "2.3.4")
