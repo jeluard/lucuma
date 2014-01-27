@@ -4,7 +4,7 @@
                  [prismatic/dommy "0.1.2"]
                  [garden "1.1.4"]]
   :plugins [[lein-cljsbuild "1.0.1"]
-            [com.cemerick/clojurescript.test "0.2.1"]]
+            [com.cemerick/clojurescript.test "0.2.2"]]
   :cljsbuild {:builds [{:id "prod"
                         :source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
@@ -28,5 +28,4 @@
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-build" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "once" "prod"]
             "clean-dev"  ["do" "clean," "cljsbuild" "clean," "cljsbuild" "auto" "dev"]}
-  :min-lein-version "2.3.0"
-  :repositories  {"sonatype-oss-public" "https://oss.sonatype.org/content/groups/public/"})
+  :min-lein-version "2.3.4")
