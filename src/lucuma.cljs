@@ -185,7 +185,7 @@
                       (merge m {:prototype (create-lucuma-prototype prototype)
                                 :properties (concat attributes handlers) :on-created on-created :on-attribute-changed on-attribute-changed}))]
     (doseq [method methods]
-      (aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (val method))))
+      (aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
     ce-prototype))
 
 (defn- default-constructor-name

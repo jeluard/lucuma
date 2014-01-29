@@ -61,12 +61,8 @@
 (defwebcomponent ex-attributes
   :attributes #{:attribute})
 
-(defn alert
-  [el]
-  (.alert js/window (str "Hello methods from '" (.-id el) "' !")))
-
 (defwebcomponent ex-methods
-  :methods {:method alert})
+  :methods {:method (fn [] {:key "value"})})
 
 (defn ^:export fire-event
   [id]

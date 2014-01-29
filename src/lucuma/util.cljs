@@ -28,6 +28,11 @@
   [f]
   (fn [& args] (this-as this (call-with-first-argument f this args))))
 
+(defn wrap-to-javascript
+  [f]
+  (fn [& args]
+    (clj->js (apply f (map js->clj args)))))
+
 (defn warn
   [s]
   (.warn js/console (clj->js s)))

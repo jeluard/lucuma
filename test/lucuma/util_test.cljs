@@ -17,3 +17,8 @@
     (is (not (nil? (u/str->fn "lucuma.util_test.two"))))
     (is (= 2 ((u/str->fn "lucuma.util_test.two"))))
     (is (= 2 ((u/str->fn "lucuma.util_test.two()"))))))
+
+(deftest wrap-to-javascript
+  (is (not (= {} ((u/wrap-to-javascript identity) #js {}))))
+  (is (= {} (js->clj ((u/wrap-to-javascript identity) #js {}))))
+  (is (= "1" ((u/wrap-to-javascript #(get % "a")) #js {"a" "1"}))))
