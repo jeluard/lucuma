@@ -185,7 +185,7 @@
                       (merge m {:prototype (create-lucuma-prototype prototype)
                                 :properties (concat attributes handlers) :on-created on-created :on-attribute-changed on-attribute-changed}))]
     (doseq [method methods]
-      (u/set-property! ce-prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
+      (u/safe-aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
     ce-prototype))
 
 (defn- default-constructor-name
@@ -211,6 +211,6 @@
         goog-ns (u/*ns*->goog-ns (:ns m))]
     (if goog-ns
       (when-let [c (:constructor m (default-constructor-name n))]
-        (u/set-property! goog-ns c cf))
+        (u/safe-aset goog-ns c cf))
       (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
     (swap! registry assoc n m)))

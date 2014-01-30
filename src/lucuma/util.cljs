@@ -20,7 +20,7 @@
       (aget (resolve-goog-ns (butlast parts)) (last parts)))))
 
 (defn call-with-first-argument
-  "inject arg as first argument to f"
+  "Injects arg as first argument to f."
   ([f arg] (call-with-first-argument f arg nil))
   ([f arg args] (apply f (apply conj [] arg args))))
 
@@ -33,19 +33,20 @@
   (fn [& args]
     (clj->js (apply f (map js->clj args)))))
 
-(defn exists-property?
-  [o n]
-  (exists? (aget o n)))
+(defn valid-identifier?
+  "Returns true if provided string is a valid JavaScript identifier.
+  Rulls out a number a false negative for simplicity sake.
 
-(defn set-property!
+  More info: http://mathiasbynens.be/notes/javascript-identifiers"
+  [s]
+  (not (nil? (re-matches #"^[a-zA-Z_$][0-9a-zA-Z_$]*$" s))))
+
+(defn safe-aset
   [o n v]
-  (when (exists-property? o n)
+  {:pre [(valid-identifier? n)]}
+  (when (exists? (aget o n))
     (throw (ex-info "Property already defined" {:object o :property n})))
-  (aset o n v)
-  (.log js/console (str n))
-  (.log js/console (exists-property? o n))
-  (when (not (exists-property? o n))
-    (throw (ex-info "Invalid property name" {:object o :property n}))))
+  (aset o n v))
 
 (defn warn
   [s]
