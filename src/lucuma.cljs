@@ -185,7 +185,7 @@
                       (merge m {:prototype (create-lucuma-prototype prototype)
                                 :properties (concat attributes handlers) :on-created on-created :on-attribute-changed on-attribute-changed}))]
     (doseq [method methods]
-      (aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
+      (u/set-property! ce-prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
     ce-prototype))
 
 (defn- default-constructor-name
@@ -204,15 +204,13 @@
   (set (filter #(not (contains? all-keys %)) (keys m))))
 
 (defn register
-  "Registers a new Custom Element from its definition. Returns true if succesful, false otherwise (e.g. already registered)."
+  "Registers a new Custom Element from its definition."
   [m]
-  (try
-    (let [n (:name m)
-          cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))
-          goog-ns (u/*ns*->goog-ns (:ns m))]
-      (if goog-ns
-        (when-let [c (:constructor m (default-constructor-name n))] (aset goog-ns c cf))
-        (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
-      (swap! registry assoc n m)
-      true)
-    (catch js/Error e false)))
+  (let [n (:name m)
+        cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))
+        goog-ns (u/*ns*->goog-ns (:ns m))]
+    (if goog-ns
+      (when-let [c (:constructor m (default-constructor-name n))]
+        (u/set-property! goog-ns c cf))
+      (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
+    (swap! registry assoc n m)))

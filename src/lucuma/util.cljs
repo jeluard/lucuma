@@ -33,6 +33,20 @@
   (fn [& args]
     (clj->js (apply f (map js->clj args)))))
 
+(defn exists-property?
+  [o n]
+  (exists? (aget o n)))
+
+(defn set-property!
+  [o n v]
+  (when (exists-property? o n)
+    (throw (ex-info "Property already defined" {:object o :property n})))
+  (aset o n v)
+  (.log js/console (str n))
+  (.log js/console (exists-property? o n))
+  (when (not (exists-property? o n))
+    (throw (ex-info "Invalid property name" {:object o :property n}))))
+
 (defn warn
   [s]
   (.warn js/console (clj->js s)))

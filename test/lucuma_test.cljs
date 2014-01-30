@@ -1,8 +1,7 @@
 (ns lucuma-test
-  (:require [cemerick.cljs.test :as t]
-            [lucuma :as l])
-  (:require-macros [cemerick.cljs.test :refer [deftest is use-fixtures]]
-                   [lucuma :refer [defwebcomponent]]))
+  (:require [cemerick.cljs.test :as t :refer-macros [deftest is use-fixtures]]
+            [lucuma :as l :refer-macros [defwebcomponent]])
+  (:refer-clojure :exclude [methods]))
 
 (def ^:private tests-node "tests-appends")
 
@@ -108,8 +107,8 @@
   :ns nil)
 
 (deftest register-is-idempotent
-  (is (true? (l/register test-register)) "first registration")
-  (is (false? (l/register test-register)) "second registration"))
+  (is (l/register test-register) "first registration")
+  (is (thrown? js/Error (l/register test-register)) "second registration"))
 
 (deftest valid-standard-element-name
   (is (not (l/valid-standard-element-name? nil)))
@@ -122,6 +121,27 @@
   (is (l/lucuma-element? (.createElement js/document "test-prototype-2")))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-3"))))
 
+(defwebcomponent test-method-1
+  :methods {:method1 (fn [] 1)
+            :method2 (fn [] {:key "value"})
+            :method3 (fn [_ o] (get o "key"))
+            :method4 (fn [& args] args)})
+
+(defwebcomponent test-method-2
+  :methods {:invalid-method-name nil})
+
+(defwebcomponent test-method-3
+  :methods {:constructor nil})
+
+(deftest methods
+  (is (= 1 (.method1 (.createElement js/document "test-method-1"))))
+  (is (= "value" (aget (.method2 (.createElement js/document "test-method-1")) "key")))
+  (is (= "value" (.method3 (.createElement js/document "test-method-1") #js {:key "value"})))
+  (is (not (nil? (first (.method4 (.createElement js/document "test-method-1"))))))
+  (is (nil? (second (.method4 (.createElement js/document "test-method-1")))))
+  (is (thrown? js/Error (l/register test-method-2)))
+  (is (thrown? js/Error (l/register test-method-3))))
+
 (defwebcomponent test-constructor-1)
 (defwebcomponent test-constructor-2
   :ns "lucuma")
@@ -131,7 +151,7 @@
 (defwebcomponent test-constructor-4
   :ns nil)
 
-(deftest constructor
+(deftest constructors
   (is (exists? js/lucuma_test.TESTConstructor1))
   (is (exists? js/lucuma.TESTConstructor2))
   (is (exists? js/lucuma.Constructor))
@@ -175,6 +195,8 @@
   (l/register test-prototype-3)
   (l/register test-prototype-4)
   (l/register test-prototype-5)
+
+  (l/register test-method-1)
 
   (l/register test-constructor-1)
   (l/register test-constructor-2)
