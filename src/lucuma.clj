@@ -32,8 +32,8 @@
   (let [[args kvs] (split-args c)
         default {:name (name n) :ns (name *cljs-ns*)}
         m (if (keyword? (first kvs))
-             (merge default (apply hash-map kvs))
-             `(merge ~default ~(first kvs) ~(apply hash-map (rest kvs))))]
+             (merge (apply hash-map kvs) default)
+             `(merge ~(first kvs) ~(apply hash-map (rest kvs)) ~default))]
     (if (empty? args)
       `(def ~(vary-meta n assoc :export true) ~m)
       `(defn ~(vary-meta n assoc :export true) [~@args] ~m))))

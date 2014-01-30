@@ -117,14 +117,76 @@
 
 (defn- host-type
   [h]
+  "Returns type from host element.
+
+  e.g.
+   :host :div => 'div'
+   :host [:div {:key :value}] => 'div'
+   :host {:key :value} => nil"
   (when-let [t (cond (vector? h) (first h) (keyword? h) (name h))]
     (name t)))
 
 (defn- host-attributes
   [h]
+  "Returns attributes from host element.
+
+  e.g.
+   :host :div => nil
+   :host [:div {:key :value}] => {:key :value}
+   :host {:key :value} => {:key :value}"
   (cond
    (vector? h) (second h)
    (map? h) h))
+
+(declare definition->el-id)
+
+(defn- host-type->extends
+  "Returns extended type from host element.
+
+  e.g.
+   'div' => 'div'
+   'lucu-element' => 'div' (when lucu-element does not extend any element)
+   'lucu-element' => 'div' (when lucu-element extends div, recursively finds the root extended element)
+   'non-lucu-element' => nil'"
+  [t]
+  (cond
+   (u/valid-standard-element-name? t) t
+   (contains? @registry t) (first (definition->el-id (get @registry t)))
+   ;;TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
+   ))
+
+(defn- definition->el-id
+  [m]
+  "Returns [type, extended-type] from host/extends element.
+
+  e.g.
+   :host nil => nil
+   :host :div => ['div' nil]
+   :host :lucu-element => nil (when lucu-element does not extend any element)
+   :host :lucu-element => ['div' 'lucu-element'] (when lucu-element extends div, recursively finds the root extended element)
+   :host :non-lucu-element => exception thrown
+   :host :non-lucu-element :extends :div => ['div' 'non-lucu-element']"
+  (when-let [t (host-type (:host m))]
+    (let [ei (host-type->extends t)
+          ep (when-let [e (:extends m)] (name e))
+          e (or ei ep)]
+      (when (and ei ep)
+        (throw (ex-info "Infered extends value but a value for :extends was supplied" {:type t :inferred ei :provided ep})))
+      (when-not e
+        (throw (ex-info "Could not infer extends value and no value for :extends supplied" {:type t})))
+      [e (when-not (u/valid-standard-element-name? t) t)])))
+
+(defn- create-element
+  [n is]
+  (if is
+    (.createElement js/document n is)
+    (.createElement js/document n)))
+
+(defn- type->prototype
+  [n is]
+  (if n
+    (.getPrototypeOf js/Object (create-element n is))
+    (.-prototype js/HTMLElement)))
 
 (defn- initialize!
   [el f m attributes handlers]
@@ -139,34 +201,6 @@
     (p/shim-styling-when-needed sr (:name m) (host-type (:host m))))
   (when f (u/call-with-first-argument f el)))
 
-(defn- create-element
-  [n is]
-  (if is
-    (.createElement js/document n is)
-    (.createElement js/document n)))
-
-(declare definition->el-id)
-
-(defn- host-type->extends
-  [t e]
-  (cond
-   (u/valid-standard-element-name? t) t
-   (contains? @registry t) (first (definition->el-id (get @registry t)))
-   ;;TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
-   e e))
-
-(defn- definition->el-id
-  [m]
-  (when-let [t (host-type (:host m))]
-    (let [e (when-let [e (:extends m)] (name e))]
-      [(host-type->extends t e) (when-not (u/valid-standard-element-name? t) t)])))
-
-(defn- definition->prototype
-  [m]
-  (if-let [[t e] (definition->el-id m)]
-    (.getPrototypeOf js/Object (create-element t e))
-    (.-prototype js/HTMLElement)))
-
 (defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
@@ -175,17 +209,16 @@
         handlers (set (map event->handler handlers))
         on-created #(initialize! % on-created m attributes handlers)
         on-attribute-changed #(attribute-changed %1 %2 %3 %4 attributes handlers)
-        prototype (definition->prototype m)
-        ce-prototype (ce/create-prototype
-                      (merge m {:prototype (create-lucuma-prototype prototype)
+        prototype (ce/create-prototype
+                      (merge m {:prototype (create-lucuma-prototype (apply type->prototype (definition->el-id m)))
                                 :properties (concat attributes handlers) :on-created on-created :on-attribute-changed on-attribute-changed}))]
     (doseq [method methods]
-      (u/safe-aset ce-prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
-    ce-prototype))
+      (u/safe-aset prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
+    prototype))
 
 (defn- default-constructor-name
   [n]
-  (when-not (nil? n)
+  (when n
     (let [v (string/split n #"-")]
       (str (string/upper-case (first v)) (string/join (map string/capitalize (subvec v 1)))))))
 
@@ -201,10 +234,10 @@
 (defn register
   "Registers a new Custom Element from its definition."
   [m]
+  {:pre [(map? m)]}
   (let [n (:name m)
-        cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))
-        goog-ns (u/*ns*->goog-ns (:ns m))]
-    (if goog-ns
+        cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))]
+    (if-let [goog-ns (u/*ns*->goog-ns (:ns m))]
       (when-let [c (:constructor m (default-constructor-name n))]
         (u/safe-aset goog-ns c cf))
       (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))

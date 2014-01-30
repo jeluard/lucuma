@@ -76,6 +76,17 @@
   test-prototype-2
   :ns nil
   :arg (inc arg))
+(defwebcomponent test-prototype-9
+  :ns nil
+  :host :test-prototype-1)
+
+(defwebcomponent test-prototype-fail-1
+  :ns nil
+  :host :test-prototype-polymer)
+(defwebcomponent test-prototype-fail-2
+  :ns nil
+  :host :test-prototype-2
+  :extends :div)
 
 (deftest webcomponent-reuse
   (is (= :button (:host test-prototype-6)))
@@ -89,11 +100,14 @@
   (is (= ["button" nil] (l/definition->el-id test-prototype-2)))
   (is (= ["button" "test-prototype-2"] (l/definition->el-id test-prototype-3)))
   (is (= ["button" "test-prototype-3"] (l/definition->el-id test-prototype-4)))
-  (is (= ["button" "test-prototype-polymer"] (l/definition->el-id test-prototype-5))))
+  (is (= ["button" "test-prototype-polymer"] (l/definition->el-id test-prototype-5)))
+  (is (thrown? js/Error (l/definition->el-id test-prototype-fail-1)))
+  ;;TODO fix(is (= nil (l/definition->el-id test-prototype-9)))
+  (is (thrown? js/Error (l/definition->el-id test-prototype-fail-2))))
 
-(deftest definition->prototype
-  (is (= (.-prototype js/HTMLElement) (l/definition->prototype test-prototype-1)))
-  (is (= (.-prototype js/HTMLButtonElement) (l/definition->prototype test-prototype-2))))
+(deftest type->prototype
+  (is (= (.-prototype js/HTMLElement) (l/type->prototype nil nil)))
+  (is (= (.-prototype js/HTMLButtonElement) (l/type->prototype "button" nil))))
 
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
@@ -108,7 +122,9 @@
 
 (deftest register-is-idempotent
   (is (l/register test-register) "first registration")
-  (is (thrown? js/Error (l/register test-register)) "second registration"))
+  (is (thrown? js/Error (l/register test-register)) "second registration")
+  (is (thrown? js/Error (l/register nil)))
+  (is (thrown? js/Error (l/register (fn [] nil)))))
 
 (deftest is-lucuma-element
   (is (l/lucuma-element? (.createElement js/document "test-prototype-1")))
@@ -186,6 +202,10 @@
   (l/register test-prototype-3)
   (l/register test-prototype-4)
   (l/register test-prototype-5)
+  (l/register test-prototype-6)
+  (l/register (test-prototype-7 1))
+  (l/register (test-prototype-8 1))
+  ;;(l/register test-prototype-9)
 
   (l/register test-method-1)
 
