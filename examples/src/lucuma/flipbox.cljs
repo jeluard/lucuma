@@ -17,6 +17,4 @@
 (defwebcomponent lucu-flipbox
   :content [:content]
   :style style
-  :attributes #{:flipped}
-  :methods {:showFront show-front :showBack show-back :toggle toggle}
-  :apply-author-styles true)
+  :methods {:showFront show-front :showBack show-back :toggle toggle})

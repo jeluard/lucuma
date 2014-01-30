@@ -9,9 +9,8 @@
 (defn create
   ([el] (create el {}))
   ([el m]
-   (let [{:keys [apply-author-styles reset-style-inheritance]} m
+   (let [{:keys [reset-style-inheritance]} m
          sr (.createShadowRoot el)]
-     (when apply-author-styles (set! (.-applyAuthorStyles sr) apply-author-styles))
      (when reset-style-inheritance (set! (.-resetStyleInheritance sr) reset-style-inheritance))
      sr)))
 

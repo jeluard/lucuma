@@ -196,7 +196,7 @@
 
 (def all-keys
   #{:name :ns :constructor :host :extends :content :style :attributes :methods :handlers
-    :on-created :on-attached :on-detached :apply-author-styles :reset-style-inheritance})
+    :on-created :on-attached :on-detached :reset-style-inheritance})
 
 (defn ignored-keys
   "Returns a set of ignored keys."

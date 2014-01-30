@@ -157,8 +157,7 @@
 (def base
   {:host :section
    :content content
-   :style style
-   :apply-author-styles true})
+   :style style})
 
 (defwebcomponent lucu-example
   base

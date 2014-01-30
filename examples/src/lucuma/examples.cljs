@@ -55,8 +55,7 @@
   :style [:span {:background "#3d7c45" :color "white" :border 0 :border-radius (px 4)}])
 
 (defwebcomponent ex-style-scope
-  :content [:span {:class "fa fa-exclamation"} "Hello style scope!"]
-  :apply-author-styles true)
+  :content [:span {:class "fa fa-exclamation"} "Hello style scope!"])
 
 (defwebcomponent ex-attributes
   :attributes #{:attribute})
@@ -77,8 +76,7 @@
 
 (defwebcomponent ex-extend
   :host :div
-  :content [:span {:class "fa fa-exclamation"} [:content]]
-  :apply-author-styles true)
+  :content [:span {:class "fa fa-exclamation"} [:content]])
 
 (defn ^:export register-all
   []

@@ -24,12 +24,6 @@ var ShadowRoot = {};
 
 /**
  * @type {bool}
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-shadow-root-apply-author-styles
- */
-ShadowRoot.prototype.applyAuthorStyles;
-
-/**
- * @type {bool}
  * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-shadow-root-reset-style-inheritance
  */
 ShadowRoot.prototype.resetStyleInheritance;
