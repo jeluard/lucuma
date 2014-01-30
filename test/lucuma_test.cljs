@@ -159,7 +159,6 @@
 
 (deftest parse-host-type
   (is (nil? (l/host-type nil)))
-  (is (= "div" (l/host-type "div")))
   (is (= "div" (l/host-type :div)))
   (is (nil? (l/host-type {:att ""})))
   (is (= "div" (l/host-type [:div {:att ""}]))))
@@ -172,12 +171,10 @@
 
 (defwebcomponent test-host-attributes
   :ns nil
-  :host {:a "A" :b :B :c #(count (.-nodeName %))})
+  :host {:a "A"})
 
 (deftest host-attributes
-  (is (= "A" (.getAttribute (by-id "test-host-attributes") "a")))
-  (is (= "B" (.getAttribute (by-id "test-host-attributes") "b")))
-  (is (= (str (count "test-host-attributes")) (.getAttribute (by-id "test-host-attributes") "c"))))
+  (is (= "A" (.getAttribute (by-id "test-host-attributes") "a"))))
 
 (defn wrap-registration
   [f]

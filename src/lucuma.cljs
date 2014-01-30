@@ -66,12 +66,10 @@
     (append-style! el content)
     (.appendChild sr el)))
 
-(defn invoke-if-fn [o el] (if (fn? o) (o el) o))
-
 (defn- render-then-append!
   [render-fn append-fn! el o]
   (when-let [o (if (fn? o) (o el) o)]
-    (letfn [(append [el o] (when-let [v (invoke-if-fn o el)] (when-let [r (render-fn v)] (append-fn! el r))))]
+    (letfn [(append [el o] (when-let [r (render-fn o)] (append-fn! el r)))]
       (if (list? o)
         (doseq [o o] (append el o))
         (append el o)))))
@@ -113,15 +111,11 @@
 
 (defn- host-type
   [h]
-  {:post [(or (nil? %) (string? %))]}
-  (when-let [t (if (vector? h) (first h) h)]
-    (cond
-     (keyword? t) (name t)
-     (string? t) t)))
+  (when-let [t (cond (vector? h) (first h) (keyword? h) (name h))]
+    (name t)))
 
 (defn- host-attributes
   [h]
-  {:post [(or (nil? %) (map? %))]}
   (cond
    (vector? h) (second h)
    (map? h) h))
@@ -133,7 +127,8 @@
     (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
   ;; Set host attributes extracted from :host element
   (doseq [a (host-attributes (:host m))]
-    (.setAttribute el (name (key a)) (let [v (invoke-if-fn (val a) el)] (if (keyword? v) (name v) (str v)))))
+    (.setAttribute el (name (key a)) (str (val a))))
+  ;; Install ShadowDOM and shim if needed
   (let [sr (create-shadow-root! el m)]
     (p/shim-styling-when-needed sr (:name m) (host-type (:host m))))
   (when f (u/call-with-first-argument f el)))
@@ -158,7 +153,7 @@
   [m]
   (when-let [t (host-type (:host m))]
     (let [e (when-let [e (:extends m)] (name e))]
-      [(host-type->extends t e) (when (not (valid-standard-element-name? t)) t)])))
+      [(host-type->extends t e) (when-not (valid-standard-element-name? t) t)])))
 
 (defn- definition->prototype
   [m]
@@ -184,7 +179,7 @@
 
 (defn- default-constructor-name
   [n]
-  (when (not (nil? n))
+  (when-not (nil? n)
     (let [v (string/split n #"-")]
       (str (string/upper-case (first v)) (string/join (map string/capitalize (subvec v 1)))))))
 
