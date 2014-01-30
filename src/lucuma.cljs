@@ -109,6 +109,10 @@
     (contains? handlers a) (let [e (handler->event a)]
                              (adjust-listener el e o n))))
 
+;;
+;; prototype creation
+;;
+
 (defn- host-type
   [h]
   (when-let [t (cond (vector? h) (first h) (keyword? h) (name h))]

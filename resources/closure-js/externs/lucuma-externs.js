@@ -1,22 +1,26 @@
 //Default externs files as defined by google closure can be found here: https://code.google.com/p/closure-compiler/source/browse/externs/
 
 /**
+ * Extensions to DOM prototypes
+ */
+
+/**
  * @param {string} type
  * @param {Object} options
  * @return {function}
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-document-register
+ * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-document-registerElement
  */
 DOMImplementation.prototype.register = function(type, options) {};
 
 /**
  * @type {ShadowRoot}
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-shadow-root
+ * @see http://w3c.github.io/webcomponents/spec/shadow/#widl-Element-shadowRoot
  */
 Element.prototype.shadowRoot;
 
 /**
  * @return {ShadowRoot}
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root
+ * @see http://w3c.github.io/webcomponents/spec/shadow/#widl-Element-createShadowRoot-ShadowRoot
  */
 Element.prototype.createShadowRoot = function() {};
 
@@ -24,22 +28,18 @@ var ShadowRoot = {};
 
 /**
  * @type {bool}
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-shadow-root-reset-style-inheritance
+ * @see http://w3c.github.io/webcomponents/spec/shadow/#widl-ShadowRoot-resetStyleInheritance
  */
 ShadowRoot.prototype.resetStyleInheritance;
 
-var HTMLTemplateElement = {};
-
 /**
- * @type {DocumentFragment}
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html#api-html-template-element-content
+ * Lucuma prototypes
  */
-HTMLTemplateElement.prototype.content;
 
 var lucuma = {};
 
 /**
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-created-callback
+ * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-created-callback
  */
 lucuma.LucumaElement.prototype.createdCallback = function() {};
 
@@ -57,13 +57,18 @@ lucuma.LucumaElement.prototype.detachedCallback = function() {};
  * @param {string} name
  * @param {Object} oldValue
  * @param {Object} newValue
- * @see https://dvcs.w3.org/hg/webcomponents/raw-file/default/spec/custom/index.html#dfn-attribute-changed-callback
+ * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-attribute-changed-callback
  */
 lucuma.LucumaElement.prototype.attributeChangedCallback = function(name, oldValue, newValue) {};
 
-//Polymer polyfill
+
+/**
+ * Polymer polyfill prototypes
+ */
+
 var Platform = {};
 Platform.flags.shadow;
+Platform.ShadowCSS.strictStyling;
 Platform.ShadowCSS.prototype.shimStyling = function(root, name) {};
 Platform.ShadowCSS.prototype.shimStyling = function(root, name, extendsName) {};
 
