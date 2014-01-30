@@ -144,16 +144,16 @@
   "Returns extended type from host element.
 
   e.g.
-   'div' => 'div'
-   'lucu-element' => 'div' (when lucu-element does not extend any element)
+   'div' => nil
+   'lucu-element' => nil (when lucu-element does not extend any element)
    'lucu-element' => 'div' (when lucu-element extends div, recursively finds the root extended element)
-   'non-lucu-element' => nil'"
+   'non-lucu-element' => ::not-found'"
   [t]
   (cond
-   (u/valid-standard-element-name? t) t
+   (u/valid-standard-element-name? t) nil
    (contains? @registry t) (first (definition->el-id (get @registry t)))
    ;;TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
-   ))
+   :else ::not-found))
 
 (defn- definition->el-id
   [m]
@@ -162,19 +162,20 @@
   e.g.
    :host nil => nil
    :host :div => ['div' nil]
-   :host :lucu-element => nil (when lucu-element does not extend any element)
+   :host :lucu-element => ['lucu-element' nil]  (when lucu-element does not extend any element)
    :host :lucu-element => ['div' 'lucu-element'] (when lucu-element extends div, recursively finds the root extended element)
    :host :non-lucu-element => exception thrown
    :host :non-lucu-element :extends :div => ['div' 'non-lucu-element']"
   (when-let [t (host-type (:host m))]
     (let [ei (host-type->extends t)
+          eic (when (not= ei ::not-found) ei)
           ep (when-let [e (:extends m)] (name e))
-          e (or ei ep)]
-      (when (and ei ep)
+          e (or eic ep)]
+      (when (and eic ep)
         (throw (ex-info "Infered extends value but a value for :extends was supplied" {:type t :inferred ei :provided ep})))
-      (when-not e
+      (when (and (not ep) (= ei ::not-found))
         (throw (ex-info "Could not infer extends value and no value for :extends supplied" {:type t})))
-      [e (when-not (u/valid-standard-element-name? t) t)])))
+      (if e [e t] [t nil]))))
 
 (defn- create-element
   [n is]

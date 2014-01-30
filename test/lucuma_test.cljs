@@ -101,8 +101,8 @@
   (is (= ["button" "test-prototype-2"] (l/definition->el-id test-prototype-3)))
   (is (= ["button" "test-prototype-3"] (l/definition->el-id test-prototype-4)))
   (is (= ["button" "test-prototype-polymer"] (l/definition->el-id test-prototype-5)))
+  (is (= ["test-prototype-1" nil] (l/definition->el-id test-prototype-9)))
   (is (thrown? js/Error (l/definition->el-id test-prototype-fail-1)))
-  ;;TODO fix(is (= nil (l/definition->el-id test-prototype-9)))
   (is (thrown? js/Error (l/definition->el-id test-prototype-fail-2))))
 
 (deftest type->prototype
@@ -205,7 +205,7 @@
   (l/register test-prototype-6)
   (l/register (test-prototype-7 1))
   (l/register (test-prototype-8 1))
-  ;;(l/register test-prototype-9)
+  (l/register test-prototype-9)
 
   (l/register test-method-1)
 
