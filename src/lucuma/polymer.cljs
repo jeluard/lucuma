@@ -10,7 +10,7 @@
   []
   (exists? js/Platform.ShadowCSS))
 
-(when (shadow-dom-installed?)
+(when (shadow-css-installed?)
   (set! (.-strictStyling js/Platform.ShadowCSS) true))
 
 (defn shim-styling-when-needed

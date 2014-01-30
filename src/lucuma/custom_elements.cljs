@@ -16,15 +16,22 @@
     (and (not= -1 (.indexOf s "-"))
          (not (contains? forbidden-names s)))))
 
+(defn- install-callback
+  [p c n]
+  (when c
+    (aset p n (u/wrap-with-callback-this-value c))))
+
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
   (let [{:keys [prototype properties on-created on-attribute-changed on-attached on-detached]} m
-        ce-prototype (if (seq properties) (.create js/Object prototype (clj->js (att/properties properties))) (.create js/Object prototype))]
-    (when on-created (set! (.-createdCallback ce-prototype) (u/wrap-with-callback-this-value on-created)))
-    (when on-attached (set! (.-attachedCallback ce-prototype) (u/wrap-with-callback-this-value on-attached)))
-    (when on-detached (set! (.-detachedCallback ce-prototype) (u/wrap-with-callback-this-value on-detached)))
-    (when on-attribute-changed (set! (.-attributeChangedCallback ce-prototype) (u/wrap-with-callback-this-value on-attribute-changed)))
+        ce-prototype (if (seq properties)
+                       (.create js/Object prototype (clj->js (att/properties properties)))
+                       (.create js/Object prototype))]
+    (install-callback ce-prototype on-created "createdCallback")
+    (install-callback ce-prototype on-attached "attachedCallback")
+    (install-callback ce-prototype on-detached "detachedCallback")
+    (install-callback ce-prototype on-attribute-changed "attributeChangedCallback")
     ce-prototype))
 
 (defn register

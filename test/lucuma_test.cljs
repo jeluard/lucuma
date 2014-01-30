@@ -110,12 +110,6 @@
   (is (l/register test-register) "first registration")
   (is (thrown? js/Error (l/register test-register)) "second registration"))
 
-(deftest valid-standard-element-name
-  (is (not (l/valid-standard-element-name? nil)))
-  (is (l/valid-standard-element-name? "a"))
-  (is (l/valid-standard-element-name? "aa"))
-  (is (not (l/valid-standard-element-name? "my-component"))))
-
 (deftest is-lucuma-element
   (is (l/lucuma-element? (.createElement js/document "test-prototype-1")))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-2")))

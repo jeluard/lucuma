@@ -8,7 +8,9 @@
 
 (def ^:private registry (atom {}))
 
-(defn valid-standard-element-name? [n] (when n (= -1 (.indexOf n "-"))))
+;;
+;; Lucuma prototype
+;;
 
 (deftype LucumaElement [])
 (defn lucuma-element? [el] (instance? LucumaElement el))
@@ -148,7 +150,7 @@
 (defn- host-type->extends
   [t e]
   (cond
-   (valid-standard-element-name? t) t
+   (u/valid-standard-element-name? t) t
    (contains? @registry t) (first (definition->el-id (get @registry t)))
    ;;TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
    e e))
@@ -157,7 +159,7 @@
   [m]
   (when-let [t (host-type (:host m))]
     (let [e (when-let [e (:extends m)] (name e))]
-      [(host-type->extends t e) (when-not (valid-standard-element-name? t) t)])))
+      [(host-type->extends t e) (when-not (u/valid-standard-element-name? t) t)])))
 
 (defn- definition->prototype
   [m]
