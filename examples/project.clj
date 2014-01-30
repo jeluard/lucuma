@@ -3,7 +3,7 @@
                  [lucuma "0.2.0-SNAPSHOT"]
                  [prismatic/dommy "0.1.2"]
                  [garden "1.1.4"]]
-  :plugins [[lein-cljsbuild "1.0.1"]
+  :plugins [[lein-cljsbuild "1.0.2"]
             [com.cemerick/clojurescript.test "0.2.2"]]
   :cljsbuild {:builds [{:id "prod"
                         :source-paths ["src" "test"]

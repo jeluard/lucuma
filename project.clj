@@ -7,7 +7,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-2156"]]
   :plugins [[lein-bower "0.2.0"]
-            [lein-cljsbuild "1.0.1"]
+            [lein-cljsbuild "1.0.2"]
             [com.cemerick/clojurescript.test "0.2.2"]]
   :cljsbuild {:builds [{:source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma.js"
