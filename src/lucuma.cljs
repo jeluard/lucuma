@@ -3,7 +3,6 @@
             [lucuma.custom-elements :as ce]
             [lucuma.polymer :as p]
             [lucuma.shadow-dom :as sd]
-            [lucuma.template-element :as te]
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods]))
 
@@ -25,14 +24,9 @@
 
 (defmulti render-content
   "Renders 'content' to something that can be added to the DOM."
-  ;; Hack to workaround browsers where document.createElement('template').constructor != HTMLTemplateElement but still document.createElement('template') instanceof HTMLTemplateElement
-  ;; see https://github.com/Polymer/TemplateBinding/issues/139
-  ;; (type c)
-  (fn [c] (if (instance? js/HTMLTemplateElement c) js/HTMLTemplateElement (type c))))
+  type)
 
 (defmethod render-content js/String [s] s)
-(when (te/supported?)
-  (defmethod render-content js/HTMLTemplateElement [t] (.cloneNode (.-content t) true)))
 
 (defmulti append-content!
   "Appends rendered 'content' to provided ShadowRoot."

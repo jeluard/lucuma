@@ -35,9 +35,6 @@
   :on-attached #(prepend! (sel1 :#lifecycle-events) [:li "element attached"])
   :on-detached #(prepend! (sel1 :#lifecycle-events) [:li "element detached"]))
 
-(defwebcomponent ex-content-template
-  :content #(sel1 :#template-id))
-
 (derive PersistentVector ::vector)
 (defmethod render-content ::vector [v] (node v))
 
@@ -83,7 +80,6 @@
   (register ex-hello)
   (register (merge ex-hello {:name "my-hello-with-custom-name"}))
   (register ex-lifecycle)
-  (register ex-content-template)
   (register ex-content-hiccup)
   (register ex-style)
   (register ex-style-garden)
