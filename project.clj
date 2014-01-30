@@ -5,7 +5,7 @@
              :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths  ["src" "test"]
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-2138"]]
+                 [org.clojure/clojurescript "0.0-2156"]]
   :plugins [[lein-bower "0.2.0"]
             [lein-cljsbuild "1.0.1"]
             [com.cemerick/clojurescript.test "0.2.2"]]
