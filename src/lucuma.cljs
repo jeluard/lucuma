@@ -76,12 +76,17 @@
         (doseq [o o] (append el o))
         (append el o)))))
 
+;;
+;; ShadowRoot support
+;;
+
 (defn shadow-root
   "Returns lucuma ShadowRoot for an element."
   [el]
   (.-shadowRoot el)) ;; TODO is this always right?
 
 (defn- create-shadow-root!
+  "Creates and appends a ShadowRoot to 'el' if either `:style` or `:content` is provided."
   [el m]
   (let [{:keys [style content]} m]
     (when (or style content)
@@ -116,24 +121,24 @@
 ;;
 
 (defn- host-type
-  [h]
   "Returns type from host element.
 
   e.g.
    :host :div => 'div'
    :host [:div {:key :value}] => 'div'
    :host {:key :value} => nil"
+  [h]
   (when-let [t (cond (vector? h) (first h) (keyword? h) (name h))]
     (name t)))
 
 (defn- host-attributes
-  [h]
   "Returns attributes from host element.
 
   e.g.
    :host :div => nil
    :host [:div {:key :value}] => {:key :value}
    :host {:key :value} => {:key :value}"
+  [h]
   (cond
    (vector? h) (second h)
    (map? h) h))
@@ -156,7 +161,6 @@
    :else ::not-found))
 
 (defn- definition->el-id
-  [m]
   "Returns [type, extended-type] from host/extends element.
 
   e.g.
@@ -166,6 +170,7 @@
    :host :lucu-element => ['div' 'lucu-element'] (when lucu-element extends div, recursively finds the root extended element)
    :host :non-lucu-element => exception thrown
    :host :non-lucu-element :extends :div => ['div' 'non-lucu-element']"
+  [m]
   (when-let [t (host-type (:host m))]
     (let [ei (host-type->extends t)
           eic (when (not= ei ::not-found) ei)
@@ -189,6 +194,11 @@
     (.getPrototypeOf js/Object (create-element n is))
     (.-prototype js/HTMLElement)))
 
+(def ^:private property-holder-name "lucuma")
+(defn install-property-holder! [p] (aset p property-holder-name #js {}))
+(defn get-property [el n] (aget el property-holder-name n))
+(defn set-property [el n v] (aset el property-holder-name n v))
+
 (defn- initialize!
   [el f m attributes handlers]
   ;;
@@ -197,9 +207,12 @@
   ;; Set host attributes extracted from :host element
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (str (val a))))
-  ;; Install ShadowDOM and shim if needed
-  (let [sr (create-shadow-root! el m)]
-    (p/shim-styling-when-needed sr (:name m) (host-type (:host m))))
+  ;; Install ShadowDOM and shim if needed (only first instance of each type)
+  (when-let [sr (create-shadow-root! el m)]
+    (when (p/shadow-css-needed?)
+      (when-not (get-property el "style_shimed")
+        (p/shim-styling! sr (:name m) (host-type (:host m)))
+        (set-property el "style_shimed" true))))
   (when f (u/call-with-first-argument f el)))
 
 (defn- create-ce-prototype
@@ -213,8 +226,10 @@
         prototype (ce/create-prototype
                       (merge m {:prototype (create-lucuma-prototype (apply type->prototype (definition->el-id m)))
                                 :properties (concat attributes handlers) :on-created on-created :on-attribute-changed on-attribute-changed}))]
+    ;; Install methods
     (doseq [method methods]
       (u/safe-aset prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
+    (install-property-holder! prototype)
     prototype))
 
 (defn- default-constructor-name

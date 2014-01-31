@@ -38,6 +38,8 @@ ShadowRoot.prototype.resetStyleInheritance;
 
 var lucuma = {};
 
+lucuma.LucumaElement.lucuma;
+
 /**
  * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-created-callback
  */
