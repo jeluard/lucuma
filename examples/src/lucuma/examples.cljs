@@ -16,7 +16,9 @@
 
 (comment
 (defwebcomponent ex-hello
-  :content "Hello world!")
+  :document "Hello world!")
+(defwebcomponent ex-hello
+  :document (document "Hello world!"))
 
 (register ex-hello)
 

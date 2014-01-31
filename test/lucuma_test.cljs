@@ -205,6 +205,8 @@
   (l/register test-prototype-6)
   (l/register (test-prototype-7 1))
   (l/register (test-prototype-8 1))
+
+  ;; TODO fails on Chrome Canary
   (l/register test-prototype-9)
 
   (l/register test-method-1)

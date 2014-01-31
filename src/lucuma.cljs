@@ -117,6 +117,15 @@
                              (adjust-listener el e o n))))
 
 ;;
+;; Lucuma properties access
+;;
+
+(def ^:private property-holder-name "lucuma")
+(defn install-property-holder! [p] (aset p property-holder-name #js {}))
+(defn get-property [el n] (aget el property-holder-name n))
+(defn set-property [el n v] (aset el property-holder-name n v))
+
+;;
 ;; prototype creation
 ;;
 
@@ -189,17 +198,14 @@
     (.createElement js/document n)))
 
 (defn- type->prototype
+  "Returns prototype of an element from name and extension."
   [n is]
   (if n
     (.getPrototypeOf js/Object (create-element n is))
     (.-prototype js/HTMLElement)))
 
-(def ^:private property-holder-name "lucuma")
-(defn install-property-holder! [p] (aset p property-holder-name #js {}))
-(defn get-property [el n] (aget el property-holder-name n))
-(defn set-property [el n v] (aset el property-holder-name n v))
-
 (defn- initialize!
+  "Initializes a custom element instance."
   [el f m attributes handlers]
   ;;
   (doseq [attribute (array-seq (.-attributes el))]
@@ -207,7 +213,7 @@
   ;; Set host attributes extracted from :host element
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (str (val a))))
-  ;; Install ShadowDOM and shim if needed (only first instance of each type)
+  ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
       (when-not (get-property el "style_shimed")
@@ -233,6 +239,11 @@
     prototype))
 
 (defn- default-constructor-name
+  "Generates a default constructor name for an element.
+
+  e.g.
+   my-element => MYElement
+   my-lucu-element => MYLucuElement"
   [n]
   (when n
     (let [v (string/split n #"-")]
