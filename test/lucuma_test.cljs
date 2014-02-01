@@ -31,15 +31,15 @@
   (is (= "EXComplexName" (l/default-constructor-name "ex-complex-name"))))
 
 (deftest ignored-keys
-  (is (empty? (l/ignored-keys {:content ""})))
-  (is (empty? (l/ignored-keys {:content "" :style ""})))
-  (is (= #{:comtent} (l/ignored-keys {:comtent "" :style ""}))))
+  (is (empty? (l/ignored-keys {:document ""})))
+  (is (empty? (l/ignored-keys {:document "" :style ""})))
+  (is (= #{:documemt} (l/ignored-keys {:documemt "" :style ""}))))
 
 (defwebcomponent test-sr-1
   :ns nil)
 (defwebcomponent test-sr-2
   :ns nil
-  :content "hello")
+  :document "hello")
 (defwebcomponent test-sr-3
   :ns nil
   :style "* {background: red;}")

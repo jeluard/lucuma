@@ -33,7 +33,7 @@
   (fire el :show))
 
 (defwebcomponent lucu-overlay
-  :content [:div {:class "b-overlay-backdrop q-b-overlay-backdrop"}
+  :document [:div {:class "b-overlay-backdrop q-b-overlay-backdrop"}
             [:div {:class "b-overlay-backdrop-close q-b-overlay-backdrop-close" :title "Press ESC to close"} "x"]
             [:div {:class "b-overlay-body q-overlay"} [:content]]]
   :style style

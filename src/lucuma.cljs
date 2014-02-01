@@ -16,30 +16,66 @@
 (defn lucuma-element? [el] (instance? LucumaElement el))
 
 (defn- create-lucuma-prototype
+  "Adds LucumaElement to the prototype chain."
   [base-prototype]
   (set! (.-prototype LucumaElement) base-prototype)
   (.-prototype LucumaElement))
 
 ;;
-;; content / style rendering
+;; document / style rendering
 ;;
 
-(defmulti render-content
-  "Renders 'content' to something that can be added to the DOM."
+(defn render-then-install-map!
+  "Calls render-fn then install-fn on :content."
+  [sr m render-fn install-fn]
+  (let [rc (render-fn (:content m))]
+    (install-fn sr rc m)))
+
+(defn- render-then-install!
+  "Dispatches based on :document value.
+   Node instances will be directly appended, list passed recursively to this fn,
+   map render then installed and others encapsulated in a map as value of :content."
+  [sr o render-fn install-fn]
+  (cond
+   (instance? js/Node o) (.appendChild sr (.cloneNode o true))
+   (list? o) (doseq [e o] (render-then-install! sr e render-fn install-fn))
+   (map? o) (render-then-install-map! sr o render-fn install-fn)
+   :else (render-then-install-map! sr {:content o} render-fn install-fn)))
+
+;; document
+
+(defmulti render-document
+  "Renders 'document' to something that can be added to the DOM."
   type)
 
-(defmethod render-content js/String [s] s)
-
-(defmulti append-content!
-  "Appends rendered 'content' to provided ShadowRoot."
-  (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
-
-(defmethod append-content! js/String [sr s] (set! (.-innerHTML sr) s))
+(defmethod render-document js/String [s] s)
 
 (derive js/HTMLElement ::node)
 (derive js/DocumentFragment ::node)
 
-(defmethod append-content! ::node [sr e] (.appendChild sr e))
+(defmulti install-rendered-document!
+  "Installs rendered 'document' to provided ShadowRoot."
+  (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
+
+(defmethod install-rendered-document! js/String [sr s] (set! (.-innerHTML sr) s))
+(defmethod install-rendered-document! ::node [sr e] (.appendChild sr e))
+
+(defn match-media?
+  "Returns true if media query matches."
+  [s]
+  (.-matches (.matchMedia js/window s)))
+
+(defn- call-when-defined! [sr m t] (when-let [f (t m)] (f (.-host sr))))
+
+(defn install-document!
+  "Dynamically installs/uninstalls document based on matching media."
+  [sr rc m]
+  (let [media (:media m)]
+    (when (or (not media) (match-media? media))
+      (call-when-defined! sr m :on-enabled)
+      (install-rendered-document! sr rc))))
+
+;; style
 
 (defmulti render-style
   "Renders 'style' to something that can be added to the DOM."
@@ -47,34 +83,26 @@
 
 (defmethod render-style js/String [s] s)
 
-(defn- render-style-map
-  [s]
-  (if (map? s)
-    (update-in s [:content] render-style)
-    {:content (render-style s)}))
-
-(defmulti append-style!
-  "Appends rendered 'style' to provided 'style' element."
+(defmulti install-rendered-style!
+  "Installs rendered 'style' to provided 'style' element."
   (fn [_ e] (type e)))
 
-(defmethod append-style! js/String [el c] (set! (.-textContent el) c))
+(defmethod install-rendered-style! js/String [el c] (set! (.-textContent el) c))
 
-(defn- append-style-map!
-  [sr m]
-  (let [el (.createElement js/document "style")
-        {:keys [media title content]} m]
-      (when media (set! (.-media el) media))
-      (when title (set! (.-title el) title))
-    (append-style! el content)
+(defn- create-style-element
+  "Creates a style element."
+  [media title]
+  (let [el (.createElement js/document "style")]
+    (when media (set! (.-media el) media))
+    (when title (set! (.-title el) title))
+    el))
+
+(defn install-style!
+  "Appends a new style element encapsulating redendered style."
+  [sr rc m]
+  (let [el (create-style-element (:media m) (:title m))]
+    (install-rendered-style! el rc)
     (.appendChild sr el)))
-
-(defn- render-then-append!
-  [render-fn append-fn! el o]
-  (when-let [o (if (fn? o) (o el) o)]
-    (letfn [(append [el o] (when-let [r (render-fn o)] (append-fn! el r)))]
-      (if (list? o)
-        (doseq [o o] (append el o))
-        (append el o)))))
 
 ;;
 ;; ShadowRoot support
@@ -86,13 +114,13 @@
   (.-shadowRoot el)) ;; TODO is this always right?
 
 (defn- create-shadow-root!
-  "Creates and appends a ShadowRoot to 'el' if either `:style` or `:content` is provided."
+  "Creates and appends a ShadowRoot to 'el' if either `:style` or `:document` is provided."
   [el m]
-  (let [{:keys [style content]} m]
-    (when (or style content)
+  (let [{:keys [style document]} m]
+    (when (or style document)
       (let [sr (sd/create el m)]
-        (when style (render-then-append! render-style-map append-style-map! sr style))
-        (when content (render-then-append! render-content append-content! sr content))
+        (when style (render-then-install! sr style render-style install-style!))
+        (when document (render-then-install! sr document render-document install-document!))
         sr))))
 
 ;;
@@ -250,7 +278,7 @@
       (str (string/upper-case (first v)) (string/join (map string/capitalize (subvec v 1)))))))
 
 (def all-keys
-  #{:name :ns :constructor :host :extends :content :style :attributes :methods :handlers
+  #{:name :ns :constructor :host :extends :document :style :attributes :methods :handlers
     :on-created :on-attached :on-detached :reset-style-inheritance})
 
 (defn ignored-keys

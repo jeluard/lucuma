@@ -1,5 +1,5 @@
 (ns lucuma.examples
-  (:require [lucuma :refer [register render-content render-style]]
+  (:require [lucuma :refer [register render-document render-style]]
             [lucuma.event :refer [fire]]
             [lucuma.range-with-threshold :refer [lucu-range-with-threshold]]
             [lucuma.overlay :refer [lucu-overlay]]
@@ -12,13 +12,12 @@
                    [dommy.macros :refer [node sel1]]))
 
 (defwebcomponent ex-hello
-  :content "Hello world!")
+  :document "Hello world!"
+  )
 
 (comment
 (defwebcomponent ex-hello
   :document "Hello world!")
-(defwebcomponent ex-hello
-  :document (document "Hello world!"))
 
 (register ex-hello)
 
@@ -38,23 +37,23 @@
   :on-detached #(prepend! (sel1 :#lifecycle-events) [:li "element detached"]))
 
 (derive PersistentVector ::vector)
-(defmethod render-content ::vector [v] (node v))
+(defmethod render-document ::vector [v] (node v))
 
-(defwebcomponent ex-content-hiccup
-  :content [:div "Hello hiccup!"])
+(defwebcomponent ex-document-hiccup
+  :document [:div "Hello hiccup!"])
 
 (defwebcomponent ex-style
-  :content [:span "Hello styled!"]
+  :document [:span "Hello styled!"]
   :style "span { background: blue; color: white; border: 0; border-radius: 4px;}")
 
 (defmethod render-style ::vector [v] (css v))
 
 (defwebcomponent ex-style-garden
-  :content [:span "Hello garden!"]
+  :document [:span "Hello garden!"]
   :style [:span {:background "#3d7c45" :color "white" :border 0 :border-radius (px 4)}])
 
 (defwebcomponent ex-style-scope
-  :content [:span {:class "fa fa-exclamation"} "Hello style scope!"])
+  :document [:span {:class "fa fa-exclamation"} "Hello style scope!"])
 
 (defwebcomponent ex-attributes
   :attributes #{:attribute})
@@ -71,18 +70,18 @@
 
 (defwebcomponent ex-constructor
   :constructor "CustomConstructor"
-  :content [:div "Hello constructor!"])
+  :document [:div "Hello constructor!"])
 
 (defwebcomponent ex-extend
   :host :div
-  :content [:span {:class "fa fa-exclamation"} [:content]])
+  :document [:span {:class "fa fa-exclamation"} [:content]])
 
 (defn ^:export register-all
   []
   (register ex-hello)
   (register (merge ex-hello {:name "my-hello-with-custom-name"}))
   (register ex-lifecycle)
-  (register ex-content-hiccup)
+  (register ex-document-hiccup)
   (register ex-style)
   (register ex-style-garden)
   (register ex-style-scope)

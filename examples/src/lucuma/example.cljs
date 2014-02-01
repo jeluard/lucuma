@@ -41,7 +41,7 @@
 (defn onsuccess
   [r f]
   (fn [] (when (and (= (.-readyState r) 4) (= (.-status r) 200))
-           (f (js/JSON.parse (.-responseText r))))))
+           (f (.-responseText r)))))
 
 (defn fetch
   [url f]
@@ -51,12 +51,22 @@
     (.open r "GET" url true)
     (.send r nil)))
 
+(def bootstrap-style (.createElement js/document "style"))
+(fetch "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"
+       (fn [s]
+         (set! (.-textContent bootstrap-style) s)))
+
+(def prism-style (.createElement js/document "style"))
+(fetch "assets/prism.css"
+       (fn [s]
+         (set! (.-textContent prism-style) s)))
+
 (defn fetch-source
   [n f]
   (fetch (sha-url owner repo n)
          (fn [json]
-           (let [sha (aget json "sha")]
-             (fetch (blob-url owner repo sha) #(f (js/window.atob (str/replace (aget % "content") "\n" ""))))))))
+           (let [sha (aget (js/JSON.parse json) "sha")]
+             (fetch (blob-url owner repo sha) #(f (js/window.atob (str/replace (aget (js/JSON.parse %) "content") "\n" ""))))))))
 
 (defn escape-html
   [s]
@@ -129,7 +139,6 @@
             v (val kv)]
         (set-source! k (str/join "\n" (subvec l (- (:from v) 1) (:to v))))))))
 
-
 (defn as-int
   [s]
   (when s
@@ -148,16 +157,15 @@
       (swap! usages assoc el {:from from :to to})
       (.warn js/console "Failed to lookup 'from' or 'to' attribute."))))
 
-(defn content
-  [el]
+(def document
   (list [:div {:class "example-live"} [:content {:select "*"}]]
         [:pre {:class "example-markup"} [:code {:class "language-markup"}]]
         [:pre {:class "example-cljs"} [:code {:class "language-clojure"}]]))
 
 (def base
   {:host :section
-   :content content
-   :style style})
+   :document document
+   :style (list bootstrap-style prism-style style)})
 
 (defwebcomponent lucu-example
   base

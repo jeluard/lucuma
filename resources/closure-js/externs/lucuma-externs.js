@@ -27,6 +27,12 @@ Element.prototype.createShadowRoot = function() {};
 var ShadowRoot = {};
 
 /**
+ * @type {Element}
+ * @see http://w3c.github.io/webcomponents/spec/shadow/#widl-ShadowRoot-host
+ */
+ShadowRoot.prototype.host;
+
+/**
  * @type {bool}
  * @see http://w3c.github.io/webcomponents/spec/shadow/#widl-ShadowRoot-resetStyleInheritance
  */

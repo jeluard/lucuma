@@ -15,6 +15,6 @@
 (defn show-back [el] (set-flipped! el true))
 
 (defwebcomponent lucu-flipbox
-  :content [:content]
+  :document [:content]
   :style style
   :methods {:showFront show-front :showBack show-back :toggle toggle})
