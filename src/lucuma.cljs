@@ -80,10 +80,10 @@
   "Dynamically installs/uninstalls document based on matching media."
   [sr rc m]
   (letfn [(install! []
-                   (call-when-defined! sr m :on-enabled)
+                   (call-when-defined! sr m :on-attached)
                    (install-rendered-document! sr rc))
           (uninstall! []
-                   (call-when-defined! sr m :on-disabled)
+                   (call-when-defined! sr m :on-detached)
                    (uninstall-rendered-document! sr rc))]
     (let [media (:media m)]
       (if media
