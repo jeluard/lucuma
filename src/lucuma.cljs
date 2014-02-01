@@ -60,20 +60,35 @@
 (defmethod install-rendered-document! js/String [sr s] (set! (.-innerHTML sr) s))
 (defmethod install-rendered-document! ::node [sr e] (.appendChild sr e))
 
-(defn match-media?
-  "Returns true if media query matches."
-  [s]
-  (.-matches (.matchMedia js/window s)))
+(defmulti uninstall-rendered-document!
+  "Uninstalls rendered 'document' to provided ShadowRoot."
+  (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
+
+(defmethod uninstall-rendered-document! js/String [sr s] (set! (.-innerHTML sr) ""))
+(defmethod uninstall-rendered-document! ::node [sr e] (.removeChild sr e))
+
+(defn on-match-media
+  "Listens to matchMedia on calls methods depending on matches value."
+  [s m-fn nm-fn]
+  (let [m (.matchMedia js/window s)]
+    (.addListener m #(if (.-matches m) (m-fn) (nm-fn)))
+    (when (.-matches m) (m-fn))))
 
 (defn- call-when-defined! [sr m t] (when-let [f (t m)] (f (.-host sr))))
 
 (defn install-document!
   "Dynamically installs/uninstalls document based on matching media."
   [sr rc m]
-  (let [media (:media m)]
-    (when (or (not media) (match-media? media))
-      (call-when-defined! sr m :on-enabled)
-      (install-rendered-document! sr rc))))
+  (letfn [(install! []
+                   (call-when-defined! sr m :on-enabled)
+                   (install-rendered-document! sr rc))
+          (uninstall! []
+                   (call-when-defined! sr m :on-disabled)
+                   (uninstall-rendered-document! sr rc))]
+    (let [media (:media m)]
+      (if media
+        (on-match-media media install! uninstall!)
+        (install!)))))
 
 ;; style
 
