@@ -8,7 +8,7 @@
 (defn shadow-css-needed?
   "Returns true if Shadow CSS polyfill is installed in current platform."
   []
-  (exists? js/Platform.ShadowCSS))
+  (and (exists? js/Platform) (exists? js/Platform.ShadowCSS)))
 
 (when (shadow-css-needed?)
   (set! (.-strictStyling js/Platform.ShadowCSS) true))
