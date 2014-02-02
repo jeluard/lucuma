@@ -1,12 +1,15 @@
 # 0.0.2 ()
 
-* [ADDED] Function to list defwebcomponent ignored keys []()
-* [ADDED] Functions to check for Web Components technologies support []()
-* [ADDED] Enhanced `host` syntax to support attributes []()
-* [ADDED] Extended `style` syntax to support media queries []()
-* [UPDATED] Renamed `base-type` to `host`
-* [UPDATED] Renamed handlers (created-fn -> on-created, entered-view-fn -> on-attached, left-view-fn -> on-detached)
+* [NEW] Added function to list defwebcomponent ignored keys
+* [NEW] Added functions to check for Web Components technologies support
+* [NEW] Enhanced `host` syntax to support attributes
+* [NEW] Extended `document` and `style` syntax to support media queries
+* [CHANGE] Renamed `content` to `document`
+* [CHANGE] Renamed `base-type` to `host`
+* [CHANGE] Removed support for `document` and `style` defined as function
+* [CHANGE] Renamed hooks (created-fn -> on-created, entered-view-fn -> on-attached, left-view-fn -> on-detached)
 * [UPDATED] Moved examples to Custom Component with real live view support
+* [DELETE] Handler support
 * And a bunch of [bugs fixed](https://github.com/jeluard/lucuma/issues?labels=bug&milestone=1&page=1&state=closed).
 
 
