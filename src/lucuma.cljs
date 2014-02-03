@@ -309,13 +309,12 @@
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (str (val a))))
   ;; Set default properties values
-  (doseq [property (:properties m)]
-    (let [n (name (key property))
-          v (val property)]
-      ;; TODO attribute override defaults when match and attributes?
-      ;;(doseq [attribute (array-seq (.-attributes el))]
-      ;;  (.-name attribute) (.-value attribute))
-      (set-property! el m n (get-property-definition-default v) true false)))
+  (let [as (att/attributes el)]
+    (doseq [property (:properties m)]
+      (let [k (key property)
+            n (name k)
+            v (val property)]
+        (set-property! el m n (or (k as) (get-property-definition-default v)) true false))))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)

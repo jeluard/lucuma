@@ -41,3 +41,9 @@
   [get-fn set-fn]
   {:configurable false :enumerable true
    :get (u/wrap-with-callback-this-value get-fn) :set (u/wrap-with-callback-this-value set-fn)})
+
+(defn attributes
+  [el]
+  "Returns a map of element attributes."
+  (into {} (for [attribute (array-seq (.-attributes el))]
+             [(keyword (.-name attribute)) (.-value attribute)])))
