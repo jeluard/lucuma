@@ -29,7 +29,7 @@
   [el]
   (display! (backdrop el) "block")
   (dommy/add-class! (sel1 :html) :overlay-backdrop-active)
-  (.addEventListener el "click" #(hide el))
+  (dommy/listen! el :click #(hide el))
   (fire el :show))
 
 (defwebcomponent lucu-overlay

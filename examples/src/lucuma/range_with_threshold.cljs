@@ -1,7 +1,8 @@
 (ns lucuma.range-with-threshold
   (:require [lucuma :as l :refer-macros [defwebcomponent]]
             [lucuma.attribute :as att]
-            [lucuma.event :refer [fire]]))
+            [lucuma.event :refer [fire]]
+            [dommy.core :as dommy]))
 
 (def ^:private previous-value (atom nil))
 
@@ -44,7 +45,7 @@
 (defn initialize
   [el]
   (reset! previous-value (.-value el))
-  (.addEventListener el "change" #(fire-event-on-threshold-cross (.-target %)) false))
+  (dommy/listen! el :change #(fire-event-on-threshold-cross (.-target %))))
 
 (defwebcomponent lucu-range-with-threshold
   :host :input
