@@ -1,6 +1,5 @@
 (ns lucuma.custom-elements
-  (:require [lucuma.attribute :as att]
-            [lucuma.util :as u]))
+  (:require [lucuma.util :as u]))
 
 (def ^:private forbidden-names #{"annotation-xml" "color-profile" "font-face" "font-face-src" "font-face-uri" "font-face-format" "font-face-name" "missing-glyph"})
 
@@ -23,10 +22,9 @@
 
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
-  [m]
-  (let [{:keys [prototype properties on-created on-attribute-changed on-attached on-detached]} m
-        ce-prototype (if (seq properties)
-                       (.create js/Object prototype (clj->js (att/properties properties)))
+  [{:keys [prototype properties on-created on-attribute-changed on-attached on-detached]}]
+  (let [ce-prototype (if (seq properties)
+                       (.create js/Object prototype (clj->js properties))
                        (.create js/Object prototype))]
     (install-callback ce-prototype on-created "createdCallback")
     (install-callback ce-prototype on-attached "attachedCallback")

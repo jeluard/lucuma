@@ -1,12 +1,12 @@
 (ns lucuma
   (:require [clojure.string :as string]
+            [lucuma.attribute :as att]
             [lucuma.custom-elements :as ce]
+            [lucuma.event :as e]
             [lucuma.polymer :as p]
             [lucuma.shadow-dom :as sd]
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods]))
-
-(def ^:private registry (atom {}))
 
 ;;
 ;; Lucuma prototype
@@ -20,6 +20,16 @@
   [base-prototype]
   (set! (.-prototype LucumaElement) base-prototype)
   (.-prototype LucumaElement))
+
+(def ^:private registry (atom {}))
+
+(defn custom-element-name
+  [el]
+  (or (.getAttribute el "is") (string/lower-case (.-tagName el))))
+
+(defn get-definition
+  [el]
+  (get @registry (custom-element-name el)))
 
 ;;
 ;; document / style rendering
@@ -163,10 +173,55 @@
 ;; Lucuma properties access
 ;;
 
-(def ^:private property-holder-name "lucuma")
-(defn install-property-holder! [p] (aset p property-holder-name #js {}))
-(defn get-property [el n] (aget el property-holder-name n))
-(defn set-property [el n v] (aset el property-holder-name n v))
+;; property definition manipulation
+
+(defn- get-property-definition-options
+  [m n]
+  (get-in m [:properties (keyword n)]))
+
+(defn- get-property-definition-default
+  [os]
+  (if (map? os)
+    (:default os)
+    os))
+
+(defn- get-property-definition-type
+  [os]
+  (or (:type os) (type (get-property-definition-default os))))
+
+;; Property access
+
+(def ^:private lucuma-properties-holder-name "lucuma")
+(defn- install-lucuma-properties-holder! [p] (aset p lucuma-properties-holder-name #js {}))
+(defn- get-lucuma-property [el n] (aget el lucuma-properties-holder-name n))
+(defn- set-lucuma-property! [el n v] (aset el lucuma-properties-holder-name n v))
+
+(def ^:private properties-holder-name "properties")
+(defn- install-properties-holder! [p] (set-lucuma-property! p properties-holder-name #js {}))
+
+(defn get-property
+  "Gets the value of a named property for an element instance."
+  [el n]
+  (aget el lucuma-properties-holder-name properties-holder-name (name n)))
+
+(defn set-property!
+  "Sets the value of a named property for an element instance."
+  ([el n v] (set-property! el n v true true))
+  ([el n v consider-attributes? consider-events?] (set-property! el (get-definition el) n v consider-attributes? consider-events?))
+  ([el m n v consider-attributes? consider-events?]
+   (when (not (u/valid-identifier? (name n)))
+     (throw (ex-info (str "Invalid property name <" (name n) ">") {:property n})))
+   (let [os (get-property-definition-options m n)]
+     (let [et (get-property-definition-type os)
+           at (type v)]
+       (when (and (not (nil? v)) (not= at et))
+         (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name n) :expected-type et :actual-type at}))))
+     (when (or consider-attributes? consider-events?)
+       (when (and consider-attributes? (or (:attributes? os) true))
+         (att/set! el n v))
+       (when (and consider-events? (or (:events? os) true))
+         (e/fire el n {:old-value (get-property el n) :new-value v}))))
+   (aset el lucuma-properties-holder-name properties-holder-name (name n) v)))
 
 ;;
 ;; prototype creation
@@ -249,36 +304,68 @@
 
 (defn- initialize!
   "Initializes a custom element instance."
-  [el f m attributes handlers]
-  ;;
-  (doseq [attribute (array-seq (.-attributes el))]
-    (attribute-changed el (.-name attribute) nil (.-value attribute) attributes handlers))
+  [el f m]
   ;; Set host attributes extracted from :host element
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (str (val a))))
+  ;; Set default properties values
+  (doseq [property (:properties m)]
+    (let [n (name (key property))
+          v (val property)]
+      ;; TODO attribute override defaults when match and attributes?
+      ;;(doseq [attribute (array-seq (.-attributes el))]
+      ;;  (.-name attribute) (.-value attribute))
+      (set-property! el m n (get-property-definition-default v) true false)))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
-      (when-not (get-property el "style_shimed")
+      (when-not (get-lucuma-property el "style_shimed")
         (p/shim-styling! sr (:name m) (host-type (:host m)))
-        (set-property el "style_shimed" true))))
+        (set-lucuma-property! el "style_shimed" true))))
   (when f (u/call-with-first-argument f el)))
+
+(defn- merge-properties
+  [p g s]
+  (apply merge (map #(hash-map (keyword %) (att/property-definition (partial g %) (partial s %)))
+                    (map key p))))
+
+(defn validate-property-definition!
+  "Ensures a property definition is sound. Throws a js/Error if not."
+  [n o]
+  (when (map? o)
+    (when-not (contains? o :default)
+      (throw (ex-info (str "No default for <" n ">") {:property n})))
+    (when-let [t (:type o)]
+      (when (and (not (nil? (:default o))) (not (= (type (:default o)) t)))
+        (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))))
+  (when (and (nil? (get-property-definition-default o)) (nil? (:type o)))
+    (throw (ex-info (str "Default can't be nil if no type is provided for <" n ">") {:property n}))))
 
 (defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
   [m]
-  (let [{:keys [host on-created attributes methods handlers]} m
-        attributes (set (map name attributes))
-        handlers (set (map event->handler handlers))
-        on-created #(initialize! % on-created m attributes handlers)
-        on-attribute-changed #(attribute-changed %1 %2 %3 %4 attributes handlers)
+  (let [{:keys [host on-created properties methods]} m
+        on-created #(initialize! % on-created m)
+        on-attribute-changed #(attribute-changed %1 %2 %3 %4 properties nil)
         prototype (ce/create-prototype
                       (merge m {:prototype (create-lucuma-prototype (apply type->prototype (definition->el-id m)))
-                                :properties (concat attributes handlers) :on-created on-created :on-attribute-changed on-attribute-changed}))]
+                                :properties (merge-properties properties
+                                                              #(clj->js (get-property %2 %1))
+                                                              #(set-property! %2 %1 (js->clj %3)))
+                                :on-created on-created :on-attribute-changed on-attribute-changed}))]
+    (install-lucuma-properties-holder! prototype)
+    (install-properties-holder! prototype)
+    ;; Validate property definitions
+    (doseq [property properties]
+      (let [n (name (key property))
+            os (val property)]
+        (validate-property-definition! n os)))
     ;; Install methods
     (doseq [method methods]
-      (u/safe-aset prototype (name (key method)) (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method)))))
-    (install-property-holder! prototype)
+      (let [n (name (key method))]
+        (when (not (u/valid-identifier? n))
+          (throw (ex-info (str "Invalid method name <" n ">") {:method n})))
+        (aset prototype n (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method))))))
     prototype))
 
 (defn- default-constructor-name
@@ -293,7 +380,7 @@
       (str (string/upper-case (first v)) (string/join (map string/capitalize (subvec v 1)))))))
 
 (def all-keys
-  #{:name :ns :constructor :host :extends :document :style :attributes :methods :handlers
+  #{:name :ns :constructor :host :extends :document :style :properties :methods :handlers
     :on-created :on-attached :on-detached :reset-style-inheritance})
 
 (defn ignored-keys
@@ -309,6 +396,6 @@
         cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))]
     (if-let [goog-ns (u/*ns*->goog-ns (:ns m))]
       (when-let [c (:constructor m (default-constructor-name n))]
-        (u/safe-aset goog-ns c cf))
+        (aset goog-ns c cf))
       (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
     (swap! registry assoc n m)))

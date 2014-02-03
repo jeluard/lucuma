@@ -1,6 +1,5 @@
 (ns lucuma.example
   (:require [clojure.string :as str]
-            [cljs.reader :refer [read-string]]
             [lucuma :refer [shadow-root]]
             [lucuma.attribute :as attr]
             [lucuma.polymer :as p]
@@ -125,7 +124,7 @@
   [el]
   (set-markup! el)
   (register-mutation-observer el #(set-markup! el))
-  (if-let [n (attr/get-attr el "file")]
+  (if-let [n (attr/get el "file")]
     (fetch-source n #(set-source! el %))
     (.warn js/console "Failed to lookup 'name' attribute.")))
 
@@ -139,20 +138,12 @@
             v (val kv)]
         (set-source! k (str/join "\n" (subvec l (- (:from v) 1) (:to v))))))))
 
-(defn as-int
-  [s]
-  (when s
-    (let [i (read-string s)]
-      (if (number? i)
-        i
-        (throw (ex-info "" {:value s}))))))
-
 (defn created-usage
   [el]
   (set-markup! el)
   (register-mutation-observer el #(set-markup! el))
-  (let [from (as-int (attr/get-attr el "line-from"))
-        to (as-int (attr/get-attr el "line-to"))]
+  (let [from (attr/get el "line-from")
+        to (attr/get el "line-to")]
     (if (and (number? from) (number? to))
       (swap! usages assoc el {:from from :to to})
       (.warn js/console "Failed to lookup 'from' or 'to' attribute."))))

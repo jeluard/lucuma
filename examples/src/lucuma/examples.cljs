@@ -55,8 +55,9 @@
 (defwebcomponent ex-style-scope
   :document [:span {:class "fa fa-exclamation"} "Hello style scope!"])
 
-(defwebcomponent ex-attributes
-  :attributes #{:attribute})
+(defwebcomponent ex-properties
+  :properties {:property1 "default"
+               :property2 {:default 1 :type js/Number :events? true :attributes? true}})
 
 (defwebcomponent ex-methods
   :methods {:method (fn [] {:key "value"})})
@@ -64,9 +65,6 @@
 (defn ^:export fire-event
   [id]
   (fire (sel1 (keyword id)) :event {:msg "Sent from CLJS"}))
-
-(defwebcomponent ex-events
-  :handlers #{:event})
 
 (defwebcomponent ex-constructor
   :constructor "CustomConstructor"
@@ -86,9 +84,8 @@
   (register ex-style-garden)
   (register ex-style-scope)
   (register ex-extend)
-  (register ex-attributes)
+  (register ex-properties)
   (register ex-methods)
-  (register ex-events)
   (register ex-constructor)
 
   (register lucu-range-with-threshold)

@@ -43,13 +43,6 @@
 
 (defn valid-standard-element-name? [n] (when n (= -1 (.indexOf n "-"))))
 
-(defn safe-aset
-  [o n v]
-  {:pre [(valid-identifier? n)]}
-  (when (exists? (aget o n))
-    (throw (ex-info "Property already defined" {:object o :property n})))
-  (aset o n v))
-
 (defn warn
   [s]
   (.warn js/console (clj->js s)))
