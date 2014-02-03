@@ -1,5 +1,5 @@
 (ns lucuma.flipbox
-  (:require-macros [lucuma :refer [defwebcomponent]]))
+  (:require [lucuma :as l :refer-macros [defwebcomponent]]))
 
 (def style
   ":host{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:block;position:relative;height:100%;width:100%;-webkit-transform-style:preserve-3d;-moz-transform-style:preserve-3d;-ms-transform-style:preserve-3d;-o-transform-style:preserve-3d;transform-style:preserve-3d}
@@ -9,12 +9,13 @@
    :host[flipped] > *:first-child{-webkit-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-moz-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-ms-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);-o-transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);transform:perspective(800px) rotateY(180deg) translate3d(0,0,2px);z-index:1}
    :host[flipped] > *:last-child{-webkit-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-moz-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-ms-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);-o-transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);transform:perspective(800px) rotateY(360deg) translate3d(0,0,1px);z-index:2}")
 
-(defn- set-flipped! [el v] (set! (.-flipped el) v))
-(defn toggle [el] (set-flipped! el (not (.-flipped el))))
+(defn- set-flipped! [el v] (l/set-property! el :flipped v))
+(defn toggle [el] (set-flipped! el (not (l/get-property el :flipped))))
 (defn show-front [el] (set-flipped! el false))
 (defn show-back [el] (set-flipped! el true))
 
 (defwebcomponent lucu-flipbox
   :document [:content]
   :style style
+  :properties {:flipped false}
   :methods {:showFront show-front :showBack show-back :toggle toggle})

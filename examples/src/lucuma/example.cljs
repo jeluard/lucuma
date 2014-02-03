@@ -1,13 +1,8 @@
 (ns lucuma.example
   (:require [clojure.string :as str]
-            [lucuma :refer [shadow-root]]
-            [lucuma.attribute :as attr]
-            [lucuma.polymer :as p]
-            [dommy.core :refer [set-value!]]
-            [garden.stylesheet :refer [at-media]]
+            [lucuma :as l :refer-macros [defwebcomponent]]
             [garden.units :refer [px]])
-  (:require-macros [lucuma :refer [defwebcomponent]]
-                   [dommy.macros :refer [sel1]]))
+  (:require-macros [dommy.macros :refer [sel1]]))
 
 (defn header
   [s]
@@ -110,13 +105,13 @@
 
 (defn set-markup!
   [el]
-  (let [m (sel1 (shadow-root el) :.language-markup)]
+  (let [m (sel1 (l/shadow-root el) :.language-markup)]
     (set! (.-innerHTML m) (create-markup el))
     (js/Prism.highlightElement m)))
 
 (defn set-source!
   [el s]
-  (let [m (sel1 (shadow-root el) :.language-clojure)]
+  (let [m (sel1 (l/shadow-root el) :.language-clojure)]
     (set! (.-innerHTML m) s)
     (js/Prism.highlightElement m)))
 
@@ -124,9 +119,9 @@
   [el]
   (set-markup! el)
   (register-mutation-observer el #(set-markup! el))
-  (if-let [n (attr/get el "file")]
+  (if-let [n (l/get-property el :file)]
     (fetch-source n #(set-source! el %))
-    (.warn js/console "Failed to lookup 'name' attribute.")))
+    (.warn js/console "Failed to lookup 'file' attribute.")))
 
 (def usages (atom {}))
 
@@ -142,11 +137,11 @@
   [el]
   (set-markup! el)
   (register-mutation-observer el #(set-markup! el))
-  (let [from (attr/get el "line-from")
-        to (attr/get el "line-to")]
+  (let [from (l/get-property el :line_from)
+        to (l/get-property el :line_to)]
     (if (and (number? from) (number? to))
       (swap! usages assoc el {:from from :to to})
-      (.warn js/console "Failed to lookup 'from' or 'to' attribute."))))
+      (.warn js/console "Failed to lookup 'line_from' or 'line_to' attribute."))))
 
 (def document
   (list [:div {:class "example-live"} [:content {:select "*"}]]
@@ -160,11 +155,14 @@
 
 (defwebcomponent lucu-example
   base
-  :on-created created-example)
+  :on-created created-example
+  :properties {:file ""})
 
 (defwebcomponent lucu-usage
   base
-  :on-created created-usage)
+  :on-created created-usage
+  :properties {:line_from {:default nil :type js/Number}
+               :line_to {:default nil :type js/Number}})
 
 ;; TODO make more generic (i.e. also work without polymer)
 (.addEventListener js/document "WebComponentsReady"

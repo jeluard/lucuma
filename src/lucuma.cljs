@@ -149,35 +149,10 @@
         sr))))
 
 ;;
-;; listener support
-;;
-
-(defn- adjust-listener
-  [el e o n]
-  (if-let [f (u/str->fn (or o n))]
-    (if (nil? o)
-      (.addEventListener el e f)
-      (.removeEventListener el e f))
-    (.log js/console (str "Could not access listener fn: " (or o n)))))
-
-(defn- event->handler [h] (str "on" (name h)))
-(defn- handler->event [a] (.substr a 2))
-
-(defn- attribute-changed
-  [el a o n attributes handlers]
-  (cond
-    (contains? handlers a) (let [e (handler->event a)]
-                             (adjust-listener el e o n))))
-
-;;
 ;; Lucuma properties access
 ;;
 
 ;; property definition manipulation
-
-(defn- get-property-definition-options
-  [m n]
-  (get-in m [:properties (keyword n)]))
 
 (defn- get-property-definition-default
   [os]
@@ -207,20 +182,19 @@
 (defn set-property!
   "Sets the value of a named property for an element instance."
   ([el n v] (set-property! el n v true true))
-  ([el n v consider-attributes? consider-events?] (set-property! el (get-definition el) n v consider-attributes? consider-events?))
-  ([el m n v consider-attributes? consider-events?]
+  ([el n v consider-attributes? consider-events?] (set-property! el (get-in (get-definition el) [:properties n]) n v consider-attributes? consider-events?))
+  ([el os n v consider-attributes? consider-events?]
    (when (not (u/valid-identifier? (name n)))
      (throw (ex-info (str "Invalid property name <" (name n) ">") {:property n})))
-   (let [os (get-property-definition-options m n)]
-     (let [et (get-property-definition-type os)
-           at (type v)]
-       (when (and (not (nil? v)) (not= at et))
-         (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name n) :expected-type et :actual-type at}))))
-     (when (or consider-attributes? consider-events?)
-       (when (and consider-attributes? (or (:attributes? os) true))
-         (att/set! el n v))
-       (when (and consider-events? (or (:events? os) true))
-         (e/fire el n {:old-value (get-property el n) :new-value v}))))
+   (let [et (get-property-definition-type os)
+         at (type v)]
+      (when (and (not (nil? v)) (not= at et))
+        (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name n) :expected-type et :actual-type at}))))
+   (when (or consider-attributes? consider-events?)
+     (when (and consider-attributes? (or (:attributes? os) true))
+       (att/set! el n v))
+     (when (and consider-events? (or (:events? os) true))
+       (e/fire el n {:old-value (get-property el n) :new-value v})))
    (aset el lucuma-properties-holder-name properties-holder-name (name n) v)))
 
 ;;
@@ -310,11 +284,12 @@
     (.setAttribute el (name (key a)) (str (val a))))
   ;; Set default properties values
   (let [as (att/attributes el)]
-    (doseq [property (:properties m)]
-      (let [k (key property)
+    (doseq [ps (:properties m)]
+      (let [k (key ps)
             n (name k)
-            v (val property)]
-        (set-property! el m n (or (k as) (get-property-definition-default v)) true false))))
+            os (val ps)]
+        (set-property! el os n (or (att/attribute->property [(get-property-definition-type os) (k as)])
+                                   (get-property-definition-default os)) true false))))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
@@ -325,8 +300,18 @@
 
 (defn- merge-properties
   [p g s]
-  (apply merge (map #(hash-map (keyword %) (att/property-definition (partial g %) (partial s %)))
+  (apply merge (map #(hash-map (keyword %) (att/property-definition (partial g (keyword %)) (partial s (keyword %))))
                     (map key p))))
+
+(defn- attribute-changed
+  "Updates property based on associated attribute change."
+  [el a o n os]
+  (when os ;; Attribute changed is a property defined by our component
+    (let [v (att/attribute->property [(get-property-definition-type os) n])]
+      (when-not (= v (get-property el a));; Value is different from current value: this is not a change due to a property change
+        (if (or (:attributes? os) true)
+          (set-property! el os a v false true)
+          (u/warn (str "Changing attribute for " (name a) " but its attributes? is false.")))))))
 
 (defn validate-property-definition!
   "Ensures a property definition is sound. Throws a js/Error if not."
@@ -345,7 +330,7 @@
   [m]
   (let [{:keys [host on-created properties methods]} m
         on-created #(initialize! % on-created m)
-        on-attribute-changed #(attribute-changed %1 %2 %3 %4 properties nil)
+        on-attribute-changed #(attribute-changed %1 (keyword %2) %3 %4 ((keyword %2) properties))
         prototype (ce/create-prototype
                       (merge m {:prototype (create-lucuma-prototype (apply type->prototype (definition->el-id m)))
                                 :properties (merge-properties properties

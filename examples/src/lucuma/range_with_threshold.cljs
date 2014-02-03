@@ -1,58 +1,54 @@
 (ns lucuma.range-with-threshold
-  (:require [lucuma.attribute :as att]
-            [lucuma.event :refer [fire]])
-  (:require-macros [lucuma :refer [defwebcomponent]])
-  (:refer-clojure :exclude [min max]))
+  (:require [lucuma :as l :refer-macros [defwebcomponent]]
+            [lucuma.attribute :as att]
+            [lucuma.event :refer [fire]]))
 
 (def ^:private previous-value (atom nil))
 
-(defn- add-threshold-crossed-class [el] (.add (.-classList el) "threshold-crossed"))
-(defn- remove-threshold-crossed-class [el] (.remove (.-classList el) "threshold-crossed"))
-
 (defn- breach-threshold
   [el v]
-  (add-threshold-crossed-class el)
+  (l/set-property! el :threshold_crossed true)
   (fire el :threshold-cross {:type ::breached :value v}))
 
 (defn- clear-threshold
   [el v]
-  (remove-threshold-crossed-class el)
+  (l/set-property! el :threshold_crossed false)
   (fire el :threshold-cross {:type ::cleared :value v}))
 
-(defn within-boundaries
-  [v min max]
-  (and (>= v min) (<= v max)))
+(defn- within-boundaries [v mn mx] (and (>= v mn) (<= v mx)))
 
-(defn threshold-crossed-type
-  [o c min max]
+(defn- threshold-crossed-type
+  [o c mn mx]
   (cond
-   (and (not (within-boundaries o min max)) (within-boundaries c min max))
+   (and (not (within-boundaries o mn mx)) (within-boundaries c mn mx))
    :cleared
-   (and (within-boundaries o min max) (not (within-boundaries c min max)))
+   (and (within-boundaries o mn mx) (not (within-boundaries c mn mx)))
    :breached
    (or
-    (and (< o min) (> c max))
-    (and (< c min) (> o max)))
+    (and (< o mn) (> c mx))
+    (and (< c mn) (> o mx)))
    :breached))
 
 (defn- fire-event-on-threshold-cross
-  [el min-threshold max-threshold]
-  (let [c (or (aget el "value") (aget el "impl" "value"))
-        o @previous-value]
-    (case (threshold-crossed-type o c min-threshold max-threshold)
+  [el]
+  (let [c (.-value el)
+        o @previous-value
+        mn (l/get-property el :min_threshold)
+        mx (l/get-property el :max_threshold)]
+    (case (threshold-crossed-type o c mn mx)
       :cleared (clear-threshold el c)
       :breached (breach-threshold el c)
       nil)
     (reset! previous-value c)))
 
 (defn initialize
-  [el min-threshold max-threshold]
-  (let [v (or (aget el "value") (aget el "impl" "value"))]
-    (reset! previous-value v))
-  (.addEventListener el "change" #(fire-event-on-threshold-cross (aget % "target") min-threshold max-threshold) false))
+  [el]
+  (reset! previous-value (.-value el))
+  (.addEventListener el "change" #(fire-event-on-threshold-cross (.-target %)) false))
 
 (defwebcomponent lucu-range-with-threshold
   :host :input
+  ;; TODO ShadowRoot with existing element overrides native one?
   ;;:style ":host(.threshold-crossed) {background: blue;}"
-  :on-created #(initialize % (or (att/get % :min-threshold) 15) (or (att/get % :max-threshold) 85))
-  :properties {:min_threshold 15 :max_threshold {:default 85 :events? true :attributes? true}})
+  :on-created #(initialize %)
+  :properties {:min_threshold 15 :max_threshold 85 :threshold_crossed {:default nil :type js/Boolean}})

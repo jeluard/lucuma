@@ -7,24 +7,30 @@
 ;; attribute <-> property conversion
 ;;
 
-(defmulti attribute->property type)
-
-(defmethod attribute->property :default [o] (str o))
-
 (defmulti property->attribute type)
 
-(defmethod property->attribute :default [o] (read-string o))
+(defmethod property->attribute :default [o] (str o))
 
+(defmulti attribute->property first)
+
+(defn- read-non-empty-string
+  [s]
+  (when-not (empty? s)
+    (read-string s)))
+
+(defmethod attribute->property js/String [v] (second v))
+(defmethod attribute->property js/Boolean [v] (read-non-empty-string (second v)))
+(defmethod attribute->property js/Number [v] (read-non-empty-string (second v)))
 ;;
 ;; attribute accessors
 ;;
 
 (defn get
   "Gets the value of a named attribute. Converts its value via property->attribute."
-  [el n]
+  [el n t]
   (let [n (name n)]
     (if (.hasAttribute el n)
-      (property->attribute (.getAttribute el n))
+      (attribute->property [t (.getAttribute el n)])
       nil)))
 
 (defn set!
@@ -33,7 +39,7 @@
   [el n v]
   (let [n (name n)]
     (if (and v (not= v false))
-      (.setAttribute el n (attribute->property v))
+      (.setAttribute el n (if (= v true) "" (property->attribute v)))
       (.removeAttribute el n))))
 
 (defn property-definition
