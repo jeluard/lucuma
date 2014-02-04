@@ -38,5 +38,5 @@
   {:pre [(valid-name? n)]}
   (.registerElement js/document n (clj->js (merge {:prototype p} (when e {:extends e})))))
 
-;; chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
-;; https://github.com/w3c/web-platform-tests
+;; Chrome tests: https://chromium.googlesource.com/chromium/blink/+/master/LayoutTests/fast/dom/custom/
+;; W3C tests: https://github.com/w3c/web-platform-tests

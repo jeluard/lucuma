@@ -49,7 +49,8 @@
 
 (defwebcomponent lucu-range-with-threshold
   :host :input
-  ;; TODO ShadowRoot with existing element overrides native one?
-  ;;:style ":host(.threshold-crossed) {background: blue;}"
+  ;; TODO Fails under Chrome Canary with: <shadow> doesn't work for INPUT element host.
+  ;;:document [:shadow [:content]]
+  ;;:style ":host([threshold_crossed]) {background: blue;}"
   :on-created #(initialize %)
   :properties {:min_threshold 15 :max_threshold 85 :threshold_crossed {:default nil :type js/Boolean}})

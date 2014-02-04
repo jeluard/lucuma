@@ -21,8 +21,10 @@
   []
   (and (exists? js/Platform) (exists? js/Platform.ShadowCSS)))
 
+;; Disabled for now as there are some additionals constrains
+;; http://www.polymer-project.org/docs/polymer/styling.html#strictstyling
 (when (shadow-css-needed?)
-  (set! (.-strictStyling js/Platform.ShadowCSS) true))
+  (set! (.-strictStyling js/Platform.ShadowCSS) false))
 
 (defn shim-styling!
   "Ensures styles do not leak when using polymer polyfill.
