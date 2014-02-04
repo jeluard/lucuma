@@ -12,8 +12,7 @@
                    [dommy.macros :refer [node sel1]]))
 
 (defwebcomponent ex-hello
-  :document "Hello world!"
-  )
+  :document "Hello world!")
 
 (comment
 (defwebcomponent ex-hello
@@ -61,10 +60,6 @@
 
 (defwebcomponent ex-methods
   :methods {:method (fn [] {:key "value"})})
-
-(defn ^:export fire-event
-  [id]
-  (fire (sel1 (keyword id)) :event {:msg "Sent from CLJS"}))
 
 (defwebcomponent ex-constructor
   :constructor "CustomConstructor"
