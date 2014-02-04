@@ -14,15 +14,13 @@
    :background-color "#fafafa" :border-radius 0 :border-width 0})
 
 (def style
-  [[(keyword "pre[class*='language-']") {:margin 0}]
-   [(keyword "code[class*='language-']") {:margin 0 :padding 0}]
-   [:.example-live {:position :relative :padding [[(px 40) 0 (px 10) (px 15)]] :margin-left 0 :margin-right 0
+  [[:.example-live {:position :relative :padding [[(px 40) 0 (px 10) (px 15)]] :margin-left 0 :margin-right 0
                     :background-color "#fff"
                     :border-color "#ddd" :border-style :solid :border-width (px 1) :border-radius [[(px 4) (px 4) 0 0]]}
     [:&:after (header "live")]]
-   [:.example-markup source
+   [(keyword "pre[class*='language-'].example-markup") source
     [:&:after (header "html")]]
-   [:.example-cljs (merge source {:border-radius [[0 0 (px 4) (px 4)]]})
+   [(keyword "pre[class*='language-'].example-cljs") (merge source {:border-radius [[0 0 (px 4) (px 4)]]})
     [:&:after (header "cljs")]
     [:code {:overflow-wrap :normal}]]])
 
