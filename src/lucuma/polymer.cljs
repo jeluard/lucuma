@@ -1,9 +1,20 @@
-(ns lucuma.polymer)
+(ns lucuma.polymer
+  (:require [lucuma.custom-elements :as ce]
+            [lucuma.shadow-dom :as sd]))
 
-(defn shadow-dom-installed?
-  "Returns true if Shadow DOM polyfill is installed in current platform."
+(defn custom-element-polyfilled?
+  "Returns true if current Custom Element support is polyfilled."
   []
-  (= "polyfill" js/Platform.flags.shadow))
+  (and
+    (ce/supported?)
+    true));; TODO find a way to detect polyfill support
+
+(defn shadow-dom-polyfilled?
+  "Returns true if current ShadowDOM support is polyfilled."
+  []
+  (and
+    (sd/supported?)
+    (not (exists? (.-createShadowRoot js/document.documentElement)))))
 
 (defn shadow-css-needed?
   "Returns true if Shadow CSS polyfill is installed in current platform."

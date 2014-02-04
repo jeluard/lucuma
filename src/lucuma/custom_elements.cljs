@@ -6,7 +6,7 @@
 (defn ^:export supported?
   "Returns true if current platform support Custom Elements."
   []
-  (exists? (.-createElement js/document)))
+  (exists? (.-registerElement js/document)))
 
 (defn valid-name?
   "Returns true if provided name is a valid Custom Element name."

@@ -1,8 +1,9 @@
 (ns lucuma.test.browser-runner
   (:require [cemerick.cljs.test :refer [report *testing-vars* *testing-contexts*] :as t]
             [lucuma-test :as l]
-            [lucuma.attribute :as att]
+            [lucuma.attribute-test :as att]
             [lucuma.custom-elements-test :as cet]
+            [lucuma.polymer-test :as pt]
             [lucuma.shadow-dom-test :as sdt]
             [lucuma.util-test :as ut]
             [clojure.string :as s]

@@ -1,12 +1,12 @@
 (ns lucuma.shadow-dom)
 
 (defn ^:export supported?
-  "Returns true if current platform support Shadow DOM."
+  "Returns true if current platform supports Shadow DOM."
   []
-  ;;(exists? (.-createShadowRoot js/document.documentElement)))
   (exists? (.-createShadowRoot (.createElement js/document "div"))))
 
 (defn create
+  "Creates (and implicitely appends) a ShadowRoot to an element."
   ([el] (create el {}))
   ([el m]
    (let [{:keys [reset-style-inheritance]} m
