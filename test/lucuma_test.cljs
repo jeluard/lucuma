@@ -35,6 +35,10 @@
   (is (empty? (l/ignored-keys {:document "" :style ""})))
   (is (= #{:documemt} (l/ignored-keys {:documemt "" :style ""}))))
 
+(deftest validate-definition
+  (is (thrown? js/Error (l/register "")))
+  (is (thrown? js/Error (l/register {:unknown-key nil}))))
+
 (defwebcomponent test-sr-1
   :ns nil)
 (defwebcomponent test-sr-2
@@ -70,12 +74,12 @@
 (defwebcomponent test-prototype-7
   [arg]
   :ns nil
-  :arg (inc arg))
+  :document (inc arg))
 (defwebcomponent test-prototype-8
   [arg]
   test-prototype-2
   :ns nil
-  :arg (inc arg))
+  :document (inc arg))
 (defwebcomponent test-prototype-9
   :ns nil
   :host :test-prototype-1)
@@ -93,7 +97,7 @@
   (is (= :button (:host (test-prototype-8 0)))))
 
 (deftest webcomponent-as-fn
-  (is (= 2 (:arg (test-prototype-7 1)))))
+  (is (= 2 (:document (test-prototype-7 1)))))
 
 (deftest definition->el-id
   (is (= nil (l/definition->el-id test-prototype-1)))
@@ -116,6 +120,11 @@
   (is (instance? js/HTMLElement (.createElement js/document "test-prototype-1")))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-2")))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-3"))))
+
+(deftest element-name
+  (is (= :button (l/element-name (.createElement js/document "button"))))
+  (is (= :test-prototype-1 (l/element-name (.createElement js/document "test-prototype-1"))))
+  (is (= :test-prototype-2 (l/element-name (.createElement js/document "button" "test-prototype-2")))))
 
 (defwebcomponent test-register
   :ns nil)

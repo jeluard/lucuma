@@ -23,14 +23,16 @@
 
 (def ^:private registry (atom {}))
 
-(defn custom-element-name
+(defn element-name
+  "Returns an element name. Supports both custom and regular element."
   [el]
   (when el
-    (or (.getAttribute el "is") (string/lower-case (.-tagName el)))))
+    (keyword (or (.getAttribute el "is") (string/lower-case (.-tagName el))))))
 
 (defn get-definition
+  "Returns the definition for an element."
   [el]
-  (get @registry (custom-element-name el)))
+  ((element-name el) @registry))
 
 ;;
 ;; document / style rendering
@@ -166,8 +168,8 @@
   (or (:type os) (type (get-property-definition-default os))))
 
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
-(defn- property-definition-attributes? [os] (val-or-default os :attributes? true))
-(defn- property-definition-events? [os] (val-or-default os :events? true))
+(defn- property-definition-attributes? [os] (val-or-default os :attributes? true)) ;; TODO false for function and object
+(defn- property-definition-events? [os] (val-or-default os :events? true)) ;; TODO false for function
 
 ;; Property access
 
@@ -382,11 +384,13 @@
 (defn register
   "Registers a new Custom Element from its definition."
   [m]
-  {:pre [(map? m)]}
+  ;;Validate the definition
+  (assert (map? m) (ex-info "Definition must be a map" {}))
+  (assert (not (seq (ignored-keys m))) (str "Definition contains unknown keys " (ignored-keys m)))
   (let [n (:name m)
         cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))]
     (if-let [goog-ns (u/*ns*->goog-ns (:ns m))]
       (when-let [c (:constructor m (default-constructor-name n))]
         (aset goog-ns c cf))
       (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
-    (swap! registry assoc n m)))
+    (swap! registry assoc (name n) m)))
