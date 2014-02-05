@@ -63,7 +63,7 @@
 (derive js/HTMLElement ::node)
 (derive js/DocumentFragment ::node)
 
-(defmulti install-rendered-document!
+(defmulti install-rendered-document! ;; TODO rename to attach/detach? wait for final Custom Element spec
   "Installs rendered 'document' to provided ShadowRoot."
   (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
@@ -164,6 +164,10 @@
   [os]
   (or (:type os) (type (get-property-definition-default os))))
 
+(defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
+(defn- property-definition-attributes? [os] (val-or-default os :attributes? true))
+(defn- property-definition-events? [os] (val-or-default os :events? true))
+
 ;; Property access
 
 (def ^:private lucuma-properties-holder-name "lucuma")
@@ -187,13 +191,13 @@
    (when (not (u/valid-identifier? (name n)))
      (throw (ex-info (str "Invalid property name <" (name n) ">") {:property n})))
    (let [et (get-property-definition-type os)
-         at (type v)]
+         at (type (clj->js v))]
       (when (and (not (nil? v)) (not= at et))
         (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name n) :expected-type et :actual-type at}))))
    (when (or consider-attributes? consider-events?)
-     (when (and consider-attributes? (or (:attributes? os) true))
+     (when (and consider-attributes? (property-definition-attributes? os))
        (att/set! el n v))
-     (when (and consider-events? (or (:events? os) true))
+     (when (and consider-events? (property-definition-events? os))
        (e/fire el n {:old-value (get-property el n) :new-value v})))
    (aset el lucuma-properties-holder-name properties-holder-name (name n) v)))
 
@@ -285,11 +289,13 @@
   ;; Set default properties values
   (let [as (att/attributes el)]
     (doseq [ps (:properties m)]
-      (let [k (key ps)
-            n (name k)
-            os (val ps)]
-        (set-property! el os n (or (att/attribute->property [(get-property-definition-type os) (k as)])
-                                   (get-property-definition-default os)) true false))))
+      (let [os (val ps)]
+        (when (property-definition-attributes? os)
+          (let [k (key ps)
+                a (att/attribute->property [(get-property-definition-type os) (k as)])
+                d (get-property-definition-default os)]
+            ;; Matching attribute value overrides eventual default
+            (set-property! el os (name k) (or a d) true false))))))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
@@ -309,7 +315,7 @@
   (when os ;; Attribute changed is a property defined by our component
     (let [v (att/attribute->property [(get-property-definition-type os) n])]
       (when-not (= v (get-property el a));; Value is different from current value: this is not a change due to a property change
-        (if (or (:attributes? os) true)
+        (if (property-definition-attributes? os)
           (set-property! el os a v false true)
           (u/warn (str "Changing attribute for " (name a) " but its attributes? is false.")))))))
 
@@ -320,7 +326,7 @@
     (when-not (contains? o :default)
       (throw (ex-info (str "No default for <" n ">") {:property n})))
     (when-let [t (:type o)]
-      (when (and (not (nil? (:default o))) (not (= (type (:default o)) t)))
+      (when (and (not (nil? (:default o))) (not (= (type (clj->js (:default o))) t)))
         (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))))
   (when (and (nil? (get-property-definition-default o)) (nil? (:type o)))
     (throw (ex-info (str "Default can't be nil if no type is provided for <" n ">") {:property n}))))

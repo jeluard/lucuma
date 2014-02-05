@@ -7,6 +7,8 @@
 ;; attribute <-> property conversion
 ;;
 
+;; Add support for fn (export name) and object (ref with #?)
+
 (defmulti property->attribute type)
 
 (defmethod property->attribute :default [o] (str o))
@@ -21,6 +23,7 @@
 (defmethod attribute->property js/String [v] (second v))
 (defmethod attribute->property js/Boolean [v] (read-non-empty-string (second v)))
 (defmethod attribute->property js/Number [v] (read-non-empty-string (second v)))
+
 ;;
 ;; attribute accessors
 ;;
