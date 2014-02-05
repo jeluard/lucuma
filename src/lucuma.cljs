@@ -25,7 +25,8 @@
 
 (defn custom-element-name
   [el]
-  (or (.getAttribute el "is") (string/lower-case (.-tagName el))))
+  (when el
+    (or (.getAttribute el "is") (string/lower-case (.-tagName el)))))
 
 (defn get-definition
   [el]
