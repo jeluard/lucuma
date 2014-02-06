@@ -39,38 +39,6 @@ ShadowRoot.prototype.host;
 ShadowRoot.prototype.resetStyleInheritance;
 
 /**
- * Lucuma prototypes
- */
-
-var lucuma = {};
-
-lucuma.LucumaElement.lucuma;
-
-/**
- * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-created-callback
- */
-lucuma.LucumaElement.prototype.createdCallback = function() {};
-
-/**
- * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-entered-view-callback
- */
-lucuma.LucumaElement.prototype.attachedCallback = function() {};
-
-/**
- * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-left-view-callback
- */
-lucuma.LucumaElement.prototype.detachedCallback = function() {};
-
-/**
- * @param {string} name
- * @param {Object} oldValue
- * @param {Object} newValue
- * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-attribute-changed-callback
- */
-lucuma.LucumaElement.prototype.attributeChangedCallback = function(name, oldValue, newValue) {};
-
-
-/**
  * Polymer polyfill prototypes
  */
 

@@ -136,6 +136,7 @@
   (is (thrown? js/Error (l/register (fn [] nil)))))
 
 (deftest is-lucuma-element
+  (is (not (l/lucuma-element? (.createElement js/document "div"))))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-1")))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-2")))
   (is (l/lucuma-element? (.createElement js/document "button" "test-prototype-2")))

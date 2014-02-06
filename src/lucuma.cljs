@@ -8,20 +8,6 @@
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods]))
 
-;;
-;; Lucuma prototype
-;;
-
-;; TODO this does not work
-(deftype LucumaElement [])
-(defn lucuma-element? [el] (instance? LucumaElement el))
-
-(defn- create-lucuma-prototype
-  "Adds LucumaElement to the prototype chain."
-  [base-prototype]
-  (set! (.-prototype LucumaElement) base-prototype)
-  (.-prototype LucumaElement))
-
 (def ^:private registry (atom {}))
 
 (defn element-name
@@ -183,6 +169,11 @@
 (defn- install-lucuma-properties-holder! [p] (aset p lucuma-properties-holder-name #js {}))
 (defn- get-lucuma-property [el n] (aget el lucuma-properties-holder-name n))
 (defn- set-lucuma-property! [el n v] (aset el lucuma-properties-holder-name n v))
+
+(defn lucuma-element?
+  "Returns true if element is a Lucuma element."
+  [el]
+  (exists? (aget el lucuma-properties-holder-name)))
 
 (def ^:private properties-holder-name "properties")
 (defn- install-properties-holder! [p] (set-lucuma-property! p properties-holder-name #js {}))
@@ -368,7 +359,7 @@
         on-created #(initialize! % on-created m)
         on-attribute-changed #(attribute-changed %1 (keyword %2) %3 %4 ((keyword %2) properties))
         prototype (ce/create-prototype
-                      (merge m {:prototype (create-lucuma-prototype (apply type->prototype (definition->el-id m)))
+                      (merge m {:prototype (apply type->prototype (definition->el-id m))
                                 :properties (merge-properties properties
                                                               #(clj->js (get-property %2 %1))
                                                               #(set-property! %2 %1 (js->clj %3)))
