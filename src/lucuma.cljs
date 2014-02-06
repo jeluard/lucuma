@@ -219,12 +219,12 @@
   "Returns type from host element.
 
   e.g.
-   :host :div => 'div'
-   :host [:div {:key :value}] => 'div'
+   :host :div => :div
+   :host [:div {:key :value}] => :div
    :host {:key :value} => nil"
   [h]
-  (when-let [t (cond (vector? h) (first h) (keyword? h) (name h))]
-    (name t)))
+  (when-let [t (cond (vector? h) (first h) (keyword? h) h)]
+    t))
 
 (defn- host-attributes
   "Returns attributes from host element.
@@ -251,7 +251,7 @@
   [t]
   (cond
    (u/valid-standard-element-name? t) nil
-   (contains? @registry t) (first (definition->el-id (get @registry t)))
+   (contains? @registry t) (first (definition->el-id (t @registry)))
    ;;TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
    :else ::not-found))
 
@@ -269,7 +269,7 @@
   (when-let [t (host-type (:host m))]
     (let [ei (host-type->extends t)
           eic (when (not= ei ::not-found) ei)
-          ep (when-let [e (:extends m)] (name e))
+          ep (when-let [e (:extends m)] e)
           e (or eic ep)]
       (when (and eic ep)
         (throw (ex-info "Infered extends value but a value for :extends was supplied" {:type t :inferred ei :provided ep})))
@@ -280,8 +280,8 @@
 (defn- create-element
   [n is]
   (if is
-    (.createElement js/document n is)
-    (.createElement js/document n)))
+    (.createElement js/document (name n) (name is))
+    (.createElement js/document (name n))))
 
 (defn- type->prototype
   "Returns prototype of an element from name and extension."

@@ -41,7 +41,7 @@
   [s]
   (not (nil? (re-matches #"^[a-zA-Z_$][0-9a-zA-Z_$]*$" s))))
 
-(defn valid-standard-element-name? [n] (when n (= -1 (.indexOf n "-"))))
+(defn valid-standard-element-name? [n] (when n (= -1 (.indexOf (name n) "-"))))
 
 (defn warn
   [s]

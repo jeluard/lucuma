@@ -101,11 +101,11 @@
 
 (deftest definition->el-id
   (is (= nil (l/definition->el-id test-prototype-1)))
-  (is (= ["button" nil] (l/definition->el-id test-prototype-2)))
-  (is (= ["button" "test-prototype-2"] (l/definition->el-id test-prototype-3)))
-  (is (= ["button" "test-prototype-3"] (l/definition->el-id test-prototype-4)))
-  (is (= ["button" "test-prototype-polymer"] (l/definition->el-id test-prototype-5)))
-  (is (= ["test-prototype-1" nil] (l/definition->el-id test-prototype-9)))
+  (is (= [:button nil] (l/definition->el-id test-prototype-2)))
+  (is (= [:button :test-prototype-2] (l/definition->el-id test-prototype-3)))
+  (is (= [:button :test-prototype-3] (l/definition->el-id test-prototype-4)))
+  (is (= [:button :test-prototype-polymer] (l/definition->el-id test-prototype-5)))
+  (is (= [:test-prototype-1 nil] (l/definition->el-id test-prototype-9)))
   (is (thrown? js/Error (l/definition->el-id test-prototype-fail-1)))
   (is (thrown? js/Error (l/definition->el-id test-prototype-fail-2))))
 
@@ -153,6 +153,20 @@
   (is (nil? (l/validate-property-definition! "name" {:default "default" :type js/String})))
   (is (thrown? js/Error (l/validate-property-definition! "name" {:default "default" :type js/Boolean}))))
 
+(deftest property-definition-attributes?
+  (is (= true (l/property-definition-attributes? {:attributes? true})))
+  (is (= false (l/property-definition-attributes? {:attributes? false})))
+  (is (= false (l/property-definition-attributes? {:type js/Function})))
+  (is (= true (l/property-definition-attributes? {:type js/Boolean})))
+  (is (= false (l/property-definition-attributes? {:attributes? false :type js/Boolean}))))
+
+(deftest property-definition-events?
+  (is (= true (l/property-definition-events? {:events? true})))
+  (is (= false (l/property-definition-events? {:events? false})))
+  (is (= false (l/property-definition-events? {:type js/Function})))
+  (is (= true (l/property-definition-events? {:type js/Boolean})))
+  (is (= false (l/property-definition-events? {:events? false :type js/Boolean}))))
+
 (defwebcomponent test-method-1
   :methods {:method1 (fn [] 1)
             :method2 (fn [] {:key "value"})
@@ -192,9 +206,9 @@
 
 (deftest parse-host-type
   (is (nil? (l/host-type nil)))
-  (is (= "div" (l/host-type :div)))
+  (is (= :div (l/host-type :div)))
   (is (nil? (l/host-type {:att ""})))
-  (is (= "div" (l/host-type [:div {:att ""}]))))
+  (is (= :div (l/host-type [:div {:att ""}]))))
 
 (deftest parse-host-attributes
   (is (nil? (l/host-attributes nil)))
