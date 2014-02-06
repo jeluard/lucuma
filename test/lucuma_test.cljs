@@ -144,14 +144,24 @@
 
 (deftest property-definition
   (is (nil? (l/validate-property-definition! "name" "default")))
-  (is (thrown? js/Error (l/validate-property-definition! "name" nil)))
+  (is (nil? (l/validate-property-definition! "name" nil)))
   (is (thrown? js/Error (l/validate-property-definition! "name" {})))
   (is (thrown? js/Error (l/validate-property-definition! "name" {:type js/String})))
   (is (nil? (l/validate-property-definition! "name" {:default "default"})))
-  (is (thrown? js/Error (l/validate-property-definition! "name" {:default nil})))
   (is (nil? (l/validate-property-definition! "name" {:default nil :type js/String})))
   (is (nil? (l/validate-property-definition! "name" {:default "default" :type js/String})))
   (is (thrown? js/Error (l/validate-property-definition! "name" {:default "default" :type js/Boolean}))))
+
+(deftest get-property-definition-default
+  (is (= "" (l/get-property-definition-default {:default ""})))
+  (is (= "" (l/get-property-definition-default ""))))
+
+(deftest get-property-definition-type
+  (is (= js/String (l/get-property-definition-type {:default ""})))
+  (is (= js/String (l/get-property-definition-type {:type js/String :default nil})))
+  (is (= js/Boolean (l/get-property-definition-type {:default false})))
+  (is (= js/Object (l/get-property-definition-type {:default {}})))
+  (is (= js/Object (l/get-property-definition-type {:default nil}))))
 
 (deftest property-definition-attributes?
   (is (= true (l/property-definition-attributes? {:attributes? true})))

@@ -165,7 +165,11 @@
 
 (defn- get-property-definition-type
   [os]
-  (or (:type os) (type (clj->js (get-property-definition-default os)))))
+  (or (:type os)
+      (let [d (get-property-definition-default os)]
+        (if-not (nil? d)
+          (type (clj->js d))
+          js/Object))))
 
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
 (defn- type-one-of? [os st] (not-any? st [(get-property-definition-type os)]))
@@ -338,8 +342,8 @@
     (when-let [t (:type o)]
       (when (and (not (nil? (:default o))) (not (= (type (clj->js (:default o))) t)))
         (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))))
-  (when (and (nil? (get-property-definition-default o)) (nil? (:type o)))
-    (throw (ex-info (str "Default can't be nil if no type is provided for <" n ">") {:property n}))))
+  (when (nil? (get-property-definition-type o));;(and (nil? (get-property-definition-default o)) (nil? (:type o)))
+    (throw (ex-info (str "Default can't be inferred for <" n ">") {:property n}))))
 
 (defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
