@@ -172,8 +172,6 @@
 (defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-one-of? os #{js/Function js/Object})))
 (defn- property-definition-events? [os] (val-or-default os :events? (type-one-of? os #{js/Function})))
 
-(not-any? #{js/Function js/Object} [js/Boolean])
-
 ;; Property access
 
 (def ^:private lucuma-properties-holder-name "lucuma")
