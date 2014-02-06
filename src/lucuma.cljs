@@ -187,10 +187,16 @@
   [el n]
   (aget el lucuma-properties-holder-name properties-holder-name (name n)))
 
+(defn- lookup-definition
+  [el n]
+  (if-let [d (get-definition el)]
+    (get-in d [:properties n])
+    (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
+
 (defn set-property!
   "Sets the value of a named property for an element instance."
   ([el n v] (set-property! el n v true true))
-  ([el n v consider-attributes? consider-events?] (set-property! el (get-in (get-definition el) [:properties n]) n v consider-attributes? consider-events?))
+  ([el n v consider-attributes? consider-events?] (set-property! el (lookup-definition el n) n v consider-attributes? consider-events?))
   ([el os n v consider-attributes? consider-events?]
    (when (not (u/valid-identifier? (name n)))
      (throw (ex-info (str "Invalid property name <" (name n) ">") {:property n})))
@@ -299,7 +305,7 @@
                 a (att/attribute->property [(get-property-definition-type os) (k as)])
                 d (get-property-definition-default os)]
             ;; Matching attribute value overrides eventual default
-            (set-property! el os (name k) (or a d) true false))))))
+            (set-property! el os k (or a d) true false))))))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
@@ -394,4 +400,4 @@
       (when-let [c (:constructor m (default-constructor-name n))]
         (aset goog-ns c cf))
       (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
-    (swap! registry assoc (name n) m)))
+    (swap! registry assoc (keyword n) m)))
