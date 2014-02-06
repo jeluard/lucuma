@@ -209,10 +209,15 @@
 ;; ShadowRoot support
 ;;
 
+(def ^private lucuma-shadow-root-property "lucuma")
+
 (defn shadow-root
-  "Returns lucuma ShadowRoot for an element."
+  "Returns lucuma ShadowRoot of element."
   [el]
-  (.-shadowRoot el)) ;; TODO is this always right?
+  (when (lucuma-element? el)
+    (let [sr (.-shadowRoot el)]
+      (when-not (aget sr lucuma-shadow-root-property) (throw (ex-info "Could not locate Lucuma ShadowRoot" {})))
+      sr))) ;; This might require some logic if we don't access the right ShadowRoot.
 
 (defn- create-shadow-root!
   "Creates and appends a ShadowRoot to 'el' if either `:style` or `:document` is provided."
@@ -220,6 +225,7 @@
   (let [{:keys [style document]} m]
     (when (or style document)
       (let [sr (sd/create el m)]
+        (aset sr lucuma-shadow-root-property "")
         (when style (render-then-install! sr style render-style install-style!))
         (when document (render-then-install! sr document render-document install-document!))
         sr))))
