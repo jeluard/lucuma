@@ -8,7 +8,42 @@
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods]))
 
+;;
+;; Element manipulation
+;;
+
+;; property definition manipulation
+
+(defn- get-property-definition-default
+  [os]
+  (if (map? os)
+    (:default os)
+    os))
+
+(defn- get-property-definition-type
+  [os]
+  (or (:type os)
+      (let [d (get-property-definition-default os)]
+        (if-not (nil? d)
+          (type (clj->js d))
+          js/Object))))
+
+(defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
+(defn- type-one-of? [os st] (not-any? st [(get-property-definition-type os)]))
+(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-one-of? os #{js/Function js/Object})))
+(defn- property-definition-events? [os] (val-or-default os :events? (type-one-of? os #{js/Function})))
+
+;; Property access
+
 (def ^:private registry (atom {}))
+
+(def ^:private lucuma-properties-holder-name "lucuma")
+(def ^:private properties-holder-name "properties")
+
+(defn- install-lucuma-properties-holder! [p] (aset p lucuma-properties-holder-name #js {}))
+
+(defn- get-lucuma-property [el n] (aget el lucuma-properties-holder-name n))
+(defn- set-lucuma-property! [el n v] (aset el lucuma-properties-holder-name n v))
 
 (defn element-name
   "Returns an element name. Supports both custom and regular element."
@@ -20,6 +55,57 @@
   "Returns the definition for an element."
   [el]
   ((element-name el) @registry))
+
+(defn lucuma-element?
+  "Returns true if element is a Lucuma element."
+  [el]
+  (exists? (aget el lucuma-properties-holder-name)))
+
+(defn property-exists?
+  "Returns true if property exists."
+  [el k]
+  (if (lucuma-element? el)
+    (exists? (aget el lucuma-properties-holder-name properties-holder-name (name k)))
+    false))
+
+(defn- install-properties-holder! [p] (set-lucuma-property! p properties-holder-name #js {}))
+
+(defn get-property
+  "Gets the value of a named property for an element instance."
+  [el k]
+  (when (lucuma-element? el)
+    (aget el lucuma-properties-holder-name properties-holder-name (name k))))
+
+(defn get-properties
+  "Returns a map of all properties associated to their values."
+  [el]
+  (into {} (for [k (.keys js/Object (aget el lucuma-properties-holder-name properties-holder-name))]
+             [k (get-property el k)])))
+
+(defn- lookup-options
+  [el k]
+  (if-let [d (get-definition el)]
+    (get-in d [:properties k])
+    (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
+
+(defn set-property!
+  "Sets the value of a named property for an element instance."
+  ([el k v] (set-property! el k v true true))
+  ([el k v consider-attributes? consider-events?] (set-property! el (lookup-options el k) k v consider-attributes? consider-events?))
+  ([el os k v consider-attributes? consider-events?]
+   (when (lucuma-element? el)
+     (when (not (u/valid-identifier? (name k)))
+       (throw (ex-info (str "Invalid property name <" (name k) ">") {:property k})))
+     (let [et (get-property-definition-type os)
+           at (type (clj->js v))]
+        (when (and (not (nil? v)) (not= at et))
+          (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name k) :expected-type et :actual-type at}))))
+     (when (or consider-attributes? consider-events?)
+       (when (and consider-attributes? (property-definition-attributes? os))
+         (att/set! el k v))
+       (when (and consider-events? (property-definition-events? os))
+         (e/fire el k {:old-value (get-property el k) :new-value v})))
+     (aset el lucuma-properties-holder-name properties-holder-name (name k) v))))
 
 ;;
 ;; document / style rendering
@@ -137,90 +223,6 @@
         (when style (render-then-install! sr style render-style install-style!))
         (when document (render-then-install! sr document render-document install-document!))
         sr))))
-
-;;
-;; Lucuma properties access
-;;
-
-;; property definition manipulation
-
-(defn- get-property-definition-default
-  [os]
-  (if (map? os)
-    (:default os)
-    os))
-
-(defn- get-property-definition-type
-  [os]
-  (or (:type os)
-      (let [d (get-property-definition-default os)]
-        (if-not (nil? d)
-          (type (clj->js d))
-          js/Object))))
-
-(defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
-(defn- type-one-of? [os st] (not-any? st [(get-property-definition-type os)]))
-(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-one-of? os #{js/Function js/Object})))
-(defn- property-definition-events? [os] (val-or-default os :events? (type-one-of? os #{js/Function})))
-
-;; Property access
-
-(def ^:private lucuma-properties-holder-name "lucuma")
-(defn- install-lucuma-properties-holder! [p] (aset p lucuma-properties-holder-name #js {}))
-(defn- get-lucuma-property [el n] (aget el lucuma-properties-holder-name n))
-(defn- set-lucuma-property! [el n v] (aset el lucuma-properties-holder-name n v))
-
-(defn lucuma-element?
-  "Returns true if element is a Lucuma element."
-  [el]
-  (exists? (aget el lucuma-properties-holder-name)))
-
-(def ^:private properties-holder-name "properties")
-(defn- install-properties-holder! [p] (set-lucuma-property! p properties-holder-name #js {}))
-
-(defn property-exists?
-  "Returns true if property exists."
-  [el k]
-  (if (lucuma-element? el)
-    (exists? (aget el lucuma-properties-holder-name properties-holder-name (name k)))
-    false))
-
-(defn get-property
-  "Gets the value of a named property for an element instance."
-  [el k]
-  (when (lucuma-element? el)
-    (aget el lucuma-properties-holder-name properties-holder-name (name k))))
-
-(defn get-properties
-  "Returns a map of all properties associated to their values."
-  [el]
-  (into {} (for [k (.keys js/Object (aget el lucuma-properties-holder-name properties-holder-name))]
-             [k (get-property el k)])))
-
-(defn- lookup-options
-  [el k]
-  (if-let [d (get-definition el)]
-    (get-in d [:properties k])
-    (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
-
-(defn set-property!
-  "Sets the value of a named property for an element instance."
-  ([el k v] (set-property! el k v true true))
-  ([el k v consider-attributes? consider-events?] (set-property! el (lookup-options el k) k v consider-attributes? consider-events?))
-  ([el os k v consider-attributes? consider-events?]
-   (when (lucuma-element? el)
-     (when (not (u/valid-identifier? (name k)))
-       (throw (ex-info (str "Invalid property name <" (name k) ">") {:property k})))
-     (let [et (get-property-definition-type os)
-           at (type (clj->js v))]
-        (when (and (not (nil? v)) (not= at et))
-          (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name k) :expected-type et :actual-type at}))))
-     (when (or consider-attributes? consider-events?)
-       (when (and consider-attributes? (property-definition-attributes? os))
-         (att/set! el k v))
-       (when (and consider-events? (property-definition-events? os))
-         (e/fire el k {:old-value (get-property el k) :new-value v})))
-     (aset el lucuma-properties-holder-name properties-holder-name (name k) v))))
 
 ;;
 ;; prototype creation
