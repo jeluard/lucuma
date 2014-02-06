@@ -165,11 +165,14 @@
 
 (defn- get-property-definition-type
   [os]
-  (or (:type os) (type (get-property-definition-default os))))
+  (or (:type os) (type (clj->js (get-property-definition-default os)))))
 
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
-(defn- property-definition-attributes? [os] (val-or-default os :attributes? true)) ;; TODO false for function and object
-(defn- property-definition-events? [os] (val-or-default os :events? true)) ;; TODO false for function
+(defn- type-one-of? [os st] (not-any? st [(get-property-definition-type os)]))
+(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-one-of? os #{js/Function js/Object})))
+(defn- property-definition-events? [os] (val-or-default os :events? (type-one-of? os #{js/Function})))
+
+(not-any? #{js/Function js/Object} [js/Boolean])
 
 ;; Property access
 
