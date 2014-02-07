@@ -76,7 +76,7 @@
 (defn- install-properties-holder! [p] (set-lucuma-property! p properties-holder-name #js {}))
 
 (defn get-property
-  "Gets the value of a named property for an element instance."
+  "Gets the value of a named property."
   [el k]
   (when (lucuma-element? el)
     (aget el lucuma-properties-holder-name properties-holder-name (name k))))
@@ -102,7 +102,7 @@
       (= t vt))))
 
 (defn set-property!
-  "Sets the value of a named property for an element instance."
+  "Sets the value of a named property."
   ([el k v] (set-property! el k v true true))
   ([el k v consider-attributes? consider-events?] (set-property! el (lookup-options el k) k v consider-attributes? consider-events?))
   ([el os k v consider-attributes? consider-events?]
@@ -119,6 +119,12 @@
        (when (and consider-events? (property-definition-events? os))
          (e/fire el k {:old-value (get-property el k) :new-value v})))
      (aset el lucuma-properties-holder-name properties-holder-name (name k) v))))
+
+(defn set-properties!
+  "Sets all properties."
+  [el m]
+  (doseq [[k v] m]
+    (set-property! el k v)))
 
 ;;
 ;; document / style rendering
