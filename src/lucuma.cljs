@@ -45,10 +45,15 @@
 (defn- get-lucuma-property [el n] (aget el lucuma-properties-holder-name n))
 (defn- set-lucuma-property! [el n v] (aset el lucuma-properties-holder-name n v))
 
+(defn- element?
+  [el]
+  (when el
+    (instance? js/Element el)))
+
 (defn element-name
   "Returns an element name. Supports both custom and regular element."
   [el]
-  (when el
+  (when (element? el)
     (keyword (or (.getAttribute el "is") (string/lower-case (.-tagName el))))))
 
 (defn get-definition
