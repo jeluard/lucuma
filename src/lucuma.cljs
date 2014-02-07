@@ -106,7 +106,7 @@
   ([el k v] (set-property! el k v true true))
   ([el k v consider-attributes? consider-events?] (set-property! el (lookup-options el k) k v consider-attributes? consider-events?))
   ([el os k v consider-attributes? consider-events?]
-   (when (lucuma-element? el)
+   (when (and (lucuma-element? el) k)
      (when (not (u/valid-identifier? (name k)))
        (throw (ex-info (str "Invalid property name <" (name k) ">") {:property k})))
      (let [et (get-property-definition-type os)
