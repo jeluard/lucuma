@@ -93,6 +93,14 @@
     (get-in d [:properties k])
     (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
 
+(defn- correct-type?
+  [t v]
+  (let [jv (clj->js v)
+        vt (type jv)]
+    (if (= t js/Object)
+      (instance? t jv)
+      (= t vt))))
+
 (defn set-property!
   "Sets the value of a named property for an element instance."
   ([el k v] (set-property! el k v true true))
@@ -103,7 +111,7 @@
        (throw (ex-info (str "Invalid property name <" (name k) ">") {:property k})))
      (let [et (get-property-definition-type os)
            at (type (clj->js v))]
-        (when (and (not (nil? v)) (not= at et))
+        (when (and (not (nil? v)) (not (correct-type? et v)))
           (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name k) :expected-type et :actual-type at}))))
      (when (or consider-attributes? consider-events?)
        (when (and consider-attributes? (property-definition-attributes? os))
@@ -359,11 +367,14 @@
   (when (map? o)
     (when-not (contains? o :default)
       (throw (ex-info (str "No default for <" n ">") {:property n})))
-    (when-let [t (:type o)]
-      (when (and (not (nil? (:default o))) (not (= (type (clj->js (:default o))) t)))
-        (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))))
-  (when (nil? (get-property-definition-type o));;(and (nil? (get-property-definition-default o)) (nil? (:type o)))
-    (throw (ex-info (str "Default can't be inferred for <" n ">") {:property n}))))
+    (if-let [t (get-property-definition-type o)]
+      (let [d (get-property-definition-default o)]
+        (if d
+          (when (not (correct-type? t d))
+            (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))
+          (when-not (= t js/Object)
+            (throw (ex-info (str "Type must be js/Object when default is nil") {:property n})))))
+      (throw (ex-info (str "Default can't be inferred for <" n ">") {:property n})))))
 
 (defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
