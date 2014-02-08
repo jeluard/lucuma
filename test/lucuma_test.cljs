@@ -152,6 +152,7 @@
   (is (thrown? js/Error (l/validate-property-definition! "name" {:default nil :type js/String})))
   (is (nil? (l/validate-property-definition! "name" {:default nil :type js/Object})))
   (is (nil? (l/validate-property-definition! "name" {:default (atom true) :type js/Object})))
+  (is (nil? (l/validate-property-definition! "name" {:default :label :type js/Object})))
   (is (nil? (l/validate-property-definition! "name" {:default "default" :type js/String})))
   (is (thrown? js/Error (l/validate-property-definition! "name" {:default "default" :type js/Boolean}))))
 

@@ -95,11 +95,9 @@
 
 (defn- correct-type?
   [t v]
-  (let [jv (clj->js v)
-        vt (type jv)]
-    (if (= t js/Object)
-      (instance? t jv)
-      (= t vt))))
+  (if (= t js/Object)
+    (instance? t v)
+    (= t (type v))))
 
 (defn set-property!
   "Sets the value of a named property."
@@ -109,10 +107,9 @@
    (when (and (lucuma-element? el) k (property-exists? el k))
      (when (not (u/valid-identifier? (name k)))
        (throw (ex-info (str "Invalid property name <" (name k) ">") {:property k})))
-     (let [et (get-property-definition-type os)
-           at (type (clj->js v))]
+     (let [et (get-property-definition-type os)]
         (when (and (not (nil? v)) (not (correct-type? et v)))
-          (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name k) :expected-type et :actual-type at}))))
+          (throw (ex-info (str "Expected value of type " et " but got <" v ">") {:property (name k)}))))
      (aset el lucuma-properties-holder-name properties-holder-name (name k) v)
      (when (or consider-attributes? consider-events?)
        (when (and consider-attributes? (property-definition-attributes? os))
