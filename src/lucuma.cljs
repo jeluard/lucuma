@@ -70,7 +70,7 @@
   "Returns true if property exists."
   [el k]
   (if (lucuma-element? el)
-    (exists? (aget el lucuma-properties-holder-name properties-holder-name (name k)))
+    (contains? (:properties (get-definition el)) k)
     false))
 
 (defn- install-properties-holder! [p] (set-lucuma-property! p properties-holder-name #js {}))
@@ -106,19 +106,19 @@
   ([el k v] (set-property! el k v true true))
   ([el k v consider-attributes? consider-events?] (set-property! el (lookup-options el k) k v consider-attributes? consider-events?))
   ([el os k v consider-attributes? consider-events?]
-   (when (and (lucuma-element? el) k)
+   (when (and (lucuma-element? el) k (property-exists? el k))
      (when (not (u/valid-identifier? (name k)))
        (throw (ex-info (str "Invalid property name <" (name k) ">") {:property k})))
      (let [et (get-property-definition-type os)
            at (type (clj->js v))]
         (when (and (not (nil? v)) (not (correct-type? et v)))
           (throw (ex-info (str "Invalid type value: expected " et " but got <" at ">") {:property (name k) :expected-type et :actual-type at}))))
+     (aset el lucuma-properties-holder-name properties-holder-name (name k) v)
      (when (or consider-attributes? consider-events?)
        (when (and consider-attributes? (property-definition-attributes? os))
          (att/set! el k v))
        (when (and consider-events? (property-definition-events? os))
-         (e/fire el k {:old-value (get-property el k) :new-value v})))
-     (aset el lucuma-properties-holder-name properties-holder-name (name k) v))))
+         (e/fire el k {:old-value (get-property el k) :new-value v}))))))
 
 (defn set-properties!
   "Sets all properties."
@@ -336,14 +336,12 @@
     (.setAttribute el (name (key a)) (str (val a))))
   ;; Set default properties values
   (let [as (att/attributes el)]
-    (doseq [ps (:properties m)]
-      (let [os (val ps)]
-        (when (property-definition-attributes? os)
-          (let [k (key ps)
-                a (att/attribute->property [(get-property-definition-type os) (k as)])
-                d (get-property-definition-default os)]
-            ;; Matching attribute value overrides eventual default
-            (set-property! el os k (or a d) true false))))))
+    (doseq [p (:properties m)]
+      (let [[k os] p
+            a (when (property-definition-attributes? os)
+                (att/attribute->property [(get-property-definition-type os) (k as)]))]
+        ;; Matching attribute value overrides eventual default
+        (set-property! el os k (or a (get-property-definition-default os)) true false))))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
