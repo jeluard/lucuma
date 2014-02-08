@@ -14,6 +14,6 @@
 * __[-]__ Removed support for `document` and `style` defined as function
 * And a bunch of [bugs fixed](https://github.com/jeluard/lucuma/issues?labels=bug&milestone=1&page=1&state=closed).
 
-## 0.0.1 released on _Oct 14, 2013_
+# 0.0.1
 
 Initial release with basic WebComponents support.
