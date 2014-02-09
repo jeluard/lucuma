@@ -69,7 +69,8 @@
 (defn lucuma-element?
   "Returns true if element is a Lucuma element."
   [el]
-  (exists? (aget el lucuma-properties-holder-name)))
+  (when el
+    (exists? (aget el lucuma-properties-holder-name))))
 
 (defn property-exists?
   "Returns true if property exists."
