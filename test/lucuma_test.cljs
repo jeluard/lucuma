@@ -138,9 +138,9 @@
 (deftest is-lucuma-element
   (is (not (l/lucuma-element? (.createElement js/document "div"))))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-1")))
-  (is (l/lucuma-element? (.createElement js/document "test-prototype-2")))
+  (is (not (l/lucuma-element? (.createElement js/document "test-prototype-2"))))
   (is (l/lucuma-element? (.createElement js/document "button" "test-prototype-2")))
-  (is (l/lucuma-element? (.createElement js/document "test-prototype-3")))
+  (is (not (l/lucuma-element? (.createElement js/document "test-prototype-3"))))
   (is (l/lucuma-element? (.createElement js/document "button" "test-prototype-3"))))
 
 (deftest property-definition
