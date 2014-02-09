@@ -163,5 +163,5 @@
                :line_to {:default nil :type js/Number}})
 
 ;; TODO make more generic (i.e. also work without polymer)
-(.addEventListener js/document "WebComponentsReady"
+(.addEventListener js/document "DOMContentLoaded";;"WebComponentsReady"
                    (fn [] (fetch-source "examples.cljs" #(set-usages! % @usages))))

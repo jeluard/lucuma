@@ -61,6 +61,11 @@
   [el]
   ((element-name el) @registry))
 
+(defn registered?
+  "Returns true if type is already registered."
+  [t]
+  (contains? @registry t))
+
 (defn lucuma-element?
   "Returns true if element is a Lucuma element."
   [el]
@@ -372,9 +377,7 @@
       (let [d (get-property-definition-default o)]
         (if d
           (when (not (correct-type? t d))
-            (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))
-          (when-not (= t js/Object)
-            (throw (ex-info (str "Type must be js/Object when default is nil") {:property n})))))
+            (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))))
       (throw (ex-info (str "Default can't be inferred for <" n ">") {:property n})))))
 
 (defn- create-ce-prototype
@@ -425,15 +428,21 @@
   (set (filter #(not (contains? all-keys %)) (keys m))))
 
 (defn register
-  "Registers a new Custom Element from its definition."
+  "Registers a new Custom Element from its definition.
+   Returns true if registration was successful, false if the definition was already registered."
   [m]
   ;;Validate the definition
   (assert (map? m) (ex-info "Definition must be a map" {}))
   (assert (not (seq (ignored-keys m))) (str "Definition contains unknown keys " (ignored-keys m)))
   (let [n (:name m)
-        cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))]
-    (if-let [goog-ns (u/*ns*->goog-ns (:ns m))]
-      (when-let [c (:constructor m (default-constructor-name n))]
-        (aset goog-ns c cf))
-      (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))
-    (swap! registry assoc (keyword n) m)))
+        k (keyword n)]
+    (if (registered? k)
+      false
+      (do
+        (swap! registry assoc k m)
+        (let [cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))]
+          (if-let [goog-ns (u/*ns*->goog-ns (:ns m))]
+            (when-let [c (:constructor m (default-constructor-name n))]
+              (aset goog-ns c cf))
+            (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible"))))
+        true))))

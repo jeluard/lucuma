@@ -130,8 +130,8 @@
   :ns nil)
 
 (deftest register-is-idempotent
-  (is (l/register test-register) "first registration")
-  (is (thrown? js/Error (l/register test-register)) "second registration")
+  (is (true? (l/register test-register)) "first registration")
+  (is (false? (l/register test-register)) "second registration")
   (is (thrown? js/Error (l/register nil)))
   (is (thrown? js/Error (l/register (fn [] nil)))))
 
@@ -149,7 +149,7 @@
   (is (thrown? js/Error (l/validate-property-definition! "name" {})))
   (is (thrown? js/Error (l/validate-property-definition! "name" {:type js/String})))
   (is (nil? (l/validate-property-definition! "name" {:default "default"})))
-  (is (thrown? js/Error (l/validate-property-definition! "name" {:default nil :type js/String})))
+  (is (nil? (l/validate-property-definition! "name" {:default nil :type js/String})))
   (is (nil? (l/validate-property-definition! "name" {:default nil :type js/Object})))
   (is (nil? (l/validate-property-definition! "name" {:default (atom true) :type js/Object})))
   (is (nil? (l/validate-property-definition! "name" {:default :label :type js/Object})))
