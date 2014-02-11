@@ -84,6 +84,11 @@
 (defwebcomponent test-prototype-definition-6
   :ns nil
   :host :test-prototype-1)
+(defwebcomponent test-prototype-definition-7
+  :properties {:property1 "default" :property2 "default"})
+(defwebcomponent test-prototype-definition-8
+  test-prototype-definition-7
+  :properties {:property2 "another-default"})
 
 (defwebcomponent test-prototype-definition-fail-1
   :ns nil
@@ -95,6 +100,8 @@
 
 (deftest webcomponent-reuse
   (is (= :button (:host test-prototype-definition-3)))
+  (is (= "default" (get-in test-prototype-definition-8 [:properties :property1])))
+  (is (= "another-default" (get-in test-prototype-definition-8 [:properties :property2])))
   (is (= :button (:host (test-prototype-definition-5 0)))))
 
 (deftest webcomponent-as-fn

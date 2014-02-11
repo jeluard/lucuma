@@ -33,7 +33,12 @@
         default {:name (name n) :ns (name *cljs-ns*)}
         m (if (keyword? (first kvs))
              (merge (apply hash-map kvs) default)
-             `(merge ~(first kvs) ~(apply hash-map (rest kvs)) ~default))]
+             `(let [bkvs# ~(first kvs)
+                    kvs# ~(apply hash-map (rest kvs))
+                    ps# (merge (:properties bkvs#) (:properties kvs#))
+                    ms# (merge (:methods bkvs#) (:methods kvs#))]
+                (merge (dissoc bkvs# :properties :methods) (dissoc kvs# :properties :methods)
+                       (when ps# {:properties ps#}) (when ms# {:methods ms#}) ~default)))]
     (if (empty? args)
       `(def ~(vary-meta n assoc :export true) ~m)
       `(defn ~(vary-meta n assoc :export true) [~@args] ~m))))
