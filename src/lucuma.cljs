@@ -241,6 +241,15 @@
       (when-not (aget sr lucuma-shadow-root-property) (throw (ex-info "Could not locate Lucuma ShadowRoot" {})))
       sr))) ;; This might require some logic if we don't access the right ShadowRoot.
 
+(defn host
+  "Returns the host of an element inside a custom element, walking parents as needed; otherwise returns null."
+  [el]
+  (loop [el el
+         pel nil]
+    (if (exists? (.-host el))
+      (.-host el)
+      (when-let [pel (.-parentNode el)] (recur pel el)))))
+
 (defn- create-shadow-root!
   "Creates and appends a ShadowRoot to 'el' if either `:style` or `:document` is provided."
   [el m]
