@@ -61,58 +61,59 @@
 (defwebcomponent test-prototype-3
   :ns nil
   :host :test-prototype-2)
-(defwebcomponent test-prototype-4
+
+(defwebcomponent test-prototype-definition-1
   :ns nil
   :host :test-prototype-3)
-(defwebcomponent test-prototype-5
+(defwebcomponent test-prototype-definition-2
   :ns nil
   :host :test-prototype-polymer
   :extends :button)
-(defwebcomponent test-prototype-6
+(defwebcomponent test-prototype-definition-3
   test-prototype-2
   :ns nil)
-(defwebcomponent test-prototype-7
+(defwebcomponent test-prototype-definition-4
   [arg]
   :ns nil
   :document (inc arg))
-(defwebcomponent test-prototype-8
+(defwebcomponent test-prototype-definition-5
   [arg]
   test-prototype-2
   :ns nil
   :document (inc arg))
-(defwebcomponent test-prototype-9
+(defwebcomponent test-prototype-definition-6
   :ns nil
   :host :test-prototype-1)
 
-(defwebcomponent test-prototype-fail-1
+(defwebcomponent test-prototype-definition-fail-1
   :ns nil
   :host :test-prototype-polymer)
-(defwebcomponent test-prototype-fail-2
+(defwebcomponent test-prototype-definition-fail-2
   :ns nil
   :host :test-prototype-2
   :extends :div)
 
 (deftest webcomponent-reuse
-  (is (= :button (:host test-prototype-6)))
-  (is (= :button (:host (test-prototype-8 0)))))
+  (is (= :button (:host test-prototype-definition-3)))
+  (is (= :button (:host (test-prototype-definition-5 0)))))
 
 (deftest webcomponent-as-fn
-  (is (= 2 (:document (test-prototype-7 1)))))
+  (is (= 2 (:document (test-prototype-definition-4 1)))))
 
 (deftest definition->el-id
   (is (= nil (l/definition->el-id test-prototype-1)))
   (is (= [:button nil] (l/definition->el-id test-prototype-2)))
   (is (= [:button :test-prototype-2] (l/definition->el-id test-prototype-3)))
-  (is (= [:button :test-prototype-3] (l/definition->el-id test-prototype-4)))
-  (is (= [:button :test-prototype-polymer] (l/definition->el-id test-prototype-5)))
-  (is (= [:test-prototype-1 nil] (l/definition->el-id test-prototype-9)))
-  (is (thrown? js/Error (l/definition->el-id test-prototype-fail-1)))
-  (is (thrown? js/Error (l/definition->el-id test-prototype-fail-2))))
+  (is (= [:button :test-prototype-3] (l/definition->el-id test-prototype-definition-1)))
+  (is (= [:button :test-prototype-polymer] (l/definition->el-id test-prototype-definition-2)))
+  (is (= [:test-prototype-1 nil] (l/definition->el-id test-prototype-definition-6)))
+  (is (thrown? js/Error (l/definition->el-id test-prototype-definition-fail-1)))
+  (is (thrown? js/Error (l/definition->el-id test-prototype-definition-fail-2))))
 
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
   (is (instance? js/HTMLElement (.createElement js/document "test-unknown")))
-  #_(is (not (instance? js/HTMLUnknownElement (.createElement js/document "test-unknown"))))
+  (is (not (instance? js/HTMLUnknownElement (.createElement js/document "test-unknown"))))
   (is (instance? js/HTMLElement (.createElement js/document "test-prototype-1")))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-2")))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-3"))))
@@ -264,14 +265,6 @@
   (l/register test-prototype-1)
   (l/register test-prototype-2)
   (l/register test-prototype-3)
-  (l/register test-prototype-4)
-  (l/register test-prototype-5)
-  (l/register test-prototype-6)
-  (l/register (test-prototype-7 1))
-  (l/register (test-prototype-8 1))
-
-  ;; TODO fails on Chrome Canary
-  ;;(l/register test-prototype-9)
 
   (l/register test-method-1)
 
