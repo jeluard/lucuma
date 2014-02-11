@@ -111,8 +111,6 @@
   ([el k v consider-attributes? consider-events?] (set-property! el (lookup-options el k) k v consider-attributes? consider-events?))
   ([el os k v consider-attributes? consider-events?]
    (when (and (lucuma-element? el) k (property-exists? el k))
-     (when (not (u/valid-identifier? (name k)))
-       (throw (ex-info (str "Invalid property name <" (name k) ">") {:property k})))
      (let [et (get-property-definition-type os)]
         (when (and (not (nil? v)) (not (correct-type? et v)))
           (throw (ex-info (str "Expected value of type " et " but got <" v ">") {:property (name k)}))))
@@ -333,13 +331,6 @@
     (.createElement js/document (name n) (name is))
     (.createElement js/document (name n))))
 
-(defn- type->prototype
-  "Returns prototype of an element from name and extension."
-  [n is]
-  (if n
-    (.getPrototypeOf js/Object (create-element n is))
-    (.-prototype js/HTMLElement)))
-
 (defn- initialize!
   "Initializes a custom element instance."
   [el f m]
@@ -377,6 +368,17 @@
           (set-property! el os a v false true)
           (u/warn (str "Changing attribute for " (name a) " but its attributes? is false.")))))))
 
+(def ^:private default-element (.createElement js/document "div")) ;; div does not define any extra property / method
+
+(defn- validate-property-name!
+  ;; TODO allow overriding of non read-only property?
+  "Ensures a property name is valid."
+  [parent-el n]
+  (when (not (u/valid-identifier? n))
+    (throw (ex-info (str "Invalid property name <" n ">") {:property n})))
+  (when (exists? (aget (or parent-el default-element) n))
+    (throw (ex-info (str "Property <" n "> is already defined") {:property n}))))
+
 (defn validate-property-definition!
   "Ensures a property definition is sound. Throws a js/Error if not."
   [n o]
@@ -396,8 +398,10 @@
   (let [{:keys [host on-created properties methods]} m
         on-created #(initialize! % on-created m)
         on-attribute-changed #(attribute-changed %1 (keyword %2) %3 %4 ((keyword %2) properties))
+        parent-el (when-let [[n is] (definition->el-id m)] (create-element n is))
+        parent-prototype (if parent-el (.getPrototypeOf js/Object parent-el) (.-prototype js/HTMLElement))
         prototype (ce/create-prototype
-                      (merge m {:prototype (apply type->prototype (definition->el-id m))
+                      (merge m {:prototype parent-prototype
                                 :properties (merge-properties properties
                                                               #(clj->js (get-property %2 %1))
                                                               #(set-property! %2 %1 (js->clj %3)))
@@ -408,12 +412,12 @@
     (doseq [property properties]
       (let [n (name (key property))
             os (val property)]
+        (validate-property-name! parent-el n)
         (validate-property-definition! n os)))
     ;; Install methods
     (doseq [method methods]
       (let [n (name (key method))]
-        (when (not (u/valid-identifier? n))
-          (throw (ex-info (str "Invalid method name <" n ">") {:method n})))
+        (validate-property-name! parent-el n)
         (aset prototype n (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method))))))
     prototype))
 

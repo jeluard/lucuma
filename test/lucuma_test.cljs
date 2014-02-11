@@ -109,10 +109,6 @@
   (is (thrown? js/Error (l/definition->el-id test-prototype-fail-1)))
   (is (thrown? js/Error (l/definition->el-id test-prototype-fail-2))))
 
-(deftest type->prototype
-  (is (= (.-prototype js/HTMLElement) (l/type->prototype nil nil)))
-  (is (= (.-prototype js/HTMLButtonElement) (l/type->prototype "button" nil))))
-
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
   (is (instance? js/HTMLElement (.createElement js/document "test-unknown")))
@@ -182,6 +178,23 @@
   (is (= true (l/property-definition-events? {:type js/Boolean})))
   (is (= false (l/property-definition-events? {:events? false :type js/Boolean}))))
 
+(defwebcomponent test-property-1
+  :properties {:property nil})
+
+(defwebcomponent test-property-fail-1
+  :properties {:invalid-property-name nil})
+(defwebcomponent test-property-fail-2
+  :properties {:id nil})
+(defwebcomponent test-property-fail-3
+  :host :img
+  :properties {:src nil})
+
+(deftest property-name
+  (is (l/register test-property-1))
+  (is (thrown? js/Error (l/register test-property-fail-1)))
+  (is (thrown? js/Error (l/register test-property-fail-2)))
+  (is (thrown? js/Error (l/register test-property-fail-3))))
+
 (defwebcomponent test-method-1
   :methods {:method1 (fn [] 1)
             :method2 (fn [] {:key "value"})
@@ -201,8 +214,7 @@
   (is (not (nil? (first (.method4 (.createElement js/document "test-method-1"))))))
   (is (nil? (second (.method4 (.createElement js/document "test-method-1")))))
   (is (thrown? js/Error (l/register test-method-2)))
-  ;; TODO fix?
-  #_(is (thrown? js/Error (l/register test-method-3))))
+  (is (thrown? js/Error (l/register test-method-3))))
 
 (defwebcomponent test-constructor-1)
 (defwebcomponent test-constructor-2
