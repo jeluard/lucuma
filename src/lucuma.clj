@@ -32,13 +32,13 @@
   (let [[args kvs] (split-args c)
         default {:name (name n) :ns (name *cljs-ns*)}
         m (if (keyword? (first kvs))
-             (merge (apply hash-map kvs) default)
+             (merge default (apply hash-map kvs))
              `(let [bkvs# ~(first kvs)
                     kvs# ~(apply hash-map (rest kvs))
                     ps# (merge (:properties bkvs#) (:properties kvs#))
                     ms# (merge (:methods bkvs#) (:methods kvs#))]
-                (merge (dissoc bkvs# :properties :methods) (dissoc kvs# :properties :methods)
-                       (when ps# {:properties ps#}) (when ms# {:methods ms#}) ~default)))]
+                (merge (dissoc bkvs# :properties :methods) ~default (dissoc kvs# :properties :methods)
+                       (when ps# {:properties ps#}) (when ms# {:methods ms#}))))]
     (if (empty? args)
       `(def ~(vary-meta n assoc :export true) ~m)
       `(defn ~(vary-meta n assoc :export true) [~@args] ~m))))
