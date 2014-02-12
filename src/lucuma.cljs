@@ -460,3 +460,13 @@
               (aset goog-ns c cf))
             (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible"))))
         true))))
+
+(defn on-elements-upgraded
+  "Executes function when all elements are upgraded.
+   This is needed as polymer upgrades elements asynchronously."
+  [f]
+  (if (p/custom-element-polyfilled?)
+    (.addEventListener js/document "WebComponentsReady" f)
+    (f)))
+
+(set! (.-onElementsUpgraded js/lucuma) on-elements-upgraded)

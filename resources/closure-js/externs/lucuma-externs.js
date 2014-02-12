@@ -50,3 +50,10 @@ Platform.ShadowCSS.prototype.shimStyling = function(root, name, extendsName) {};
 
 var MutationObserver = {};
 MutationObserver.prototype.observe = function(el, options) {};
+
+/**
+ * Lucuma
+ */
+
+var lucuma = {};
+lucuma.onElementsUpgraded = function() {};

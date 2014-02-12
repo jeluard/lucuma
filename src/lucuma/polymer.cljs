@@ -6,15 +6,16 @@
   "Returns true if current Custom Element support is polyfilled."
   []
   (and
-    (ce/supported?)
-    true));; TODO find a way to detect polyfill support
+   (ce/supported?)
+   (exists? js/CustomElements)
+   (not (.-useNative js/CustomElements))))
 
 (defn shadow-dom-polyfilled?
   "Returns true if current ShadowDOM support is polyfilled."
   []
   (and
-    (sd/supported?)
-    (not (exists? (.-createShadowRoot js/document.documentElement)))))
+   (sd/supported?)
+   (not (exists? (.-createShadowRoot js/document.documentElement)))))
 
 (defn shadow-css-needed?
   "Returns true if Shadow CSS polyfill is installed in current platform."
