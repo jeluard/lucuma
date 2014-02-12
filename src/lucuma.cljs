@@ -457,10 +457,10 @@
       (do
         (swap! registry assoc k m)
         (let [cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))]
-          (if-let [goog-ns (u/*ns*->goog-ns (:ns m))]
-            (when-let [c (:constructor m (default-constructor-name n))]
-              (aset goog-ns c cf))
-            (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible"))))
+          (when-let [c (:constructor m (default-constructor-name n))]
+            (if-let [goog-ns (u/*ns*->goog-ns (:ns m))]
+              (aset goog-ns c cf)
+              (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))))
         true))))
 
 (defn on-elements-upgraded
