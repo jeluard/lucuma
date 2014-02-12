@@ -231,13 +231,14 @@
 
 (def ^private lucuma-shadow-root-property "lucuma")
 
+;; TODO Find the right ShadowRoot when multiple are present (e.g. my-comp1 extends my-comp2 => both have shadow-root)
 (defn shadow-root
   "Returns lucuma ShadowRoot of element."
   [el]
   (when (lucuma-element? el)
     (let [sr (.-shadowRoot el)]
       (when-not (aget sr lucuma-shadow-root-property) (throw (ex-info "Could not locate Lucuma ShadowRoot" {})))
-      sr))) ;; This might require some logic if we don't access the right ShadowRoot.
+      sr)))
 
 (defn host
   "Returns the host of an element inside a custom element, walking parents as needed; otherwise returns null."
@@ -300,7 +301,8 @@
   (cond
    (u/valid-standard-element-name? t) nil
    (contains? @registry t) (first (definition->el-id (t @registry)))
-   ;;TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
+   ;; TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
+   ;; https://github.com/Polymer/CustomElements/blob/master/src/CustomElements.js#L317
    :else ::not-found))
 
 (defn- definition->el-id
