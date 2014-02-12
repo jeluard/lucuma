@@ -40,12 +40,12 @@
   (is (thrown? js/Error (l/register {:unknown-key nil}))))
 
 (defwebcomponent test-sr-1
-  :ns nil)
+  :constructor nil)
 (defwebcomponent test-sr-2
-  :ns nil
+  :constructor nil
   :document "hello")
 (defwebcomponent test-sr-3
-  :ns nil
+  :constructor nil
   :style "* {background: red;}")
 
 (deftest create-shadow-root-when-needed
@@ -54,35 +54,29 @@
   (is (not (nil? (.-shadowRoot (by-id "test-sr-3"))))))
 
 (defwebcomponent test-prototype-1
-  :ns nil)
+  :constructor nil)
 (defwebcomponent test-prototype-2
-  :ns nil
+  :constructor nil
   :host :button)
 (defwebcomponent test-prototype-3
-  :ns nil
+  :constructor nil
   :host :test-prototype-2)
 
 (defwebcomponent test-prototype-definition-1
-  :ns nil
   :host :test-prototype-3)
 (defwebcomponent test-prototype-definition-2
-  :ns nil
   :host :test-prototype-polymer
   :extends :button)
 (defwebcomponent test-prototype-definition-3
-  test-prototype-2
-  :ns nil)
+  test-prototype-2)
 (defwebcomponent test-prototype-definition-4
   [arg]
-  :ns nil
   :document (inc arg))
 (defwebcomponent test-prototype-definition-5
   [arg]
   test-prototype-2
-  :ns nil
   :document (inc arg))
 (defwebcomponent test-prototype-definition-6
-  :ns nil
   :host :test-prototype-1)
 (defwebcomponent test-prototype-definition-7
   :properties {:property1 "default" :property2 "default"})
@@ -91,10 +85,8 @@
   :properties {:property2 "another-default"})
 
 (defwebcomponent test-prototype-definition-fail-1
-  :ns nil
   :host :test-prototype-polymer)
 (defwebcomponent test-prototype-definition-fail-2
-  :ns nil
   :host :test-prototype-2
   :extends :div)
 
@@ -130,8 +122,7 @@
   (is (= :test-prototype-1 (l/element-name (.createElement js/document "test-prototype-1"))))
   (is (= :test-prototype-2 (l/element-name (.createElement js/document "button" "test-prototype-2")))))
 
-(defwebcomponent test-register
-  :ns nil)
+(defwebcomponent test-register)
 
 (deftest register-is-idempotent
   (is (true? (l/register test-register)) "first registration")
@@ -172,14 +163,14 @@
   (is (= js/Object (l/get-property-definition-type {:default {}})))
   (is (= js/Object (l/get-property-definition-type {:default nil}))))
 
-(deftest property-definition-attributes?
+(deftest property-definition-attributes
   (is (= true (l/property-definition-attributes? {:attributes? true})))
   (is (= false (l/property-definition-attributes? {:attributes? false})))
   (is (= false (l/property-definition-attributes? {:type js/Function})))
   (is (= true (l/property-definition-attributes? {:type js/Boolean})))
   (is (= false (l/property-definition-attributes? {:attributes? false :type js/Boolean}))))
 
-(deftest property-definition-events?
+(deftest property-definition-events
   (is (= true (l/property-definition-events? {:events? true})))
   (is (= false (l/property-definition-events? {:events? false})))
   (is (= false (l/property-definition-events? {:type js/Function})))
@@ -204,6 +195,7 @@
   (is (thrown? js/Error (l/register test-property-fail-3))))
 
 (defwebcomponent test-method-1
+  :constructor nil
   :methods {:method1 (fn [] 1)
             :method2 (fn [] {:key "value"})
             :method3 (fn [_ o] (get o "key"))
@@ -231,7 +223,7 @@
   :ns "lucuma"
   :constructor "Constructor")
 (defwebcomponent test-constructor-4
-  :ns nil)
+  :constructor nil)
 
 (deftest constructors
   (is (exists? js/lucuma_test.TESTConstructor1))
@@ -252,7 +244,7 @@
   (is (= {:att ""} (l/host-attributes [:div {:att ""}]))))
 
 (defwebcomponent test-host-attributes
-  :ns nil
+  :constructor nil
   :host {:a "A"})
 
 (deftest host-attributes
