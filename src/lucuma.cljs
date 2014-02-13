@@ -4,7 +4,6 @@
             [lucuma.custom-elements :as ce]
             [lucuma.event :as e]
             [lucuma.polymer :as p]
-            [lucuma.shadow-dom :as sd]
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods]))
 
@@ -254,7 +253,7 @@
   [el m]
   (let [{:keys [style document]} m]
     (when (or style document)
-      (let [sr (sd/create el m)]
+      (let [sr (.createShadowRoot el)]
         (aset sr lucuma-shadow-root-property "")
         (when style (render-then-install! sr style render-style install-style!))
         (when document (render-then-install! sr document render-document install-document!))

@@ -5,6 +5,3 @@
 
 (deftest supported
   (is (sd/supported?)))
-
-(deftest create
-  (is (not (nil? (sd/create (.createElement js/document "a"))))))
