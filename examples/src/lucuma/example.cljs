@@ -156,4 +156,4 @@
                :line_to {:default nil :type js/Number}})
 
 (.addEventListener js/document "DOMContentLoaded"
-                   (fn [] (fetch-source "examples.cljs" #(set-usages! % @usages))))
+                   (fn [] (fetch-source "usages.cljs" #(set-usages! % @usages))))
