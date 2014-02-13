@@ -1,6 +1,7 @@
 (ns lucuma.example
   (:require [clojure.string :as str]
             [lucuma :as l :refer-macros [defwebcomponent]]
+            [garden.stylesheet :refer [at-import]]
             [garden.units :refer [px]])
   (:require-macros [dommy.macros :refer [sel1]]))
 
@@ -42,16 +43,6 @@
           (onsuccess r f))
     (.open r "GET" url true)
     (.send r nil)))
-
-(def bootstrap-style (.createElement js/document "style"))
-(fetch "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"
-       (fn [s]
-         (set! (.-textContent bootstrap-style) s)))
-
-(def prism-style (.createElement js/document "style"))
-(fetch "assets/prism.css"
-       (fn [s]
-         (set! (.-textContent prism-style) s)))
 
 (defn fetch-source
   [n f]
@@ -149,7 +140,9 @@
 (def base
   {:host :section
    :document document
-   :style (list bootstrap-style prism-style style)})
+   :style (list [(at-import "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css")]
+                [(at-import "assets/prism.css")]
+                style)})
 
 (defwebcomponent lucu-example
   base
