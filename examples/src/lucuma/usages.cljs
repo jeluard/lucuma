@@ -61,10 +61,6 @@
 (defwebcomponent ex-methods
   :methods {:method (fn [] {:key "value"})})
 
-(defwebcomponent ex-constructor
-  :constructor "CustomConstructor"
-  :document [:div "Hello constructor!"])
-
 (defwebcomponent ex-extend
   :host :div
   :document [:span {:class "fa fa-exclamation"} [:content]])
@@ -81,7 +77,6 @@
   (register ex-extend)
   (register ex-properties)
   (register ex-methods)
-  (register ex-constructor)
 
   (register lucu-range-with-threshold)
   (register lucu-overlay)

@@ -4,6 +4,7 @@
             [lucuma.custom-elements :as ce]
             [lucuma.event :as e]
             [lucuma.polymer :as p]
+            [lucuma.shadow-dom :as sd]
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods]))
 
@@ -56,9 +57,9 @@
     (keyword (or (.getAttribute el "is") (string/lower-case (.-tagName el))))))
 
 (defn get-definition
-  "Returns the definition for an element."
-  [el]
-  ((element-name el) @registry))
+  "Returns the definition for an element type."
+  [t]
+  (t @registry))
 
 (defn registered?
   "Returns true if type is already registered."
@@ -75,7 +76,7 @@
   "Returns true if property exists."
   [el k]
   (if (lucuma-element? el)
-    (contains? (:properties (get-definition el)) k)
+    (contains? (:properties (get-definition (element-name el))) k)
     false))
 
 (defn- install-properties-holder! [p] (set-lucuma-property! p properties-holder-name #js {}))
@@ -94,7 +95,7 @@
 
 (defn- lookup-options
   [el k]
-  (if-let [d (get-definition el)]
+  (if-let [d (get-definition (element-name el))]
     (get-in d [:properties k])
     (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
 
@@ -233,11 +234,10 @@
 ;; TODO Find the right ShadowRoot when multiple are present (e.g. my-comp1 extends my-comp2 => both have shadow-root)
 (defn shadow-root
   "Returns lucuma ShadowRoot of element."
-  [el]
-  (when (lucuma-element? el)
-    (let [sr (.-shadowRoot el)]
-      (when-not (aget sr lucuma-shadow-root-property) (throw (ex-info "Could not locate Lucuma ShadowRoot" {})))
-      sr)))
+  ([el] (shadow-root el (name (element-name el))))
+  ([el n]
+   (when (lucuma-element? el)
+     (some #(when (= n (aget % lucuma-shadow-root-property)) %) (sd/shadow-roots el)))))
 
 (defn host
   "Returns the host of an element inside a custom element, walking parents as needed; otherwise returns null."
@@ -254,7 +254,7 @@
   (let [{:keys [style document]} m]
     (when (or style document)
       (let [sr (.createShadowRoot el)]
-        (aset sr lucuma-shadow-root-property "")
+        (aset sr lucuma-shadow-root-property (name (element-name el)))
         (when style (render-then-install! sr style render-style install-style!))
         (when document (render-then-install! sr document render-document install-document!))
         sr))))
@@ -286,51 +286,38 @@
    (vector? h) (second h)
    (map? h) h))
 
-(declare definition->el-id)
+(defn host-or-extends
+  [m]
+  (when-let [t (host-type (:host m))]
+    (if-let [e (:extends m)]
+      e
+      t)))
 
 (defn- host-type->extends
   "Returns extended type from host element.
 
   e.g.
-   'div' => nil
-   'lucu-element' => nil (when lucu-element does not extend any element)
-   'lucu-element' => 'div' (when lucu-element extends div, recursively finds the root extended element)
-   'non-lucu-element' => ::not-found'"
+   :div => :div
+   :lucu-element => nil (when lucu-element does not extend any element)
+   :lucu-element => :div (when lucu-element extends div, recursively finds the root extended element)
+   :non-lucu-element => throw exception"
   [t]
-  (cond
-   (u/valid-standard-element-name? t) nil
-   (contains? @registry t) (first (definition->el-id (t @registry)))
-   ;; TODO polymer: https://github.com/Polymer/polymer/commit/e269582047fb4d384a48c9890906bf06742a932b
-   ;; https://github.com/Polymer/CustomElements/blob/master/src/CustomElements.js#L317
-   :else ::not-found))
-
-(defn- definition->el-id
-  "Returns [type, extended-type] from host/extends element.
-
-  e.g.
-   :host nil => nil
-   :host :div => ['div' nil]
-   :host :lucu-element => ['lucu-element' nil]  (when lucu-element does not extend any element)
-   :host :lucu-element => ['div' 'lucu-element'] (when lucu-element extends div, recursively finds the root extended element)
-   :host :non-lucu-element => exception thrown
-   :host :non-lucu-element :extends :div => ['div' 'non-lucu-element']"
-  [m]
-  (when-let [t (host-type (:host m))]
-    (let [ei (host-type->extends t)
-          eic (when (not= ei ::not-found) ei)
-          ep (when-let [e (:extends m)] e)
-          e (or eic ep)]
-      (when (and eic ep)
-        (throw (ex-info "Infered extends value but a value for :extends was supplied" {:type t :inferred ei :provided ep})))
-      (when (and (not ep) (= ei ::not-found))
-        (throw (ex-info "Could not infer extends value and no value for :extends supplied" {:type t})))
-      (if e [e t] [t nil]))))
+  (when t
+    (if (u/valid-standard-element-name? (name t))
+      t
+      (cond
+       (registered? t) (host-type->extends (host-or-extends (get-definition t)))
+       ;; TODO polymer: https://github.com/Polymer/CustomElements/blob/master/src/CustomElements.js#L317
+       :else (throw (ex-info (str "Could not infer extends for <" (name t) ">") {}))))))
 
 (defn- create-element
-  [n is]
-  (if is
-    (.createElement js/document (name n) (name is))
-    (.createElement js/document (name n))))
+  [m]
+  (when-let [t (host-or-extends m)]
+    (let [n (name t)
+          e (host-type->extends t)]
+      (if (and (not (nil? e)) (not= t e))
+        (.createElement js/document (name e) n)
+        (.createElement js/document n)))))
 
 (defn- initialize!
   "Initializes a custom element instance."
@@ -350,7 +337,7 @@
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
       (when-not (get-lucuma-property el "style_shimed")
-        (p/shim-styling! sr (:name m) (host-type (:host m)))
+        (p/shim-styling! sr (:name m) (name (host-type (:host m))))
         (set-lucuma-property! el "style_shimed" true))))
   (when f (u/call-with-first-argument f el)))
 
@@ -399,7 +386,7 @@
   (let [{:keys [host on-created properties methods]} m
         on-created #(initialize! % on-created m)
         on-attribute-changed #(attribute-changed %1 (keyword %2) %3 %4 ((keyword %2) properties))
-        parent-el (when-let [[n is] (definition->el-id m)] (create-element n is))
+        parent-el (create-element m)
         parent-prototype (if parent-el (.getPrototypeOf js/Object parent-el) (.-prototype js/HTMLElement))
         prototype (ce/create-prototype
                       (merge m {:prototype parent-prototype
@@ -411,10 +398,9 @@
     (install-properties-holder! prototype)
     ;; Validate property definitions
     (doseq [property properties]
-      (let [n (name (key property))
-            os (val property)]
+      (let [n (name (key property))]
         (validate-property-name! parent-el n)
-        (validate-property-definition! n os)))
+        (validate-property-definition! n (val property))))
     ;; Install methods
     (doseq [method methods]
       (let [n (name (key method))]
@@ -422,19 +408,8 @@
         (aset prototype n (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method))))))
     prototype))
 
-(defn- default-constructor-name
-  "Generates a default constructor name for an element.
-
-  e.g.
-   my-element => MYElement
-   my-lucu-element => MYLucuElement"
-  [n]
-  (when n
-    (let [v (string/split n #"-")]
-      (str (string/upper-case (first v)) (string/join (map string/capitalize (subvec v 1)))))))
-
 (def all-keys
-  #{:name :ns :constructor :host :extends :document :style :properties :methods :handlers
+  #{:name :ns :host :extends :document :style :properties :methods :handlers
     :on-created :on-attached :on-detached :reset-style-inheritance})
 
 (defn ignored-keys
@@ -444,23 +419,17 @@
 
 (defn register
   "Registers a new Custom Element from its definition.
-   Returns true if registration was successful, false if the definition was already registered."
+   Returns true if registration was successful, falsey value if the definition was already registered."
   [m]
   ;;Validate the definition
   (assert (map? m) (ex-info "Definition must be a map" {}))
   (assert (not (seq (ignored-keys m))) (str "Definition contains unknown keys " (ignored-keys m)))
   (let [n (:name m)
         k (keyword n)]
-    (if (registered? k)
-      false
-      (do
-        (swap! registry assoc k m)
-        (let [cf (ce/register n (create-ce-prototype m) (first (definition->el-id m)))]
-          (when-let [c (:constructor m (default-constructor-name n))]
-            (if-let [goog-ns (u/*ns*->goog-ns (:ns m))]
-              (aset goog-ns c cf)
-              (u/warn (str "Couldn't export constructor for " n " as ns " (:ns m) " is inaccessible")))))
-        true))))
+    (when-not (registered? k)
+      (swap! registry assoc k m)
+      (ce/register n (create-ce-prototype m) (host-type->extends (host-or-extends m)))
+      true)))
 
 (defn on-elements-upgraded
   "Executes function when all elements are upgraded.

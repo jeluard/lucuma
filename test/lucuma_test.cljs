@@ -26,10 +26,6 @@
 
 (defn- by-id [id] (.getElementById js/document id))
 
-(deftest default-constructor-names
-  (is (= "EXName" (l/default-constructor-name "ex-name")))
-  (is (= "EXComplexName" (l/default-constructor-name "ex-complex-name"))))
-
 (deftest ignored-keys
   (is (empty? (l/ignored-keys {:document ""})))
   (is (empty? (l/ignored-keys {:document "" :style ""})))
@@ -39,13 +35,10 @@
   (is (thrown? js/Error (l/register "")))
   (is (thrown? js/Error (l/register {:unknown-key nil}))))
 
-(defwebcomponent test-sr-1
-  :constructor nil)
+(defwebcomponent test-sr-1)
 (defwebcomponent test-sr-2
-  :constructor nil
   :document "hello")
 (defwebcomponent test-sr-3
-  :constructor nil
   :style "* {background: red;}")
 
 (deftest create-shadow-root-when-needed
@@ -53,13 +46,17 @@
   (is (not (nil? (.-shadowRoot (by-id "test-sr-2")))))
   (is (not (nil? (.-shadowRoot (by-id "test-sr-3"))))))
 
-(defwebcomponent test-prototype-1
-  :constructor nil)
+(deftest shadow-root
+  (is (nil? (l/shadow-root (.createElement js/document "div"))))
+  (is (nil? (l/shadow-root (.createElement js/document "test-sr-1"))))
+  (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2")))))
+  (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2") "test-sr-2"))))
+  (is (nil? (l/shadow-root (.createElement js/document "test-sr-2") "wrong-element-name"))))
+
+(defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
-  :constructor nil
   :host :button)
 (defwebcomponent test-prototype-3
-  :constructor nil
   :host :test-prototype-2)
 
 (defwebcomponent test-prototype-definition-1
@@ -86,9 +83,6 @@
 
 (defwebcomponent test-prototype-definition-fail-1
   :host :test-prototype-polymer)
-(defwebcomponent test-prototype-definition-fail-2
-  :host :test-prototype-2
-  :extends :div)
 
 (deftest webcomponent-reuse
   (is (= :button (:host test-prototype-definition-3)))
@@ -99,15 +93,59 @@
 (deftest webcomponent-as-fn
   (is (= 2 (:document (test-prototype-definition-4 1)))))
 
-(deftest definition->el-id
-  (is (= nil (l/definition->el-id test-prototype-1)))
-  (is (= [:button nil] (l/definition->el-id test-prototype-2)))
-  (is (= [:button :test-prototype-2] (l/definition->el-id test-prototype-3)))
-  (is (= [:button :test-prototype-3] (l/definition->el-id test-prototype-definition-1)))
-  (is (= [:button :test-prototype-polymer] (l/definition->el-id test-prototype-definition-2)))
-  (is (= [:test-prototype-1 nil] (l/definition->el-id test-prototype-definition-6)))
-  (is (thrown? js/Error (l/definition->el-id test-prototype-definition-fail-1)))
-  (is (thrown? js/Error (l/definition->el-id test-prototype-definition-fail-2))))
+(deftest parse-host-type
+  (is (nil? (l/host-type nil)))
+  (is (= :div (l/host-type :div)))
+  (is (nil? (l/host-type {:att ""})))
+  (is (= :div (l/host-type [:div {:att ""}]))))
+
+(deftest parse-host-attributes
+  (is (nil? (l/host-attributes nil)))
+  (is (nil? (l/host-attributes :div)))
+  (is (= {:att ""} (l/host-attributes {:att ""})))
+  (is (= {:att ""} (l/host-attributes [:div {:att ""}]))))
+
+(defwebcomponent test-host-attributes
+  :host {:a "A"})
+
+(deftest host-attributes
+  (is (= "A" (.getAttribute (by-id "test-host-attributes") "a"))))
+
+(defwebcomponent test-extends-1)
+(defwebcomponent test-extends-2
+  :host :div)
+(defwebcomponent test-extends-3
+  :host :test-extends-1)
+(defwebcomponent test-extends-4
+  :host :test-extends-2)
+(defwebcomponent test-extends-5
+  :host :non-lucu-element
+  :extends :div)
+(defwebcomponent test-extends-6
+  :host :test-extends-4)
+(defwebcomponent test-extends-7
+  :host [:test-extends-4 {}])
+(defwebcomponent test-extends-8
+  :host :span
+  :extends :div)
+(defwebcomponent test-extends-9
+  :extends :div)
+(defwebcomponent test-extends-fail-1
+  :host :non-lucu-element)
+
+(deftest host-type->extends
+  (is (nil? (l/host-type->extends nil)))
+  (is (= :div (l/host-type->extends :div)))
+  (is (nil? (l/host-type->extends :test-extends-1)))
+  (is (= :div (l/host-type->extends :test-extends-2)))
+  (is (nil? (l/host-type->extends :test-extends-3)))
+  (is (= :div (l/host-type->extends :test-extends-4)))
+  (is (= :div (l/host-type->extends :test-extends-5)))
+  (is (= :div (l/host-type->extends :test-extends-6)))
+  (is (= :div (l/host-type->extends :test-extends-7)))
+  (is (= :div (l/host-type->extends :test-extends-8)))
+  (is (nil? (l/host-type->extends :test-extends-9)))
+  (is (thrown? js/Error (l/host-type->extends :test-extends-fail-1))))
 
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
@@ -127,7 +165,7 @@
 
 (deftest register-is-idempotent
   (is (true? (l/register test-register)) "first registration")
-  (is (false? (l/register test-register)) "second registration")
+  (is (not (true? (l/register test-register))) "second registration")
   (is (thrown? js/Error (l/register nil)))
   (is (thrown? js/Error (l/register (fn [] nil)))))
 
@@ -200,7 +238,6 @@
   (is (nil? (.-property (.createElement js/document "test-property-1")))))
 
 (defwebcomponent test-method-1
-  :constructor nil
   :methods {:method1 (fn [] 1)
             :method2 (fn [] {:key "value"})
             :method3 (fn [_ o] (get o "key"))
@@ -221,40 +258,6 @@
   (is (thrown? js/Error (l/register test-method-2)))
   (is (thrown? js/Error (l/register test-method-3))))
 
-(defwebcomponent test-constructor-1)
-(defwebcomponent test-constructor-2
-  :ns "lucuma")
-(defwebcomponent test-constructor-3
-  :ns "lucuma"
-  :constructor "Constructor")
-(defwebcomponent test-constructor-4
-  :constructor nil)
-
-(deftest constructors
-  (is (exists? js/lucuma_test.TESTConstructor1))
-  (is (exists? js/lucuma.TESTConstructor2))
-  (is (exists? js/lucuma.Constructor))
-  (is (not (exists? js/lucuma_test.TESTConstructor4))))
-
-(deftest parse-host-type
-  (is (nil? (l/host-type nil)))
-  (is (= :div (l/host-type :div)))
-  (is (nil? (l/host-type {:att ""})))
-  (is (= :div (l/host-type [:div {:att ""}]))))
-
-(deftest parse-host-attributes
-  (is (nil? (l/host-attributes nil)))
-  (is (nil? (l/host-attributes :div)))
-  (is (= {:att ""} (l/host-attributes {:att ""})))
-  (is (= {:att ""} (l/host-attributes [:div {:att ""}]))))
-
-(defwebcomponent test-host-attributes
-  :constructor nil
-  :host {:a "A"})
-
-(deftest host-attributes
-  (is (= "A" (.getAttribute (by-id "test-host-attributes") "a"))))
-
 (defn wrap-registration
   [f]
   (append-tests-node)
@@ -270,12 +273,17 @@
   (l/register test-prototype-2)
   (l/register test-prototype-3)
 
-  (l/register test-method-1)
+  (l/register test-extends-1)
+  (l/register test-extends-2)
+  (l/register test-extends-3)
+  (l/register test-extends-4)
+  (l/register test-extends-5)
+  (l/register test-extends-6)
+  (l/register test-extends-7)
+  (l/register test-extends-8)
+  (l/register test-extends-9)
 
-  (l/register test-constructor-1)
-  (l/register test-constructor-2)
-  (l/register test-constructor-3)
-  (l/register test-constructor-4)
+  (l/register test-method-1)
 
   (l/register test-host-attributes)
   (append "test-host-attributes")
