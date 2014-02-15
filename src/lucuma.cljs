@@ -267,9 +267,9 @@
   "Returns type from host element.
 
   e.g.
-   :host :div => :div
-   :host [:div {:key :value}] => :div
-   :host {:key :value} => nil"
+   :div => :div
+   [:div {:key :value}] => :div
+   {:key :value} => nil"
   [h]
   (when-let [t (cond (vector? h) (first h) (keyword? h) h)]
     t))
@@ -278,15 +278,15 @@
   "Returns attributes from host element.
 
   e.g.
-   :host :div => nil
-   :host [:div {:key :value}] => {:key :value}
-   :host {:key :value} => {:key :value}"
+   :div => nil
+   [:div {:key :value}] => {:key :value}
+   {:key :value} => {:key :value}"
   [h]
   (cond
    (vector? h) (second h)
    (map? h) h))
 
-(defn host-or-extends
+(defn- host-or-extends
   [m]
   (when-let [t (host-type (:host m))]
     (if-let [e (:extends m)]
@@ -337,7 +337,7 @@
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
       (when-not (get-lucuma-property el "style_shimed")
-        (p/shim-styling! sr (:name m) (name (host-type (:host m))))
+        (p/shim-styling! sr (:name m) (host-type (:host m)))
         (set-lucuma-property! el "style_shimed" true))))
   (when f (u/call-with-first-argument f el)))
 
