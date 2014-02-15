@@ -59,7 +59,8 @@
 (defn get-definition
   "Returns the definition for an element type."
   [t]
-  (t @registry))
+  (when t
+    (t @registry)))
 
 (defn registered?
   "Returns true if type is already registered."
