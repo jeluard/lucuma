@@ -180,7 +180,7 @@
   (is (l/lucuma-element? (.createElement js/document "button" "test-prototype-3"))))
 
 (deftest element-name
-  (is (= nil (l/element-name nil))
+  (is (= nil (l/element-name nil)))
   (is (= :div (l/element-name (.createElement js/document "div"))))
   (is (= :test-prototype-1 (l/element-name (.createElement js/document "test-prototype-1"))))
   (is (= :test-prototype-2 (l/element-name (.createElement js/document "button" "test-prototype-2")))))
