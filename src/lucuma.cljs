@@ -234,10 +234,10 @@
 ;; TODO Find the right ShadowRoot when multiple are present (e.g. my-comp1 extends my-comp2 => both have shadow-root)
 (defn shadow-root
   "Returns lucuma ShadowRoot of element."
-  ([el] (shadow-root el (name (element-name el))))
+  ([el] (shadow-root el (element-name el)))
   ([el n]
-   (when (lucuma-element? el)
-     (some #(when (= n (aget % lucuma-shadow-root-property)) %) (sd/shadow-roots el)))))
+   (when (and (lucuma-element? el) n)
+     (some #(when (= (name n) (aget % lucuma-shadow-root-property)) %) (sd/shadow-roots el)))))
 
 (defn host
   "Returns the host of an element inside a custom element, walking parents as needed; otherwise returns null."
@@ -249,7 +249,7 @@
       (when-let [pel (.-parentNode el)] (recur pel el)))))
 
 (defn- create-shadow-root!
-  "Creates and appends a ShadowRoot to 'el' if either `:style` or `:document` is provided."
+  "Creates and appends a ShadowRoot if either `:style` or `:document` is provided."
   [el m]
   (let [{:keys [style document]} m]
     (when (or style document)

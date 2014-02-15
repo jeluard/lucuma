@@ -50,8 +50,8 @@
   (is (nil? (l/shadow-root (.createElement js/document "div"))))
   (is (nil? (l/shadow-root (.createElement js/document "test-sr-1"))))
   (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2")))))
-  (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2") "test-sr-2"))))
-  (is (nil? (l/shadow-root (.createElement js/document "test-sr-2") "wrong-element-name"))))
+  (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2") :test-sr-2))))
+  (is (nil? (l/shadow-root (.createElement js/document "test-sr-2") :wrong-element-name))))
 
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
