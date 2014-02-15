@@ -150,7 +150,6 @@
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
   (is (instance? js/HTMLElement (.createElement js/document "test-unknown")))
-  ;; TODO Fails with polymer's polyfill: https://github.com/Polymer/CustomElements/issues/100
   (is (not (instance? js/HTMLUnknownElement (.createElement js/document "test-unknown"))))
   (is (instance? js/HTMLElement (.createElement js/document "test-prototype-1")))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-2")))
@@ -173,7 +172,6 @@
   (is (not (l/lucuma-element? nil)))
   (is (not (l/lucuma-element? (.createElement js/document "div"))))
   (is (l/lucuma-element? (.createElement js/document "test-prototype-1")))
-  ;; TODO  fails with polymer's polyfill: https://github.com/Polymer/CustomElements/issues/101
   (is (not (l/lucuma-element? (.createElement js/document "test-prototype-2"))))
   (is (l/lucuma-element? (.createElement js/document "button" "test-prototype-2")))
   (is (not (l/lucuma-element? (.createElement js/document "test-prototype-3"))))
