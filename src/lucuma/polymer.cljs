@@ -34,4 +34,4 @@
    * https://github.com/Polymer/ShadowDOM/issues/260
    * https://github.com/Polymer/platform-dev/blob/master/src/ShadowCSS.js"
   [sr n base-type]
-  (.shimStyling js/Platform.ShadowCSS sr n (when base-type (name base-type))))
+  (.shimStyling js/Platform.ShadowCSS sr n base-type))

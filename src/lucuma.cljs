@@ -338,7 +338,7 @@
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
       (when-not (get-lucuma-property el "style_shimed")
-        (p/shim-styling! sr (:name m) (host-type (:host m)))
+        (p/shim-styling! sr (:name m) (when-let [h (host-type (:host m))] (name h)))
         (set-lucuma-property! el "style_shimed" true))))
   (when f (u/call-with-first-argument f el)))
 
