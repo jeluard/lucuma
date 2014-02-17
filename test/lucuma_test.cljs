@@ -53,6 +53,12 @@
   (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2") :test-sr-2))))
   (is (nil? (l/shadow-root (.createElement js/document "test-sr-2") :wrong-element-name))))
 
+(deftest host
+  (is (nil? (l/host nil)))
+  (is (nil? (l/host (.createElement js/document "div"))))
+  (is (not (nil? (l/host (l/shadow-root (.createElement js/document "test-sr-2"))))))
+  (is (not (nil? (l/host (.-firstChild (l/shadow-root (.createElement js/document "test-sr-2"))))))))
+
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
   :host :button)

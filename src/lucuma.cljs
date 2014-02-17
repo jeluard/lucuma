@@ -243,11 +243,12 @@
 (defn host
   "Returns the host of an element inside a custom element, walking parents as needed; otherwise returns null."
   [el]
-  (loop [el el
-         pel nil]
-    (if (exists? (.-host el))
-      (.-host el)
-      (when-let [pel (.-parentNode el)] (recur pel el)))))
+  (when el
+    (loop [el el
+           pel nil]
+      (if (exists? (.-host el))
+        (.-host el)
+        (when-let [pel (.-parentNode el)] (recur pel el))))))
 
 (defn- create-shadow-root!
   "Creates and appends a ShadowRoot if either `:style` or `:document` is provided."
