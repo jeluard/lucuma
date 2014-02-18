@@ -229,6 +229,31 @@
 (deftest style
   (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (.getElementById (l/shadow-root (by-id "test-style-1")) "id"))))))
 
+(def test-created-callback1-called (atom false))
+(def test-attached-callback1-called (atom false))
+(def test-detached-callback1-called (atom false))
+
+(defwebcomponent test-callback-1
+  :on-created #(reset! test-created-callback1-called true)
+  :on-attached #(reset! test-attached-callback1-called true)
+  :on-detached #(reset! test-detached-callback1-called true))
+
+(deftest callbacks ; TODO make async
+  (is (false? @test-created-callback1-called))
+  (let [el (.createElement js/document "test-callback-1")]
+    (is (true? @test-created-callback1-called))
+    (is (false? @test-attached-callback1-called))
+    (.appendChild (.getElementById js/document tests-node) el)
+    (is (true? @test-attached-callback1-called))
+    (is (false? @test-detached-callback1-called))
+    (reset! test-attached-callback1-called false)
+    (.removeChild (.getElementById js/document tests-node) el)
+    (is (true? @test-detached-callback1-called))
+    (reset! test-detached-callback1-called false)
+    (.appendChild (.getElementById js/document tests-node) el)
+    (is (true? @test-attached-callback1-called))
+    (is (false? @test-detached-callback1-called))))
+
 (defwebcomponent test-property-1
   :properties {:property nil})
 
@@ -317,6 +342,8 @@
 
   (l/register test-style-1)
   (append "test-style-1")
+
+  (l/register test-callback-1)
 
   (l/register test-method-1)
 
