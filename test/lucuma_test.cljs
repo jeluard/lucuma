@@ -161,11 +161,6 @@
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-2")))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-3"))))
 
-(deftest element-name
-  (is (= :button (l/element-name (.createElement js/document "button"))))
-  (is (= :test-prototype-1 (l/element-name (.createElement js/document "test-prototype-1"))))
-  (is (= :test-prototype-2 (l/element-name (.createElement js/document "button" "test-prototype-2")))))
-
 (defwebcomponent test-register)
 
 (deftest register-is-idempotent
