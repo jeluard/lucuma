@@ -7,12 +7,10 @@
   (is (sd/supported?)))
 
 (defwebcomponent test-shadow-dom-1
-  :document "<div></div>"
-  :on-created #(.log js/console "created 1"))
+  :document "<div></div>")
 (defwebcomponent test-shadow-dom-2
   :host :test-shadow-dom-1
-  :document "<span></span>"
-  :on-created #(.log js/console "created 2"))
+  :document "<span></span>")
 
 (deftest shadow-roots
   (is (empty? (sd/shadow-roots nil)))

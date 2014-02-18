@@ -227,6 +227,13 @@
   (is (= true (l/property-definition-events? {:type js/Boolean})))
   (is (= false (l/property-definition-events? {:events? false :type js/Boolean}))))
 
+(defwebcomponent test-style-1
+  :document "<span id='id'></div>"
+  :style "#id {color: rgb(255, 0, 0);}")
+
+(deftest style
+  (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (.getElementById (l/shadow-root (by-id "test-style-1")) "id"))))))
+
 (defwebcomponent test-property-1
   :properties {:property nil})
 
@@ -268,6 +275,26 @@
   (is (thrown? js/Error (l/register test-method-2)))
   (is (thrown? js/Error (l/register test-method-3))))
 
+(defwebcomponent test-extension-1
+  :host {:id "unique-id"}
+  :properties {:property1 ""}
+  :methods {:method1 (fn [] 1)})
+(defwebcomponent test-extension-2
+  :host :test-extends-1)
+(defwebcomponent test-extension-3
+  :host :test-extends-2)
+
+(deftest extension
+  (is (= "unique-id" (.-id (.createElement js/document "test-extension-1"))))
+  (is (= "unique-id" (.-id (.createElement js/document "test-extension-2"))))
+  (is (= "unique-id" (.-id (.createElement js/document "test-extension-3"))))
+  (is (l/property-exists? (.createElement js/document "test-extension-1") :property1))
+  (is (l/property-exists? (.createElement js/document "test-extension-2") :property1))
+  (is (l/property-exists? (.createElement js/document "test-extension-3") :property1))
+  (is (= 1 (.method1 (.createElement js/document "test-extension-1"))))
+  (is (= 1 (.method1 (.createElement js/document "test-extension-2"))))
+  (is (= 1 (.method1 (.createElement js/document "test-extension-3")))))
+
 (defn wrap-registration
   [f]
   (append-tests-node)
@@ -293,10 +320,17 @@
   (l/register test-extends-8)
   (l/register test-extends-9)
 
+  (l/register test-style-1)
+  (append "test-style-1")
+
   (l/register test-method-1)
 
   (l/register test-host-attributes)
   (append "test-host-attributes")
+
+  (l/register test-extension-1)
+  (l/register test-extension-2)
+  (l/register test-extension-3)
 
   (f)
 

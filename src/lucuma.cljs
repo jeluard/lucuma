@@ -164,15 +164,18 @@
   "Installs rendered 'document' to provided ShadowRoot."
   (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
-(defmethod install-rendered-document! js/String [sr s] (set! (.-innerHTML sr) s))
-(defmethod install-rendered-document! ::node [sr e] (.appendChild sr e))
+(defmethod install-rendered-document! js/String [sr s] (let [el (.createElement js/document "div")]
+                                                         (set! (.-innerHTML el) s)
+                                                         (.appendChild sr el)))
+(defmethod install-rendered-document! ::node [sr el] (.appendChild sr el))
 
 (defmulti uninstall-rendered-document!
   "Uninstalls rendered 'document' to provided ShadowRoot."
   (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
 
-(defmethod uninstall-rendered-document! js/String [sr s] (set! (.-innerHTML sr) ""))
-(defmethod uninstall-rendered-document! ::node [sr e] (.removeChild sr e))
+(defmethod uninstall-rendered-document! js/String [sr s] (when-let [el (.item (.getElementsByTagName sr "div") 0)]
+                                                           (.removeChild sr el)))
+(defmethod uninstall-rendered-document! ::node [sr el] (.removeChild sr el))
 
 (defn on-match-media
   "Listens to matchMedia on calls methods depending on matches value."
