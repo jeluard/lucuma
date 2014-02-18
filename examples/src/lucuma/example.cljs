@@ -1,6 +1,7 @@
 (ns lucuma.example
   (:require [clojure.string :as str]
             [lucuma :as l :refer-macros [defwebcomponent]]
+            [lucuma.polymer :as p]
             [garden.stylesheet :refer [at-import]]
             [garden.units :refer [px]])
   (:require-macros [dommy.macros :refer [sel1]]))
@@ -15,10 +16,7 @@
    :background-color "#fafafa" :border-radius 0 :border-width 0})
 
 (def style
-  [[:div {}] ;; Workaround https://github.com/Polymer/polymer-dev/issues/7
-   (at-import "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css")
-   (at-import "assets/prism.css")
-   [:.example-live {:position :relative :padding [[(px 40) 0 (px 10) (px 15)]] :margin-left 0 :margin-right 0
+  [[:.example-live {:position :relative :padding [[(px 40) 0 (px 10) (px 15)]] :margin-left 0 :margin-right 0
                     :background-color "#fff"
                     :border-color "#ddd" :border-style :solid :border-width (px 1) :border-radius [[(px 4) (px 4) 0 0]]}
     [:&:after (header "live")]]
@@ -143,7 +141,13 @@
 (def base
   {:host :section
    :document document
-   :style style})
+   :style (list
+           ;; Workaround https://github.com/Polymer/polymer-dev/issues/7
+           (if-not (p/shadow-css-needed?)
+             [(at-import "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css")
+              (at-import "assets/prism.css")]
+             [])
+           style)})
 
 (defwebcomponent lucu-example
   base
