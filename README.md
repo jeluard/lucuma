@@ -4,7 +4,7 @@ A Web Components library for ClojureScript. To see what's planned check the [roa
 
 ## Install
 
-Lucuma is available in Clojars. Add `[lucuma "0.2.0-SNAPSHOT"]` dependency to your `project.clj`.
+Lucuma is available in Clojars. Add `[lucuma "0.2.0"]` dependency to your `project.clj`.
 
 ## Use
 
