@@ -1,6 +1,6 @@
-(defproject lucuma-examples "0.2.0-SNAPSHOT"
+(defproject lucuma-examples "0.2.0"
   :dependencies [[org.clojure/clojurescript "0.0-2156"]
-                 [lucuma "0.2.0-SNAPSHOT"]
+                 [lucuma "0.2.0"]
                  [prismatic/dommy "0.1.2"]
                  [garden "1.1.5"]]
   :plugins [[lein-cljsbuild "1.0.2"]

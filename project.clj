@@ -1,4 +1,4 @@
-(defproject lucuma "0.2.0-SNAPSHOT"
+(defproject lucuma "0.2.0"
   :description "A Web Components library for ClojureScript"
   :url "http://github.com/jeluard/lucuma"
   :license  {:name "Eclipse Public License"
