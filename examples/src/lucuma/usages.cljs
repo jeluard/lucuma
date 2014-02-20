@@ -60,11 +60,8 @@
   :methods {:method (fn [] {:key "value"})})
 
 (defwebcomponent ex-extend
-  :host :div
-  :document [:span {:class "fa fa-exclamation"} [:content]])
-
-(defwebcomponent ex-extend-with-attributes
-  :host [:div {:type "button"}])
+  :host [:div {:type "button"}]
+  :document [:content])
 
 (def default
   {:document [:div "Hello reuse!"]
@@ -86,7 +83,6 @@
   (register ex-properties)
   (register ex-methods)
   (register ex-extend)
-  (register ex-extend-with-attributes)
   (register (ex-reuse 15))
 
   (register lucu-range-with-threshold)
