@@ -201,6 +201,12 @@
   (is (= "" (l/get-property-definition-default {:default ""})))
   (is (= "" (l/get-property-definition-default ""))))
 
+(deftest get-property-definition-default-value
+  (is (= "" (l/get-property-definition-default-value {:default ""})))
+  (is (= "" (l/get-property-definition-default-value {:default (fn [] "")})))
+  (is (= "" (l/get-property-definition-default-value "")))
+  (is (= "" (l/get-property-definition-default-value (fn [] "")))))
+
 (deftest get-property-definition-type
   (is (= js/String (l/get-property-definition-type {:default ""})))
   (is (= js/String (l/get-property-definition-type {:type js/String :default nil})))
@@ -213,7 +219,6 @@
 (deftest property-definition-attributes
   (is (= true (l/property-definition-attributes? {:attributes? true})))
   (is (= false (l/property-definition-attributes? {:attributes? false})))
-  (is (= false (l/property-definition-attributes? {:type js/Function})))
   (is (= false (l/property-definition-attributes? {:type js/Object})))
   (is (= false (l/property-definition-attributes? {:default nil})))
   (is (= false (l/property-definition-attributes? {:default (atom [])})))
@@ -223,9 +228,8 @@
 (deftest property-definition-events
   (is (= true (l/property-definition-events? {:events? true})))
   (is (= false (l/property-definition-events? {:events? false})))
-  (is (= false (l/property-definition-events? {:type js/Function})))
-  (is (= true (l/property-definition-events? {:type js/Boolean})))
-  (is (= false (l/property-definition-events? {:events? false :type js/Boolean}))))
+  is (= true (l/property-definition-events? {:type js/Boolean})))
+  (is (= false (l/property-definition-events? {:events? false :type js/Boolean})))
 
 (defwebcomponent test-style-1
   :document "<span id='id'></div>"

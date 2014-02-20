@@ -20,25 +20,32 @@
     (:default os)
     os))
 
+(defn- get-property-definition-default-value
+  [os]
+  (let [d (get-property-definition-default os)]
+    (if (fn? d)
+      (d)
+      d)))
+
 (defn- property-type
   [o]
   (if-not (nil? o)
     (let [t (type (clj->js o))]
       (cond
-       (some #{js/Number js/String js/Boolean js/Function} #{t}) t
+       (some #{js/Number js/String js/Boolean} #{t}) t
        :else js/Object))
     js/Object))
 
 (defn- get-property-definition-type
   [os]
   (or (:type os)
-      (let [d (get-property-definition-default os)]
+      (let [d (get-property-definition-default-value os)]
         (property-type d))))
 
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
-(defn- type-one-of? [os st] (not-any? st [(get-property-definition-type os)]))
-(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-one-of? os #{js/Function js/Object})))
-(defn- property-definition-events? [os] (val-or-default os :events? (type-one-of? os #{js/Function})))
+(defn- type-not-one-of? [os st] (not-any? st [(get-property-definition-type os)]))
+(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{js/Object})))
+(defn- property-definition-events? [os] (val-or-default os :events? true))
 
 ;; Property access
 
@@ -343,7 +350,7 @@
             a (when (property-definition-attributes? os)
                 (att/attribute->property [(get-property-definition-type os) (k as)]))]
         ;; Matching attribute value overrides eventual default
-        (set-property! el os k (or a (get-property-definition-default os)) true false))))
+        (set-property! el os k (or a (get-property-definition-default-value os)) true false))))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (when-let [sr (create-shadow-root! el m)]
     (when (p/shadow-css-needed?)
@@ -385,7 +392,7 @@
     (when-not (contains? o :default)
       (throw (ex-info (str "No default for <" n ">") {:property n})))
     (if-let [t (get-property-definition-type o)]
-      (let [d (get-property-definition-default o)]
+      (let [d (get-property-definition-default-value o)]
         (if d
           (when (not (correct-type? t d))
             (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))))
