@@ -1,4 +1,4 @@
-# 0.0.2 ()
+# [0.0.2](https://github.com/jeluard/lucuma/issues?milestone=1&page=1&state=closed)
 
 * __[+]__ Introduced function to list defwebcomponent ignored keys
 * __[+]__ Introduced functions to check for Web Components technologies support

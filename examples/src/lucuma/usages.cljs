@@ -20,9 +20,6 @@
 
 (register ex-hello)
 
-;; Name can be explicitely provided.
-(register (merge ex-hello {:name "my-hello-with-custom-name"}))
-
 ;; Append a 'ex-hello' node to body.
 (.appendChild js/document.body (.createElement js/document "ex-hello"))
 
@@ -51,8 +48,9 @@
   :document [:span "Hello garden!"]
   :style [:span {:background "#3d7c45" :color "white" :border 0 :border-radius (px 4)}])
 
-(defwebcomponent ex-style-scope
-  :document [:span {:class "fa fa-exclamation"} "Hello style scope!"])
+(defwebcomponent ex-style-media-queries
+  :document [:span "Hello media queries!"]
+  :style {:media "screen and (min-width: 800px)" :title "Large Screen" :content [:span {:border "1px dotted black;"}]})
 
 (defwebcomponent ex-properties
   :properties {:property1 "default"
@@ -65,18 +63,31 @@
   :host :div
   :document [:span {:class "fa fa-exclamation"} [:content]])
 
+(defwebcomponent ex-extend-with-attributes
+  :host [:div {:type "button"}])
+
+(def default
+  {:document [:div "Hello reuse!"]
+   :properties {:property "value"}})
+
+(defwebcomponent ex-reuse
+  [value]
+  default
+  :properties {:threshold value})
+
 (defn ^:export register-all
   []
   (register ex-hello)
-  (register (merge ex-hello {:name "my-hello-with-custom-name"}))
   (register ex-lifecycle)
   (register ex-document-hiccup)
   (register ex-style)
   (register ex-style-garden)
-  (register ex-style-scope)
-  (register ex-extend)
+  (register ex-style-media-queries)
   (register ex-properties)
   (register ex-methods)
+  (register ex-extend)
+  (register ex-extend-with-attributes)
+  (register (ex-reuse 15))
 
   (register lucu-range-with-threshold)
   (register lucu-overlay)

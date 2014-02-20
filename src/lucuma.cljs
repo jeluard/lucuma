@@ -139,7 +139,7 @@
     (install-fn sr rc m)))
 
 (defn- render-then-install!
-  "Dispatches based on :document value.
+  "Dispatches based on :document / :style value.
    Node instances will be directly appended, list passed recursively to this fn,
    map render then installed and others encapsulated in a map as value of :content."
   [sr o render-fn install-fn]
@@ -235,7 +235,6 @@
 
 (def ^private lucuma-shadow-root-property "lucuma")
 
-;; TODO Find the right ShadowRoot when multiple are present (e.g. my-comp1 extends my-comp2 => both have shadow-root)
 (defn shadow-root
   "Returns lucuma ShadowRoot of element."
   ([el] (shadow-root el (element-name el)))
