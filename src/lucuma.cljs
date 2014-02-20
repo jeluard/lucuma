@@ -20,13 +20,20 @@
     (:default os)
     os))
 
+(defn- property-type
+  [o]
+  (if-not (nil? o)
+    (let [t (type (clj->js o))]
+      (cond
+       (some #{js/Number js/String js/Boolean js/Function} #{t}) t
+       :else js/Object))
+    js/Object))
+
 (defn- get-property-definition-type
   [os]
   (or (:type os)
       (let [d (get-property-definition-default os)]
-        (if-not (nil? d)
-          (type (clj->js d))
-          js/Object))))
+        (property-type d))))
 
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
 (defn- type-one-of? [os st] (not-any? st [(get-property-definition-type os)]))

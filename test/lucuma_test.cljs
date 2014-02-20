@@ -205,6 +205,8 @@
   (is (= js/String (l/get-property-definition-type {:default ""})))
   (is (= js/String (l/get-property-definition-type {:type js/String :default nil})))
   (is (= js/Boolean (l/get-property-definition-type {:default false})))
+  (is (= js/Object (l/get-property-definition-type nil)))
+  (is (= js/Object (l/get-property-definition-type (atom []))))
   (is (= js/Object (l/get-property-definition-type {:default {}})))
   (is (= js/Object (l/get-property-definition-type {:default nil}))))
 
@@ -212,6 +214,9 @@
   (is (= true (l/property-definition-attributes? {:attributes? true})))
   (is (= false (l/property-definition-attributes? {:attributes? false})))
   (is (= false (l/property-definition-attributes? {:type js/Function})))
+  (is (= false (l/property-definition-attributes? {:type js/Object})))
+  (is (= false (l/property-definition-attributes? {:default nil})))
+  (is (= false (l/property-definition-attributes? {:default (atom [])})))
   (is (= true (l/property-definition-attributes? {:type js/Boolean})))
   (is (= false (l/property-definition-attributes? {:attributes? false :type js/Boolean}))))
 
