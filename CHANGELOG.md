@@ -9,7 +9,7 @@
 * __[~]__ Renamed `base-type` to `host`
 * __[~]__ Renamed `attributes` to `properties`
 * __[~]__ Renamed hooks (`*-fn` to `on-*`)
-* __[~]__ Moved examples to Custom Component with real live view support
+* __[~]__ Moved examples to Web Component with real live view support
 * __[-]__ Removed support for `handler`
 * __[-]__ Removed support for `constructor`
 * __[-]__ Removed support for `document` and `style` defined as function
