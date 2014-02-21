@@ -27,14 +27,26 @@
       (d)
       d)))
 
+(defn- correct-type?
+  [t v]
+  (condp = t
+    :number (= js/Number (type v))
+    :string (= js/String (type v))
+    :boolean (= js/Boolean (type v))
+    :keyword (= Keyword (type v))
+    :object (instance? js/Object v)
+    :else (throw (ex-info ("Unrecognized type <" t ">") {}))))
+
 (defn- property-type
   [o]
   (if-not (nil? o)
-    (let [t (type (clj->js o))]
-      (cond
-       (some #{js/Number js/String js/Boolean} #{t}) t
-       :else js/Object))
-    js/Object))
+    (cond
+     (number? o) :number
+     (string? o) :string
+     (or (true? o) (false? o)) :boolean
+     (keyword? o) :keyword
+     :else :object)
+    :object))
 
 (defn- get-property-definition-type
   [os]
@@ -44,7 +56,7 @@
 
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
 (defn- type-not-one-of? [os st] (not-any? st [(get-property-definition-type os)]))
-(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{js/Object})))
+(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{:object})))
 (defn- property-definition-events? [os] (val-or-default os :events? true))
 
 ;; Property access
@@ -113,12 +125,6 @@
   (if-let [d (get-definition (element-name el))]
     (get-in d [:properties k])
     (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
-
-(defn- correct-type?
-  [t v]
-  (if (= t js/Object)
-    (instance? t v)
-    (= t (type v))))
 
 (defn set-property!
   "Sets the value of a named property."
@@ -392,10 +398,9 @@
     (when-not (contains? o :default)
       (throw (ex-info (str "No default for <" n ">") {:property n})))
     (if-let [t (get-property-definition-type o)]
-      (let [d (get-property-definition-default-value o)]
-        (if d
-          (when (not (correct-type? t d))
-            (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))))
+      (when-let [d (get-property-definition-default-value o)]
+        (when (not (correct-type? t d))
+          (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n}))))
       (throw (ex-info (str "Default can't be inferred for <" n ">") {:property n})))))
 
 (defn- create-ce-prototype

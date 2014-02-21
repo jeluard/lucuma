@@ -188,14 +188,16 @@
   (is (nil? (l/validate-property-definition! "name" "default")))
   (is (nil? (l/validate-property-definition! "name" nil)))
   (is (thrown? js/Error (l/validate-property-definition! "name" {})))
-  (is (thrown? js/Error (l/validate-property-definition! "name" {:type js/String})))
+  (is (thrown? js/Error (l/validate-property-definition! "name" {:type :string})))
   (is (nil? (l/validate-property-definition! "name" {:default "default"})))
-  (is (nil? (l/validate-property-definition! "name" {:default nil :type js/String})))
-  (is (nil? (l/validate-property-definition! "name" {:default nil :type js/Object})))
-  (is (nil? (l/validate-property-definition! "name" {:default (atom true) :type js/Object})))
-  (is (nil? (l/validate-property-definition! "name" {:default :label :type js/Object})))
-  (is (nil? (l/validate-property-definition! "name" {:default "default" :type js/String})))
-  (is (thrown? js/Error (l/validate-property-definition! "name" {:default "default" :type js/Boolean}))))
+  (is (nil? (l/validate-property-definition! "name" {:default false :type :boolean})))
+  (is (nil? (l/validate-property-definition! "name" {:default 5 :type :number})))
+  (is (nil? (l/validate-property-definition! "name" {:default nil :type :object})))
+  (is (nil? (l/validate-property-definition! "name" {:default nil :type :keyword})))
+  (is (nil? (l/validate-property-definition! "name" {:default (atom true) :type :object})))
+  (is (nil? (l/validate-property-definition! "name" {:default :keyword :type :keyword})))
+  (is (nil? (l/validate-property-definition! "name" {:default "default" :type :string})))
+  (is (thrown? js/Error (l/validate-property-definition! "name" {:default "default" :type :boolean}))))
 
 (deftest get-property-definition-default
   (is (= "" (l/get-property-definition-default {:default ""})))
@@ -208,28 +210,28 @@
   (is (= "" (l/get-property-definition-default-value (fn [] "")))))
 
 (deftest get-property-definition-type
-  (is (= js/String (l/get-property-definition-type {:default ""})))
-  (is (= js/String (l/get-property-definition-type {:type js/String :default nil})))
-  (is (= js/Boolean (l/get-property-definition-type {:default false})))
-  (is (= js/Object (l/get-property-definition-type nil)))
-  (is (= js/Object (l/get-property-definition-type (atom []))))
-  (is (= js/Object (l/get-property-definition-type {:default {}})))
-  (is (= js/Object (l/get-property-definition-type {:default nil}))))
+  (is (= :string (l/get-property-definition-type {:default ""})))
+  (is (= :string (l/get-property-definition-type {:type :string :default nil})))
+  (is (= :boolean (l/get-property-definition-type {:default false})))
+  (is (= :object (l/get-property-definition-type nil)))
+  (is (= :object (l/get-property-definition-type (atom []))))
+  (is (= :object (l/get-property-definition-type {:default {}})))
+  (is (= :object (l/get-property-definition-type {:default nil}))))
 
 (deftest property-definition-attributes
   (is (= true (l/property-definition-attributes? {:attributes? true})))
   (is (= false (l/property-definition-attributes? {:attributes? false})))
-  (is (= false (l/property-definition-attributes? {:type js/Object})))
+  (is (= false (l/property-definition-attributes? {:type :object})))
   (is (= false (l/property-definition-attributes? {:default nil})))
   (is (= false (l/property-definition-attributes? {:default (atom [])})))
-  (is (= true (l/property-definition-attributes? {:type js/Boolean})))
-  (is (= false (l/property-definition-attributes? {:attributes? false :type js/Boolean}))))
+  (is (= true (l/property-definition-attributes? {:type :boolean})))
+  (is (= false (l/property-definition-attributes? {:attributes? false :type :boolean}))))
 
 (deftest property-definition-events
   (is (= true (l/property-definition-events? {:events? true})))
   (is (= false (l/property-definition-events? {:events? false})))
-  is (= true (l/property-definition-events? {:type js/Boolean})))
-  (is (= false (l/property-definition-events? {:events? false :type js/Boolean})))
+  (is (= true (l/property-definition-events? {:type :boolean})))
+  (is (= false (l/property-definition-events? {:events? false :type :boolean}))))
 
 (defwebcomponent test-style-1
   :document "<span id='id'></div>"

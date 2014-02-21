@@ -1,5 +1,6 @@
 (ns lucuma.attribute
-  (:require [cljs.reader :refer [read-string]]
+  (:require [clojure.string :as string]
+            [cljs.reader :refer [read-string]]
             [lucuma.util :as u])
   (:refer-clojure :exclude [get]))
 
@@ -9,6 +10,7 @@
 
 (defmulti property->attribute type)
 
+(defmethod property->attribute Keyword [o] (string/replace-first (str o) #":" ""))
 (defmethod property->attribute :default [o] (str o))
 
 (defmulti attribute->property first)
@@ -18,9 +20,10 @@
   (when-not (empty? s)
     (read-string s)))
 
-(defmethod attribute->property js/String [v] (second v))
-(defmethod attribute->property js/Boolean [v] (read-non-empty-string (second v)))
-(defmethod attribute->property js/Number [v] (read-non-empty-string (second v)))
+(defmethod attribute->property :string [v] (second v))
+(defmethod attribute->property :keyword [v] (keyword (second v)))
+(defmethod attribute->property :boolean [v] (read-non-empty-string (second v)))
+(defmethod attribute->property :number [v] (read-non-empty-string (second v)))
 
 ;;
 ;; attribute accessors
