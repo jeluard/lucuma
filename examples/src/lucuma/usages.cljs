@@ -54,7 +54,7 @@
 
 (defwebcomponent ex-properties
   :properties {:property1 "default"
-               :property2 {:default 1 :type js/Number :events? true :attributes? true}})
+               :property2 {:default 1 :type :number :events? true :attributes? true}})
 
 (defwebcomponent ex-methods
   :methods {:method (fn [] {:key "value"})})

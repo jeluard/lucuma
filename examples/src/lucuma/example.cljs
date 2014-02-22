@@ -157,8 +157,8 @@
 (defwebcomponent lucu-usage
   base
   :on-created created-usage
-  :properties {:line_from {:default nil :type js/Number}
-               :line_to {:default nil :type js/Number}})
+  :properties {:line_from {:default nil :type :number}
+               :line_to {:default nil :type :number}})
 
 (.addEventListener js/document "DOMContentLoaded"
                    (fn [] (fetch-source "usages.cljs" #(set-usages! % @usages))))

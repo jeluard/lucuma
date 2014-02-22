@@ -53,4 +53,4 @@
   ;;:document [:shadow [:content]]
   ;;:style ":host([threshold_crossed]) {background: blue;}"
   :on-created #(initialize %)
-  :properties {:min_threshold 15 :max_threshold 85 :threshold_crossed {:default nil :type js/Boolean}})
+  :properties {:min_threshold 15 :max_threshold 85 :threshold_crossed {:default nil :type :boolean}})
