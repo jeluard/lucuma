@@ -1,5 +1,5 @@
 (defproject lucuma-examples "0.2.1-SNAPSHOT"
-  :dependencies [[org.clojure/clojurescript "0.0-2156"]
+  :dependencies [[org.clojure/clojurescript "0.0-2173"]
                  [lucuma "0.2.1-SNAPSHOT"]
                  [prismatic/dommy "0.1.2"]
                  [garden "1.1.5"]]
