@@ -12,53 +12,6 @@
 ;; Element manipulation
 ;;
 
-;; property definition manipulation
-
-(defn- get-property-definition-default
-  [os]
-  (if (map? os)
-    (:default os)
-    os))
-
-(defn- get-property-definition-default-value
-  [os]
-  (let [d (get-property-definition-default os)]
-    (if (fn? d)
-      (d)
-      d)))
-
-(defn- correct-type?
-  [t v]
-  (condp = t
-    :number (= js/Number (type v))
-    :string (= js/String (type v))
-    :boolean (= js/Boolean (type v))
-    :keyword (= Keyword (type v))
-    :object (instance? js/Object v)
-    :else (throw (ex-info ("Unrecognized type <" t ">") {}))))
-
-(defn- property-type
-  [o]
-  (if-not (nil? o)
-    (cond
-     (number? o) :number
-     (string? o) :string
-     (or (true? o) (false? o)) :boolean
-     (keyword? o) :keyword
-     :else :object)
-    :object))
-
-(defn- get-property-definition-type
-  [os]
-  (or (:type os)
-      (let [d (get-property-definition-default-value os)]
-        (property-type d))))
-
-(defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
-(defn- type-not-one-of? [os st] (not-any? st [(get-property-definition-type os)]))
-(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{:object})))
-(defn- property-definition-events? [os] (val-or-default os :events? true))
-
 ;; Property access
 
 (def ^:private registry (atom {}))
@@ -120,11 +73,28 @@
   (into {} (for [k (.keys js/Object (aget el lucuma-properties-holder-name properties-holder-name))]
              [k (get-property el k)])))
 
+(defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
+(defn- type-not-one-of? [os st] (not-any? st [(:type os)]))
+(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{:object :function})))
+(defn- property-definition-events? [os] (val-or-default os :events? true))
+
 (defn- lookup-options
   [el k]
   (if-let [d (get-definition (element-name el))]
     (get-in d [:properties k])
     (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
+
+(defn- expected-type?
+  "Returns true if provided ClojureScript value matchs expected type (as :number, :boolean)."
+  [t v]
+  (condp = t
+    :number (= js/Number (type v))
+    :string (= js/String (type v))
+    :boolean (= js/Boolean (type v))
+    :keyword (= Keyword (type v))
+    :function true
+    :object (instance? js/Object v)
+    (throw (ex-info (str "Unrecognized type <" t ">") {}))))
 
 (defn set-property!
   "Sets the value of a named property."
@@ -132,8 +102,8 @@
   ([el k v consider-attributes? consider-events?] (set-property! el (lookup-options el k) k v consider-attributes? consider-events?))
   ([el os k v consider-attributes? consider-events?]
    (when (and (lucuma-element? el) k (property-exists? el k))
-     (let [et (get-property-definition-type os)]
-        (when (and (not (nil? v)) (not (correct-type? et v)))
+     (let [et (:type os)]
+        (when (and (not (nil? v)) (not (expected-type? et v)))
           (throw (ex-info (str "Expected value of type " et " but got <" v ">") {:property (name k)}))))
      (aset el lucuma-properties-holder-name properties-holder-name (name k) v)
      (when (or consider-attributes? consider-events?)
@@ -274,14 +244,13 @@
 
 (defn- create-shadow-root!
   "Creates and appends a ShadowRoot if either `:style` or `:document` is provided."
-  [el m]
-  (let [{:keys [style document]} m]
-    (when (or style document)
-      (let [sr (.createShadowRoot el)]
-        (aset sr lucuma-shadow-root-property (name (element-name el)))
-        (when style (render-then-install! sr style render-style install-style!))
-        (when document (render-then-install! sr document render-document install-document!))
-        sr))))
+  [el style document]
+  (when (or style document)
+    (let [sr (.createShadowRoot el)]
+      (aset sr lucuma-shadow-root-property (name (element-name el)))
+      (when style (render-then-install! sr style render-style install-style!))
+      (when document (render-then-install! sr document render-document install-document!))
+      sr)))
 
 ;;
 ;; prototype creation
@@ -343,22 +312,41 @@
         (.createElement js/document (name e) n)
         (.createElement js/document n)))))
 
-(defn- initialize!
+(defn invoke-if-fn
+  [m el]
+  (let [d (:default m)]
+    (.log js/console (clj->js m) (clj->js d))
+    (if (fn? d)
+      (merge m {:default (d el)})
+      m)))
+
+(defn- replace-function-with-invocation-result
+  [m el]
+  (let [properties (:properties m)
+        ps (into {}
+              (for [property properties]
+                [(key property) (invoke-if-fn (val property) el)]))]
+    (merge m {:properties ps})))
+
+(defn- initialize-instance!
   "Initializes a custom element instance."
   [el f m]
   ;; Set host attributes extracted from :host element
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (str (val a))))
   ;; Set default properties values
-  (let [as (att/attributes el)]
+  ;; TODO handle fn properties
+  (let [as (att/attributes el)
+        m (replace-function-with-invocation-result m el)]
     (doseq [p (:properties m)]
+      (.log js/console (clj->js p))
       (let [[k os] p
             a (when (property-definition-attributes? os)
-                (att/attribute->property [(get-property-definition-type os) (k as)]))]
+                (att/attribute->property [(:type os) (k as)]))]
         ;; Matching attribute value overrides eventual default
-        (set-property! el os k (or a (get-property-definition-default-value os)) true false))))
+        (set-property! el os k (or a (:default os)) true false))))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
-  (when-let [sr (create-shadow-root! el m)]
+  (when-let [sr (create-shadow-root! el (:style m) (:document m))]
     (when (p/shadow-css-needed?)
       (when-not (get-lucuma-property el "style_shimed")
         (p/shim-styling! sr (:name m) (when-let [h (host-type (:host m))] (name h)))
@@ -374,7 +362,7 @@
   "Updates property based on associated attribute change."
   [el a o n os]
   (when os ;; Attribute changed is a property defined by our component
-    (let [v (att/attribute->property [(get-property-definition-type os) n])]
+    (let [v (att/attribute->property [(:type os) n])]
       (when-not (= v (get-property el a));; Value is different from current value: this is not a change due to a property change
         (if (property-definition-attributes? os)
           (set-property! el os a v false true)
@@ -382,35 +370,12 @@
 
 (def ^:private default-element (.createElement js/document "div")) ;; div does not define any extra property / method
 
-(defn- validate-property-name!
-  ;; TODO allow overriding of non read-only property?
-  "Ensures a property name is valid."
-  [parent-el n]
-  (when (not (u/valid-identifier? n))
-    (throw (ex-info (str "Invalid property name <" n ">") {:property n})))
-  (when (exists? (aget (or parent-el default-element) n))
-    (throw (ex-info (str "Property <" n "> is already defined") {:property n}))))
-
-(defn validate-property-definition!
-  "Ensures a property definition is sound. Throws a js/Error if not."
-  [n o]
-  (when (map? o)
-    (when-not (contains? o :default)
-      (throw (ex-info (str "No default for <" n ">") {:property n})))
-    (if-let [t (get-property-definition-type o)]
-      (when-let [d (get-property-definition-default-value o)]
-        (when (not (correct-type? t d))
-          (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n}))))
-      (throw (ex-info (str "Default can't be inferred for <" n ">") {:property n})))))
-
 (defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
-  [m]
+  [m parent-prototype]
   (let [{:keys [host on-created properties methods]} m
-        on-created #(initialize! % on-created m)
+        on-created #(initialize-instance! % on-created m)
         on-attribute-changed #(attribute-changed %1 (keyword %2) %3 %4 ((keyword %2) properties))
-        parent-el (create-element m)
-        parent-prototype (if parent-el (.getPrototypeOf js/Object parent-el) (.-prototype js/HTMLElement))
         prototype (ce/create-prototype
                       (merge m {:prototype parent-prototype
                                 :properties (merge-properties properties
@@ -419,17 +384,50 @@
                                 :on-created on-created :on-attribute-changed on-attribute-changed}))]
     (install-lucuma-properties-holder! prototype)
     (install-properties-holder! prototype)
-    ;; Validate property definitions
-    (doseq [property properties]
-      (let [n (name (key property))]
-        (validate-property-name! parent-el n)
-        (validate-property-definition! n (val property))))
     ;; Install methods
     (doseq [method methods]
       (let [n (name (key method))]
-        (validate-property-name! parent-el n)
         (aset prototype n (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method))))))
     prototype))
+
+(defn- validate-property-name!
+  "Ensures a property name is valid."
+  [parent-el n]
+  (when (not (u/valid-identifier? n))
+    (throw (ex-info (str "Invalid property name <" n ">") {:property n})))
+  (when (exists? (aget (or parent-el default-element) n))
+    (throw (ex-info (str "Property <" n "> is already defined") {:property n}))))
+
+(defn- infer-type-from-value
+  "Returns inferred type from ClojureScript value."
+  [o]
+  (if-not (nil? o)
+    (cond
+     (number? o) :number
+     (string? o) :string
+     (or (true? o) (false? o)) :boolean
+     (keyword? o) :keyword
+     (fn? o) :function
+     :else :object)
+    :object))
+
+(defn validate-property-definition!
+  "Ensures a property definition is sound. Throws a js/Error if not.
+   Returns a map definition of the input object, creating the map or injecting the default type when needed.
+   Returns nil if the input map is unchanged."
+  [n o]
+  (let [m (if (map? o) o {:default o})]
+    ;; Make sure map definition contains a default value.
+    (when-not (contains? m :default)
+      (throw (ex-info (str "No default for <" n ">") {:property n})))
+    (let [d (:default m)]
+      (let [it (infer-type-from-value d)]
+        (if (contains? m :type)
+          ;; Make sure default matches type. nil is a valid for any type.
+          (when (and (not (nil? d)) (not= it (:type m)))
+            (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))
+          ;; Merge type and returns updated map.
+          (merge m {:type it}))))))
 
 (def all-keys
   #{:name :ns :host :extends :document :style :properties :methods :handlers
@@ -444,15 +442,26 @@
   "Registers a new Custom Element from its definition.
    Returns true if registration was successful, falsey value if the definition was already registered."
   [m]
-  ;;Validate the definition
+  ;; Validate the definition
   (assert (map? m) (ex-info "Definition must be a map" {}))
   (assert (not (seq (ignored-keys m))) (str "Definition contains unknown keys " (ignored-keys m)))
   (let [n (:name m)
-        k (keyword n)]
+        k (keyword n)
+        parent-el (create-element m)
+        parent-prototype (if parent-el (.getPrototypeOf js/Object parent-el) (.-prototype js/HTMLElement))]
     (when-not (registered? k)
-      (swap! registry assoc k m)
-      (ce/register n (create-ce-prototype m) (host-type->extends (host-or-extends m)))
-      true)))
+      (let [{:keys [properties methods]} m]
+        ;; Validate property / method names
+        (doseq [o (concat properties methods)]
+          (let [n (name (key o))]
+            (validate-property-name! parent-el n)))
+        (let [ps (into {}
+                       (for [property properties]
+                         [(key property) (or (validate-property-definition! n (val property)) (val property))]))]
+          (let [um (merge m {:properties ps})]
+            (swap! registry assoc k um)
+            (ce/register n (create-ce-prototype um parent-prototype) (host-type->extends (host-or-extends um))))))
+        true)))
 
 (defn on-elements-upgraded
   "Executes function when all elements are upgraded.
