@@ -300,7 +300,6 @@
       t
       (cond
        (registered? t) (host-type->extends (host-or-extends (get-definition t)))
-       ;; TODO polymer: https://github.com/Polymer/CustomElements/blob/master/src/CustomElements.js#L317
        :else (throw (ex-info (str "Could not infer extends for <" (name t) ">") {}))))))
 
 (defn- create-element
@@ -315,7 +314,6 @@
 (defn invoke-if-fn
   [m el]
   (let [d (:default m)]
-    (.log js/console (clj->js m) (clj->js d))
     (if (fn? d)
       (merge m {:default (d el)})
       m)))
@@ -335,11 +333,9 @@
   (doseq [a (host-attributes (:host m))]
     (.setAttribute el (name (key a)) (str (val a))))
   ;; Set default properties values
-  ;; TODO handle fn properties
   (let [as (att/attributes el)
         m (replace-function-with-invocation-result m el)]
     (doseq [p (:properties m)]
-      (.log js/console (clj->js p))
       (let [[k os] p
             a (when (property-definition-attributes? os)
                 (att/attribute->property [(:type os) (k as)]))]
