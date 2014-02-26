@@ -45,12 +45,12 @@
 (defn initialize
   [el]
   (reset! previous-value (.-value el))
-  (dommy/listen! el :change #(fire-event-on-threshold-cross (.-target %))))
+  (dommy/append! el [:datalist {:id "ticks"}
+                     [:option (l/get-property el :min_threshold)]
+                     [:option (l/get-property el :max_threshold)]])
+  (dommy/listen! el :input #(fire-event-on-threshold-cross (.-target %))))
 
 (defwebcomponent lucu-range-with-threshold
-  :host :input
-  ;; TODO Fails under Chrome Canary with: <shadow> doesn't work for INPUT element host.
-  ;;:document [:shadow [:content]]
-  ;;:style ":host([threshold_crossed]) {background: blue;}"
+  :host [:input {:type "range" :list "ticks"}]
   :on-created #(initialize %)
   :properties {:min_threshold 15 :max_threshold 85 :threshold_crossed {:default nil :type :boolean}})
