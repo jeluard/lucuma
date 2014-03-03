@@ -70,8 +70,9 @@
 (defn get-properties
   "Returns a map of all properties associated to their values."
   [el]
-  (into {} (for [k (.keys js/Object (aget el lucuma-properties-holder-name properties-holder-name))]
-             [k (get-property el k)])))
+  (into {} (when (lucuma-element? el)
+             (for [k (.keys js/Object (aget el lucuma-properties-holder-name properties-holder-name))]
+               [k (get-property el k)]))))
 
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
 (defn- type-not-one-of? [os st] (not-any? st [(:type os)]))
