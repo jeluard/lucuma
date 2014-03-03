@@ -50,6 +50,7 @@
   (is (nil? (l/shadow-root (.createElement js/document "div"))))
   (is (nil? (l/shadow-root (.createElement js/document "test-sr-1"))))
   (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2")))))
+  (is (not (nil? (l/shadow-root (.createElementNS js/document "http://www.w3.org/1999/xhtml" "test-sr-2")))))
   (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2") :test-sr-2))))
   (is (nil? (l/shadow-root (.createElement js/document "test-sr-2") :wrong-element-name))))
 
