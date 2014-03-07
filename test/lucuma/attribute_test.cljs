@@ -24,11 +24,12 @@
   (is (= nil (att/attribute->property [:boolean nil]))))
 
 (defn create-element
-  [n m]
-  (let [el (.createElement js/document n)]
-    (doseq [kv m]
-      (.setAttribute el (name (key kv)) (val kv)))
-    el))
+  ([n] (create-element n {}))
+  ([n m]
+   (let [el (.createElement js/document n)]
+     (doseq [kv m]
+       (.setAttribute el (name (key kv)) (val kv)))
+     el)))
 
 (deftest attributes
   (is (= {:a "a" :b "b"} (att/attributes (create-element "div" {:a "a" :b "b"})))))
@@ -37,3 +38,12 @@
   (is (= "value" (att/get (create-element "div" {:key "value"}) :key :string)))
   (is (= true (att/get (create-element "div" {:key "true"}) :key :boolean)))
   (is (= nil (att/get (create-element "div" {}) :unknown-key :string))))
+
+(deftest set!
+  (let [el (create-element "div")]
+    (att/set! el :key1 true)
+    (att/set! el :key2 false)
+    (att/set! el :key3 :keyword)
+    (is (= true (att/get el :key1 :boolean)))
+    (is (= false (att/get el :key2 :boolean)))
+    (is (= :keyword (att/get el :key3 :keyword)))))

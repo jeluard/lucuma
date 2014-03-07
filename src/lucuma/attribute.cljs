@@ -33,9 +33,11 @@
   "Gets the value of a named attribute. Converts its value via property->attribute."
   [el n t]
   (let [n (name n)]
-    (if (.hasAttribute el n)
-      (attribute->property [t (.getAttribute el n)])
-      nil)))
+    (if (= t :boolean)
+      (if (.hasAttribute el n) true false)
+      (if (.hasAttribute el n)
+        (attribute->property [t (.getAttribute el n)])
+        nil))))
 
 (defn set!
   "Sets the value of a named attribute. Converts its value via attribute->property.
