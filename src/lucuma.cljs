@@ -136,7 +136,7 @@
   [sr o render-fn install-fn]
   (cond
    (instance? js/Node o) (.appendChild sr (.cloneNode o true))
-   (list? o) (doseq [e o] (render-then-install! sr e render-fn install-fn))
+   (list? o) (doseq [e (filter identity o)] (render-then-install! sr e render-fn install-fn))
    (map? o) (render-then-install-map! sr o render-fn install-fn)
    :else (render-then-install-map! sr {:content o} render-fn install-fn)))
 
