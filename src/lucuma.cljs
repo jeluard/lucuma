@@ -86,7 +86,7 @@
     (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
 
 (defn- expected-type?
-  "Returns true if provided ClojureScript value matchs expected type (as :number, :boolean)."
+  "Returns true if provided ClojureScript value matches expected type (as :number, :boolean)."
   [t v]
   (condp = t
     :number (= js/Number (type v))
@@ -338,7 +338,7 @@
         m (replace-function-with-invocation-result m el)]
     (doseq [p (:properties m)]
       (let [[k os] p
-            a (when (property-definition-attributes? os)
+            a (when (and (contains? as k) (property-definition-attributes? os))
                 (att/attribute->property [(:type os) (k as)]))]
         ;; Matching attribute value overrides eventual default
         (set-property! el os k (or a (:default os)) true false))))
@@ -359,9 +359,9 @@
   "Updates property based on associated attribute change."
   [el a o n os]
   (when os ;; Attribute changed is a property defined by our component
-    (let [v (att/attribute->property [(:type os) n])]
-      (when-not (= v (get-property el a));; Value is different from current value: this is not a change due to a property change
-        (if (property-definition-attributes? os)
+    (let [v (att/get el a (:type os))]
+      (when-not (= v (get-property el a)) ;; Value is different from current value: this is not a change due to a property change
+        (if (property-definition-attributes? os) ;; Property is managed by lucuma
           (set-property! el os a v false true)
           (u/warn (str "Changing attribute for " (name a) " but its attributes? is false.")))))))
 

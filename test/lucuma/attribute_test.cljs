@@ -36,7 +36,7 @@
 
 (deftest get
   (is (= "value" (att/get (create-element "div" {:key "value"}) :key :string)))
-  (is (= true (att/get (create-element "div" {:key "true"}) :key :boolean)))
+  (is (= true (att/get (create-element "div" {:key ""}) :key :boolean)))
   (is (= nil (att/get (create-element "div" {}) :unknown-key :string))))
 
 (deftest set!
