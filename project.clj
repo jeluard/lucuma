@@ -17,7 +17,7 @@
                               ;; TODO Add support for http://triflejs.org/
                               ;; SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
                               "slimerjs" ["slimerjs" :runner "bower_components/polymer-platform/platform.js" "target/cljs/lucuma.js"]}}
-  :bower-dependencies [[polymer-platform "0.2.0"]]
+  :bower-dependencies [[polymer-platform "0.2.1"]]
   :aliases {"clean-test" ["do" "clean," "bower" "install," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
   :min-lein-version "2.3.4")
