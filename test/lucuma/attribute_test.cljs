@@ -1,7 +1,7 @@
 (ns lucuma.attribute-test
   (:require [cemerick.cljs.test :as t :refer-macros [deftest is]]
             [lucuma.attribute :as att])
-  (:refer-clojure :exclude [get]))
+  (:refer-clojure :exclude [get set]))
 
 (deftest property->attribute
   (is (= "" (att/property->attribute nil)))
@@ -39,7 +39,7 @@
   (is (= true (att/get (create-element "div" {:key ""}) :key :boolean)))
   (is (= nil (att/get (create-element "div" {}) :unknown-key :string))))
 
-(deftest set!
+(deftest set
   (let [el (create-element "div")]
     (att/set! el :key1 true)
     (att/set! el :key2 false)
