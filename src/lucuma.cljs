@@ -83,7 +83,7 @@
   [el k]
   (if-let [d (get-definition (element-name el))]
     (get-in d [:properties k])
-    (throw (ex-info (str "Could not find definition for " (name (element-name el))) {}))))
+    (throw (ex-info (str "Could not find definition for " (element-name el)) {}))))
 
 (defn- expected-type?
   "Returns true if provided ClojureScript value matches expected type (as :number, :boolean)."
