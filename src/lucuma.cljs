@@ -148,12 +148,12 @@
 
 (defmethod render-document js/String [s] s)
 
-(derive js/HTMLElement ::node)
+(derive js/Element ::node)
 (derive js/DocumentFragment ::node)
 
 (defmulti install-rendered-document! ;; TODO rename to attach/detach? wait for final Custom Element spec
   "Installs rendered 'document' to provided ShadowRoot."
-  (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
+  (fn [_ e] (if (instance? js/Element e) js/Element (type e))))
 
 (defmethod install-rendered-document! js/String [sr s] (let [el (.createElement js/document "div")]
                                                          (set! (.-innerHTML el) s)
@@ -162,7 +162,7 @@
 
 (defmulti uninstall-rendered-document!
   "Uninstalls rendered 'document' to provided ShadowRoot."
-  (fn [_ e] (if (instance? js/HTMLElement e) js/HTMLElement (type e))))
+  (fn [_ e] (if (instance? js/Element e) js/Element (type e))))
 
 (defmethod uninstall-rendered-document! js/String [sr s] (when-let [el (.item (.getElementsByTagName sr "div") 0)]
                                                            (.removeChild sr el)))
