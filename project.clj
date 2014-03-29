@@ -4,8 +4,8 @@
   :license  {:name "Eclipse Public License"
              :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths  ["src" "test"]
-  :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-2173"]]
+  :dependencies [[org.clojure/clojure "1.6.0"]
+                 [org.clojure/clojurescript "0.0-2197"]]
   :plugins [[lein-bower "0.2.0"]
             [lein-cljsbuild "1.0.2"]
             [com.cemerick/clojurescript.test "0.2.2"]]
