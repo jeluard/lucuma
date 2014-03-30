@@ -24,6 +24,12 @@ Element.prototype.shadowRoot;
  */
 Element.prototype.createShadowRoot = function() {};
 
+/* http://w3c.github.io/webcomponents/spec/custom/#types-of-callback */
+Element.prototype.createdCallback = function() {};
+Element.prototype.attachedCallback = function() {};
+Element.prototype.detachedCallback = function() {};
+Element.prototype.attributeChangedCallback = function(name, oldValue, newValue) {};
+
 var ShadowRoot = {};
 
 /**
