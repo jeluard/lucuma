@@ -10,7 +10,7 @@
  * @return {function}
  * @see http://w3c.github.io/webcomponents/spec/custom/#dfn-document-registerElement
  */
-DOMImplementation.prototype.register = function(type, options) {};
+DOMImplementation.prototype.registerElement = function(type, options) {};
 
 /**
  * @type {ShadowRoot}
