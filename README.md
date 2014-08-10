@@ -1,6 +1,6 @@
 # [Lucuma](http://jeluard.github.io/lucuma) [![Travis CI status](https://secure.travis-ci.org/jeluard/lucuma.png)](http://travis-ci.org/#!/jeluard/lucuma/builds)
 
-A Web Components library for ClojureScript. To see what's planned check the [roadmap](https://github.com/jeluard/lucuma/issues/milestones).
+A Web Components library for ClojureScript. To see what's planned check the [roadmap](https://github.com/jeluard/lucuma/milestones).
 
 ## Install
 
