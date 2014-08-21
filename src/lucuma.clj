@@ -21,7 +21,7 @@
 
   (defwebcomponent my-button
     [title]
-    :host [:button {:title title})
+    :host [:button {:title title}])
 
   (def defaults {:style [:button {:background-color :red}})
 
