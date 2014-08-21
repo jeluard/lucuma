@@ -3,7 +3,6 @@
             [lucuma.attribute :as att]
             [lucuma.custom-elements :as ce]
             [lucuma.event :as e]
-            [lucuma.polymer :as p]
             [lucuma.shadow-dom :as sd]
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods]))
@@ -343,11 +342,7 @@
         ;; Matching attribute value overrides eventual default
         (set-property! el os k (or a (:default os)) true false))))
   ;; Install ShadowRoot and shim if needed (only first instance of each type)
-  (when-let [sr (create-shadow-root! el (:style m) (:document m))]
-    (when (p/shadow-css-needed?)
-      (when-not (get-lucuma-property el "style_shimed")
-        (p/shim-styling! sr (:name m) (when-let [h (host-type (:host m))] (name h)))
-        (set-lucuma-property! el "style_shimed" true))))
+  (create-shadow-root! el (:style m) (:document m))
   (when f (u/call-with-first-argument f el)))
 
 (defn- merge-properties
@@ -420,7 +415,7 @@
     (let [d (:default m)]
       (let [it (infer-type-from-value d)]
         (if (contains? m :type)
-          ;; Make sure default matches type. nil is a valid for any type.
+          ;; Make sure default matches type. nil is valid for any type.
           (when (and (not (nil? d)) (not= it (:type m)))
             (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))
           ;; Merge type and returns updated map.
@@ -459,13 +454,3 @@
             (swap! registry assoc k um)
             (ce/register n (create-ce-prototype um parent-prototype) (host-type->extends (host-or-extends um))))))
         true)))
-
-(defn on-elements-upgraded
-  "Executes function when all elements are upgraded.
-   This is needed as polymer upgrades elements asynchronously."
-  [f]
-  (if (p/custom-element-polyfilled?)
-    (.addEventListener js/document "WebComponentsReady" f)
-    (f)))
-
-(set! (.-onElementsUpgraded js/lucuma) on-elements-upgraded)

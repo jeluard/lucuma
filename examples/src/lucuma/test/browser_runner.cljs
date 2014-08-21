@@ -3,7 +3,6 @@
             [lucuma-test :as l]
             [lucuma.attribute-test :as att]
             [lucuma.custom-elements-test :as cet]
-            [lucuma.polymer-test :as pt]
             [lucuma.shadow-dom-test :as sdt]
             [lucuma.util-test :as ut]
             [clojure.string :as s]

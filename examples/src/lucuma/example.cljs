@@ -142,10 +142,8 @@
   {:host :section
    :document document
    :style (list
-           ;; Workaround https://github.com/Polymer/polymer-dev/issues/7
-           (when-not (p/shadow-css-needed?)
-             [(at-import "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css")
-              (at-import "assets/prism.css")])
+            (at-import "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css")
+            (at-import "assets/prism.css")
            style)})
 
 (defwebcomponent lucu-example

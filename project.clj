@@ -15,7 +15,7 @@
                               ; "phantomjs" ["phantomjs" :runner "dev-resources/document-register-element-0.0.8.js" "target/cljs/lucuma.js"]
                               ; TODO Add support for http://triflejs.org/
                               ; SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
-                              "slimerjs" ["slimerjs" :runner "bower_components/polymer-platform/platform.js" "target/cljs/lucuma.js"]}}
+                              "slimerjs" ["slimerjs" :runner "dev-resources/document-register-element-0.0.8.js" "target/cljs/lucuma.js"]}}
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
   :min-lein-version "2.4.3")

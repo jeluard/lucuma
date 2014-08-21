@@ -44,22 +44,5 @@ ShadowRoot.prototype.host;
  */
 ShadowRoot.prototype.resetStyleInheritance;
 
-/**
- * Polymer polyfill prototypes
- */
-
-var Platform = {};
-Platform.flags.shadow;
-Platform.ShadowCSS.strictStyling;
-Platform.ShadowCSS.prototype.shimStyling = function(root, name) {};
-Platform.ShadowCSS.prototype.shimStyling = function(root, name, extendsName) {};
-
 var MutationObserver = {};
 MutationObserver.prototype.observe = function(el, options) {};
-
-/**
- * Lucuma
- */
-
-var lucuma = {};
-lucuma.onElementsUpgraded = function() {};
