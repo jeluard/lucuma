@@ -223,7 +223,7 @@
 ;; ShadowRoot support
 ;;
 
-(def ^private lucuma-shadow-root-property "lucuma")
+(def ^:private lucuma-shadow-root-property "lucuma")
 
 (defn shadow-root
   "Returns lucuma ShadowRoot of element."
