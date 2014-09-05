@@ -185,10 +185,9 @@
           (uninstall! []
                    (call-when-defined! sr m :on-detached)
                    (uninstall-rendered-document! sr rc))]
-    (let [media (:media m)]
-      (if media
-        (on-match-media media install! uninstall!)
-        (install!)))))
+    (if-let [media (:media m)]
+      (on-match-media media install! uninstall!)
+      (install!))))
 
 ;; style
 
@@ -322,16 +321,16 @@
   [m el]
   (let [properties (:properties m)
         ps (into {}
-              (for [property properties]
-                [(key property) (invoke-if-fn (val property) el)]))]
+              (for [[k v] properties]
+                [k (invoke-if-fn v el)]))]
     (merge m {:properties ps})))
 
 (defn- initialize-instance!
   "Initializes a custom element instance."
   [el f m]
   ;; Set host attributes extracted from :host element
-  (doseq [a (host-attributes (:host m))]
-    (.setAttribute el (name (key a)) (str (val a))))
+  (doseq [[k v] (host-attributes (:host m))]
+    (.setAttribute el (name k) (str v)))
   ;; Set default properties values
   (let [as (att/attributes el)
         m (replace-function-with-invocation-result m el)]
@@ -341,7 +340,6 @@
                 (att/attribute->property [(:type os) (k as)]))]
         ;; Matching attribute value overrides eventual default
         (set-property! el os k (or a (:default os)) true false))))
-  ;; Install ShadowRoot and shim if needed (only first instance of each type)
   (create-shadow-root! el (:style m) (:document m))
   (when f (u/call-with-first-argument f el)))
 
@@ -377,15 +375,15 @@
     (install-lucuma-properties-holder! prototype)
     (install-properties-holder! prototype)
     ;; Install methods
-    (doseq [method methods]
-      (let [n (name (key method))]
-        (aset prototype n (u/wrap-with-callback-this-value (u/wrap-to-javascript (val method))))))
+    (doseq [[k v] methods
+            :let [n (name k)]]
+      (aset prototype n (u/wrap-with-callback-this-value (u/wrap-to-javascript v))))
     prototype))
 
 (defn- validate-property-name!
   "Ensures a property name is valid."
   [parent-el n]
-  (when (not (u/valid-identifier? n))
+  (when-not (u/valid-identifier? n)
     (throw (ex-info (str "Invalid property name <" n ">") {:property n})))
   (when (exists? (aget (or parent-el default-element) n))
     (throw (ex-info (str "Property <" n "> is already defined") {:property n}))))
@@ -412,14 +410,14 @@
     ;; Make sure map definition contains a default value.
     (when-not (contains? m :default)
       (throw (ex-info (str "No default for <" n ">") {:property n})))
-    (let [d (:default m)]
-      (let [it (infer-type-from-value d)]
-        (if (contains? m :type)
-          ;; Make sure default matches type. nil is valid for any type.
-          (when (and (not (nil? d)) (not= it (:type m)))
-            (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))
-          ;; Merge type and returns updated map.
-          (merge m {:type it}))))))
+    (let [d (:default m)
+          it (infer-type-from-value d)]
+      (if (contains? m :type)
+        ;; Make sure default matches type. nil is valid for any type.
+        (when (and (not (nil? d)) (not= it (:type m)))
+          (throw (ex-info (str "Type from default value and type hint are different for <" n ">") {:property n})))
+        ;; Merge type and returns updated map.
+        (merge m {:type it})))))
 
 (def all-keys
   #{:name :ns :host :extends :document :style :properties :methods :handlers
@@ -444,12 +442,12 @@
     (when-not (registered? k)
       (let [{:keys [properties methods]} m]
         ;; Validate property / method names
-        (doseq [o (concat properties methods)]
-          (let [n (name (key o))]
-            (validate-property-name! parent-el n)))
+        (doseq [[o _] (concat properties methods)
+                :let [n (name o)]]
+          (validate-property-name! parent-el n))
         (let [ps (into {}
-                       (for [property properties]
-                         [(key property) (or (validate-property-definition! n (val property)) (val property))]))]
+                       (for [[k v] properties]
+                         [k (or (validate-property-definition! n v) v)]))]
           (let [um (merge m {:properties ps})]
             (swap! registry assoc k um)
             (ce/register n (create-ce-prototype um parent-prototype) (host-type->extends (host-or-extends um))))))
