@@ -1,11 +1,11 @@
 (defproject lucuma-examples "0.2.1-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2197"]
+                 [org.clojure/clojurescript "0.0-2311"]
                  [lucuma "0.2.1-SNAPSHOT"]
-                 [prismatic/dommy "0.1.2"]
+                 [prismatic/dommy "0.1.3"]
                  [garden "1.1.5"]]
-  :plugins [[lein-cljsbuild "1.0.2"]
-            [com.cemerick/clojurescript.test "0.2.2"]]
+  :plugins [[lein-cljsbuild "1.0.3"]
+            [com.cemerick/clojurescript.test "0.3.0"]]
   :cljsbuild {:builds [{:id "prod"
                         :source-paths ["src" "test"]
                         :compiler {:output-to "target/cljs/lucuma+examples.js"
@@ -29,4 +29,4 @@
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-build" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "once" "prod"]
             "clean-dev"  ["do" "clean," "cljsbuild" "clean," "cljsbuild" "auto" "dev"]}
-  :min-lein-version "2.3.4")
+  :min-lein-version "2.4.3")
