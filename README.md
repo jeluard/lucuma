@@ -2,7 +2,7 @@
 
 A Web Components library for ClojureScript. Lucuma helps with creating reusable HTML elements ([Web Components](http://webcomponents.org/)) encapsulating document, style and logic.
 
-Lucuma is available in clojars as [lucuma "0.2.0"].
+Lucuma is available in clojars as `[lucuma "0.2.0"]`.
 
 ## Getting Started
 
@@ -31,7 +31,7 @@ Manipulate it like any HTML element
   el.threshold = 15;
   document.body.appendChild(el);
 </script>
-``
+```
 
 ## Use
 
