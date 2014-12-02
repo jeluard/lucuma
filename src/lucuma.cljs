@@ -420,8 +420,8 @@
         (merge m {:type it})))))
 
 (def all-keys
-  #{:name :ns :host :extends :document :style :properties :methods :handlers
-    :on-created :on-attached :on-detached :reset-style-inheritance})
+  #{:name :ns :host :extends :document :style :properties :methods
+    :on-created :on-attached :on-detached})
 
 (defn ignored-keys
   "Returns a set of ignored keys."
