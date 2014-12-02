@@ -1,6 +1,7 @@
 (ns lucuma-test
   (:require [cemerick.cljs.test :as t :refer-macros [deftest is use-fixtures]]
-            [lucuma :as l :refer-macros [defwebcomponent]])
+            [lucuma :as l :refer-macros [defwebcomponent]]
+            [lucuma.shadow-dom :as sd])
   (:refer-clojure :exclude [methods]))
 
 (def ^:private tests-node "tests-appends")
@@ -37,28 +38,33 @@
 
 (defwebcomponent test-sr-1)
 (defwebcomponent test-sr-2
-  :document "hello")
+
+                 :document "hello")
 (defwebcomponent test-sr-3
   :style "* {background: red;}")
 
-(deftest create-shadow-root-when-needed
-  (is (nil? (.-shadowRoot (by-id "test-sr-1"))))
-  (is (not (nil? (.-shadowRoot (by-id "test-sr-2")))))
-  (is (not (nil? (.-shadowRoot (by-id "test-sr-3"))))))
+(when (sd/supported?)
+  (deftest create-shadow-root-when-needed
+    (is (nil? (.-shadowRoot (by-id "test-sr-1"))))
+    (is (not (nil? (.-shadowRoot (by-id "test-sr-2")))))
+    (is (not (nil? (.-shadowRoot (by-id "test-sr-3"))))))
 
-(deftest shadow-root
-  (is (nil? (l/shadow-root (.createElement js/document "div"))))
-  (is (nil? (l/shadow-root (.createElement js/document "test-sr-1"))))
-  (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2")))))
-  (is (not (nil? (l/shadow-root (.createElementNS js/document "http://www.w3.org/1999/xhtml" "test-sr-2")))))
-  (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2") :test-sr-2))))
-  (is (nil? (l/shadow-root (.createElement js/document "test-sr-2") :wrong-element-name))))
+  (deftest shadow-root
+    (is (nil? (l/shadow-root (.createElement js/document "div"))))
+    (is (nil? (l/shadow-root (.createElement js/document "test-sr-1"))))
+    (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2")))))
+    (is (not (nil? (l/shadow-root (.createElementNS js/document "http://www.w3.org/1999/xhtml" "test-sr-2")))))
+    (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2") :test-sr-2))))
+    (is (nil? (l/shadow-root (.createElement js/document "test-sr-2") :wrong-element-name))))
 
-(deftest host
-  (is (nil? (l/host nil)))
-  (is (nil? (l/host (.createElement js/document "div"))))
-  (is (not (nil? (l/host (l/shadow-root (.createElement js/document "test-sr-2"))))))
-  (is (not (nil? (l/host (.-firstChild (l/shadow-root (.createElement js/document "test-sr-2"))))))))
+  (deftest host
+    (is (nil? (l/host nil)))
+    (is (nil? (l/host (.createElement js/document "div"))))
+    (is (not (nil? (l/host (l/shadow-root (.createElement js/document "test-sr-2"))))))
+    (is (not (nil? (l/host (.-firstChild (l/shadow-root (.createElement js/document "test-sr-2"))))))))
+
+  (deftest style
+    (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (.getElementById (l/shadow-root (by-id "test-style-1")) "id")))))))
 
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
@@ -159,6 +165,7 @@
   (is (instance? js/HTMLElement (.createElement js/document "test-unknown")))
   (is (not (instance? js/HTMLUnknownElement (.createElement js/document "test-unknown"))))
   (is (instance? js/HTMLElement (.createElement js/document "test-prototype-1")))
+  (is (not (instance? js/HTMLButtonElement (.createElement js/document "test-prototype-2"))))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-2")))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-3"))))
 
@@ -215,9 +222,6 @@
 (defwebcomponent test-style-1
   :document "<span id='id'></div>"
   :style "#id {color: rgb(255, 0, 0);}")
-
-(deftest style
-  (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (.getElementById (l/shadow-root (by-id "test-style-1")) "id"))))))
 
 (def test-created-callback1-called (atom false))
 (def test-attached-callback1-called (atom false))

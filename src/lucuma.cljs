@@ -124,20 +124,20 @@
 
 (defn render-then-install-map!
   "Calls render-fn then install-fn on :content."
-  [sr m render-fn install-fn]
+  [h m render-fn install-fn]
   (let [rc (render-fn (:content m))]
-    (install-fn sr rc m)))
+    (install-fn h rc m)))
 
 (defn- render-then-install!
   "Dispatches based on :document / :style value.
    Node instances will be directly appended, list passed recursively to this fn,
    map render then installed and others encapsulated in a map as value of :content."
-  [sr o render-fn install-fn]
+  [h o render-fn install-fn]
   (cond
-   (instance? js/Node o) (.appendChild sr (.cloneNode o true))
-   (list? o) (doseq [e (filter identity o)] (render-then-install! sr e render-fn install-fn))
-   (map? o) (render-then-install-map! sr o render-fn install-fn)
-   :else (render-then-install-map! sr {:content o} render-fn install-fn)))
+   (instance? js/Node o) (.appendChild h (.cloneNode o true))
+   (list? o) (doseq [e (filter identity o)] (render-then-install! h e render-fn install-fn))
+   (map? o) (render-then-install-map! h o render-fn install-fn)
+   :else (render-then-install-map! h {:content o} render-fn install-fn)))
 
 ;; document
 
@@ -151,21 +151,21 @@
 (derive js/DocumentFragment ::node)
 
 (defmulti install-rendered-document! ;; TODO rename to attach/detach? wait for final Custom Element spec
-  "Installs rendered 'document' to provided ShadowRoot."
+  "Installs rendered 'document'."
   (fn [_ e] (if (instance? js/Element e) js/Element (type e))))
 
-(defmethod install-rendered-document! js/String [sr s] (let [el (.createElement js/document "div")]
+(defmethod install-rendered-document! js/String [h s] (let [el (.createElement js/document "div")]
                                                          (set! (.-innerHTML el) s)
-                                                         (.appendChild sr el)))
-(defmethod install-rendered-document! ::node [sr el] (.appendChild sr el))
+                                                         (.appendChild h el)))
+(defmethod install-rendered-document! ::node [h el] (.appendChild h el))
 
 (defmulti uninstall-rendered-document!
-  "Uninstalls rendered 'document' to provided ShadowRoot."
+  "Uninstalls rendered 'document'."
   (fn [_ e] (if (instance? js/Element e) js/Element (type e))))
 
-(defmethod uninstall-rendered-document! js/String [sr s] (when-let [el (.item (.getElementsByTagName sr "div") 0)]
-                                                           (.removeChild sr el)))
-(defmethod uninstall-rendered-document! ::node [sr el] (.removeChild sr el))
+(defmethod uninstall-rendered-document! js/String [h _] (when-let [el (.item (.getElementsByTagName h "div") 0)]
+                                                           (.removeChild h el)))
+(defmethod uninstall-rendered-document! ::node [h el] (.removeChild h el))
 
 (defn on-match-media
   "Listens to matchMedia on calls methods depending on matches value."
@@ -174,17 +174,17 @@
     (.addListener m #(if (.-matches m) (m-fn) (nm-fn)))
     (when (.-matches m) (m-fn))))
 
-(defn- call-when-defined! [sr m t] (when-let [f (t m)] (f (.-host sr))))
+(defn- call-when-defined! [h m t] (when-let [f (t m)] (f (.-host h))))
 
 (defn install-document!
   "Dynamically installs/uninstalls document based on matching media."
-  [sr rc m]
+  [h rc m]
   (letfn [(install! []
-                   (call-when-defined! sr m :on-attached)
-                   (install-rendered-document! sr rc))
+                   (call-when-defined! h m :on-attached)
+                   (install-rendered-document! h rc))
           (uninstall! []
-                   (call-when-defined! sr m :on-detached)
-                   (uninstall-rendered-document! sr rc))]
+                   (call-when-defined! h m :on-detached)
+                   (uninstall-rendered-document! h rc))]
     (if-let [media (:media m)]
       (on-match-media media install! uninstall!)
       (install!))))
@@ -213,10 +213,10 @@
 
 (defn install-style!
   "Appends a new style element encapsulating redendered style."
-  [sr rc m]
+  [h rc m]
   (let [el (create-style-element (:media m) (:title m))]
     (install-rendered-style! el rc)
-    (.appendChild sr el)))
+    (.appendChild h el)))
 
 ;;
 ;; ShadowRoot support
@@ -241,15 +241,12 @@
         (.-host el)
         (when-let [pel (.-parentNode el)] (recur pel el))))))
 
-(defn- create-shadow-root!
-  "Creates and appends a ShadowRoot if either `:style` or `:document` is provided."
-  [el style document]
-  (when (or style document)
-    (let [sr (.createShadowRoot el)]
-      (aset sr lucuma-shadow-root-property (name (element-name el)))
-      (when style (render-then-install! sr style render-style install-style!))
-      (when document (render-then-install! sr document render-document install-document!))
-      sr)))
+(defn- create-shadow-root
+  "Creates and appends a ShadowRoot."
+  [el]
+  (let [sr (.createShadowRoot el)]
+    (aset sr lucuma-shadow-root-property (name (element-name el)))
+    sr))
 
 ;;
 ;; prototype creation
@@ -306,7 +303,7 @@
   (when-let [t (host-or-extends m)]
     (let [n (name t)
           e (host-type->extends t)]
-      (if (and (not (nil? e)) (not= t e))
+      (if (and e (not= t e))
         (.createElement js/document (name e) n)
         (.createElement js/document n)))))
 
@@ -325,11 +322,22 @@
                 [k (invoke-if-fn v el)]))]
     (merge m {:properties ps})))
 
+(defn create-content-holder
+  [el requires-shadow-dom?]
+  (let [shadow-dom-supported (sd/supported?)]
+    (when (and requires-shadow-dom? (not shadow-dom-supported))
+      (throw (ex-info "ShadowDOM not supported but required" {})))
+    (if shadow-dom-supported
+      (create-shadow-root el)
+      (let [f (.createDocumentFragment js/document)]
+        (.appendChild el f)
+        f))))
+
 (defn- initialize-instance!
   "Initializes a custom element instance."
-  [el f m]
+  [el f {:keys [host style document requires-shadow-dom?] :as m}]
   ;; Set host attributes extracted from :host element
-  (doseq [[k v] (host-attributes (:host m))]
+  (doseq [[k v] (host-attributes host)]
     (.setAttribute el (name k) (str v)))
   ;; Set default properties values
   (let [as (att/attributes el)
@@ -340,7 +348,10 @@
                 (att/attribute->property [(:type os) (k as)]))]
         ;; Matching attribute value overrides eventual default
         (set-property! el os k (or a (:default os)) true false))))
-  (create-shadow-root! el (:style m) (:document m))
+  (when (or style document)
+    (let [h (create-content-holder el requires-shadow-dom?)]
+      (when style (render-then-install! h style render-style install-style!))
+      (when document (render-then-install! h document render-document install-document!))))
   (when f (u/call-with-first-argument f el)))
 
 (defn- merge-properties
@@ -363,7 +374,7 @@
 (defn- create-ce-prototype
   "Creates a Custom Element prototype from a map definition."
   [m parent-prototype]
-  (let [{:keys [host on-created properties methods]} m
+  (let [{:keys [on-created properties methods]} m
         on-created #(initialize-instance! % on-created m)
         on-attribute-changed #(attribute-changed %1 (keyword %2) %3 %4 ((keyword %2) properties))
         prototype (ce/create-prototype
@@ -421,7 +432,7 @@
 
 (def all-keys
   #{:name :ns :host :extends :document :style :properties :methods
-    :on-created :on-attached :on-detached})
+    :on-created :on-attached :on-detached :requires-shadow-dom?})
 
 (defn ignored-keys
   "Returns a set of ignored keys."

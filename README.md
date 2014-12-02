@@ -83,6 +83,13 @@ Multiple document can be defined by providing a list as value. Each list value g
   :document (list "some" "content"))
 ```
 
+#### ShadowDOM
+
+If the current browser supports ShadowDOM document and style will be encapsulated in a lucuma specific ShadowRoot.
+Usage of a ShadowDOM can be required when defining an element using **requires-shadow-dom?**. In this case the element registration will fail if the browser does not support ShadowDOM.
+
+ShadowDOM provides a number of extra capacities and prevent name /id clashes.
+
 #### Custom rendering
 
 As rendering is delegated to the **render-document** multimethod custom logic can be hooked. A common use-case is to use a hiccup implementation (such as [hipo](https://github.com/jeluard/hipo)) to render vectors.
@@ -149,7 +156,7 @@ Style can be defined as map allowing to provide **title** and **media** value on
 ### Properties
 
 Per instance properties can be accessed via JavaScript getter/setter and ClojureScript **get-property** / **set-property!**. When accessed via JavaScript values are properly converted in both directions. 
-A property can be defined as a map with keys **default**, **type** (can be *:number*, *:boolean*, *:string*, *:keyword* or *:object*), **events?** and **attributes?** or as a single value (which will serve as default).
+A property can be defined as a map with keys **default**, **type** (can be *:number*, *:boolean*, *:string*, *:keyword* or *:object*), **events?** and **attributes?** or as a single value (which will serve as default). Default value can also be provided as a function that will be evaluated at element creation time.
 
 A property can be exported as HTML attribute if **attributes?** is set to true (default to true for *:number**, *:boolean* and *:string*). When created as an HTML element, attribute values will override defaults.
 
@@ -158,7 +165,8 @@ Changes to a property will fire DOM style events if **events?** is set to true (
 ```clojure
 (defwebcomponent my-element
   :properties {:property1 "default"
-               :property2 {:default 1 :type :number :events? true :attributes? true}})
+               :property2 {:default 1 :type :number :events? true :attributes? true}
+               :property3 (fn [el] (str "default"))})
 ```
 
 ### Methods

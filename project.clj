@@ -16,7 +16,7 @@
     {:source-paths ["src" "test"]
      :compiler {:output-to "target/cljs/unit-test.js"
                 :optimizations :simple}}}
-   :test-commands {"phantomjs" ["phantomjs" :runner "dev-resources/document-register-element-0.0.8.js" "target/cljs/unit-test.js"]}}
+   :test-commands {"slimerjs" ["/Applications/slimerjs-0.9.4/slimerjs" :runner "dev-resources/document-register-element-0.0.8.js" "target/cljs/unit-test.js"]}}
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
   :min-lein-version "2.5.0")

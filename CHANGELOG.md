@@ -1,4 +1,4 @@
-# 0.2.1
+# 0.3.0
 
 * __[+]__ Default value provided as function are evaluated at creation time
 
