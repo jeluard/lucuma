@@ -4,18 +4,19 @@
   :license  {:name "Eclipse Public License"
              :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths  ["src" "test"]
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2371"]]
-  :plugins [[lein-cljsbuild "1.0.3"]
-            [com.cemerick/clojurescript.test "0.3.1"]]
-  :cljsbuild {:builds [{:source-paths ["src" "test"]
-                        :compiler {:output-to "target/cljs/lucuma.js"
-                                   :optimizations :simple}}]
-              :test-commands {; Disabled for now: based on too old webkit version.
-                              ; "phantomjs" ["phantomjs" :runner "dev-resources/document-register-element-0.0.8.js" "target/cljs/lucuma.js"]
-                              ; TODO Add support for http://triflejs.org/
-                              ; SlimerJS doesn't support exit code so CI won't fail when tests fail. See https://github.com/laurentj/slimerjs/issues/50.
-                              "slimerjs" ["slimerjs" :runner "dev-resources/document-register-element-0.0.8.js" "target/cljs/lucuma.js"]}}
+  :profiles
+  {:dev
+    {:dependencies [[org.clojure/clojure "1.6.0"]
+                    [org.clojure/clojurescript "0.0-2371"]]
+     :plugins [[lein-cljsbuild "1.0.3"]
+               [com.cemerick/clojurescript.test "0.3.1"]]}}
+  :cljsbuild
+  {:builds
+   {:test
+    {:source-paths ["src" "test"]
+     :compiler {:output-to "target/cljs/unit-test.js"
+                :optimizations :simple}}}
+   :test-commands {"phantomjs" ["phantomjs" :runner "dev-resources/document-register-element-0.0.8.js" "target/cljs/unit-test.js"]}}
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
-  :min-lein-version "2.4.3")
+  :min-lein-version "2.5.0")
