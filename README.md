@@ -1,5 +1,7 @@
 # Lucuma [![License](http://img.shields.io/badge/license-EPL-blue.svg?style=flat)](https://www.eclipse.org/legal/epl-v10.html) [![Build Status](http://img.shields.io/travis/jeluard/lucuma.svg?style=flat)](http://travis-ci.org/#!/jeluard/lucuma/builds) [![Dependency Status](https://www.versioneye.com/user/projects/53975c7c83add7f33c00000d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53975c7c83add7f33c00000d)
 
+[Getting Started](#getting-started) | [Usage](#usage) | [Browser support](#browser-support)
+
 A Web Components library for ClojureScript. Lucuma helps with creating reusable HTML elements ([Web Components](http://webcomponents.org/)) encapsulating document, style and logic.
 
 Lucuma is available in clojars as `[lucuma "0.2.0"]`.
@@ -33,7 +35,7 @@ Manipulate it like any HTML element
 </script>
 ```
 
-## Use
+## Usage
 
 ### Custom Element definition
 
@@ -253,6 +255,13 @@ Also by providing a map as first element of a defwebcomponent (or second if vect
 
 (register (my-element 15))
 ```
+
+## Browser support
+
+Support for Custom Elements / ShadowDOM is appearing in recent browser releases. Some descent polyfill can be used for older browser:
+
+* [WebComponents.org](http://webcomponents.org/polyfills/) polyfills both Custom Elements / ShadowDOM for evergreen browsers
+* [document-register-element](https://github.com/WebReflection/document-register-element/) polyfill Custom Elements for pretty much all browsers and is pretty small
 
 ## License
 
