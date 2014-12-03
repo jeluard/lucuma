@@ -148,7 +148,7 @@
 (derive js/Element ::node)
 (derive js/DocumentFragment ::node)
 
-(defmulti install-rendered-document! ;; TODO rename to attach/detach? wait for final Custom Element spec
+(defmulti install-rendered-document!
   "Installs rendered 'document'."
   (fn [_ e] (if (instance? js/Element e) js/Element (type e))))
 
@@ -157,36 +157,10 @@
                                                          (.appendChild h el)))
 (defmethod install-rendered-document! ::node [h el] (.appendChild h el))
 
-(defmulti uninstall-rendered-document!
-  "Uninstalls rendered 'document'."
-  (fn [_ e] (if (instance? js/Element e) js/Element (type e))))
-
-(defmethod uninstall-rendered-document! js/String [h _] (when-let [el (.item (.getElementsByTagName h "div") 0)]
-                                                           (.removeChild h el)))
-(defmethod uninstall-rendered-document! ::node [h el] (.removeChild h el))
-
-(defn on-match-media
-  "Listens to matchMedia on calls methods depending on matches value."
-  [s m-fn nm-fn]
-  (let [m (.matchMedia js/window s)]
-    (.addListener m #(if (.-matches m) (m-fn) (nm-fn)))
-    (when (.-matches m) (m-fn))))
-
-(defn- call-when-defined! [h m t] (when-let [f (t m)] (f (.-host h))))
-
-; TODO remove?
 (defn install-document!
-  "Dynamically installs/uninstalls document based on matching media."
-  [h rc m]
-  (letfn [(install! []
-                   (call-when-defined! h m :on-attached)
-                   (install-rendered-document! h rc))
-          (uninstall! []
-                   (call-when-defined! h m :on-detached)
-                   (uninstall-rendered-document! h rc))]
-    (if-let [media (:media m)]
-      (on-match-media media install! uninstall!)
-      (install!))))
+  "Installs document."
+  [h rc _]
+  (install-rendered-document! h rc))
 
 ; style
 

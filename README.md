@@ -72,11 +72,10 @@ Document of a Web Component comes from the **document** value that will be rende
 The rendering process consists of:
 
 1. call **render-document** multimethod (dispatch on document type) to generate the rendered html
-2. call **install-rendered-document!** multimethod (dispatch on rendered document type) to insert document in the DOM.
-3. call **uninstall-rendered-document!** multimethod (dispatch on rendered document type) to remove document from the DOM.
+2. call **install-rendered-document!** multimethod (dispatch on rendered document type) to insert document in the Custom Element.
 
 **render-document** has implementations for *String*. 
-**(un)install-rendered-document!** have implementations for *String*, any *HTMLElement* and *DocumentFragment*.
+**install-rendered-document!** have implementations for *String*, any *HTMLElement* and *DocumentFragment*.
 
 Multiple document can be defined by providing a list as value. Each list value goes through the complete process as if it was defined as main document value.
 
