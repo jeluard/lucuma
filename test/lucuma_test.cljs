@@ -38,8 +38,7 @@
 
 (defwebcomponent test-sr-1)
 (defwebcomponent test-sr-2
-
-                 :document "hello")
+  :document "hello")
 (defwebcomponent test-sr-3
   :style "* {background: red;}")
 
@@ -250,6 +249,9 @@
 
 (defwebcomponent test-property-1
   :properties {:property nil})
+(defwebcomponent test-property-2
+  :properties {:property1 "1"
+               :property2 {:default 1 :type :number}})
 
 (defwebcomponent test-property-fail-1
   :properties {:invalid-property-name nil})
@@ -267,6 +269,17 @@
 
 (deftest properties
   (is (nil? (.-property (.createElement js/document "test-property-1")))))
+
+(deftest properties-update
+  (let [el (.createElement js/document "test-property-2")]
+    (is (= "1" (l/get-property el :property1)))
+    (l/set-property! el :property1 "2")
+    (is (= "2" (l/get-property el :property1)))
+    (is (thrown? js/Error (l/set-property! el :property1 1)))
+    (is (= 1 (l/get-property el :property2)))
+    (l/set-property! el :property2 2)
+    (is (= 2 (l/get-property el :property2)))
+    (is (thrown? js/Error (l/set-property! el :property2 "")))))
 
 (defwebcomponent test-method-1
   :methods {:method1 (fn [] 1)
@@ -338,6 +351,8 @@
   (append "test-style-1")
 
   (l/register test-callback-1)
+
+  (l/register test-property-2)
 
   (l/register test-method-1)
 

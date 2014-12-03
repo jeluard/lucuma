@@ -75,7 +75,7 @@
 
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
 (defn- type-not-one-of? [os st] (not-any? st [(:type os)]))
-(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{:object :function})))
+(defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{:object})))
 (defn- property-definition-events? [os] (val-or-default os :events? true))
 
 (defn- lookup-options
@@ -92,7 +92,6 @@
     :string (= js/String (type v))
     :boolean (= js/Boolean (type v))
     :keyword (= Keyword (type v))
-    :function true
     :object (instance? js/Object v)
     (throw (ex-info (str "Unrecognized type <" t ">") {}))))
 
@@ -307,21 +306,6 @@
         (.createElement js/document (name e) n)
         (.createElement js/document n)))))
 
-(defn invoke-if-fn
-  [m el]
-  (let [d (:default m)]
-    (if (fn? d)
-      (merge m {:default (d el)})
-      m)))
-
-(defn- replace-function-with-invocation-result
-  [m el]
-  (let [properties (:properties m)
-        ps (into {}
-              (for [[k v] properties]
-                [k (invoke-if-fn v el)]))]
-    (merge m {:properties ps})))
-
 (defn create-content-holder
   [el requires-shadow-dom?]
   (let [shadow-dom-supported (sd/supported?)]
@@ -340,8 +324,7 @@
   (doseq [[k v] (host-attributes host)]
     (.setAttribute el (name k) (str v)))
   ;; Set default properties values
-  (let [as (att/attributes el)
-        m (replace-function-with-invocation-result m el)]
+  (let [as (att/attributes el)]
     (doseq [p (:properties m)]
       (let [[k os] p
             a (when (and (contains? as k) (property-definition-attributes? os))
@@ -408,7 +391,6 @@
      (string? o) :string
      (or (true? o) (false? o)) :boolean
      (keyword? o) :keyword
-     (fn? o) :function
      :else :object)
     :object))
 
