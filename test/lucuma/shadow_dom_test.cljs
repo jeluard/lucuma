@@ -8,7 +8,7 @@
     :document "<div></div>")
 
   (defwebcomponent test-shadow-dom-2
-    :host :test-shadow-dom-1
+    :prototype :test-shadow-dom-1
     :document "<span></span>")
 
   (deftest shadow-roots

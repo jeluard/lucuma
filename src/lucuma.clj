@@ -21,13 +21,13 @@
 
   (defwebcomponent my-button
     [title]
-    :host [:button {:title title}])
+    :extends :button)
 
   (def defaults {:style [:button {:background-color :red}})
 
-  (defwebcomponent my-div
+  (defwebcomponent my-element
     defaults
-    :host :div)"
+    :document \"content\")"
   [n & c]
   (let [[args kvs] (split-args c)
         default {:name (name n) :ns (name *cljs-ns*)}

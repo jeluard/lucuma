@@ -192,46 +192,36 @@ el.method(); /* calls (some-method el) */
 
 ### Extension
 
-Existing element can be extended to inherit capacity from another element (via prototype inheritance). **host** value must be a keyword referencing valid HTML element (including Custom ones). **host** value can also follow hiccup vector syntax. In this case attributes values will be set as attributes on the host element.
+Existing element can be inherit capacity from other elements via prototype inheritance. **prototype** value can be a keyword referencing valid HTML element (including Custom ones) or an existing prototype.
 
 ```clojure
 (defwebcomponent my-element
-  :host :div
+  :prototype :div
+  :document "content")
+
+(defwebcomponent my-other-element
+  :prototype js/HTMLButtonElement.prototype
   :document "content")
 ```
 
+Alternatively a Custom Element can extend an existing element. **extends** value must be a keyword referencing valid HTML element (including Custom ones).
+When both **prototype** and **extends** are provided **prototype** must include **extends** prototype in its prototype chain. If only **extends** is provided its prototype will be used directly.
+
 The HTML element must then be declared using the following syntax:
 
+```clojure
+(defwebcomponent time-ago
+  :extends :time)
+```
+
 ```html
-<div is="my-element"></div>
+<time is="time-ago"></time>
 ```
 
 ```clojure
 (defwebcomponent my-element
   :host [:div {:type "button"}]
   :document "content")
-```
-
-A more evolved example extending a Custom Element:
-
-```clojure
-(defwebcomponent my-element
-  :document "content"
-  :properties {:my-attribute ""}
-  :methods {:my-method #(fn [] "value")})
-
-(defwebcomponent my-extended-element
-  :host :my-element
-  :document "content"
-  :methods {:my-method #(fn [] "value")})
-```
-
-```html
-<my-element is="my-extended-element" my-attribute="value">
-<script>
-  var el = document.querySelector("my-element[is='my-extended-element']");
-  el.my_method();
-</script>
 ```
 
 ### Reuse

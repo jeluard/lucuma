@@ -1,7 +1,7 @@
 # [0.3.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.3.0)
 
 * **[+]** ShadowDOM usage is optional. It can be required at design time via **require-shadow-dom?**
-* **[+]** Default value provided as function are evaluated at creation time
+* **[~]** Replaced **host** with **prototype** and **extends** for more flexibility
 * And a bunch of [bugs fixed](https://github.com/jeluard/lucuma/issues?q=label%3Abug+milestone%3A0.3.0+is%3Aclosed).
 
 # [0.2.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.2.0)

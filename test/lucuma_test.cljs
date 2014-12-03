@@ -67,14 +67,14 @@
 
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
-  :host :button)
+  :prototype :button)
 (defwebcomponent test-prototype-3
-  :host :test-prototype-2)
+  :extends :test-prototype-2)
 
 (defwebcomponent test-prototype-definition-1
-  :host :test-prototype-3)
+  :extends :test-prototype-3)
 (defwebcomponent test-prototype-definition-2
-  :host :test-prototype-polymer
+  :prototype :test-prototype-polymer
   :extends :button)
 (defwebcomponent test-prototype-definition-3
   test-prototype-2)
@@ -86,7 +86,7 @@
   test-prototype-2
   :document (inc arg))
 (defwebcomponent test-prototype-definition-6
-  :host :test-prototype-1)
+  :extends :test-prototype-1)
 (defwebcomponent test-prototype-definition-7
   :properties {:property1 "default" :property2 "default"})
 (defwebcomponent test-prototype-definition-8
@@ -94,56 +94,31 @@
   :properties {:property2 "another-default"})
 
 (defwebcomponent test-prototype-definition-fail-1
-  :host :test-prototype-polymer)
+  :extends :test-prototype-polymer)
 
 (deftest webcomponent-reuse
-  (is (= :button (:host test-prototype-definition-3)))
+  (is (= :button (:prototype test-prototype-definition-3)))
   (is (= "default" (get-in test-prototype-definition-8 [:properties :property1])))
   (is (= "another-default" (get-in test-prototype-definition-8 [:properties :property2])))
-  (is (= :button (:host (test-prototype-definition-5 0)))))
+  (is (= :button (:prototype (test-prototype-definition-5 0)))))
 
 (deftest webcomponent-as-fn
   (is (= 2 (:document (test-prototype-definition-4 1)))))
 
-(deftest parse-host-type
-  (is (nil? (l/host-type nil)))
-  (is (= :div (l/host-type :div)))
-  (is (nil? (l/host-type {:att ""})))
-  (is (= :div (l/host-type [:div {:att ""}]))))
-
-(deftest parse-host-attributes
-  (is (nil? (l/host-attributes nil)))
-  (is (nil? (l/host-attributes :div)))
-  (is (= {:att ""} (l/host-attributes {:att ""})))
-  (is (= {:att ""} (l/host-attributes [:div {:att ""}]))))
-
-(defwebcomponent test-host-attributes
-  :host {:a "A"})
-
-(deftest host-attributes
-  (is (= "A" (.getAttribute (by-id "test-host-attributes") "a"))))
-
 (defwebcomponent test-extends-1)
 (defwebcomponent test-extends-2
-  :host :div)
+  :extends :div)
 (defwebcomponent test-extends-3
-  :host :test-extends-1)
+  :extends :test-extends-1)
 (defwebcomponent test-extends-4
-  :host :test-extends-2)
+  :extends :test-extends-2)
 (defwebcomponent test-extends-5
-  :host :non-lucu-element
+                 ;:extends :non-lucu-element
   :extends :div)
 (defwebcomponent test-extends-6
-  :host :test-extends-4)
-(defwebcomponent test-extends-7
-  :host [:test-extends-4 {}])
-(defwebcomponent test-extends-8
-  :host :span
-  :extends :div)
-(defwebcomponent test-extends-9
-  :extends :div)
+  :extends :test-extends-4)
 (defwebcomponent test-extends-fail-1
-  :host :non-lucu-element)
+  :extends :non-lucu-element)
 
 (deftest host-type->extends
   (is (nil? (l/host-type->extends nil)))
@@ -154,9 +129,6 @@
   (is (= :div (l/host-type->extends :test-extends-4)))
   (is (= :div (l/host-type->extends :test-extends-5)))
   (is (= :div (l/host-type->extends :test-extends-6)))
-  (is (= :div (l/host-type->extends :test-extends-7)))
-  (is (= :div (l/host-type->extends :test-extends-8)))
-  (is (nil? (l/host-type->extends :test-extends-9)))
   (is (thrown? js/Error (l/host-type->extends :test-extends-fail-1))))
 
 (deftest extends-right-prototype
@@ -258,7 +230,7 @@
 (defwebcomponent test-property-fail-2
   :properties {:id nil})
 (defwebcomponent test-property-fail-3
-  :host :img
+  :extends :img
   :properties {:src nil})
 
 (deftest property-name
@@ -303,18 +275,14 @@
   (is (thrown? js/Error (l/register test-method-3))))
 
 (defwebcomponent test-extension-1
-  :host {:id "unique-id"}
   :properties {:property1 ""}
   :methods {:method1 (fn [] 1)})
 (defwebcomponent test-extension-2
-  :host :test-extends-1)
+  :extends :test-extends-1)
 (defwebcomponent test-extension-3
-  :host :test-extends-2)
+  :extends :test-extends-2)
 
 (deftest extension
-  (is (= "unique-id" (.-id (.createElement js/document "test-extension-1"))))
-  (is (= "unique-id" (.-id (.createElement js/document "test-extension-2"))))
-  (is (= "unique-id" (.-id (.createElement js/document "test-extension-3"))))
   (is (l/property-exists? (.createElement js/document "test-extension-1") :property1))
   (is (l/property-exists? (.createElement js/document "test-extension-2") :property1))
   (is (l/property-exists? (.createElement js/document "test-extension-3") :property1))
@@ -343,9 +311,6 @@
   (l/register test-extends-4)
   (l/register test-extends-5)
   (l/register test-extends-6)
-  (l/register test-extends-7)
-  (l/register test-extends-8)
-  (l/register test-extends-9)
 
   (l/register test-style-1)
   (append "test-style-1")
@@ -355,9 +320,6 @@
   (l/register test-property-2)
 
   (l/register test-method-1)
-
-  (l/register test-host-attributes)
-  (append "test-host-attributes")
 
   (l/register test-extension-1)
   (l/register test-extension-2)
