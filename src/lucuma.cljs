@@ -315,10 +315,8 @@
 
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
-  [{:keys [properties methods] :as m} prototype]
-  (let [ds (definition-chains m)
-        d (first ds)
-        on-created #(do (doseq [d ds]
+  [{:keys [properties methods] :as m} prototype ds]
+  (let [on-created #(do (doseq [d ds]
                           (initialize-instance! % d)
                           (when-let [f (:on-created d)]
                             (u/call-with-first-argument f %))))
@@ -404,7 +402,8 @@
         (doseq [[o _] (concat properties methods)]
           (validate-property-name! (or (when (keyword? prototype) (create-element prototype)) default-element) (name o)))
         (let [um (assoc m :properties (into {} (for [[k v] properties]
-                                                 [k (or (validate-property-definition! n v) v)])))]
+                                                 [k (or (validate-property-definition! n v) v)])))
+              ds (definition-chains um)]
           (swap! registry assoc k um)
-          (ce/register n (create-prototype um prototype) extends)))
+          (ce/register n (create-prototype um prototype ds) (some :extends ds))))
         true)))
