@@ -2,7 +2,7 @@
 
 [Getting Started](#getting-started) | [Usage](#usage) | [Browser support](#browser-support)
 
-A Web Components library for ClojureScript. Lucuma helps with creating reusable HTML elements ([Web Components](http://webcomponents.org/)) encapsulating document, style and logic.
+A [Web Components](http://webcomponents.org/) library for ClojureScript. Lucuma helps with creating reusable HTML elements encapsulating document, style and logic.
 
 Lucuma is available in clojars as `[lucuma "0.3.0"]`.
 
