@@ -1,7 +1,8 @@
 (ns lucuma-test
-  (:require [cemerick.cljs.test :as t :refer-macros [deftest is use-fixtures]]
+  (:require [cemerick.cljs.test :as t :refer-macros [deftest done is use-fixtures]]
             [lucuma :as l :refer-macros [defwebcomponent]]
             [lucuma.shadow-dom :as sd])
+
   (:refer-clojure :exclude [methods]))
 
 (def ^:private tests-node "tests-appends")
@@ -199,11 +200,11 @@
 (def test-detached-callback1-called (atom false))
 
 (defwebcomponent test-callback-1
-  :on-created #(reset! test-created-callback1-called true)
-  :on-attached #(reset! test-attached-callback1-called true)
-  :on-detached #(reset! test-detached-callback1-called true))
+  :on-created #(do (reset! test-created-callback1-called true) (done))
+  :on-attached #(do (reset! test-attached-callback1-called true) (done))
+  :on-detached #(do (reset! test-detached-callback1-called true) (done)))
 
-(deftest callbacks ; TODO make async
+(deftest ^:async callbacks
   (is (false? @test-created-callback1-called))
   (let [el (.createElement js/document "test-callback-1")]
     (is (true? @test-created-callback1-called))
