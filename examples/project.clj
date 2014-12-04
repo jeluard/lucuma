@@ -15,7 +15,7 @@
     {:source-paths ["src"]
      :compiler {:output-to "target/cljs/unit-test.js"
                 :optimizations :whitespace}}}}
-  :aliases {"clean-install" ["do" "clean," "cljsbuild" "clean," "install"]}
+  :aliases {"clean-compile" ["do" "clean," "cljsbuild" "once"]}
   :min-lein-version "2.5.0")
 
 
