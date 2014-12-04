@@ -1,0 +1,86 @@
+#tests-results {
+  padding-top: 20px;
+  max-height: 250px;
+  overflow: auto;
+}
+
+#tests-results-label {
+  margin-left: 10px;
+}
+
+.panel-body {
+  list-style-type: none;
+  margin-bottom: 0;
+  padding: 5px 10px 5px;
+}
+
+.panel-body > h4 {
+  display: inline;
+  padding-right: 10px;
+  margin-bottom: 5px;
+}
+
+.panel-body > li {
+  margin-left: 10px;
+}
+
+.panel-title {
+  display: inline;
+  padding-right: 10px;
+}
+
+.test-ns-pass {
+}
+
+.test-ns-pass > i {
+  color: #468847;
+}
+
+.test-ns-fail {
+}
+
+.test-ns-fail > i {
+  color: #b94a48;
+}
+
+.test-result {
+}
+
+.test-pass {
+}
+
+.test-pass > i {
+  color: #468847;
+}
+
+.test-expected-value > span {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.test-pass > .test-result {
+  display: none;
+}
+
+.test-pass > em {
+  display: none;
+}
+
+.test-actual-value > span {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.test-pass > .test-result > .test-actual-value {
+  display: none;
+}
+
+.test-fail {
+}
+
+.test-fail > i {
+  color: #b94a48;
+}
+
+.test-error {
+}
