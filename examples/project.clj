@@ -1,9 +1,9 @@
-(defproject lucuma-examples "0.3.0"
+(defproject lucuma-examples "0.5.0-SNAPSHOT"
   :profiles
   {:dev
    {:dependencies [[org.clojure/clojure "1.6.0"]
                    [org.clojure/clojurescript "0.0-2371"]
-                   [lucuma "0.3.0"]
+                   [lucuma "0.5.0-SNAPSHOT"]
                    [prismatic/dommy "0.1.3"]
                    [hipo "0.1.0"]]
     :plugins [[lein-cljsbuild "1.0.3"]
