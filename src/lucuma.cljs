@@ -36,7 +36,7 @@
 (defn get-definition
   "Returns the definition for an element type."
   [t]
-  (when t
+  (when (keyword? t)
     (t @registry)))
 
 (defn registered?
@@ -49,13 +49,6 @@
   [el]
   (when el
     (exists? (aget el lucuma-properties-holder-name))))
-
-(defn property-exists?
-  "Returns true if property exists."
-  [el k]
-  (if (lucuma-element? el)
-    (contains? (:properties (get-definition (element-name el))) k)
-    false))
 
 (defn- install-properties-holder! [p] (set-lucuma-property! p properties-holder-name #js {}))
 
@@ -72,34 +65,40 @@
              (for [k (.keys js/Object (aget el lucuma-properties-holder-name properties-holder-name))]
                [k (get-property el k)]))))
 
+(defn- prototype [m] (or (:prototype m) (:extends m)))
+
 (defn- val-or-default [os k d] (let [v (k os)] (if (not (nil? v)) v d)))
 (defn- type-not-one-of? [os st] (not-any? st [(:type os)]))
 (defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{:object})))
 (defn- property-definition-events? [os] (val-or-default os :events? true))
 
-(defn- lookup-options
+(defn- lookup-property-options
   [el k]
-  (if-let [d (get-definition (element-name el))]
-    (get-in d [:properties k])
-    (throw (ex-info (str "Could not find definition for " (element-name el)) {}))))
+  (loop [d (get-definition (element-name el))]
+    (if-let [p (get-in d [:properties k])]
+      p
+      (if-let [prototype (prototype d)]
+        (recur (get-definition prototype))
+        (throw (ex-info (str "Could not find definition for " (element-name el)) {}))))))
 
 (defn- expected-type?
   "Returns true if provided ClojureScript value matches expected type (as :number, :boolean)."
   [t v]
-  (condp = t
-    :number (= js/Number (type v))
-    :string (= js/String (type v))
-    :boolean (= js/Boolean (type v))
-    :keyword (= Keyword (type v))
-    :object (instance? js/Object v)
-    (throw (ex-info (str "Unrecognized type <" t ">") {}))))
+  (let [tv (type v)]
+    (condp = t
+      :number (= js/Number tv)
+      :string (= js/String tv)
+      :boolean (= js/Boolean tv)
+      :keyword (= Keyword tv)
+      :object (instance? js/Object v)
+      (throw (ex-info (str "Unrecognized type <" t ">") {})))))
 
 (defn set-property!
   "Sets the value of a named property."
   ([el k v] (set-property! el k v true true))
-  ([el k v consider-attributes? consider-events?] (set-property! el (lookup-options el k) k v consider-attributes? consider-events?))
+  ([el k v consider-attributes? consider-events?] (set-property! el (lookup-property-options el k) k v consider-attributes? consider-events?))
   ([el os k v consider-attributes? consider-events?]
-   (when (and (lucuma-element? el) k (property-exists? el k))
+   (when (and (lucuma-element? el) k)
      (let [et (:type os)]
         (when (and (not (nil? v)) (not (expected-type? et v)))
           (throw (ex-info (str "Expected value of type " et " but got <" v ">") {:property (name k)}))))
@@ -186,8 +185,8 @@
 
 (defn install-style!
   "Appends a new style element encapsulating redendered style."
-  [h rc m]
-  (let [el (create-style-element (:media m) (:title m))]
+  [h rc {:keys [media title]}]
+  (let [el (create-style-element media title)]
     (install-rendered-style! el rc)
     (.appendChild h el)))
 
@@ -239,8 +238,8 @@
       t
       (cond
         (registered? t)
-        (let [{:keys [prototype extends]} (get-definition t)]
-          (host-type->extends (or prototype extends)))
+        (let [m (get-definition t)]
+          (host-type->extends (prototype m)))
         :else (throw (ex-info (str "Could not infer extends for <" (name t) ">") {}))))))
 
 (defn- create-element
@@ -264,7 +263,7 @@
 
 (defn- initialize-instance!
   "Initializes a custom element instance."
-  [el f {:keys [style document properties requires-shadow-dom?]}]
+  [el {:keys [style document properties requires-shadow-dom?]}]
   ; Set default properties values
   (let [as (att/attributes el)]
     (doseq [p properties]
@@ -276,8 +275,7 @@
   (when (or style document)
     (let [h (create-content-holder el requires-shadow-dom?)]
       (when style (render-then-install! h style render-style install-style!))
-      (when document (render-then-install! h document render-document install-document!))))
-  (when f (u/call-with-first-argument f el)))
+      (when document (render-then-install! h document render-document install-document!)))))
 
 (defn- merge-properties
   [p g s]
@@ -296,19 +294,46 @@
 
 (def ^:private default-element (.createElement js/document "div")) ; div does not define any extra property / method
 
+(defn prototype-of
+  [o]
+  (cond
+    (nil? o) (.-prototype js/HTMLElement)
+    (keyword? o) (.getPrototypeOf js/Object (create-element o))
+    :else o))
+
+(defn- definition-chains
+  [m]
+  (if m
+    (cons m (definition-chains (get-definition (prototype m))))
+    ()))
+
+(defn- call-when-defined
+  [ds k el]
+  (doseq [d ds]
+    (when-let [f (k d)]
+      (u/call-with-first-argument f el))))
+
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
-  [{:keys [on-created properties methods] :as m} prototype]
-  (let [on-created #(initialize-instance! % on-created m)
+  [{:keys [properties methods] :as m} prototype]
+  (let [ds (definition-chains m)
+        d (first ds)
+        on-created #(do (doseq [d ds]
+                          (initialize-instance! % d)
+                          (when-let [f (:on-created d)]
+                            (u/call-with-first-argument f %))))
         on-attribute-changed (fn [el a _ _]
                                (let [k (keyword a)]
                                  (attribute-changed el k (k properties))))
         prototype (ce/create-prototype
-                      (merge m {:prototype prototype
+                      (merge m {:prototype (prototype-of prototype)
                                 :properties (merge-properties properties
                                                               #(clj->js (get-property %2 %1))
                                                               #(set-property! %2 %1 (js->clj %3)))
-                                :on-created on-created :on-attribute-changed on-attribute-changed}))]
+                                :on-created on-created :on-attribute-changed on-attribute-changed
+                                ; Propagate through prototype chain
+                                :on-attached #(call-when-defined ds :on-attached %)
+                                :on-detached #(call-when-defined ds :on-detached %)}))]
     (install-lucuma-properties-holder! prototype)
     (install-properties-holder! prototype)
     ; Install methods
@@ -363,13 +388,6 @@
   [m]
   (set (filter #(not (contains? all-keys %)) (keys m))))
 
-(defn prototype-of
-  [o]
-  (cond
-    (nil? o) (.-prototype js/HTMLElement)
-    (keyword? o) (.getPrototypeOf js/Object (create-element o))
-    :else o))
-
 (defn register
   "Registers a new Custom Element from its definition.
    Returns true if registration was successful, falsey value if the definition was already registered."
@@ -380,13 +398,13 @@
   (let [n (:name m)
         k (keyword n)]
     (when-not (registered? k)
-      (let [{:keys [prototype extends properties methods]} m
-            prototype (or prototype extends)]
+      (let [{:keys [extends properties methods]} m
+            prototype (prototype m)]
         ; Validate property / method names
         (doseq [[o _] (concat properties methods)]
           (validate-property-name! (or (when (keyword? prototype) (create-element prototype)) default-element) (name o)))
         (let [um (assoc m :properties (into {} (for [[k v] properties]
                                                  [k (or (validate-property-definition! n v) v)])))]
           (swap! registry assoc k um)
-          (ce/register n (create-prototype um (prototype-of prototype)) extends)))
+          (ce/register n (create-prototype um prototype) extends)))
         true)))

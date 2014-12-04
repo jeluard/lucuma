@@ -275,20 +275,27 @@
   (is (thrown? js/Error (l/register test-method-3))))
 
 (defwebcomponent test-extension-1
-  :properties {:property1 ""}
+  :on-created #(l/set-property! % :property1 "2")
+  :properties {:property1 "1"}
   :methods {:method1 (fn [] 1)})
 (defwebcomponent test-extension-2
-  :extends :test-extends-1)
+  :prototype :test-extension-1)
 (defwebcomponent test-extension-3
-  :extends :test-extends-2)
+  :prototype :test-extension-2)
 
 (deftest extension
-  (is (l/property-exists? (.createElement js/document "test-extension-1") :property1))
-  (is (l/property-exists? (.createElement js/document "test-extension-2") :property1))
-  (is (l/property-exists? (.createElement js/document "test-extension-3") :property1))
-  (is (= 1 (.method1 (.createElement js/document "test-extension-1"))))
-  (is (= 1 (.method1 (.createElement js/document "test-extension-2"))))
-  (is (= 1 (.method1 (.createElement js/document "test-extension-3")))))
+   (let [el (.createElement js/document "test-extension-1")]
+     (is (exists? (.-property1 el)))
+     (is (= "2" (l/get-property el :property1)))
+     (is (exists? (.-method1 el))))
+   (let [el (.createElement js/document "test-extension-2")]
+     (is (exists? (.-property1 el)))
+     (is (= "2" (l/get-property el :property1)))
+     (is (exists? (.-method1 el))))
+   (let [el (.createElement js/document "test-extension-3")]
+     (is (exists? (.-property1 el)))
+     (is (= "2" (l/get-property el :property1)))
+     (is (exists? (.-method1 el)))))
 
 (defn wrap-registration
   [f]
