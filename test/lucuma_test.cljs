@@ -68,12 +68,12 @@
 
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
-  :prototype :button)
+  :extends :button)
 (defwebcomponent test-prototype-3
-  :extends :test-prototype-2)
+  :prototype :test-prototype-2)
 
 (defwebcomponent test-prototype-definition-1
-  :extends :test-prototype-3)
+  :prototype :test-prototype-3)
 (defwebcomponent test-prototype-definition-2
   :prototype :test-prototype-polymer
   :extends :button)
@@ -87,7 +87,7 @@
   test-prototype-2
   :document (inc arg))
 (defwebcomponent test-prototype-definition-6
-  :extends :test-prototype-1)
+  :prototype :test-prototype-1)
 (defwebcomponent test-prototype-definition-7
   :properties {:property1 "default" :property2 "default"})
 (defwebcomponent test-prototype-definition-8
@@ -95,31 +95,31 @@
   :properties {:property2 "another-default"})
 
 (defwebcomponent test-prototype-definition-fail-1
-  :extends :test-prototype-polymer)
+  :prototype :test-prototype-polymer)
 
 (deftest webcomponent-reuse
-  (is (= :button (:prototype test-prototype-definition-3)))
+  (is (= :button (:extends test-prototype-definition-3)))
   (is (= "default" (get-in test-prototype-definition-8 [:properties :property1])))
   (is (= "another-default" (get-in test-prototype-definition-8 [:properties :property2])))
-  (is (= :button (:prototype (test-prototype-definition-5 0)))))
+  (is (= :button (:extends (test-prototype-definition-5 0)))))
 
 (deftest webcomponent-as-fn
   (is (= 2 (:document (test-prototype-definition-4 1)))))
 
 (defwebcomponent test-extends-1)
 (defwebcomponent test-extends-2
-  :extends :div)
+  :prototype :div)
 (defwebcomponent test-extends-3
-  :extends :test-extends-1)
+  :prototype :test-extends-1)
 (defwebcomponent test-extends-4
-  :extends :test-extends-2)
+  :prototype :test-extends-2)
 (defwebcomponent test-extends-5
-                 ;:extends :non-lucu-element
+                 ;TODO fix :prototype :non-lucu-element
   :extends :div)
 (defwebcomponent test-extends-6
-  :extends :test-extends-4)
+  :prototype :test-extends-4)
 (defwebcomponent test-extends-fail-1
-  :extends :non-lucu-element)
+  :prototype :non-lucu-element)
 
 (deftest host-type->extends
   (is (nil? (l/host-type->extends nil)))
@@ -204,6 +204,7 @@
   :on-attached #(do (reset! test-attached-callback1-called true) (done))
   :on-detached #(do (reset! test-detached-callback1-called true) (done)))
 
+#_
 (deftest ^:async callbacks
   (is (false? @test-created-callback1-called))
   (let [el (.createElement js/document "test-callback-1")]
