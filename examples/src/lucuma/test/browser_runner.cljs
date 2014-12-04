@@ -91,9 +91,6 @@
 
 (defn- append-test-result
   [m n c]
-  (when (= c "test-fail")
-        (.log js/console (test-class-name n) c (clj->js m)))
-
   (dommy/append! (sel-test (test-class-name n)) [:li {:class c}
                                  [:em {:class "test-message"} (:message m)]
                                  [:span {:class "test-result"}
@@ -117,7 +114,6 @@
 
 (defmethod report :summary
   [m]
-  (.log js/console "summary")
   (dommy/append! (sel1 :#tests-results) [:script "Prism.highlightAll(); $('#tests-results').tooltip({selector: \"[data-toggle=tooltip]\"});"])
   (let [r (all-reports)]
     (dommy/insert-before! [:span {:id "tests-results-label"} (str (tests r) " tests run (" (:fail r) " failures, " (:error r) " errors)")] (sel1 :#tests-results)))
