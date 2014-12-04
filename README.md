@@ -100,8 +100,6 @@ As rendering is delegated to the **render-document** multimethod custom logic ca
   (:require-macros [hipo :refer [create]]))
 
 (derive PersistentVector ::vector)
-(defmethod render-document ::vector [v] (node v))
-
 (defmethod render-document ::vector [v] (create v))
 
 (defwebcomponent my-element
@@ -134,8 +132,6 @@ As rendering is delegated to the **render-style** multimethod custom logic can b
 
 ```clojure
 (derive PersistentVector ::vector)
-(defmethod render-style ::vector [v] (node v))
-
 (defmethod render-style ::vector [v] (garden/css v))
 
 (defwebcomponent my-element
@@ -159,7 +155,7 @@ Style can be defined as map allowing to provide **title** and **media** value on
 Per instance properties can be accessed via JavaScript getter/setter and ClojureScript **get-property** / **set-property!**. When accessed via JavaScript values are properly converted in both directions. 
 A property can be defined as a map with keys **default**, **type** (can be *:number*, *:boolean*, *:string*, *:keyword* or *:object*), **events?** and **attributes?** or as a single value (which will serve as default).
 
-A property can be exported as HTML attribute if **attributes?** is set to true (default to true for *:number**, *:boolean* and *:string*). When created as an HTML element, attribute values will override defaults.
+A property can be exported as HTML attribute if **attributes?** is set to true (default to true for *:number*, *:boolean* and *:string*). When created as an HTML element, attribute values will override defaults.
 
 Changes to a property will fire DOM style events if **events?** is set to true (default to true for *:number*, *:boolean*, *:string* and *:object*).
 
@@ -215,12 +211,6 @@ The HTML element must then be declared using the following syntax:
 
 ```html
 <time is="time-ago"></time>
-```
-
-```clojure
-(defwebcomponent my-element
-  :host [:div {:type "button"}]
-  :document "content")
 ```
 
 ### Reuse
