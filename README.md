@@ -165,6 +165,14 @@ Changes to a property will fire DOM style events if **events?** is set to true (
                :property2 {:default 1 :type :number :events? true :attributes? true}})
 ```
 
+When **document** is a function it will receive as only argument a map of consolidated property values (with element attributes overriding property defaults).
+
+```clojure
+(defwebcomponent my-element
+  :document #(fn [m] (str "<div>" (:property m) "</div>")
+  :properties {:property1 "content"})
+```
+
 ### Methods
 
 Regular ClojureScript functions can directly manipulate element instances. You can also expose those functions to JavaScript users by explicitly listing those functions and assigning them a name that will be attached to the element prototype.

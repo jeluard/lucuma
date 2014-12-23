@@ -257,25 +257,31 @@
       (throw (ex-info "ShadowDOM not supported but required" {})))
     (if shadow-dom-supported
       (create-shadow-root el)
-      (let [f (.createDocumentFragment js/document)]
-        (.appendChild el f)
-        f))))
+      el)))
+
+(defn property-values
+  [ps as]
+  (into {}
+        (for [p ps]
+          (let [[k os] p
+                a (when (and (contains? as k) (property-definition-attributes? os))
+                    (att/attribute->property [(:type os) (k as)]))]
+            ; Matching attribute value overrides eventual default
+            [k (assoc os :default (or a (:default os)))]))))
 
 (defn- initialize-instance!
   "Initializes a custom element instance."
   [el {:keys [style document properties requires-shadow-dom?]}]
   ; Set default properties values
-  (let [as (att/attributes el)]
-    (doseq [p properties]
-      (let [[k os] p
-            a (when (and (contains? as k) (property-definition-attributes? os))
-                (att/attribute->property [(:type os) (k as)]))]
-        ; Matching attribute value overrides eventual default
-        (set-property! el os k (or a (:default os)) true false))))
-  (when (or style document)
-    (let [h (create-content-holder el requires-shadow-dom?)]
-      (when style (render-then-install! h style render-style install-style!))
-      (when document (render-then-install! h document render-document install-document!)))))
+  (let [ps (property-values properties (att/attributes el))]
+    (doseq [[k os] ps]
+      (set-property! el os k (:default os) true false))
+    (when (or style document)
+      (let [h (create-content-holder el requires-shadow-dom?)]
+        (when style (render-then-install! h style render-style install-style!))
+        (when document
+          (let [document (if (fn? document) (document (into {} (map (fn [[k v]] [k (:default v)]) ps))) document)]
+            (render-then-install! h document render-document install-document!)))))))
 
 (defn- merge-properties
   [p g s]

@@ -2,7 +2,6 @@
   (:require [cemerick.cljs.test :as t :refer-macros [deftest done is use-fixtures]]
             [lucuma :as l :refer-macros [defwebcomponent]]
             [lucuma.shadow-dom :as sd])
-
   (:refer-clojure :exclude [methods]))
 
 (def ^:private tests-node "tests-appends")
@@ -65,6 +64,18 @@
 
   (deftest style
     (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (.getElementById (l/shadow-root (by-id "test-style-1")) "id")))))))
+
+(defwebcomponent test-document-as-fn-1
+  :document (fn [m] (str "<div>" (:property1 m) "</div>"))
+  :properties {:property1 "test"})
+
+(defwebcomponent test-document-as-fn-2
+  :document (fn [m] (str "<div>" (:property2 m "fallback") "</div>"))
+  :properties {:property1 "test"})
+
+(deftest test-document-as-fn
+  (is (= "test" (.-textContent (.createElement js/document "test-document-as-fn-1"))))
+  (is (= "fallback" (.-textContent (.createElement js/document "test-document-as-fn-2")))))
 
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
@@ -204,7 +215,6 @@
   :on-attached #(do (reset! test-attached-callback1-called true) (done))
   :on-detached #(do (reset! test-detached-callback1-called true) (done)))
 
-#_
 (deftest ^:async callbacks
   (is (false? @test-created-callback1-called))
   (let [el (.createElement js/document "test-callback-1")]
@@ -309,6 +319,9 @@
   (append "test-sr-1")
   (append "test-sr-2")
   (append "test-sr-3")
+
+  (l/register test-document-as-fn-1)
+  (l/register test-document-as-fn-2)
 
   (l/register test-prototype-1)
   (l/register test-prototype-2)
