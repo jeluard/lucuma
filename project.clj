@@ -7,9 +7,9 @@
   :profiles
   {:dev
     {:dependencies [[org.clojure/clojure "1.6.0"]
-                    [org.clojure/clojurescript "0.0-2371"]]
+                    [org.clojure/clojurescript "0.0-2505"]]
      :plugins [[lein-cljsbuild "1.0.3"]
-               [com.cemerick/clojurescript.test "0.3.1"]]}}
+               [com.cemerick/clojurescript.test "0.3.2"]]}}
   :cljsbuild
   {:builds
    {:test
