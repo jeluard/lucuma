@@ -209,27 +209,93 @@
 (def test-created-callback1-called (atom false))
 (def test-attached-callback1-called (atom false))
 (def test-detached-callback1-called (atom false))
+(def test-changed-callback1-called (atom 0))
 
 (defwebcomponent test-callback-1
-  :on-created #(do (reset! test-created-callback1-called true) (done))
-  :on-attached #(do (reset! test-attached-callback1-called true) (done))
-  :on-detached #(do (reset! test-detached-callback1-called true) (done)))
+  :on-created #(reset! test-created-callback1-called true)
+  :on-attached #(reset! test-attached-callback1-called true)
+  :on-detached #(reset! test-detached-callback1-called true)
+  :on-changed #(swap! test-changed-callback1-called inc)
+  :properties {:property1 "default1" :property2 "default2"})
 
-(deftest ^:async callbacks
-  (is (false? @test-created-callback1-called))
+(deftest ^:async callback-append
+  (reset! test-created-callback1-called false)
+  (reset! test-attached-callback1-called false)
+  (reset! test-detached-callback1-called false)
+  (reset! test-changed-callback1-called 0)
   (let [el (.createElement js/document "test-callback-1")]
-    (is (true? @test-created-callback1-called))
-    (is (false? @test-attached-callback1-called))
+    (is (= true @test-created-callback1-called))
+    (is (= false @test-attached-callback1-called))
     (.appendChild (.getElementById js/document tests-node) el)
-    (is (true? @test-attached-callback1-called))
-    (is (false? @test-detached-callback1-called))
-    (reset! test-attached-callback1-called false)
+    (js/setTimeout #(do
+                     (is (= true @test-attached-callback1-called))
+                     (is (= false @test-detached-callback1-called))
+                     (is (= 0 @test-changed-callback1-called))
+                     (done)) 100)))
+
+(deftest ^:async callback-set-attribute
+  (reset! test-created-callback1-called false)
+  (reset! test-attached-callback1-called false)
+  (reset! test-detached-callback1-called false)
+  (reset! test-changed-callback1-called 0)
+  (let [el (.createElement js/document "test-callback-1")]
+    (is (= true @test-created-callback1-called))
+    (is (= false @test-attached-callback1-called))
+    (.appendChild (.getElementById js/document tests-node) el)
+    (.setAttribute el "property1" "value1")
+    (js/setTimeout #(do
+                     (is (= true @test-attached-callback1-called))
+                     (is (= false @test-detached-callback1-called))
+                     (is (= 1 @test-changed-callback1-called))
+                     (done)) 100)))
+
+(deftest ^:async callback-set-property
+  (reset! test-created-callback1-called false)
+  (reset! test-attached-callback1-called false)
+  (reset! test-detached-callback1-called false)
+  (reset! test-changed-callback1-called 0)
+  (let [el (.createElement js/document "test-callback-1")]
+    (is (= true @test-created-callback1-called))
+    (is (= false @test-attached-callback1-called))
+    (.appendChild (.getElementById js/document tests-node) el)
+    (l/set-property! el :property2 "value2")
+    (js/setTimeout #(do
+                     (is (= true @test-attached-callback1-called))
+                     (is (= false @test-detached-callback1-called))
+                     (is (= 1 @test-changed-callback1-called))
+                     (done)) 100)))
+
+(deftest ^:async callback-set-property
+  (reset! test-created-callback1-called false)
+  (reset! test-attached-callback1-called false)
+  (reset! test-detached-callback1-called false)
+  (reset! test-changed-callback1-called 0)
+  (let [el (.createElement js/document "test-callback-1")]
+    (is (= true @test-created-callback1-called))
+    (is (= false @test-attached-callback1-called))
+    (.appendChild (.getElementById js/document tests-node) el)
+    (l/set-properties! el {:property1 "value1" :property2 "value2"})
+    (js/setTimeout #(do
+                     (is (= true @test-attached-callback1-called))
+                     (is (= false @test-detached-callback1-called))
+                     (is (= 1 @test-changed-callback1-called))
+                     (done)) 100)))
+
+(deftest ^:async callback-remove-child
+  (reset! test-created-callback1-called false)
+  (reset! test-attached-callback1-called false)
+  (reset! test-detached-callback1-called false)
+  (reset! test-changed-callback1-called 0)
+  (let [el (.createElement js/document "test-callback-1")]
+    (is (= true @test-created-callback1-called))
+    (is (= false @test-attached-callback1-called))
+    (.appendChild (.getElementById js/document tests-node) el)
     (.removeChild (.getElementById js/document tests-node) el)
-    (is (true? @test-detached-callback1-called))
-    (reset! test-detached-callback1-called false)
-    (.appendChild (.getElementById js/document tests-node) el)
-    (is (true? @test-attached-callback1-called))
-    (is (false? @test-detached-callback1-called))))
+    (js/setTimeout #(do
+                     (is (= true @test-attached-callback1-called))
+                     (is (= true @test-detached-callback1-called))
+                     (is (= 0 @test-changed-callback1-called))
+                     (done)) 100)))
 
 (defwebcomponent test-property-1
   :properties {:property nil})
@@ -263,7 +329,8 @@
     (is (= 1 (l/get-property el :property2)))
     (l/set-property! el :property2 2)
     (is (= 2 (l/get-property el :property2)))
-    (is (thrown? js/Error (l/set-property! el :property2 "")))))
+    (is (thrown? js/Error (l/set-property! el :property2 "")))
+    (is (thrown? js/Error (l/set-property! el :property-inexistant "")))))
 
 (defwebcomponent test-method-1
   :methods {:method1 (fn [] 1)
@@ -349,6 +416,7 @@
 
   (f)
 
-  (delete-tests-node))
+  ;(delete-tests-node)
+  )
 
 (use-fixtures :once wrap-registration)

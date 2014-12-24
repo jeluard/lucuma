@@ -54,6 +54,7 @@ You can hook functions to the element lifecycle using following keys:
 * **on-created** called when an instance of the element is created (e.g. via document.createElement)
 * **on-attached** called after an instance of the element is attached to the DOM
 * **on-detached** called after an instance of the element is detached from the DOM
+* **on-changed** called each time a property/attribute is changed (multi changes via **set-properties!** will trigger a single **on-changed**)
 
 All functions receive as unique argument the element instance.
 
@@ -62,7 +63,8 @@ All functions receive as unique argument the element instance.
   :document "Hello!"
   :on-created #(println % "created")
   :on-attached #(println % "attached")
-  :on-detached #(println % "detached"))
+  :on-detached #(println % "detached")
+  :on-changed #(println %1 " got some changes" %2))
 ```
 
 ### Document

@@ -72,15 +72,6 @@
 (defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{:object})))
 (defn- property-definition-events? [os] (val-or-default os :events? true))
 
-(defn- lookup-property-options
-  [el k]
-  (loop [d (get-definition (element-name el))]
-    (if-let [p (get-in d [:properties k])]
-      p
-      (if-let [prototype (prototype d)]
-        (recur (get-definition prototype))
-        (throw (ex-info (str "Could not find definition for " (element-name el)) {}))))))
-
 (defn- expected-type?
   "Returns true if provided ClojureScript value matches expected type (as :number, :boolean)."
   [t v]
@@ -91,29 +82,48 @@
       :boolean (= js/Boolean tv)
       :keyword (= Keyword tv)
       :object (instance? js/Object v)
-      (throw (ex-info (str "Unrecognized type <" t ">") {})))))
+      false)))
 
-(defn set-property!
-  "Sets the value of a named property."
-  ([el k v] (set-property! el k v true true))
-  ([el k v consider-attributes? consider-events?] (set-property! el (lookup-property-options el k) k v consider-attributes? consider-events?))
-  ([el os k v consider-attributes? consider-events?]
-   (when (and (lucuma-element? el) k)
-     (let [et (:type os)]
-        (when (and (not (nil? v)) (not (expected-type? et v)))
-          (throw (ex-info (str "Expected value of type " et " but got <" v ">") {:property (name k)}))))
-     (aset el lucuma-properties-holder-name properties-holder-name (name k) v)
-     (when (or consider-attributes? consider-events?)
-       (when (and consider-attributes? (property-definition-attributes? os))
-         (att/set! el k v))
-       (when (and consider-events? (property-definition-events? os))
-         (e/fire el k {:old-value (get-property el k) :new-value v}))))))
+(defn- call-callback-when-defined
+  [ds k el & args]
+  (doseq [d ds]
+    (when-let [f (k d)]
+      (u/call-with-first-argument f el args))))
+
+(defn- definition-chains
+  [m]
+  (if m
+    (cons m (definition-chains (get-definition (prototype m))))
+    (list)))
+
+(defn- aggregated-properties
+  [el]
+  (apply merge (map :properties (definition-chains (get-definition (element-name el))))))
 
 (defn set-properties!
   "Sets all properties."
-  [el m]
-  (doseq [[k v] m]
-    (set-property! el k v)))
+  ([el m] (set-properties! el m (aggregated-properties el) true false))
+  ([el m ps consider-attributes? initialization?]
+    (when (and (lucuma-element? el))
+      (doseq [[k v] m
+              :let [os (k ps)]]
+        (let [et (:type os)]
+          (when (and (not (nil? v)) (not (expected-type? et v)))
+            (throw (ex-info (str "Expected value of type " et " but got <" v ">") {:property (name k)}))))
+        (when (and consider-attributes? (property-definition-attributes? os))
+          (att/set! el k v))
+        (when (and initialization? (property-definition-events? os))
+          (e/fire el k {:old-value (get-property el k) :new-value v}))
+        (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
+      (when-not initialization?
+        (let [ps (for [[k v] m] {:property k :old (get-property el k) :new v})]
+          (call-callback-when-defined (definition-chains (get-definition (element-name el))) :on-changed el ps))))))
+
+(defn set-property!
+  "Sets the value of a named property."
+  ([el k v] (set-property! el (aggregated-properties el) k v true false))
+  ([el os k v consider-attributes? initialization?]
+    (set-properties! el {k v} os consider-attributes? initialization?)))
 
 ;
 ; document / style rendering
@@ -267,20 +277,19 @@
                 a (when (and (contains? as k) (property-definition-attributes? os))
                     (att/attribute->property [(:type os) (k as)]))]
             ; Matching attribute value overrides eventual default
-            [k (assoc os :default (or a (:default os)))]))))
+            [k (or a (:default os))]))))
 
 (defn- initialize-instance!
   "Initializes a custom element instance."
   [el {:keys [style document properties requires-shadow-dom?]}]
   ; Set default properties values
   (let [ps (property-values properties (att/attributes el))]
-    (doseq [[k os] ps]
-      (set-property! el os k (:default os) true false))
+    (set-properties! el ps (aggregated-properties el) true true)
     (when (or style document)
       (let [h (create-content-holder el requires-shadow-dom?)]
         (when style (render-then-install! h style render-style install-style!))
         (when document
-          (let [document (if (fn? document) (document (into {} (map (fn [[k v]] [k (:default v)]) ps))) document)]
+          (let [document (if (fn? document) (document ps) document)]
             (render-then-install! h document render-document install-document!)))))))
 
 (defn- merge-properties
@@ -290,13 +299,12 @@
 
 (defn- attribute-changed
   "Updates property based on associated attribute change."
-  [el a os]
-  (when os ; Attribute changed is a property defined by our component
-    (let [v (att/get el a (:type os))]
-      (when (not= v (get-property el a)) ; Value is different from current value: this is not a change due to a property change
-        (if (property-definition-attributes? os) ; Property is managed by lucuma
-          (set-property! el os a v false true)
-          (u/warn (str "Changing attribute for " (name a) " but its attributes? is false.")))))))
+  [el ds k ov nv properties]
+  (when-let [os (k properties)] ; Attribute changed is a property defined by our component
+    (when (not= (att/attribute->property [(:type os) nv]) (get-property el k)) ; Value is different from current value: this is not a change due to a property change
+      (if (property-definition-attributes? os) ; Property is managed by lucuma
+        (set-property! el {k os} k nv false false)
+        (u/warn (str "Changing attribute for " (name k) " but its attributes? is false."))))))
 
 (def ^:private default-element (.createElement js/document "div")) ; div does not define any extra property / method
 
@@ -307,18 +315,6 @@
     (keyword? o) (.getPrototypeOf js/Object (create-element o))
     :else o))
 
-(defn- definition-chains
-  [m]
-  (if m
-    (cons m (definition-chains (get-definition (prototype m))))
-    ()))
-
-(defn- call-when-defined
-  [ds k el]
-  (doseq [d ds]
-    (when-let [f (k d)]
-      (u/call-with-first-argument f el))))
-
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
   [{:keys [properties methods] :as m} prototype ds]
@@ -326,9 +322,9 @@
                           (initialize-instance! % d)
                           (when-let [f (:on-created d)]
                             (u/call-with-first-argument f %))))
-        on-attribute-changed (fn [el a _ _]
+        on-attribute-changed (fn [el a ov nv ns]
                                (let [k (keyword a)]
-                                 (attribute-changed el k (k properties))))
+                                 (attribute-changed el ds k ov nv properties)))
         prototype (ce/create-prototype
                       (merge m {:prototype (prototype-of prototype)
                                 :properties (merge-properties properties
@@ -336,8 +332,8 @@
                                                               #(set-property! %2 %1 (js->clj %3)))
                                 :on-created on-created :on-attribute-changed on-attribute-changed
                                 ; Propagate through prototype chain
-                                :on-attached #(call-when-defined ds :on-attached %)
-                                :on-detached #(call-when-defined ds :on-detached %)}))]
+                                :on-attached #(call-callback-when-defined ds :on-attached %)
+                                :on-detached #(call-callback-when-defined ds :on-detached %)}))]
     (install-lucuma-properties-holder! prototype)
     (install-properties-holder! prototype)
     ; Install methods
@@ -385,7 +381,7 @@
 
 (def all-keys
   #{:name :ns :prototype :extends :document :style :properties :methods
-    :on-created :on-attached :on-detached :requires-shadow-dom?})
+    :on-created :on-attached :on-detached :on-changed :requires-shadow-dom?})
 
 (defn ignored-keys
   "Returns a set of ignored keys."
@@ -402,7 +398,7 @@
   (let [n (:name m)
         k (keyword n)]
     (when-not (registered? k)
-      (let [{:keys [extends properties methods]} m
+      (let [{:keys [properties methods]} m
             prototype (prototype m)]
         ; Validate property / method names
         (doseq [[o _] (concat properties methods)]
