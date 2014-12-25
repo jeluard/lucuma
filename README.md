@@ -99,10 +99,11 @@ As rendering is delegated to the **render-document** multimethod custom logic ca
 
 ```clojure
 (ns ...
+  (:require [lucuma :as l])
   (:require-macros [hipo :refer [create]]))
 
 (derive PersistentVector ::vector)
-(defmethod render-document ::vector [v] (create v))
+(defmethod l/render-document ::vector [v] (create v))
 
 (defwebcomponent my-element
   :document [:div "content"])
