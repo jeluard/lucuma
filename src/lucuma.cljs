@@ -35,14 +35,14 @@
 
 (defn get-definition
   "Returns the definition for an element type."
-  [t]
-  (when (keyword? t)
-    (t @registry)))
+  [s]
+  (when s
+    (get @registry (name s))))
 
 (defn registered?
   "Returns true if type is already registered."
-  [t]
-  (contains? @registry t))
+  [s]
+  (contains? @registry (name s)))
 
 (defn lucuma-element?
   "Returns true if element is a Lucuma element."
@@ -247,11 +247,9 @@
   (when t
     (if (u/valid-standard-element-name? (name t))
       t
-      (cond
-        (registered? t)
-        (let [m (get-definition t)]
-          (host-type->extends (prototype m)))
-        :else (throw (ex-info (str "Could not infer extends for <" (name t) ">") {}))))))
+      (if-let [m (get-definition t)]
+        (host-type->extends (prototype m))
+        (throw (ex-info (str "Could not infer extends for <" (name t) ">") {}))))))
 
 (defn- create-element
   [extends]
@@ -381,13 +379,10 @@
 (defn register
   "Registers a new Custom Element from its definition.
    Returns true if registration was successful, falsey value if the definition was already registered."
-  [m]
-  ; Validate the definition
-  (assert (map? m) (ex-info "Definition must be a map" {}))
-  (assert (not (seq (ignored-keys m))) (str "Definition contains unknown keys " (ignored-keys m)))
-  (let [n (:name m)
-        k (keyword n)]
-    (when-not (registered? k)
+  ([m] (register (:name m) m))
+  ([n m]
+   {:pre [(map? m) (not (seq (ignored-keys m)))]}
+    (when-not (registered? n)
       (let [{:keys [properties methods]} m
             prototype (prototype m)]
         ; Validate property / method names
@@ -396,6 +391,6 @@
         (let [um (assoc m :properties (into {} (for [[k v] properties]
                                                  [k (or (validate-property-definition! n v) v)])))
               ds (definition-chains um)]
-          (swap! registry assoc k um)
+          (swap! registry assoc n um)
           (ce/register n (create-prototype um prototype ds) (some :extends ds))))
-        true)))
+      true)))

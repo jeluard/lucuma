@@ -1,3 +1,8 @@
+# [0.5.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.5.0)
+
+* **[+]** Document can be defined as a function that takes a map of all property values as argument
+* **[+]** Introduced **on-changed** callback allowing to be notified of all property/attribute changes
+
 # [0.3.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.3.0)
 
 * **[+]** ShadowDOM usage is optional. It can be required at design time via **require-shadow-dom?**
