@@ -72,17 +72,17 @@
 (defn- property-definition-attributes? [os] (val-or-default os :attributes? (type-not-one-of? os #{:object})))
 (defn- property-definition-events? [os] (val-or-default os :events? true))
 
-(defn- expected-type?
-  "Returns true if provided ClojureScript value matches expected type (as :number, :boolean)."
-  [t v]
-  (let [tv (type v)]
-    (condp = t
-      :number (= js/Number tv)
-      :string (= js/String tv)
-      :boolean (= js/Boolean tv)
-      :keyword (= Keyword tv)
-      :object (instance? js/Object v)
-      false)))
+(defn- infer-type-from-value
+  "Returns inferred type from ClojureScript value."
+  [o]
+  (if-not (nil? o)
+    (cond
+      (number? o) :number
+      (string? o) :string
+      (or (true? o) (false? o)) :boolean
+      (keyword? o) :keyword
+      :else :object)
+    :object))
 
 (defn- call-callback-when-defined
   [ds k el & args]
@@ -108,8 +108,8 @@
       (doseq [[k v] m
               :let [os (k ps)]]
         (let [et (:type os)]
-          (when (and (not (nil? v)) (not (expected-type? et v)))
-            (throw (ex-info (str "Expected value of type " et " but got <" v ">") {:property (name k)}))))
+          (when (and (not (nil? v)) (not (= et (infer-type-from-value v))))
+            (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k)}))))
         (when (and consider-attributes? (property-definition-attributes? os))
           (att/set! el k v))
         (when (and initialization? (property-definition-events? os))
@@ -153,6 +153,7 @@
   type)
 
 (defmethod render-document js/String [s] s)
+(defmethod render-document :default [o] (throw (js/Error. (str "No multimethod for " (type o)))))
 
 (derive js/Element ::node)
 (derive js/DocumentFragment ::node)
@@ -301,10 +302,11 @@
   "Updates property based on associated attribute change."
   [el ds k ov nv properties]
   (when-let [os (k properties)] ; Attribute changed is a property defined by our component
-    (when (not= (att/attribute->property [(:type os) nv]) (get-property el k)) ; Value is different from current value: this is not a change due to a property change
-      (if (property-definition-attributes? os) ; Property is managed by lucuma
-        (set-property! el {k os} k nv false false)
-        (u/warn (str "Changing attribute for " (name k) " but its attributes? is false."))))))
+    (let [v (att/attribute->property [(:type os) nv])]
+      (when (not= v (get-property el k)) ; Value is different from current value: this is not a change due to a property change
+        (if (property-definition-attributes? os) ; Property is managed by lucuma
+          (set-property! el properties k v false false)
+          (u/warn (str "Changing attribute for " (name k) " but its attributes? is false.")))))))
 
 (def ^:private default-element (.createElement js/document "div")) ; div does not define any extra property / method
 
@@ -348,18 +350,6 @@
     (throw (ex-info (str "Invalid property name <" n ">") {:property n})))
   (when (exists? (aget el n))
     (throw (ex-info (str "Property <" n "> is already defined") {:property n}))))
-
-(defn- infer-type-from-value
-  "Returns inferred type from ClojureScript value."
-  [o]
-  (if-not (nil? o)
-    (cond
-     (number? o) :number
-     (string? o) :string
-     (or (true? o) (false? o)) :boolean
-     (keyword? o) :keyword
-     :else :object)
-    :object))
 
 (defn validate-property-definition!
   "Ensures a property definition is sound. Throws a js/Error if not.
