@@ -62,7 +62,8 @@
   "Returns a map of all properties associated to their values."
   [el]
   (into {} (when (lucuma-element? el)
-             (for [k (.keys js/Object (aget el lucuma-properties-holder-name properties-holder-name))]
+             (for [s (.keys js/Object (aget el lucuma-properties-holder-name properties-holder-name))
+                   :let [k (keyword s)]]
                [k (get-property el k)]))))
 
 (defn- prototype [m] (or (:prototype m) (:extends m)))
@@ -105,19 +106,20 @@
   ([el m] (set-properties! el m (aggregated-properties el) true false))
   ([el m ps consider-attributes? initialization?]
     (when (and (lucuma-element? el))
-      (doseq [[k v] m
-              :let [os (k ps)]]
-        (let [et (:type os)]
-          (when (and (not (nil? v)) (not (= et (infer-type-from-value v))))
-            (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k)}))))
-        (when (and consider-attributes? (property-definition-attributes? os))
-          (att/set! el k v))
-        (when (and initialization? (property-definition-events? os))
-          (e/fire el k {:old-value (get-property el k) :new-value v}))
-        (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
-      (when-not initialization?
-        (let [ps (for [[k v] m] {:property k :old (get-property el k) :new v})]
-          (call-callback-when-defined (definition-chains (get-definition (element-name el))) :on-changed el ps))))))
+      (let [pv (get-properties el)]
+        (doseq [[k v] m
+                :let [os (k ps)]]
+          (let [et (:type os)]
+            (when (and (not (nil? v)) (not (= et (infer-type-from-value v))))
+              (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k)}))))
+          (when (and consider-attributes? (property-definition-attributes? os))
+            (att/set! el k v))
+          (when (and initialization? (property-definition-events? os))
+            (e/fire el k {:old-value (k pv) :new-value v}))
+          (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
+        (when-not initialization?
+          (let [ps (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
+            (call-callback-when-defined (definition-chains (get-definition (element-name el))) :on-changed el ps)))))))
 
 (defn set-property!
   "Sets the value of a named property."
@@ -298,7 +300,7 @@
 
 (defn- attribute-changed
   "Updates property based on associated attribute change."
-  [el ds k ov nv properties]
+  [el k ov nv properties]
   (when-let [os (k properties)] ; Attribute changed is a property defined by our component
     (let [v (att/attribute->property [(:type os) nv])]
       (when (not= v (get-property el k)) ; Value is different from current value: this is not a change due to a property change
@@ -324,7 +326,7 @@
                             (u/call-with-first-argument f %))))
         on-attribute-changed (fn [el a ov nv ns]
                                (let [k (keyword a)]
-                                 (attribute-changed el ds k ov nv properties)))
+                                 (attribute-changed el k ov nv properties)))
         prototype (ce/create-prototype
                       (merge m {:prototype (prototype-of prototype)
                                 :properties (merge-properties properties
