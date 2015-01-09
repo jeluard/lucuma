@@ -90,6 +90,7 @@ Multiple document can be defined by providing a list as value. Each list value g
 
 If the current browser supports ShadowDOM document and style will be encapsulated in a lucuma specific ShadowRoot.
 Usage of a ShadowDOM can be required when defining an element using **requires-shadow-dom?**. In this case the element registration will fail if the browser does not support ShadowDOM.
+By default ShadowDOM is not used and the content is directly appended to the element.
 
 ShadowDOM provides a number of extra capacities and prevent name /id clashes.
 

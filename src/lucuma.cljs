@@ -261,14 +261,19 @@
       (.createElement js/document (name e) n)
       (.createElement js/document n))))
 
-(defn create-content-holder
+(defn create-content-root
   [el requires-shadow-dom?]
-  (let [shadow-dom-supported (sd/supported?)]
-    (when (and requires-shadow-dom? (not shadow-dom-supported))
-      (throw (ex-info "ShadowDOM not supported but required" {})))
-    (if shadow-dom-supported
-      (create-shadow-root el)
-      el)))
+  (when (and requires-shadow-dom? (not (sd/supported?)))
+    (throw (ex-info "ShadowDOM not supported but required" {})))
+  (if requires-shadow-dom?
+    (create-shadow-root el)
+    el))
+
+(defn content-root
+  [el]
+  (if-let [sr (shadow-root el)]
+    sr
+    el))
 
 (defn property-values
   [ps as]
@@ -287,7 +292,7 @@
   (let [ps (property-values properties (att/attributes el))]
     (set-properties! el ps (aggregated-properties el) true true)
     (when (or style document)
-      (let [h (create-content-holder el requires-shadow-dom?)]
+      (let [h (create-content-root el requires-shadow-dom?)]
         (when style (render-then-install! h style render-style install-style!))
         (when document
           (let [document (if (fn? document) (document ps) document)]

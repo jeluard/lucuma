@@ -2,10 +2,11 @@
 
 * **[+]** Document can be defined as a function that takes a map of all property values as argument
 * **[+]** Introduced **on-changed** callback allowing to be notified of all property/attribute changes
+* **[~]** ShadowDOM is not created by default even when supported by browser.
 
 # [0.3.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.3.0)
 
-* **[+]** ShadowDOM usage is optional. It can be required at design time via **require-shadow-dom?**
+* **[+]** ShadowDOM usage is optional. It can be required at design time via **requires-shadow-dom?**
 * **[~]** Replaced **host** with **prototype** and **extends** for more flexibility
 * And a bunch of [bugs fixed](https://github.com/jeluard/lucuma/issues?q=label%3Abug+milestone%3A0.3.0+is%3Aclosed).
 
