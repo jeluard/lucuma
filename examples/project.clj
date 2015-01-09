@@ -2,12 +2,12 @@
   :profiles
   {:dev
    {:dependencies [[org.clojure/clojure "1.6.0"]
-                   [org.clojure/clojurescript "0.0-2496"]
+                   [org.clojure/clojurescript "0.0-2665"]
                    [lucuma "0.5.0-SNAPSHOT"]
                    [prismatic/dommy "0.1.3"]
                    [hipo "0.1.0"]]
-    :plugins [[lein-cljsbuild "1.0.3"]
-              [com.cemerick/clojurescript.test "0.3.2"]]}}
+    :plugins [[lein-cljsbuild "1.0.4"]
+              [com.cemerick/clojurescript.test "0.3.3"]]}}
   :cljsbuild
   {:builds
    {:test
