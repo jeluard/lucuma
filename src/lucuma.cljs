@@ -116,6 +116,7 @@
             (att/set! el k v))
           (when (and initialization? (property-definition-events? os))
             (e/fire el k {:old-value (k pv) :new-value v}))
+          (.log js/console el (name k) v (k pv))
           (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
         (when-not initialization?
           (let [ps (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
@@ -288,6 +289,8 @@
   "Initializes a custom element instance."
   [el {:keys [style document properties requires-shadow-dom?]}]
   ; Set default properties values
+  (install-lucuma-properties-holder! el)
+  (install-properties-holder! el)
   (let [ps (property-values properties (att/attributes el))]
     (set-properties! el ps (aggregated-properties el) true true)
     (when (or style document)
@@ -340,8 +343,6 @@
                                 ; Propagate through prototype chain
                                 :on-attached #(call-callback-when-defined ds :on-attached %)
                                 :on-detached #(call-callback-when-defined ds :on-detached %)}))]
-    (install-lucuma-properties-holder! prototype)
-    (install-properties-holder! prototype)
     ; Install methods
     (doseq [[k v] methods]
       (aset prototype (name k) (u/wrap-with-callback-this-value (u/wrap-to-javascript v))))
