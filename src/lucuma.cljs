@@ -220,11 +220,10 @@
   "Returns the host of an element inside a custom element, walking parents as needed; otherwise returns null."
   [el]
   (when el
-    (loop [el el
-           pel nil]
-      (if (exists? (.-host el))
-        (.-host el)
-        (when-let [pel (.-parentNode el)] (recur pel el))))))
+    (loop [el el]
+      (if (or (lucuma-element? el) (exists? (.-host el)))
+        (or (.-host el) el)
+        (when-let [pel (.-parentNode el)] (recur pel))))))
 
 (defn- create-shadow-root
   "Creates and appends a ShadowRoot."
