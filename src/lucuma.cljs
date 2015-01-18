@@ -271,9 +271,7 @@
 
 (defn content-root
   [el]
-  (if-let [sr (shadow-root el)]
-    sr
-    el))
+  (or (shadow-root el) el))
 
 (defn property-values
   [ps as]
