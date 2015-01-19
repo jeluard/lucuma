@@ -5,11 +5,13 @@
 
 (when (sd/supported?)
   (defwebcomponent test-shadow-dom-1
-    :document "<div></div>")
+    :document "<div></div>"
+    :requires-shadow-dom? true)
 
   (defwebcomponent test-shadow-dom-2
     :prototype :test-shadow-dom-1
-    :document "<span></span>")
+    :document "<span></span>"
+    :requires-shadow-dom? true)
 
   (deftest shadow-roots
     (is (empty? (sd/shadow-roots nil)))
