@@ -253,7 +253,6 @@
                      (is (= 1 @test-changed-callback1-called))
                      (done)) 100)))
 
-#_
 (deftest ^:async callback-set-property
   (reset! test-created-callback1-called false)
   (reset! test-attached-callback1-called false)
