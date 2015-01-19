@@ -86,14 +86,8 @@
     (dommy/append! (sel-current-ns) uel)
     uel))
 
-#_
-(defmethod report :begin-test-var [m]
-  )
-
 (defmethod report :end-test-var
   [m]
-  (.log js/console (str (:test-name m)))
-  (.log js/console (clj->js m))
   (let [n (str (:test-name m))
         ns @current-ns
         t (sel-test (test-class-name n))]
@@ -116,8 +110,7 @@
                                       [:code {:class "language-clojure"} (str (:expected m))]]
                                      [:span {:class "test-actual-value"}
                                       [:span "but got:"]
-                                      [:code {:class "language-clojure"} (str (:actual m))]]]])))
-  )
+                                      [:code {:class "language-clojure"} (str (:actual m))]]]]))))
 
 (defn- report-var
   [m t c]
