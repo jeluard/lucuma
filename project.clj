@@ -15,7 +15,7 @@
    {:test
     {:source-paths ["src" "test"]
      :compiler {:output-to "target/cljs/unit-test.js"
-                :optimizations :simple}}}
+                :optimizations :whitespace}}}
    :test-commands {"slimerjs" ["slimerjs" :runner "dev-resources/document-register-element-0.1.2.js" "target/cljs/unit-test.js"]}}
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "install"]}

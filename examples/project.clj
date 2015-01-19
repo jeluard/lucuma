@@ -4,15 +4,15 @@
    {:dependencies [[org.clojure/clojure "1.6.0"]
                    [org.clojure/clojurescript "0.0-2665"]
                    [lucuma "0.5.0-SNAPSHOT"]
-                   [prismatic/dommy "0.1.3"]
-                   [hipo "0.1.0"]]
+                   [prismatic/dommy "1.0.0"]
+                   [hipo "0.5.0-SNAPSHOT"]]
     :plugins [[lein-cljsbuild "1.0.4"]
               [com.cemerick/clojurescript.test "0.3.3"]]}}
   :cljsbuild
   {:builds
    {:test
     {:source-paths ["src"]
-     :compiler {:output-to "target/cljs/unit-test.js"
+     :compiler {:output-to "target/cljs/examples.js"
                 :optimizations :whitespace}}}}
   :aliases {"clean-compile" ["do" "clean," "cljsbuild" "once"]}
   :min-lein-version "2.5.0")
