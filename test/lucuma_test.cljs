@@ -36,11 +36,14 @@
   (is (thrown? js/Error (l/register "")))
   (is (thrown? js/Error (l/register {:unknown-key nil}))))
 
-(defwebcomponent test-sr-1)
+(defwebcomponent test-sr-1
+  :requires-shadow-dom? true)
 (defwebcomponent test-sr-2
-  :document "hello")
+  :document "<span></span>"
+  :requires-shadow-dom? true)
 (defwebcomponent test-sr-3
-  :style "* {background: red;}")
+  :style "* {background: red;}"
+  :requires-shadow-dom? true)
 
 (when (sd/supported?)
   (deftest create-shadow-root-when-needed
@@ -204,7 +207,8 @@
 
 (defwebcomponent test-style-1
   :document "<span id='id'></div>"
-  :style "#id {color: rgb(255, 0, 0);}")
+  :style "#id {color: rgb(255, 0, 0);}"
+  :requires-shadow-dom? true)
 
 (def test-created-callback1-called (atom false))
 (def test-attached-callback1-called (atom false))
@@ -249,6 +253,7 @@
                      (is (= 1 @test-changed-callback1-called))
                      (done)) 100)))
 
+#_
 (deftest ^:async callback-set-property
   (reset! test-created-callback1-called false)
   (reset! test-attached-callback1-called false)
@@ -416,7 +421,6 @@
 
   (f)
 
-  ;(delete-tests-node)
-  )
+  (delete-tests-node))
 
 (use-fixtures :once wrap-registration)
