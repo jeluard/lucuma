@@ -69,7 +69,7 @@
     (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (.getElementById (l/shadow-root (by-id "test-style-1")) "id")))))))
 
 (defwebcomponent test-document-as-fn-1
-  :document (fn [m] (str "<div>" (:property1 m) "</div>"))
+  :document (fn [m] (str "<div>" @(:property1 m) "</div>"))
   :properties {:property1 "test"})
 
 (defwebcomponent test-document-as-fn-2

@@ -116,7 +116,6 @@
             (att/set! el k v))
           (when (and initialization? (property-definition-events? os))
             (e/fire el k {:old-value (k pv) :new-value v}))
-          (.log js/console el (name k) v (k pv))
           (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
         (when-not initialization?
           (let [ps (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
@@ -283,6 +282,20 @@
             ; Matching attribute value overrides eventual default
             [k (or a (:default os))]))))
 
+(deftype PAtom [el k]
+  IDeref
+  (-deref [this]
+    (get-property el k))
+
+  IReset
+  (-reset! [this new-value]
+    (set-property! el k new-value)))
+
+(defn properties->patoms
+  [el ps]
+  (let [ks (keys ps)]
+    (zipmap ks (map #(PAtom. el %) ks))))
+
 (defn- initialize-instance!
   "Initializes a custom element instance."
   [el {:keys [style document properties requires-shadow-dom?]}]
@@ -295,7 +308,7 @@
       (let [h (create-content-root el requires-shadow-dom?)]
         (when style (render-then-install! h style render-style install-style!))
         (when document
-          (let [document (if (fn? document) (document ps) document)]
+          (let [document (if (fn? document) (document (properties->patoms el ps)) document)]
             (render-then-install! h document render-document install-document!)))))))
 
 (defn- merge-properties
