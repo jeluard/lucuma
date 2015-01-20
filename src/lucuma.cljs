@@ -411,4 +411,9 @@
               ds (definition-chains um)]
           (swap! registry assoc n um)
           (ce/register n (create-prototype um prototype ds) (some :extends ds))))
-      true)))
+      true))
+  ([m1 m2 & ms]
+    (register m1)
+    (register m2)
+    (doseq [m ms]
+      (register m))))
