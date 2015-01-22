@@ -289,7 +289,17 @@
 
   IReset
   (-reset! [this new-value]
-    (set-property! el k new-value)))
+    (set-property! el k new-value))
+
+  ISwap
+  (-swap! [this f]
+    (-reset! this (f (get-property el k))))
+  (-swap! [this f x]
+    (-reset! this (f (get-property el k) x)))
+  (-swap! [this f x y]
+    (-reset! this (f (get-property el k) x y)))
+  (-swap! [this f x y more]
+    (-reset! this (apply f (get-property el k) x y more))))
 
 (defn properties->patoms
   [el ps]
