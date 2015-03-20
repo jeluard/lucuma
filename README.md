@@ -11,6 +11,9 @@ Lucuma is available in clojars as `[lucuma "0.3.0"]`.
 Define your custom element
 
 ```clojure
+(ns your.ns
+  (:require [lucuma :as l :refer-macros [defwebcomponent]]))
+
 (defwebcomponent my-element
   :document "Hello!"
   :style "* {color: green;}"
@@ -20,7 +23,7 @@ Define your custom element
 Register it
 
 ```clojure           
-(register my-element)
+(l/register my-element)
 ```
 
 Manipulate it like any HTML element
