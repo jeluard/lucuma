@@ -1,6 +1,6 @@
 (ns lucuma.shadow-dom-test
   (:require [cemerick.cljs.test :as t :refer-macros [deftest is use-fixtures]]
-            [lucuma :as l :refer-macros [defwebcomponent]]
+            [lucuma.core :as l :refer-macros [defwebcomponent]]
             [lucuma.shadow-dom :as sd]))
 
 (when (sd/supported?)

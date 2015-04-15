@@ -103,7 +103,7 @@ As rendering is delegated to the **render-document** multimethod custom logic ca
 
 ```clojure
 (ns ...
-  (:require [lucuma :as l])
+  (:require [lucuma.core :as l])
   (:require-macros [hipo :refer [create]]))
 
 (derive PersistentVector ::vector)

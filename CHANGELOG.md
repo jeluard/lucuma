@@ -1,8 +1,10 @@
 # [0.5.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.5.0)
 
 * **[+]** Document can be defined as a function that takes a map of all property values as argument
+* **[+]** Introduced **render-document-fn** allowing to provide a custom rendering function
 * **[+]** Introduced **on-changed** callback allowing to be notified of all property/attribute changes
 * **[~]** ShadowDOM is not created by default even when supported by browser.
+* **[~]** Rename `lucuma` to `lucuma.core` (no more single segment namespace)
 
 # [0.3.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.3.0)
 

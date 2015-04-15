@@ -1,12 +1,12 @@
 (ns lucuma.test.browser-runner
   (:require [clojure.string :as s]
             [cemerick.cljs.test :refer [report] :as t]
-            [lucuma-test :as l]
+            [lucuma.core-test :as l]
             [lucuma.attribute-test :as att]
             [lucuma.custom-elements-test :as cet]
             [lucuma.shadow-dom-test :as sdt]
             [lucuma.util-test :as ut]
-            [hipo :as hipo :include-macros true]
+            [hipo.core :as hipo]
             [dommy.core :as dommy]))
 
 (def ^:private current-ns (atom nil))
