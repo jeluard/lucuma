@@ -1,6 +1,6 @@
-(ns lucuma-test
+(ns lucuma.core-test
   (:require [cemerick.cljs.test :as t :refer-macros [deftest done is use-fixtures]]
-            [lucuma :as l :refer-macros [defwebcomponent]]
+            [lucuma.core :as l :refer-macros [defwebcomponent]]
             [lucuma.shadow-dom :as sd])
   (:refer-clojure :exclude [methods]))
 
@@ -69,7 +69,7 @@
     (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (.getElementById (l/shadow-root (by-id "test-style-1")) "id")))))))
 
 (defwebcomponent test-document-as-fn-1
-  :document (fn [m] (str "<div>" @(:property1 m) "</div>"))
+  :document (fn [m] (str "<div>" (:property1 m) "</div>"))
   :properties {:property1 "test"})
 
 (defwebcomponent test-document-as-fn-2
@@ -85,37 +85,51 @@
   :extends :button)
 (defwebcomponent test-prototype-3
   :prototype :test-prototype-2)
-
 (defwebcomponent test-prototype-definition-1
   :prototype :test-prototype-3)
 (defwebcomponent test-prototype-definition-2
   :prototype :test-prototype-polymer
   :extends :button)
 (defwebcomponent test-prototype-definition-3
-  test-prototype-2)
+  :mixins [test-prototype-2])
 (defwebcomponent test-prototype-definition-4
   [arg]
   :document (inc arg))
 (defwebcomponent test-prototype-definition-5
   [arg]
-  test-prototype-2
+  :mixins [test-prototype-2]
   :document (inc arg))
 (defwebcomponent test-prototype-definition-6
   :prototype :test-prototype-1)
 (defwebcomponent test-prototype-definition-7
-  :properties {:property1 "default" :property2 "default"})
+  :properties {:property1 "default" :property2 "default" :property3 "default"})
 (defwebcomponent test-prototype-definition-8
-  test-prototype-definition-7
+  :mixins [test-prototype-definition-7]
   :properties {:property2 "another-default"})
+(defwebcomponent test-prototype-definition-9
+  :mixins [test-prototype-definition-8]
+  :properties {:property3 "another-default"})
+(defwebcomponent test-prototype-definition-10
+  :mixins [{:properties {:property1 "value1" :property2 "value1"}} {:properties {:property1 "value2"}}]
+  :properties {:property2 "value"})
+(defwebcomponent test-prototype-definition-11
+  :mixins [(fn [m] (update-in m [:properties :property] inc))]
+  :properties {:property 1})
 
 (defwebcomponent test-prototype-definition-fail-1
   :prototype :test-prototype-polymer)
 
 (deftest webcomponent-reuse
   (is (= :button (:extends test-prototype-definition-3)))
+  (is (= :button (:extends (test-prototype-definition-5 0))))
   (is (= "default" (get-in test-prototype-definition-8 [:properties :property1])))
   (is (= "another-default" (get-in test-prototype-definition-8 [:properties :property2])))
-  (is (= :button (:extends (test-prototype-definition-5 0)))))
+  (is (= "default" (get-in test-prototype-definition-9 [:properties :property1])))
+  (is (= "another-default" (get-in test-prototype-definition-9 [:properties :property2])))
+  (is (= "another-default" (get-in test-prototype-definition-9 [:properties :property3])))
+  (is (= "value2" (get-in test-prototype-definition-10 [:properties :property1])))
+  (is (= "value" (get-in test-prototype-definition-10 [:properties :property2])))
+  (is (= 3 (get-in test-prototype-definition-11 [:properties :property]))))
 
 (deftest webcomponent-as-fn
   (is (= 2 (:document (test-prototype-definition-4 1)))))
@@ -215,6 +229,7 @@
 (def test-detached-callback1-called (atom false))
 (def test-changed-callback1-called (atom 0))
 
+#_
 (defwebcomponent test-callback-1
   :on-created #(reset! test-created-callback1-called true)
   :on-attached #(reset! test-attached-callback1-called true)
@@ -222,6 +237,7 @@
   :on-changed #(swap! test-changed-callback1-called inc)
   :properties {:property1 "default1" :property2 "default2"})
 
+#_
 (deftest ^:async callback-append
   (reset! test-created-callback1-called false)
   (reset! test-attached-callback1-called false)
@@ -237,6 +253,7 @@
                      (is (= 0 @test-changed-callback1-called))
                      (done)) 100)))
 
+#_
 (deftest ^:async callback-set-attribute
   (reset! test-created-callback1-called false)
   (reset! test-attached-callback1-called false)
@@ -253,6 +270,7 @@
                      (is (= 1 @test-changed-callback1-called))
                      (done)) 100)))
 
+#_
 (deftest ^:async callback-set-property
   (reset! test-created-callback1-called false)
   (reset! test-attached-callback1-called false)
@@ -269,6 +287,7 @@
                      (is (= 1 @test-changed-callback1-called))
                      (done)) 100)))
 
+#_
 (deftest ^:async callback-set-property
   (reset! test-created-callback1-called false)
   (reset! test-attached-callback1-called false)
@@ -285,6 +304,7 @@
                      (is (= 1 @test-changed-callback1-called))
                      (done)) 100)))
 
+#_
 (deftest ^:async callback-remove-child
   (reset! test-created-callback1-called false)
   (reset! test-attached-callback1-called false)
@@ -367,26 +387,30 @@
   :prototype :test-extension-2)
 
 (deftest extension
-   (let [el (.createElement js/document "test-extension-1")]
-     (is (exists? (.-property1 el)))
-     (is (= "2" (l/get-property el :property1)))
-     (is (exists? (.-method1 el))))
-   (let [el (.createElement js/document "test-extension-2")]
-     (is (exists? (.-property1 el)))
-     (is (= "2" (l/get-property el :property1)))
-     (is (exists? (.-method1 el))))
-   (let [el (.createElement js/document "test-extension-3")]
-     (is (exists? (.-property1 el)))
-     (is (= "2" (l/get-property el :property1)))
-     (is (exists? (.-method1 el)))))
+  (let [el (.createElement js/document "test-extension-1")]
+    (is (exists? (.-property1 el)))
+    (is (= "2" (l/get-property el :property1)))
+    (is (exists? (.-method1 el))))
+  (let [el (.createElement js/document "test-extension-2")]
+    (is (exists? (.-property1 el)))
+    (is (= "2" (l/get-property el :property1)))
+    (is (exists? (.-method1 el))))
+  (let [el (.createElement js/document "test-extension-3")]
+    (is (exists? (.-property1 el)))
+    (is (= "2" (l/get-property el :property1)))
+    (is (exists? (.-method1 el)))))
 
 (defn wrap-registration
   [f]
   (append-tests-node)
 
-  (l/register test-sr-1)
-  (l/register test-sr-2)
-  (l/register test-sr-3)
+  (when (sd/supported?)
+    (l/register test-sr-1)
+    (l/register test-sr-2)
+    (l/register test-sr-3)
+    (l/register test-style-1)
+    (append "test-style-1"))
+
   (append "test-sr-1")
   (append "test-sr-2")
   (append "test-sr-3")
@@ -405,10 +429,7 @@
   (l/register test-extends-5)
   (l/register test-extends-6)
 
-  (l/register test-style-1)
-  (append "test-style-1")
-
-  (l/register test-callback-1)
+  #_(l/register test-callback-1)
 
   (l/register test-property-2)
 
