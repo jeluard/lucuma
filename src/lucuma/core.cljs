@@ -120,52 +120,6 @@
   ([el os k v consider-attributes? initialization?]
     (set-properties! el {k v} os consider-attributes? initialization?)))
 
-; document / style rendering
-
-(defn render-then-install-map!
-  "Calls render-fn then install-fn on :content."
-  [h m render-fn install-fn]
-  (let [rc (render-fn (:content m))]
-    (install-fn h rc m)))
-
-(defn- render-then-install!
-  "Dispatches based on :document / :style value.
-   Node instances will be directly appended, list passed recursively to this fn,
-   map render then installed and others encapsulated in a map as value of :content."
-  [h o render-fn install-fn]
-  (cond
-   (instance? js/Node o) (.appendChild h (.cloneNode o true))
-   (list? o) (doseq [e (filter identity o)] (render-then-install! h e render-fn install-fn))
-   (map? o) (render-then-install-map! h o render-fn install-fn)
-   :else (render-then-install-map! h {:content o} render-fn install-fn)))
-
-(defmulti render-style
-  "Renders 'style' to something that can be added to the DOM."
-  type)
-
-(defmethod render-style js/String [s] s)
-
-(defmulti install-rendered-style!
-  "Installs rendered 'style' to provided 'style' element."
-  (fn [_ e] (type e)))
-
-(defmethod install-rendered-style! js/String [el c] (set! (.-textContent el) c))
-
-(defn- create-style-element
-  "Creates a style element."
-  [media title]
-  (let [el (.createElement js/document "style")]
-    (if media (set! (.-media el) media))
-    (if title (set! (.-title el) title))
-    el))
-
-(defn install-style!
-  "Appends a new style element encapsulating redendered style."
-  [h rc {:keys [media title]}]
-  (let [el (create-style-element media title)]
-    (install-rendered-style! el rc)
-    (.appendChild h el)))
-
 ; ShadowRoot support
 
 (def ^:private lucuma-shadow-root-property "lucuma")
@@ -230,37 +184,52 @@
   [el]
   (or (shadow-root el) el))
 
-(defn property-values
-  [ps as]
-  (into {}
-        (for [p ps]
-          (let [[k os] p
-                a (when (and (contains? as k) (property-definition-attributes? os))
-                    (att/attribute->property [(:type os) (k as)]))]
-            ; Matching attribute value overrides eventual default
-            [k (or a (:default os))]))))
-
 (defn- install-document!
   [el d]
   (cond
     (element? d) (.appendChild el d)
     (string? d) (set! (.-innerHTML el) d)))
 
+(defn- create-style-element
+  "Creates a style element."
+  [media title]
+  (let [el (.createElement js/document "style")]
+    (if media (set! (.-media el) media))
+    (if title (set! (.-title el) title))
+    el))
+
+(defn- install-style!
+  "Appends a new style element encapsulating redendered style."
+  [el o]
+  (let [{:keys [media title content]} (if (map? o) o {:content o})
+        sel (create-style-element media title)]
+    (set! (.-textContent sel) content)
+    (.appendChild el sel)))
+
+(defn property-values
+  [ps as]
+  (into {}
+        (for [p ps]
+          (let [[k os] p
+                a (if (and (contains? as k) (property-definition-attributes? os))
+                    (att/attribute->property [(:type os) (k as)]))]
+            ; Matching attribute value overrides eventual default
+            [k (or a (:default os))]))))
+
 (defn- initialize-instance!
   "Initializes a custom element instance."
-  [el {:keys [style document render-document-fn properties requires-shadow-dom?]}]
+  [el {:keys [style document properties requires-shadow-dom?]}]
   ; Set default properties values
   (install-lucuma-properties-holder! el)
   (install-properties-holder! el)
   (let [ps (property-values properties (att/attributes el))]
     (set-properties! el ps (aggregated-properties el) true true)
     (if (or style document)
-      (let [h (create-content-root el requires-shadow-dom?)]
-        (if style (render-then-install! h style render-style install-style!))
+      (let [r (create-content-root el requires-shadow-dom?)]
         (if document
-          (let [fd (or render-document-fn identity)
-                d (if (fn? document) (fd (document ps)) (fd document))]
-            (install-document! el d)))))))
+          (install-document! r document))
+        (if style
+          (install-style! r style))))))
 
 (defn- merge-properties
   [p g s]
@@ -337,7 +306,6 @@
 
 (def all-keys
   #{:name :ns :prototype :extends :document :style :properties :methods
-    :render-document-fn
     :on-created :on-attached :on-detached :on-changed :requires-shadow-dom?})
 
 (defn ignored-keys
@@ -356,7 +324,7 @@
             prototype (prototype m)]
         ; Validate property / method names
         (doseq [[o _] (concat properties methods)]
-          (validate-property-name! (or (when (keyword? prototype) (create-element prototype)) default-element) (name o)))
+          (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o)))
         (let [um (assoc m :properties (into {} (for [[k v] properties]
                                                  [k (or (validate-property-definition! n v) v)])))
               ds (definition-chains um)]
