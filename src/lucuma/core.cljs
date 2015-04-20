@@ -231,9 +231,12 @@
         (if style
           (install-style! r style))))))
 
+(defn- property-name->js-property-name [s] (string/replace (name s) "-" "_"))
+(defn- js-property-name->property-name [s] (string/replace (name s) "_" "-"))
+
 (defn- merge-properties
   [p g s]
-  (apply merge (map #(hash-map (keyword %) (att/property-definition (partial g (keyword %)) (partial s (keyword %))))
+  (apply merge (map #(hash-map (keyword (property-name->js-property-name %)) (att/property-definition (partial g (keyword (js-property-name->property-name %))) (partial s (keyword (js-property-name->property-name %)))))
                     (map key p))))
 
 (defn- attribute-changed
@@ -263,7 +266,7 @@
                      (if-let [f (:on-created d)]
                        (u/call-with-first-argument f %)))
         on-attribute-changed (fn [el a ov nv _]
-                               (attribute-changed el (keyword a) ov nv properties))
+                               (attribute-changed el (keyword (js-property-name->property-name a)) ov nv properties))
         prototype (ce/create-prototype
                       (merge m {:prototype (prototype-of prototype)
                                 :properties (merge-properties properties

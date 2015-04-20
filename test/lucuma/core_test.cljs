@@ -6,7 +6,6 @@
 
 (def ^:private tests-node "tests-appends")
 
-(enable-console-print!)
 (defn append-tests-node
   []
   (let [el (.createElement js/document "div")]
@@ -353,13 +352,15 @@
                      (done)) 100)))
 
 (defwebcomponent test-property-1
-  :properties {:property nil})
+  :properties {:property nil
+               :some-property ""})
 (defwebcomponent test-property-2
   :properties {:property1 "1"
-               :property2 {:default 1 :type :number}})
+               :property2 {:default 1 :type :number}
+               :property-3 ""})
 
 (defwebcomponent test-property-fail-1
-  :properties {:invalid-property-name nil})
+  :properties {:invalid_property_name nil})
 (defwebcomponent test-property-fail-2
   :properties {:id nil})
 (defwebcomponent test-property-fail-3
@@ -385,6 +386,12 @@
     (l/set-property! el :property2 2)
     (is (= 2 (l/get-property el :property2)))
     (is (thrown? js/Error (l/set-property! el :property2 "")))
+    (is (= "" (l/get-property el :property-3)))
+    (l/set-property! el :property-3 "updated")
+    (is (= "updated" (l/get-property el :property-3)))
+    (is (= "updated" (aget el "property_3")))
+    (aset el "property_3" "updated2")
+    (is (= "updated2" (l/get-property el :property-3)))
     (is (thrown? js/Error (l/set-property! el :property-inexistant "")))))
 
 (defwebcomponent test-method-1
@@ -392,10 +399,8 @@
             :method2 (fn [] {:key "value"})
             :method3 (fn [_ o] (get o "key"))
             :method4 (fn [& args] args)})
-
 (defwebcomponent test-method-2
-  :methods {:invalid-method-name nil})
-
+  :methods {:invalid_method_name nil})
 (defwebcomponent test-method-3
   :methods {:constructor nil})
 

@@ -19,9 +19,11 @@
   "Returns true if provided string is a valid JavaScript identifier.
   Rulls out a number a false negative for simplicity sake.
 
-  More info: http://mathiasbynens.be/notes/javascript-identifiers"
+  More info: http://mathiasbynens.be/notes/javascript-identifiers
+
+  Note that _ is forbidden but - is allowed. Translation between both is done at the JS <-> CLJS layer."
   [s]
-  (not (nil? (re-matches #"^[a-zA-Z_$][0-9a-zA-Z_$]*$" s))))
+  (not (nil? (re-matches #"^[a-zA-Z\-$][0-9a-zA-Z\-$]*$" s))))
 
 (defn valid-standard-element-name? [n] (when n (= -1 (.indexOf (name n) "-"))))
 
