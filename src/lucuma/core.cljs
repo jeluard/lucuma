@@ -336,3 +336,28 @@
     (register m2)
     (doseq [m ms]
       (register m))))
+
+(defn merge-map-definition
+  [m1 m2]
+  (let [ps (merge (:properties m1) (:properties m2))
+        ms (merge (:methods m1) (:methods m2))]
+    (merge m1 m2 (if ps {:properties ps}) (if ms {:methods ms}))))
+
+(defn collect-mixins
+  [m]
+  (if-let [mxs (:mixins m)]
+    (apply conj
+           (reduce #(if-let [pmxs (collect-mixins %2)]
+                     (apply conj (mapv (fn [o] (if (map? o) (dissoc o :mixins))) %1) pmxs)
+                     %1) [] mxs)
+           mxs)))
+
+(defn merge-mixins
+  [m]
+  (if-let [mxs (collect-mixins m)]
+    (let [mm (reduce merge-map-definition (conj (filterv map? mxs) m))
+          fns (filter fn? mxs)]
+      (if (seq fns)
+        (reduce #(%2 %1) mm fns)
+        mm))
+    m))

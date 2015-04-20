@@ -6,6 +6,7 @@
 
 (def ^:private tests-node "tests-appends")
 
+(enable-console-print!)
 (defn append-tests-node
   []
   (let [el (.createElement js/document "div")]
@@ -63,22 +64,7 @@
     (is (nil? (l/host nil)))
     (is (nil? (l/host (.createElement js/document "div"))))
     (is (not (nil? (l/host (l/shadow-root (.createElement js/document "test-sr-2"))))))
-    (is (not (nil? (l/host (.-firstChild (l/shadow-root (.createElement js/document "test-sr-2"))))))))
-
-  (deftest style
-    (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (.getElementById (l/shadow-root (by-id "test-style-1")) "id")))))))
-
-(defwebcomponent test-document-as-fn-1
-  :document (fn [m] (str "<div>" (:property1 m) "</div>"))
-  :properties {:property1 "test"})
-
-(defwebcomponent test-document-as-fn-2
-  :document (fn [m] (str "<div>" (:property2 m "fallback") "</div>"))
-  :properties {:property1 "test"})
-
-(deftest test-document-as-fn
-  (is (= "test" (.-textContent (.createElement js/document "test-document-as-fn-1"))))
-  (is (= "fallback" (.-textContent (.createElement js/document "test-document-as-fn-2")))))
+    (is (not (nil? (l/host (.-firstChild (l/shadow-root (.createElement js/document "test-sr-2")))))))))
 
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
@@ -106,33 +92,71 @@
 (defwebcomponent test-prototype-definition-8
   :mixins [test-prototype-definition-7]
   :properties {:property2 "another-default"})
+#_
 (defwebcomponent test-prototype-definition-9
   :mixins [test-prototype-definition-8]
   :properties {:property3 "another-default"})
 (defwebcomponent test-prototype-definition-10
   :mixins [{:properties {:property1 "value1" :property2 "value1"}} {:properties {:property1 "value2"}}]
   :properties {:property2 "value"})
+#_
 (defwebcomponent test-prototype-definition-11
-  :mixins [(fn [m] (update-in m [:properties :property] inc))]
+  :mixins [#(update-in % [:properties :property] inc)]
   :properties {:property 1})
 
 (defwebcomponent test-prototype-definition-fail-1
   :prototype :test-prototype-polymer)
 
-(deftest webcomponent-reuse
+(deftest collect-mixins
+  (is (= [{1 1} {2 2}] (l/collect-mixins {:mixins [{1 1} {2 2}]})))
+  (let [m1 {2 2}
+        m2 {1 1 :mixins [m1]}]
+  (is (= {2 2} (first (l/collect-mixins {:mixins [m2]}))))
+  (is (= 2 (count (l/collect-mixins {:mixins [(fn []) (fn [])]}))))))
+
+(defwebcomponent mixin-1
+  :mixins [{:properties {:property "value"}}])
+(defwebcomponent mixin-2
+  :mixins [{:properties {:property "value"}}]
+  :properties {:property "overridden-value"})
+(def defaults {:properties {:property "value"}})
+(defwebcomponent mixin-3
+  :mixins [defaults])
+(def defaults-with-mixins
+  {:mixins [defaults]})
+(def other-defaults-with-mixins
+  {:mixins [defaults]
+   :properties {:property "overridden-value"}})
+(defwebcomponent mixin-4
+  :mixins [defaults-with-mixins])
+(defwebcomponent mixin-5
+  :mixins [other-defaults-with-mixins])
+(defwebcomponent mixin-6
+  :mixins [#(assoc-in % [:properties :property2] 1)
+           #(update-in % [:properties :property] inc)]
+  :properties {:property 1})
+
+(deftest mixins
+  (is (= "value" (get-in mixin-1 [:properties :property])))
+  (is (= "overridden-value" (get-in mixin-2 [:properties :property])))
+  (is (= "value" (get-in mixin-3 [:properties :property])))
+  (is (= "value" (get-in mixin-4 [:properties :property])))
+  (is (= "overridden-value" (get-in mixin-5 [:properties :property])))
+  (is (= 2 (get-in mixin-6 [:properties :property])))
+  (is (= 1 (get-in mixin-6 [:properties :property2]))))
+
+#_
+(deftest mixins
   (is (= :button (:extends test-prototype-definition-3)))
   (is (= :button (:extends (test-prototype-definition-5 0))))
   (is (= "default" (get-in test-prototype-definition-8 [:properties :property1])))
   (is (= "another-default" (get-in test-prototype-definition-8 [:properties :property2])))
-  (is (= "default" (get-in test-prototype-definition-9 [:properties :property1])))
-  (is (= "another-default" (get-in test-prototype-definition-9 [:properties :property2])))
-  (is (= "another-default" (get-in test-prototype-definition-9 [:properties :property3])))
+  #_(is (= "default" (get-in test-prototype-definition-9 [:properties :property1])))
+  #_(is (= "another-default" (get-in test-prototype-definition-9 [:properties :property2])))
+  #_(is (= "another-default" (get-in test-prototype-definition-9 [:properties :property3])))
   (is (= "value2" (get-in test-prototype-definition-10 [:properties :property1])))
   (is (= "value" (get-in test-prototype-definition-10 [:properties :property2])))
-  (is (= 3 (get-in test-prototype-definition-11 [:properties :property]))))
-
-(deftest webcomponent-as-fn
-  (is (= 2 (:document (test-prototype-definition-4 1)))))
+  #_(is (= 3 (get-in test-prototype-definition-11 [:properties :property]))))
 
 (defwebcomponent test-extends-1)
 (defwebcomponent test-extends-2
@@ -220,9 +244,16 @@
   (is (= false (l/property-definition-events? {:events? false :type :boolean}))))
 
 (defwebcomponent test-style-1
-  :document "<span id='id'></div>"
-  :style "#id {color: rgb(255, 0, 0);}"
-  :requires-shadow-dom? true)
+  :document "<span id='style1'></span>"
+  :style "#style1 {color: rgb(255, 0, 0);}")
+
+(defwebcomponent test-style-2
+  :document "<span id='style2'></span>"
+  :style {:media "all" :content "#style2 {color: rgb(255, 0, 0);}"})
+
+(deftest style
+  (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style1")))))
+  (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style2"))))))
 
 (def test-created-callback1-called (atom false))
 (def test-attached-callback1-called (atom false))
@@ -408,15 +439,14 @@
     (l/register test-sr-1)
     (l/register test-sr-2)
     (l/register test-sr-3)
-    (l/register test-style-1)
-    (append "test-style-1"))
+    (append "test-sr-1")
+    (append "test-sr-2")
+    (append "test-sr-3"))
 
-  (append "test-sr-1")
-  (append "test-sr-2")
-  (append "test-sr-3")
-
-  (l/register test-document-as-fn-1)
-  (l/register test-document-as-fn-2)
+  (l/register test-style-1)
+  (l/register test-style-2)
+  (append "test-style-1")
+  (append "test-style-2")
 
   (l/register test-prototype-1)
   (l/register test-prototype-2)
