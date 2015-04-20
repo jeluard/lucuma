@@ -305,7 +305,7 @@
         (merge m {:type it})))))
 
 (def all-keys
-  #{:name :ns :prototype :extends :document :style :properties :methods
+  #{:name :ns :prototype :extends :mixins :document :style :properties :methods
     :on-created :on-attached :on-detached :on-changed :requires-shadow-dom?})
 
 (defn ignored-keys
