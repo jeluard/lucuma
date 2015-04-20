@@ -10,7 +10,7 @@
                     [org.clojure/clojurescript "0.0-3196"]
                     [cljsjs/document-register-element "0.2.1-0"]]
      :plugins [[lein-cljsbuild "1.0.5"]
-               [com.cemerick/clojurescript.test "0.3.4-SNAPSHOT"]]}}
+               [com.cemerick/clojurescript.test "0.3.2"]]}}
   :cljsbuild
   {:builds
    {:test
