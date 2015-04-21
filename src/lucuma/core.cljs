@@ -2,7 +2,6 @@
   (:require [clojure.string :as string]
             [lucuma.attribute :as att]
             [lucuma.custom-elements :as ce]
-            [lucuma.event :as e]
             [lucuma.shadow-dom :as sd]
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods]))
@@ -94,6 +93,13 @@
   [el]
   (apply merge (map :properties (definition-chains (get-definition (element-name el))))))
 
+(defn fire-event
+  [el n m]
+  (let [ev (js/Event. (name n))]
+    (aset ev "detail" (clj->js m))
+    ;(.initEvent ev (name n) false false)
+    (.dispatchEvent el ev)))
+
 (defn set-properties!
   "Sets all properties."
   ([el m] (set-properties! el m (aggregated-properties el) true false))
@@ -108,7 +114,7 @@
           (if (and consider-attributes? (property-definition-attributes? os))
             (att/set! el k v))
           (if (and initialization? (property-definition-events? os))
-            (e/fire el k {:old-value (k pv) :new-value v}))
+            (fire-event el k {:old-value (k pv) :new-value v}))
           (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
         (if-not initialization?
           (let [ps (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
