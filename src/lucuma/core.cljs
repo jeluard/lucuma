@@ -3,7 +3,8 @@
             [lucuma.attribute :as att]
             [lucuma.custom-elements :as ce]
             [lucuma.shadow-dom :as sd]
-            [lucuma.util :as u])
+            [lucuma.util :as u]
+            cljsjs.document-register-element)
   (:refer-clojure :exclude [methods]))
 
 ; Property access
@@ -97,7 +98,6 @@
   [el n m]
   (let [ev (js/Event. (name n))]
     (aset ev "detail" (clj->js m))
-    ;(.initEvent ev (name n) false false)
     (.dispatchEvent el ev)))
 
 (defn set-properties!

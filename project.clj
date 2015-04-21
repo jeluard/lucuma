@@ -10,14 +10,14 @@
                     [org.clojure/clojurescript "0.0-3196"]
                     [cljsjs/document-register-element "0.2.1-0"]]
      :plugins [[lein-cljsbuild "1.0.5"]
-               [com.cemerick/clojurescript.test "0.3.2"]]}}
+               [com.cemerick/clojurescript.test "0.3.3"]]}}
   :cljsbuild
   {:builds
    {:test
     {:source-paths ["src" "test"]
      :compiler {:output-to "target/cljs/unit-test.js"
                 :optimizations :whitespace}}}
-   :test-commands {"slimerjs" ["slimerjs" :runner "dev-resources/document-register-element-0.1.2.js" "target/cljs/unit-test.js"]}}
+   :test-commands {"slimerjs" ["phantomjs" :runner "target/cljs/unit-test.js"]}}
   :aliases {"clean-test" ["do" "clean," "cljsbuild" "test"]
             "clean-install" ["do" "clean," "install"]}
   :min-lein-version "2.5.0")
