@@ -19,6 +19,7 @@
 (defn- set-lucuma-property! [el n v] (aset el lucuma-properties-holder-name n v))
 
 (defn- element? [el] (instance? js/Element el))
+(defn- node? [el] (instance? js/Node el))
 
 (defn element-name
   "Returns an element name. Supports both custom and regular element."
@@ -193,7 +194,7 @@
 (defn- install-document!
   [el d]
   (cond
-    (element? d) (.appendChild el d)
+    (node? d) (.appendChild el d)
     (string? d) (set! (.-innerHTML el) d)))
 
 (defn- create-style-element
