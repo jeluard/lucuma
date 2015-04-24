@@ -69,9 +69,11 @@
 (defwebcomponent test-prototype-2
   :extends :button)
 (defwebcomponent test-prototype-3
-  :prototype :test-prototype-2)
+  :prototype test-prototype-2)
+(defwebcomponent test-prototype-4
+  :prototype js/HTMLButtonElement.prototype)
 (defwebcomponent test-prototype-definition-1
-  :prototype :test-prototype-3)
+  :prototype test-prototype-3)
 (defwebcomponent test-prototype-definition-2
   :prototype :test-prototype-polymer
   :extends :button)
@@ -85,7 +87,7 @@
   :mixins [test-prototype-2]
   :document (inc arg))
 (defwebcomponent test-prototype-definition-6
-  :prototype :test-prototype-1)
+  :prototype test-prototype-1)
 (defwebcomponent test-prototype-definition-7
   :properties {:property1 "default" :property2 "default" :property3 "default"})
 (defwebcomponent test-prototype-definition-8
@@ -108,6 +110,8 @@
 
 (deftest collect-mixins
   (is (= [{1 1} {2 2}] (l/collect-mixins {:mixins [{1 1} {2 2}]})))
+  (is (= [{1 1}] (l/collect-mixins {:prototype {1 1}})))
+  (is (= [{1 1}] (l/collect-mixins {:extends {1 1}})))
   (let [m1 {2 2}
         m2 {1 1 :mixins [m1]}]
   (is (= {2 2} (first (l/collect-mixins {:mixins [m2]}))))
@@ -161,14 +165,14 @@
 (defwebcomponent test-extends-2
   :prototype :div)
 (defwebcomponent test-extends-3
-  :prototype :test-extends-1)
+  :prototype test-extends-1)
 (defwebcomponent test-extends-4
-  :prototype :test-extends-2)
+  :prototype test-extends-2)
 (defwebcomponent test-extends-5
                  ;TODO fix :prototype :non-lucu-element
   :extends :div)
 (defwebcomponent test-extends-6
-  :prototype :test-extends-4)
+  :prototype test-extends-4)
 (defwebcomponent test-extends-fail-1
   :prototype :non-lucu-element)
 
@@ -190,7 +194,8 @@
   (is (instance? js/HTMLElement (.createElement js/document "test-prototype-1")))
   (is (not (instance? js/HTMLButtonElement (.createElement js/document "test-prototype-2"))))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-2")))
-  (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-3"))))
+  (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-3")))
+  (is (instance? js/HTMLButtonElement (.createElement js/document "test-prototype-4"))))
 
 (defwebcomponent test-register)
 
@@ -253,6 +258,19 @@
 (deftest style
   (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style1")))))
   (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style2"))))))
+
+(defwebcomponent test-on-created-1
+  :on-created (fn [_] {:document "content"}))
+(defwebcomponent test-on-created-2
+  :on-created (fn [_] {:invalid-property ""}))
+(defwebcomponent test-on-created-3
+  :document "content"
+  :on-created (fn [_] {:document "content"}))
+
+(deftest on-created
+  (is (= "content" (.-innerHTML (.createElement js/document "test-on-created-1"))))
+  (is (thrown? js/Error (.createElement js/document "test-on-created-2")))
+  (is (thrown? js/Error (.createElement js/document "test-on-created-3"))))
 
 (def test-created-callback1-called (atom false))
 (def test-attached-callback1-called (atom false))
@@ -418,9 +436,9 @@
   :properties {:property1 "1"}
   :methods {:method1 (fn [] 1)})
 (defwebcomponent test-extension-2
-  :prototype :test-extension-1)
+  :prototype test-extension-1)
 (defwebcomponent test-extension-3
-  :prototype :test-extension-2)
+  :prototype test-extension-2)
 
 (deftest extension
   (let [el (.createElement js/document "test-extension-1")]
@@ -453,9 +471,14 @@
   (append "test-style-1")
   (append "test-style-2")
 
+  (l/register test-on-created-1)
+  (l/register test-on-created-2)
+  (l/register test-on-created-3)
+
   (l/register test-prototype-1)
   (l/register test-prototype-2)
   (l/register test-prototype-3)
+  (l/register test-prototype-4)
 
   (l/register test-extends-1)
   (l/register test-extends-2)

@@ -80,20 +80,9 @@
     :object))
 
 (defn- call-callback-when-defined
-  [ds k el & args]
-  (doseq [d ds]
-    (if-let [f (k d)]
-      (u/call-with-first-argument f el args))))
-
-(defn- definition-chains
-  [m]
-  (if m
-    (cons m (definition-chains (get-definition (prototype m))))
-    (list)))
-
-(defn- aggregated-properties
-  [el]
-  (apply merge (map :properties (definition-chains (get-definition (element-name el))))))
+  [m k el & args]
+  (if-let [f (k m)]
+    (u/call-with-first-argument f el args)))
 
 (defn fire-event
   [el n m]
@@ -103,7 +92,7 @@
 
 (defn set-properties!
   "Sets all properties."
-  ([el m] (set-properties! el m (aggregated-properties el) true false))
+  ([el m] (set-properties! el m (:properties (get-definition (element-name el))) true false))
   ([el m ps consider-attributes? initialization?]
     (if (lucuma-element? el)
       (let [pv (get-properties el)]
@@ -118,12 +107,12 @@
             (fire-event el k {:old-value (k pv) :new-value v}))
           (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
         (if-not initialization?
-          (let [ps (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
-            (call-callback-when-defined (definition-chains (get-definition (element-name el))) :on-changed el ps)))))))
+          (let [o (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
+            (call-callback-when-defined ps :on-changed el o)))))))
 
 (defn set-property!
   "Sets the value of a named property."
-  ([el k v] (set-property! el (aggregated-properties el) k v true false))
+  ([el k v] (set-properties! el {k v}))
   ([el os k v consider-attributes? initialization?]
     (set-properties! el {k v} os consider-attributes? initialization?)))
 
@@ -165,8 +154,10 @@
    :non-lucu-element => throw exception"
   [t]
   (if t
-    (if (u/valid-standard-element-name? (name t))
-      t
+    (cond
+      (map? t) (let [p (prototype t)] (if (map? p) (host-type->extends p) p))
+      (u/valid-standard-element-name? (name t)) t
+      :else
       (if-let [m (get-definition t)]
         (host-type->extends (prototype m))
         (throw (ex-info (str "Could not infer extends for <" (name t) ">") {}))))))
@@ -225,18 +216,18 @@
 
 (defn- initialize-instance!
   "Initializes a custom element instance."
-  [el {:keys [style document properties requires-shadow-dom?]}]
+  [el m ps]
   ; Set default properties values
   (install-lucuma-properties-holder! el)
   (install-properties-holder! el)
-  (let [ps (property-values properties (att/attributes el))]
-    (set-properties! el ps (aggregated-properties el) true true)
-    (if (or style document)
-      (let [r (create-content-root el requires-shadow-dom?)]
-        (if document
-          (install-document! r document))
-        (if style
-          (install-style! r style))))))
+  (set-properties! el m ps true true))
+
+(defn- install-content!
+  [r {:keys [document style]}]
+  (if document
+    (install-document! r document))
+  (if style
+    (install-style! r style)))
 
 (defn- property-name->js-property-name [s] (string/replace (name s) "-" "_"))
 (defn- js-property-name->property-name [s] (string/replace (name s) "_" "-"))
@@ -262,16 +253,44 @@
   [o]
   (cond
     (nil? o) (.-prototype js/HTMLElement)
-    (keyword? o) (.getPrototypeOf js/Object (create-element o))
-    :else o))
+    (or (string? o) (keyword? o)) (.getPrototypeOf js/Object (create-element o))
+    (map? o) (prototype-of (:name o))
+    (instance? js/HTMLElement o) o))
+
+(defn- validate-on-created-result!
+  [m ocm]
+  (let [em (dissoc ocm :document :on-changed)]
+    (if-not (empty? em)
+      (throw (ex-info ":on-created invocation can only return a map containing :document and/or :on-changed" em)))
+    (if (and (contains? m :document)
+             (contains? ocm :document))
+      (throw (ex-info "Can't have :document both statically defined and returned by :on-created" {})))
+    (if (and (contains? m :on-changed)
+             (contains? ocm :on-changed))
+      (throw (ex-info "Can't have :on-changed both statically defined and returned by :on-created" {})))))
+
+(defn- wrap-on-created
+  [f r m]
+  (fn [el]
+    (when-let [o (f el)]
+      (validate-on-created-result! m o)
+      (when-let [d (:document o)]
+        (install-content! r o)
+        (swap! registry assoc-in [(:name m) :document] d))
+      (if-let [on-changed (:on-changed o)]
+        (swap! registry assoc-in [(:name m) :on-changed] on-changed)))))
 
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
-  [{:keys [properties methods] :as m} prototype ds]
-  (let [on-created #(doseq [d ds]
-                     (initialize-instance! % d)
-                     (if-let [f (:on-created d)]
-                       (u/call-with-first-argument f %)))
+  [{:keys [properties methods] :as m} prototype]
+  (let [on-created #(let [mp (property-values properties (att/attributes %))
+                          r (create-content-root % (:requires-shadow-dom? m))]
+                     (initialize-instance! % mp properties)
+                     ; If document or style is part of definition set it first before call to :on-created
+                     (install-content! r m)
+                     (if-let [f (:on-created m mp)]
+                       ; Handle eventual :document and :on-changed part of :on-created result
+                       (u/call-with-first-argument (wrap-on-created f r m) %)))
         on-attribute-changed (fn [el a ov nv _]
                                (attribute-changed el (keyword (js-property-name->property-name a)) ov nv properties))
         prototype (ce/create-prototype
@@ -281,8 +300,8 @@
                                                               #(set-property! %2 %1 (js->clj %3)))
                                 :on-created on-created :on-attribute-changed on-attribute-changed
                                 ; Propagate through prototype chain
-                                :on-attached #(call-callback-when-defined ds :on-attached %)
-                                :on-detached #(call-callback-when-defined ds :on-detached %)}))]
+                                :on-attached #(call-callback-when-defined m :on-attached %)
+                                :on-detached #(call-callback-when-defined m :on-detached %)}))]
     ; Install methods
     (doseq [[k v] methods]
       (aset prototype (name k) (u/wrap-with-callback-this-value (u/wrap-to-javascript v))))
@@ -336,10 +355,9 @@
         (doseq [[o _] (concat properties methods)]
           (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o)))
         (let [um (assoc m :properties (into {} (for [[k v] properties]
-                                                 [k (or (validate-property-definition! n v) v)])))
-              ds (definition-chains um)]
+                                                 [k (or (validate-property-definition! n v) v)])))]
           (swap! registry assoc n um)
-          (ce/register n (create-prototype um prototype ds) (some :extends ds)))
+          (ce/register n (create-prototype um prototype) (:extends m)))
         true)))
   ([m1 m2 & ms]
     (register m1)
@@ -355,15 +373,17 @@
 
 (defn collect-mixins
   [m]
-  (if-let [mxs (:mixins m)]
-    (apply conj
-           (reduce #(if-let [pmxs (collect-mixins %2)]
-                     (apply conj (mapv (fn [o] (if (map? o) (dissoc o :mixins))) %1) pmxs)
-                     %1) [] mxs)
-           mxs)))
+  (let [mxs (filterv identity (conj (vec (:mixins m)) (:prototype m) (:extends m)))]
+    (if (seq mxs)
+      (apply conj
+             (reduce #(if-let [pmxs (collect-mixins %2)]
+                       (apply conj %1 pmxs)
+                       %1) [] mxs)
+             mxs))))
 
 (defn merge-mixins
   [m]
+  ; TODO warn on conflicting values for :requires-shadow-dom?
   (if-let [mxs (collect-mixins m)]
     (let [mm (reduce merge-map-definition (conj (filterv map? mxs) m))
           fns (filter fn? mxs)]
