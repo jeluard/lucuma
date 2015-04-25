@@ -92,12 +92,12 @@
 
 (defn set-properties!
   "Sets all properties."
-  ([el m] (set-properties! el m (:properties (get-definition (element-name el))) true false))
+  ([el m] (set-properties! el m (get-definition (element-name el)) true false))
   ([el m ps consider-attributes? initialization?]
     (if (lucuma-element? el)
       (let [pv (get-properties el)]
         (doseq [[k v] m
-                :let [os (k ps)]]
+                :let [os (k (:properties ps))]]
           (let [et (:type os)]
             (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
               (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k)}))))
@@ -285,7 +285,7 @@
   [{:keys [properties methods] :as m} prototype]
   (let [on-created #(let [mp (property-values properties (att/attributes %))
                           r (create-content-root % (:requires-shadow-dom? m))]
-                     (initialize-instance! % mp properties)
+                     (initialize-instance! % mp m)
                      ; If document or style is part of definition set it first before call to :on-created
                      (install-content! r m)
                      (if-let [f (:on-created m mp)]
