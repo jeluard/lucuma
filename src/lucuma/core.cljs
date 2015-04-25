@@ -270,9 +270,9 @@
       (throw (ex-info "Can't have :on-changed both statically defined and returned by :on-created" {})))))
 
 (defn- wrap-on-created
-  [f r m]
+  [f r m mp]
   (fn [el]
-    (when-let [o (f el)]
+    (when-let [o (f el mp)]
       (validate-on-created-result! m o)
       (when-let [d (:document o)]
         (install-content! r o)
@@ -288,9 +288,9 @@
                      (initialize-instance! % mp m)
                      ; If document or style is part of definition set it first before call to :on-created
                      (install-content! r m)
-                     (if-let [f (:on-created m mp)]
+                     (if-let [f (:on-created m)]
                        ; Handle eventual :document and :on-changed part of :on-created result
-                       (u/call-with-first-argument (wrap-on-created f r m) %)))
+                       (u/call-with-first-argument (wrap-on-created f r m mp) %)))
         on-attribute-changed (fn [el a ov nv _]
                                (attribute-changed el (keyword (js-property-name->property-name a)) ov nv properties))
         prototype (ce/create-prototype
@@ -347,7 +347,7 @@
    Returns true if registration was successful, falsey value if the definition was already registered."
   ([m] (register (:name m) m))
   ([n m]
-   {:pre [(map? m) (not (seq (ignored-keys m)))]}
+   {:pre [(map? m)]}
     (if-not (registered? n)
       (let [{:keys [properties methods]} m
             prototype (prototype m)]

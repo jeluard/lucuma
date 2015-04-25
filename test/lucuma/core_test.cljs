@@ -260,17 +260,21 @@
   (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style2"))))))
 
 (defwebcomponent test-on-created-1
-  :on-created (fn [_] {:document "content"}))
+  :on-created (fn [] {:document "content"}))
 (defwebcomponent test-on-created-2
-  :on-created (fn [_] {:invalid-property ""}))
+  :properties {:property 1}
+  :on-created (fn [el m] (l/set-property! el :property (inc (:property m)))))
 (defwebcomponent test-on-created-3
+  :on-created (fn [] {:invalid-property ""}))
+(defwebcomponent test-on-created-4
   :document "content"
-  :on-created (fn [_] {:document "content"}))
+  :on-created (fn [] {:document "content"}))
 
 (deftest on-created
   (is (= "content" (.-innerHTML (.createElement js/document "test-on-created-1"))))
-  (is (thrown? js/Error (.createElement js/document "test-on-created-2")))
-  (is (thrown? js/Error (.createElement js/document "test-on-created-3"))))
+  (is (= 2 (l/get-property (.createElement js/document "test-on-created-2") :property)))
+  (is (thrown? js/Error (.createElement js/document "test-on-created-3")))
+  (is (thrown? js/Error (.createElement js/document "test-on-created-4"))))
 
 (defn on-changed-inc
   [el cs]
@@ -494,6 +498,7 @@
   (l/register test-on-created-1)
   (l/register test-on-created-2)
   (l/register test-on-created-3)
+  (l/register test-on-created-4)
 
   (l/register test-on-changed-1)
   (l/register test-on-changed-2)
