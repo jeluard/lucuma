@@ -239,12 +239,12 @@
 
 (defn- attribute-changed
   "Updates property based on associated attribute change."
-  [el k _ nv properties]
-  (if-let [os (k properties)] ; Attribute changed is a property defined by our component
+  [el k _ nv m]
+  (if-let [os (get-in m [:properties k])] ; Attribute changed is a property defined by our component
     (let [v (att/attribute->property [(:type os) nv])]
       (if (not= v (get-property el k)) ; Value is different from current value: this is not a change due to a property change
         (if (property-definition-attributes? os) ; Property is managed by lucuma
-          (set-property! el properties k v false false)
+          (set-property! el m k v false false)
           (u/warn (str "Changing attribute for " (name k) " but its attributes? is false.")))))))
 
 (def ^:private default-element (.createElement js/document "div")) ; div does not define any extra property / method
@@ -292,7 +292,7 @@
                        ; Handle eventual :document and :on-changed part of :on-created result
                        (u/call-with-first-argument (wrap-on-created f r m mp) %)))
         on-attribute-changed (fn [el a ov nv _]
-                               (attribute-changed el (keyword (js-property-name->property-name a)) ov nv properties))
+                               (attribute-changed el (keyword (js-property-name->property-name a)) ov nv m))
         prototype (ce/create-prototype
                       (merge m {:prototype (prototype-of prototype)
                                 :properties (merge-properties properties

@@ -436,6 +436,13 @@
     (is (= "updated2" (l/get-property el :property-3)))
     (is (thrown? js/Error (l/set-property! el :property-inexistant "")))))
 
+(deftest attributes-update
+  (let [el (.createElement js/document "test-property-2")]
+    (is (= "1" (.getAttribute el "property1")))
+    (.setAttribute el "property1" "2")
+    (is (= "2" (.getAttribute el "property1")))
+    (is (= "2" (l/get-property el :property1)))))
+
 (defwebcomponent test-method-1
   :methods {:method1 (fn [] 1)
             :method2 (fn [] {:key "value"})
