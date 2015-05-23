@@ -4,9 +4,7 @@
             [lucuma.util :as u])
   (:refer-clojure :exclude [get]))
 
-;;
-;; attribute <-> property conversion
-;;
+; attribute <-> property conversion
 
 (defmulti property->attribute type)
 
@@ -17,24 +15,23 @@
 
 (defn- read-non-empty-string
   [s]
-  (when-not (empty? s)
+  (if-not (empty? s)
     (read-string s)))
 
 (defmethod attribute->property :string [v] (second v))
 (defmethod attribute->property :keyword [v] (keyword (second v)))
 (defmethod attribute->property :boolean [v] (read-non-empty-string (second v)))
 (defmethod attribute->property :number [v] (read-non-empty-string (second v)))
+(defmethod attribute->property :default [v] (.log js/console (str "Can't set attribute of type <" (first v) ">")))
 
-;;
-;; attribute accessors
-;;
+; attribute accessors
 
 (defn get
   "Gets the value of a named attribute. Converts its value via property->attribute."
   [el n t]
   (let [n (name n)]
     (if (= t :boolean)
-      (if (.hasAttribute el n) true false)
+      (.hasAttribute el n)
       (if (.hasAttribute el n)
         (attribute->property [t (.getAttribute el n)])
         nil))))
@@ -45,7 +42,7 @@
   [el n v]
   (let [n (name n)]
     (if (and v (not= v false))
-      (.setAttribute el n (if (= v true) "" (property->attribute v)))
+      (.setAttribute el n (if (true? v) "" (property->attribute v)))
       (.removeAttribute el n))))
 
 (defn property-definition
