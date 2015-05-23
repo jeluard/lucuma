@@ -13,9 +13,11 @@
 
 (def ^:private lucuma-properties-holder-name "lucuma")
 (def ^:private properties-holder-name "properties")
+(def ^:private on-changed-property-name "on_changed")
 
 (defn- install-lucuma-properties-holder! [p] (aset p lucuma-properties-holder-name #js {}))
 
+(defn- get-lucuma-property! [el n] (aget el lucuma-properties-holder-name n))
 (defn- set-lucuma-property! [el n v] (aset el lucuma-properties-holder-name n v))
 
 (defn- element? [el] (instance? js/Element el))
@@ -79,11 +81,6 @@
       :else :object)
     :object))
 
-(defn- call-callback-when-defined
-  [m k el & args]
-  (if-let [f (k m)]
-    (u/call-with-first-argument f el args)))
-
 (defn fire-event
   [el n m]
   (let [ev (js/Event. (name n))]
@@ -108,7 +105,8 @@
           (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
         (if-not initialization?
           (let [o (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
-            (call-callback-when-defined ps :on-changed el o)))))))
+            (if-let [f (or (get-lucuma-property! el on-changed-property-name) (:on-changed ps))]
+              (f el o))))))))
 
 (defn set-property!
   "Sets the value of a named property."
@@ -269,16 +267,19 @@
              (contains? ocm :on-changed))
       (throw (ex-info "Can't have :on-changed both statically defined and returned by :on-created" {})))))
 
-(defn- wrap-on-created
-  [f r m mp]
-  (fn [el]
-    (when-let [o (f el mp)]
-      (validate-on-created-result! m o)
-      (when-let [d (:document o)]
-        (install-content! r o)
-        (swap! registry assoc-in [(:name m) :document] d))
-      (if-let [on-changed (:on-changed o)]
-        (swap! registry assoc-in [(:name m) :on-changed] on-changed)))))
+(defn- call-on-created
+  [f el r m mp]
+  (when-let [o (f el mp)]
+    (validate-on-created-result! m o)
+    (if (contains? o :document)
+      (install-content! r o))
+    (if-let [on-changed (:on-changed o)]
+      (set-lucuma-property! el on-changed-property-name on-changed))))
+
+(defn- call-callback-when-defined
+  [m k el]
+  (if-let [f (k m)]
+    (f el)))
 
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
@@ -290,7 +291,7 @@
                      (install-content! r m)
                      (if-let [f (:on-created m)]
                        ; Handle eventual :document and :on-changed part of :on-created result
-                       (u/call-with-first-argument (wrap-on-created f r m mp) %)))
+                       (call-on-created f % r m mp)))
         on-attribute-changed (fn [el a ov nv _]
                                (attribute-changed el (keyword (js-property-name->property-name a)) ov nv m))
         prototype (ce/create-prototype
