@@ -129,7 +129,7 @@
   "Returns the host of an element inside a custom element, walking parents as needed; otherwise returns null."
   [el]
   (if el
-    (if (or (lucuma-element? el) (exists? (.-host el)))
+    (if (or (lucuma-element? el) (and (exists? js/ShadowRoot) (instance? js/ShadowRoot el)))
       (or (.-host el) el)
       (if-let [pel (.-parentNode el)] (recur pel)))))
 
