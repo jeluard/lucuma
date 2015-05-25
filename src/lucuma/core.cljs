@@ -95,9 +95,11 @@
       (let [pv (get-properties el)]
         (doseq [[k v] m
                 :let [os (k (:properties ps))]]
-          (let [et (:type os)]
-            (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
-              (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k)}))))
+          (if os
+            (let [et (:type os)]
+              (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
+                (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k)}))))
+            (throw (ex-info (str "Cannot set undefined property <" k ">") {:property (name k)})))
           (if (and consider-attributes? (property-definition-attributes? os))
             (att/set! el k v))
           (if (and initialization? (property-definition-events? os))
