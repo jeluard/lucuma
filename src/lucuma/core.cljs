@@ -220,7 +220,9 @@
   ; Set default properties values
   (install-lucuma-properties-holder! el)
   (install-properties-holder! el)
-  (set-properties! el m ps true true))
+  (set-properties! el m ps true true)
+  (doseq [[k v] (:attributes ps)]
+    (.setAttribute el (name k) (str v))))
 
 (defn- install-content!
   [r {:keys [document style]}]
@@ -337,7 +339,7 @@
         (merge m {:type it})))))
 
 (def all-keys
-  #{:name :ns :prototype :extends :mixins :document :style :properties :methods
+  #{:name :ns :prototype :extends :mixins :document :style :attributes :properties :methods
     :on-created :on-attached :on-detached :on-changed :requires-shadow-dom?})
 
 (defn ignored-keys

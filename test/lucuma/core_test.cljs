@@ -259,6 +259,12 @@
   (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style1")))))
   (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style2"))))))
 
+(defwebcomponent test-attribute-1
+  :attributes {:attribute 1})
+
+(deftest attributes
+  (is (= "1" (.getAttribute (.createElement js/document "test-attribute-1") "attribute"))))
+
 (defwebcomponent test-on-created-1
   :on-created (fn [] {:document "content"}))
 (defwebcomponent test-on-created-2
@@ -501,6 +507,8 @@
   (l/register test-style-2)
   (append "test-style-1")
   (append "test-style-2")
+
+  (l/register test-attribute-1)
 
   (l/register test-on-created-1)
   (l/register test-on-created-2)
