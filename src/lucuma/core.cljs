@@ -350,20 +350,20 @@
 (defn register
   "Registers a new Custom Element from its definition.
    Returns true if registration was successful, falsey value if the definition was already registered."
-  ([m] (register (:name m) m))
-  ([n m]
+  ([m]
    {:pre [(map? m)]}
-    (if-not (registered? n)
-      (let [{:keys [properties methods]} m
-            prototype (prototype m)]
-        ; Validate property / method names
-        (doseq [[o _] (concat properties methods)]
-          (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o)))
-        (let [um (assoc m :properties (into {} (for [[k v] properties]
-                                                 [k (or (validate-property-definition! k v) v)])))]
-          (swap! registry assoc n um)
-          (ce/register n (create-prototype um prototype) (:extends m)))
-        true)))
+   (let [n (:name m)]
+     (if-not (registered? n)
+       (let [{:keys [properties methods]} m
+             prototype (prototype m)]
+         ; Validate property / method names
+         (doseq [[o _] (concat properties methods)]
+           (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o)))
+         (let [um (assoc m :properties (into {} (for [[k v] properties]
+                                                  [k (or (validate-property-definition! k v) v)])))]
+           (swap! registry assoc n um)
+           (ce/register n (create-prototype um prototype) (:extends m)))
+         true))))
   ([m1 m2 & ms]
     (register m1)
     (register m2)
