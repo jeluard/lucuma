@@ -1,5 +1,6 @@
 (ns lucuma.core
-  (:require [cljs.analyzer :refer [*cljs-ns*]]))
+  (:require [cljs.analyzer :refer [*cljs-ns*]]
+            [clojure.tools.macro :refer [name-with-attributes]]))
 
 (defn- split-args
   "Split the given key-values into a pair of arguments and remaining key values."
@@ -19,7 +20,8 @@
     [title]
     :extends :button)"
   [n & c]
-  (let [[args kvs] (split-args c)
+  (let [[n c] (name-with-attributes n c)
+        [args kvs] (split-args c)
         default {:name (name n) :ns (name *cljs-ns*)}
         m (merge kvs default)]
     (if (seq args)
