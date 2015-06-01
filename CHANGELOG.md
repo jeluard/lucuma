@@ -1,10 +1,12 @@
 # [0.5.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.5.0)
 
-* **[+]** Document can be defined as a function that takes a map of all property values as argument
-* **[+]** Introduced **render-document-fn** allowing to provide a custom rendering function
 * **[+]** Introduced **on-changed** callback allowing to be notified of all property/attribute changes
+* **[+]** Introduced **mixins** support
+* **[+]** Dash-based property name are now supported
+* **[+]** Added support for **attributes**
 * **[~]** ShadowDOM is not created by default even when supported by browser.
-* **[~]** Rename `lucuma` to `lucuma.core` (no more single segment namespace)
+* **[~]** Renamed `lucuma` to `lucuma.core` (no more single segment namespace)
+* **[-]** Old extension mechanism has been removed in favour of new **mixins**
 
 # [0.3.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.3.0)
 

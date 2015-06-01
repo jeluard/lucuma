@@ -4,11 +4,11 @@
 
 A [Web Components](http://webcomponents.org/) library for ClojureScript. Lucuma helps with creating reusable HTML elements encapsulating document, style and logic.
 
-Lucuma is available in clojars as `[lucuma "0.3.0"]`.
+[![Clojars Project](http://clojars.org/lucuma/latest-version.svg)](http://clojars.org/lucuma).
 
 ## Getting Started
 
-Define your custom element
+First define your custom element
 
 ```clojure
 (ns your.ns
@@ -20,13 +20,16 @@ Define your custom element
   :properties {:threshold 10})
 ```
 
-Register it
+Then register it
 
-```clojure           
+```clojure
+(ns your.ns
+  (:require [lucuma.core :as l]))
+
 (l/register my-element)
 ```
 
-Manipulate it like any HTML element
+Finally manipulate it like any HTML element
 
 ```javascript
 <my-element threshold="15"></my-element>
@@ -44,27 +47,28 @@ Manipulate it like any HTML element
 
 Custom elements are defined as maps of keyword / value. This map serves as the abstract definition for the element prototype.
 
-Once a Web Component is defined and registered in the current document a new HTML tag is available (named after the Web Component). It can be inserted in the DOM as any regular HTML element (including programmatically).
-
-For encapsulation purpose document and style are optionally appended to a Shadow DOM.
+Once a Web Component is defined and registered in the current document a new HTML tag is available (named after the var). It can be inserted in the DOM as any regular HTML element (including programmatically).
 
 ### Lifecycle
 
-Custom Elements define lifecycle callbacks that hook on element instance creation, DOM attachment and detachment.
+Custom Elements define callbacks that hook on element lifecycle.
 
 You can hook functions to the element lifecycle using following keys:
 
-* **on-created** called when an instance of the element is created (e.g. via document.createElement)
+* **on-created** called when an instance of the element is created (e.g. via `document.createElement`)
 * **on-attached** called after an instance of the element is attached to the DOM
 * **on-detached** called after an instance of the element is detached from the DOM
 * **on-changed** called each time a property/attribute is changed (multi changes via **set-properties!** will trigger a single **on-changed**)
 
-All functions receive as unique argument the element instance.
+All functions receive as first argument the element instance.
+
+**on-created** receives as second argument a map of consolidated properties (see documentation [later](#properties)) values. It can return a map containing a value for **document** and **on-changed** that will be used for this specific element instance.
+
+**on-changed** receives as second argument a list of changes as map (`{:property :property-name :old-value "old" :new-value "new"}`).
 
 ```clojure
 (defwebcomponent my-element
-  :document "Hello!"
-  :on-created #(println % "created")
+  :on-created #(do (println %1 "created") {:document (str "<div>" (count %2) " properties</div>")})
   :on-attached #(println % "attached")
   :on-detached #(println % "detached")
   :on-changed #(println %1 " got some changes" %2))
@@ -72,78 +76,25 @@ All functions receive as unique argument the element instance.
 
 ### Document
 
-Document of a Web Component comes from the **document** value that will be rendered based on its type then appended to the element. This process is triggered per instance during the creation phase.
+The document of a Web Component comes from the **document** value that will be appended to the element instance. This process is triggered per instance during the creation phase.
 
-The rendering process consists of:
-
-1. call **render-document** multimethod (dispatch on document type) to generate the rendered html
-2. call **install-rendered-document!** multimethod (dispatch on rendered document type) to insert document in the Custom Element.
-
-**render-document** has implementations for *String*. 
-**install-rendered-document!** have implementations for *String*, any *HTMLElement* and *DocumentFragment*.
-
-Multiple document can be defined by providing a list as value. Each list value goes through the complete process as if it was defined as main document value.
+**document** value can be either a String or a Node instance.
 
 ```clojure
 (defwebcomponent my-element
-  :document (list "some" "content"))
-```
-
-#### ShadowDOM
-
-If the current browser supports ShadowDOM document and style will be encapsulated in a lucuma specific ShadowRoot.
-Usage of a ShadowDOM can be required when defining an element using **requires-shadow-dom?**. In this case the element registration will fail if the browser does not support ShadowDOM.
-By default ShadowDOM is not used and the content is directly appended to the element.
-
-ShadowDOM provides a number of extra capacities and prevent name /id clashes.
-
-#### Custom rendering
-
-As rendering is delegated to the **render-document** multimethod custom logic can be hooked. A common use-case is to use a hiccup implementation (such as [hipo](https://github.com/jeluard/hipo)) to render vectors.
-
-```clojure
-(ns ...
-  (:require [lucuma.core :as l])
-  (:require-macros [hipo :refer [create]]))
-
-(derive PersistentVector ::vector)
-(defmethod l/render-document ::vector [v] (create v))
-
-(defwebcomponent my-element
-  :document [:div "content"])
+  :document "<div>some content</div>")
 ```
 
 ### Style
 
-Style is treated similarly to document.
+The style of a Web Component comes from the **style** value that will be appended as a `style` element to the element instance. This process is triggered per instance during the creation phase.
 
-The rendering process consists of:
-
-1. call **render-style** multimethod (dispatch on document type) to generate the rendered style
-2. call **install-rendered-style!** multimethod (dispatch on rendered style type) to insert style element in the DOM
-
-**render-style** has implementations for *String*. 
-**install-rendered-style!** has an implementation for *String*.
-
-As for document, multiple style can be defined by providing a list as value.
+**style** value can be a String or a map.
 
 ```clojure
 (defwebcomponent my-element
-  :document "content"
+  :document "<div>some content</div>"
   :style "span { background: blue; color: white; border: 0; border-radius: 4px;}")
-```
-
-#### Custom logic support
-
-As rendering is delegated to the **render-style** multimethod custom logic can be hooked. A common use-case is to use a [garden](https://github.com/noprompt/garden) to render vectors.
-
-```clojure
-(derive PersistentVector ::vector)
-(defmethod render-style ::vector [v] (garden/css v))
-
-(defwebcomponent my-element
-  :document "content"
-  :style [:span {:background "#3d7c45" :color "white" :border 0 :border-radius (px 4)}])
 ```
 
 #### Media Queries
@@ -152,9 +103,23 @@ Style can be defined as map allowing to provide **title** and **media** value on
 
 ```clojure
 (defwebcomponent my-element
-  :document "content"
+  :document "<div>content</div>"
   :style {:media "screen and (min-width: 800px)" :title "Large Screen"
-          :content [:span {:border "1px dotted black;"}]})
+          :content "div { background: blue; color: white; border: 0; border-radius: 4px;}"})
+```
+
+#### ShadowDOM
+
+ShadowDOM is a feature part of Web Components offering among other things style and DOM encapsulation.
+Usage of a ShadowDOM is optional and can be required when defining an element using **requires-shadow-dom?**. If required the element registration will fail if the browser does not support ShadowDOM.
+
+### Attributes
+
+Static attributes that will be set on the host element instance can be provided via the **attributes** element.
+
+```clojure
+(defwebcomponent my-element
+  :attributes {:aria-label "label"})
 ```
 
 ### Properties
@@ -166,18 +131,25 @@ A property can be exported as HTML attribute if **attributes?** is set to true (
 
 Changes to a property will fire DOM style events if **events?** is set to true (default to true for *:number*, *:boolean*, *:string* and *:object*).
 
+Note that properties name follow clojure naming convention (dash-based) but are accessed using underscore-based convention from JavaScript.
+
 ```clojure
 (defwebcomponent my-element
-  :properties {:property1 "default"
-               :property2 {:default 1 :type :number :events? true :attributes? true}})
+  :properties {:property-1 "default"
+               :property-2 {:default 1 :type :number :events? true :attributes? true}})
 ```
 
-When **document** is a function it will receive as only argument a map of consolidated property values (with element attributes overriding property defaults).
+The **on-created** callback receives as second argument a map of consolidated property values (with element attributes overriding property defaults).
 
 ```clojure
 (defwebcomponent my-element
-  :document #(fn [m] (str "<div>" (:property m) "</div>")
-  :properties {:property1 "content"})
+  :on-created #(println "Created with properties" m)
+  :properties {:property "default"})
+```
+
+```html
+<my-element property="overridden-value"></my-element>
+<!-- on-created callback will receive {:property "overridden-value"} -->
 ```
 
 ### Methods
@@ -202,51 +174,53 @@ el.method(); /* calls (some-method el) */
 
 ### Extension
 
-Existing element can be inherit capacity from other elements via prototype inheritance. **prototype** value can be a keyword referencing valid HTML element (including Custom ones) or an existing prototype.
+Existing element can inherit capacity from other elements via prototype inheritance. **prototype** value can be a keyword referencing valid HTML element (including Custom ones) or an existing prototype.
 
 ```clojure
 (defwebcomponent my-element
-  :prototype :div
-  :document "content")
+  :prototype :div)
 
 (defwebcomponent my-other-element
-  :prototype js/HTMLButtonElement.prototype
-  :document "content")
+  :prototype js/HTMLButtonElement.prototype)
 ```
 
-Alternatively a Custom Element can extend an existing element. **extends** value must be a keyword referencing valid HTML element (including Custom ones).
-When both **prototype** and **extends** are provided **prototype** must include **extends** prototype in its prototype chain. If only **extends** is provided its prototype will be used directly.
-
-The HTML element must then be declared using the following syntax:
+If extending a Custom Element created via `defwebcomponent` directly reference the var. Their definition will then properly be merged as would happen if it was used as a mixin.
 
 ```clojure
-(defwebcomponent time-ago
-  :extends :time)
+(defwebcomponent my-element
+  :prototype :div)
+
+(defwebcomponent my-extended-element
+  :prototype my-element)
 ```
 
-```html
-<time is="time-ago"></time>
-```
-
-### Reuse
+### Reuse via mixins
 
 To improve element reuse defwebcomponent has advanced syntax allowing to introduce parametrization and reuse existing definition.
 
 By providing a vector as first element of a defwebcomponent arguments can be defined that can then be used in the element definition. defwebcomponent type will then be a function that returns a map upon invocation. This map will have to be registered (as opposed to the defwebcomponent itself).
 
-Also by providing a map as first element of a defwebcomponent (or second if vector are used) definitions of this map will be used as default.
+```clojure
+(defwebcomponent my-element
+  [value]
+  :properties {:default-threshold value})
+
+(register (my-element 15))
+```
+
+**mixins** allows to provide shared definition by providing a list of map and/or function. All maps are first merged in order with the definition map itself (definition being merged last)
+then all functions are applied in order with the first function receiving the consolidated map as argument and all subsequents the result of previous function invocation.
+The final map definition is then the result of last function invocation.
 
 ```clojure
 (def default
-  {:document [:div "Hello reuse!"]
-   :properties {:property "value"}})
+  {:document "<div>some content</div>"
+   :properties {:property1 "value" :property2 2}})
 
 (defwebcomponent my-element
   [value]
-  default
+  :mixins [default #(update-in % [:properties :property2] inc)]
   :properties {:threshold value})
-
-(register (my-element 15))
 ```
 
 ## Browser support
@@ -258,6 +232,6 @@ Support for Custom Elements / ShadowDOM is appearing in recent browser releases.
 
 ## License
 
-Copyright © 2014 Julien Eluard.
+Copyright © 2014-2015 Julien Eluard.
 
 Distributed under the Eclipse Public License, the same as Clojure.
