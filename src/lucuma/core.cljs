@@ -5,7 +5,8 @@
             [lucuma.shadow-dom :as sd]
             [lucuma.util :as u]
             cljsjs.document-register-element)
-  (:refer-clojure :exclude [methods]))
+  (:refer-clojure :exclude [methods])
+  (:require-macros lucuma.core))
 
 ; Property access
 
@@ -314,11 +315,9 @@
 
 (defn- validate-property-name!
   "Ensures a property name is valid."
-  [el n]
+  [n]
   (if-not (u/valid-identifier? n)
-    (throw (ex-info (str "Invalid property name <" n ">") {:property n})))
-  (if (exists? (aget el n))
-    (throw (ex-info (str "Property <" n "> is already defined") {:property n}))))
+    (throw (ex-info (str "Invalid property name <" n ">") {:property n}))))
 
 (defn validate-property-definition!
   "Ensures a property definition is sound. Throws a js/Error if not.
@@ -358,7 +357,7 @@
              prototype (prototype m)]
          ; Validate property / method names
          (doseq [[o _] (concat properties methods)]
-           (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o)))
+           (validate-property-name! (name o)))
          (let [um (assoc m :properties (into {} (for [[k v] properties]
                                                   [k (or (validate-property-definition! k v) v)])))]
            (swap! registry assoc n um)
