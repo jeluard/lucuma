@@ -250,8 +250,6 @@
           (set-property! el m k v false false)
           (u/warn (str "Changing attribute for " (name k) " but its attributes? is false.")))))))
 
-(def ^:private default-element (.createElement js/document "div")) ; div does not define any extra property / method
-
 (defn prototype-of
   [o]
   (cond
