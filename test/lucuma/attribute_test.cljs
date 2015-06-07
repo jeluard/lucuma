@@ -13,7 +13,7 @@
 
 (deftest attribute->property
   (is (= "string" (att/attribute->property [:string "string"])))
-  (is (= "" (att/attribute->property [:string ""])))
+  (is (= nil (att/attribute->property [:string ""])))
   (is (= nil (att/attribute->property [:string nil])))
   (is (= :keyword (att/attribute->property [:keyword "keyword"])))
   (is (= :lucuma.attribute-test/keyword (att/attribute->property [:keyword "lucuma.attribute-test/keyword"])))

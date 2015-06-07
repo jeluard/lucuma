@@ -18,7 +18,7 @@
   (if-not (empty? s)
     (read-string s)))
 
-(defmethod attribute->property :string [v] (second v))
+(defmethod attribute->property :string [v] (let [s (second v)] (if-not (empty? s) s)))
 (defmethod attribute->property :keyword [v] (keyword (second v)))
 (defmethod attribute->property :boolean [v] (let [s (second v)] (if (empty? s) true (read-string s))))
 (defmethod attribute->property :number [v] (read-non-empty-string (second v)))
