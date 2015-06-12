@@ -3,8 +3,7 @@
             [lucuma.attribute :as att]
             [lucuma.custom-elements :as ce]
             [lucuma.shadow-dom :as sd]
-            [lucuma.util :as u]
-            cljsjs.document-register-element)
+            [lucuma.util :as u])
   (:refer-clojure :exclude [methods])
   (:require-macros lucuma.core))
 
@@ -82,11 +81,16 @@
       :else :object)
     :object))
 
-(defn fire-event
+(defn- fire-event
   [el n m]
   (let [ev (js/Event. (name n))]
     (aset ev "detail" (clj->js m))
     (.dispatchEvent el ev)))
+
+(defn changes->map
+  "Returns a map of changed values"
+  [s]
+  (reduce #(merge %1 {(:property %2) (:new-value %2)}) {} s))
 
 (defn set-properties!
   "Sets all properties."
@@ -100,7 +104,7 @@
             (let [et (:type os)]
               (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
                 (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el}))))
-            (throw (ex-info (str "Cannot set undefined property <" k ">") {:property (name k) :target el})))
+            (.setAttribute el (name k) (att/property->attribute v)))
           (if (and consider-attributes? (property-definition-attributes? os))
             (att/set! el k v))
           (if (and initialization? (property-definition-events? os))
