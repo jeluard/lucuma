@@ -304,7 +304,7 @@
                       (merge m {:prototype (prototype-of prototype)
                                 :properties (merge-properties properties
                                                               #(clj->js (get-property %2 %1))
-                                                              #(set-property! %2 %1 (js->clj %3)))
+                                                              #(set-property! %2 %1 (js->clj %3 :keywordize-keys true)))
                                 :on-created on-created :on-attribute-changed on-attribute-changed
                                 ; Propagate through prototype chain
                                 :on-attached #(call-callback-when-defined m :on-attached %)
