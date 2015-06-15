@@ -92,27 +92,31 @@
   [s]
   (reduce #(merge %1 {(:property %2) (:new-value %2)}) {} s))
 
+(defn- set-properties*
+  [el m pv ps consider-attributes? initialization?]
+  (doseq [[k v] m]
+    (let [os (k (:properties ps))]
+      (if os
+        (let [et (:type os)]
+          (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
+            (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el})))))
+      (if (or (not os) (and consider-attributes? (property-definition-attributes? os)))
+        (att/set! el k v))
+      (if (and initialization? (property-definition-events? os))
+        (fire-event el k {:old-value (k pv) :new-value v}))
+      (aset el lucuma-properties-holder-name properties-holder-name (name k) v))))
+
 (defn set-properties!
   "Sets all properties."
   ([el m] (set-properties! el m (get-definition (element-name el)) true false))
   ([el m ps consider-attributes? initialization?]
     (if (lucuma-element? el)
-      (let [pv (get-properties el)]
-        (doseq [[k v] m
-                :let [os (k (:properties ps))]]
-          (if os
-            (let [et (:type os)]
-              (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
-                (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el})))))
-          (if (or (not os) (and consider-attributes? (property-definition-attributes? os)))
-            (att/set! el k v))
-          (if (and initialization? (property-definition-events? os))
-            (fire-event el k {:old-value (k pv) :new-value v}))
-          (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
-        (if-not initialization?
-          (let [o (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
-            (if-let [f (or (get-lucuma-property! el on-changed-property-name) (:on-changed ps))]
-              (f el o))))))))
+      (let [pv (get-properties el)
+            on-changed (or (get-lucuma-property! el on-changed-property-name) (:on-changed ps))]
+        (if (and (not initialization?) on-changed)
+          (if-not (false? (on-changed el (for [[k v] m] {:property k :old-value (k pv) :new-value v})))
+            (set-properties* el m pv ps consider-attributes? initialization?))
+          (set-properties* el m pv ps consider-attributes? initialization?))))))
 
 (defn set-property!
   "Sets the value of a named property."
