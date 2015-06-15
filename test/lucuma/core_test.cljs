@@ -409,10 +409,17 @@
 
 (defwebcomponent test-property-fail-1
   :properties {:invalid_property_name nil})
+(defwebcomponent test-property-fail-2
+  :properties {:id nil})
+(defwebcomponent test-property-fail-3
+  :extends :img
+  :properties {:src nil})
 
 (deftest property-name
   (is (l/register test-property-1))
-  (is (thrown? js/Error (l/register test-property-fail-1))))
+  (is (thrown? js/Error (l/register test-property-fail-1)))
+  (is (thrown? js/Error (l/register test-property-fail-2)))
+  (is (thrown? js/Error (l/register test-property-fail-3))))
 
 (deftest properties
   (is (nil? (.-property (.createElement js/document "test-property-1")))))
@@ -448,6 +455,8 @@
             :method4 (fn [& args] args)})
 (defwebcomponent test-method-2
   :methods {:invalid_method_name nil})
+(defwebcomponent test-method-3
+  :methods {:constructor nil})
 
 (deftest methods
   (is (= 1 (.method1 (.createElement js/document "test-method-1"))))
@@ -455,7 +464,8 @@
   (is (= "value" (.method3 (.createElement js/document "test-method-1") #js {:key "value"})))
   (is (not (nil? (first (.method4 (.createElement js/document "test-method-1"))))))
   (is (nil? (second (.method4 (.createElement js/document "test-method-1")))))
-  (is (thrown? js/Error (l/register test-method-2))))
+  (is (thrown? js/Error (l/register test-method-2)))
+  (is (thrown? js/Error (l/register test-method-3))))
 
 (defwebcomponent test-extension-1
   :on-created #(l/set-property! % :property1 "2")
