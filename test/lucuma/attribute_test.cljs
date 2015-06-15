@@ -4,12 +4,14 @@
   (:refer-clojure :exclude [get set]))
 
 (deftest property->attribute
-  (is (= "" (att/property->attribute nil)))
+  (is (= nil (att/property->attribute nil)))
+  (is (= nil (att/property->attribute "")))
   (is (= "string" (att/property->attribute "string")))
   (is (= "keyword" (att/property->attribute :keyword)))
   (is (= "lucuma.attribute-test/keyword" (att/property->attribute :lucuma.attribute-test/keyword)))
   (is (= "5.2" (att/property->attribute 5.2)))
-  (is (= "true" (att/property->attribute true))))
+  (is (= "" (att/property->attribute true)))
+  (is (= nil (att/property->attribute false))))
 
 (deftest attribute->property
   (is (= "string" (att/attribute->property [:string "string"])))

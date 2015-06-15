@@ -9,19 +9,16 @@
 (defmulti property->attribute type)
 
 (defmethod property->attribute Keyword [o] (string/replace-first (str o) #":" ""))
-(defmethod property->attribute :default [o] (str o))
+(defmethod property->attribute js/Boolean [b] (if (true? b) ""))
+(defmethod property->attribute js/String [s] (if-not (empty? s) s))
+(defmethod property->attribute :default [o] (if o (str o)))
 
 (defmulti attribute->property first)
 
-(defn- read-non-empty-string
-  [s]
-  (if-not (empty? s)
-    (read-string s)))
-
-(defmethod attribute->property :string [v] (let [s (second v)] (if-not (empty? s) s)))
-(defmethod attribute->property :keyword [v] (keyword (second v)))
-(defmethod attribute->property :boolean [v] (let [s (second v)] (cond (nil? s) false (identical? "" s) true :else (read-string s))))
-(defmethod attribute->property :number [v] (read-non-empty-string (second v)))
+(defmethod attribute->property :string [[_ s]] (if-not (empty? s) s))
+(defmethod attribute->property :keyword [[_ k]] (keyword k))
+(defmethod attribute->property :boolean [[_ b]] (cond (nil? b) false (identical? "" b) true :else (read-string b)))
+(defmethod attribute->property :number [[_ n]] (if-not (empty? n) (read-string n)))
 (defmethod attribute->property :default [v] (.log js/console (str "Can't convert attribute of type <" (first v) ">")))
 
 ; attribute accessors
@@ -42,7 +39,8 @@
   [el n v]
   (let [n (name n)]
     (if (and v (not= v false))
-      (.setAttribute el n (if (true? v) "" (property->attribute v)))
+      (if-let [s (property->attribute v)]
+        (.setAttribute el n s))
       (.removeAttribute el n))))
 
 (defn property-definition

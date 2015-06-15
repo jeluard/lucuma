@@ -103,9 +103,8 @@
           (if os
             (let [et (:type os)]
               (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
-                (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el}))))
-            (.setAttribute el (name k) (att/property->attribute v)))
-          (if (and consider-attributes? (property-definition-attributes? os))
+                (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el})))))
+          (if (or (not os) (and consider-attributes? (property-definition-attributes? os)))
             (att/set! el k v))
           (if (and initialization? (property-definition-events? os))
             (fire-event el k {:old-value (k pv) :new-value v}))
