@@ -314,13 +314,15 @@
       (aset prototype (name k) (u/wrap-with-callback-this-value (u/wrap-to-javascript v))))
     prototype))
 
+(def ^:private default-element (.createElement js/document "div")) ; div does not define any extra property / method
+
 (defn- validate-property-name!
   "Ensures a property name is valid."
-  [el n]
+  [el n m]
   (if-not (u/valid-identifier? n)
     (throw (ex-info (str "Invalid property name <" n ">") {:property n})))
-  (if (exists? (aget el n))
-    (throw (ex-info (str "Property <" n "> is already defined") {:property n}))))
+  (if (and (exists? (aget el n)) (not (:override? m)))
+    (throw (ex-info (str "Property <" n "> is already defined. Add `:override? true` to force the override.") {:property n}))))
 
 (defn validate-property-definition!
   "Ensures a property definition is sound. Throws a js/Error if not.
@@ -359,8 +361,8 @@
        (let [{:keys [properties methods]} m
              prototype (prototype m)]
          ; Validate property / method names
-         (doseq [[o _] (concat properties methods)]
-           (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o)))
+         (doseq [[o m] (concat properties methods)]
+           (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o) m))
          (let [um (assoc m :properties (into {} (for [[k v] properties]
                                                   [k (or (validate-property-definition! k v) v)])))]
            (swap! registry assoc n um)
