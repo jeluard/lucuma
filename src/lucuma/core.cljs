@@ -239,8 +239,8 @@
   (if style
     (install-style! r style)))
 
-(defn- property-name->js-property-name [s] (string/replace (name s) "-" "_"))
-(defn- js-property-name->property-name [s] (string/replace (name s) "_" "-"))
+(defn- property-name->js-property-name [s] (.replace (name s) "-" "_"))
+(defn- js-property-name->property-name [s] (.replace (name s) "_" "-"))
 
 (defn- merge-properties
   [p g s]
