@@ -4,7 +4,6 @@
             [lucuma.core-test :as l]
             [lucuma.attribute-test :as att]
             [lucuma.custom-elements-test :as cet]
-            [lucuma.shadow-dom-test :as sdt]
             [lucuma.util-test :as ut]
             [hipo.core :as hipo]
             [dommy.core :as dommy]))

@@ -1,4 +1,4 @@
-# Lucuma [![License](http://img.shields.io/badge/license-EPL-blue.svg?style=flat)](https://www.eclipse.org/legal/epl-v10.html) [![Build Status](http://img.shields.io/travis/jeluard/lucuma.svg?style=flat)](http://travis-ci.org/#!/jeluard/lucuma/builds) [![Dependency Status](https://www.versioneye.com/user/projects/53975c7c83add7f33c00000d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53975c7c83add7f33c00000d)
+# Lucuma [![License](http://img.shields.io/badge/license-EPL-blue.svg?style=flat)](https://www.eclipse.org/legal/epl-v10.html) [![Build Status](http://img.shields.io/travis/jeluard/lucuma.svg?style=flat)](http://travis-ci.org/#!/jeluard/lucuma/builds)
 
 [Getting Started](#getting-started) | [Usage](#usage) | [Browser support](#browser-support)
 
@@ -107,11 +107,6 @@ Style can be defined as map allowing to provide **title** and **media** value on
   :style {:media "screen and (min-width: 800px)" :title "Large Screen"
           :content "div { background: blue; color: white; border: 0; border-radius: 4px;}"})
 ```
-
-#### ShadowDOM
-
-ShadowDOM is a feature part of Web Components offering among other things style and DOM encapsulation.
-Usage of a ShadowDOM is optional and can be required when defining an element using **requires-shadow-dom?**. If required the element registration will fail if the browser does not support ShadowDOM.
 
 ### Attributes
 
@@ -225,9 +220,21 @@ The final map definition is then the result of last function invocation.
 
 ## Browser support
 
-Support for Custom Elements / ShadowDOM is appearing in recent browser releases. Some descent polyfill can be used for older browser:
+```javascript
+var supported = 'registerElement' in document;
+if (!supported) {
+  var polyfill = document.createElement("script");
+  polyfill.onload = load();
+  polyfill.src = "";
+  document.head.appendChild(polyfill);
+} else {
+  load();
+}
+```
 
-* [WebComponents.org](http://webcomponents.org/polyfills/) polyfills both Custom Elements / ShadowDOM for evergreen browsers
+Support for Custom Elements is appearing in recent browser releases. Some descent polyfill can be used for older browser:
+
+* [WebComponents.org](http://webcomponents.org/polyfills/) polyfills Custom Elements for evergreen browsers
 * [document-register-element](https://github.com/WebReflection/document-register-element/) polyfill Custom Elements for pretty much all browsers and is pretty small
 
 ## License

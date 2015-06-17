@@ -1,7 +1,6 @@
 (ns lucuma.core-test
   (:require [cemerick.cljs.test :as t :refer-macros [deftest done is use-fixtures]]
-            [lucuma.core :as l :refer-macros [defwebcomponent]]
-            [lucuma.shadow-dom :as sd])
+            [lucuma.core :as l :refer-macros [defwebcomponent]])
   (:refer-clojure :exclude [methods]))
 
 (def ^:private tests-node "tests-appends")
@@ -35,35 +34,6 @@
 (deftest validate-definition
   (is (thrown? js/Error (l/register "")))
   (is (thrown? js/Error (l/register {:unknown-key nil}))))
-
-(defwebcomponent test-sr-1
-  :requires-shadow-dom? true)
-(defwebcomponent test-sr-2
-  :document "<span></span>"
-  :requires-shadow-dom? true)
-(defwebcomponent test-sr-3
-  :style "* {background: red;}"
-  :requires-shadow-dom? true)
-
-(when (sd/supported?)
-  (deftest create-shadow-root-when-needed
-    (is (nil? (.-shadowRoot (by-id "test-sr-1"))))
-    (is (not (nil? (.-shadowRoot (by-id "test-sr-2")))))
-    (is (not (nil? (.-shadowRoot (by-id "test-sr-3"))))))
-
-  (deftest shadow-root
-    (is (nil? (l/shadow-root (.createElement js/document "div"))))
-    (is (nil? (l/shadow-root (.createElement js/document "test-sr-1"))))
-    (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2")))))
-    (is (not (nil? (l/shadow-root (.createElementNS js/document "http://www.w3.org/1999/xhtml" "test-sr-2")))))
-    (is (not (nil? (l/shadow-root (.createElement js/document "test-sr-2") :test-sr-2))))
-    (is (nil? (l/shadow-root (.createElement js/document "test-sr-2") :wrong-element-name))))
-
-  (deftest host
-    (is (nil? (l/host nil)))
-    (is (nil? (l/host (.createElement js/document "div"))))
-    (is (not (nil? (l/host (l/shadow-root (.createElement js/document "test-sr-2"))))))
-    (is (not (nil? (l/host (.-firstChild (l/shadow-root (.createElement js/document "test-sr-2")))))))))
 
 (defwebcomponent test-prototype-1)
 (defwebcomponent test-prototype-2
@@ -507,14 +477,6 @@
 (defn wrap-registration
   [f]
   (append-tests-node)
-
-  (when (sd/supported?)
-    (l/register test-sr-1)
-    (l/register test-sr-2)
-    (l/register test-sr-3)
-    (append "test-sr-1")
-    (append "test-sr-2")
-    (append "test-sr-3"))
 
   (l/register test-style-1)
   (l/register test-style-2)

@@ -2,7 +2,6 @@
   (:require [clojure.string :as string]
             [lucuma.attribute :as att]
             [lucuma.custom-elements :as ce]
-            [lucuma.shadow-dom :as sd]
             [lucuma.util :as u])
   (:refer-clojure :exclude [methods])
   (:require-macros lucuma.core))
@@ -124,31 +123,13 @@
   ([el os k v consider-attributes? initialization?]
     (set-properties! el {k v} os consider-attributes? initialization?)))
 
-; ShadowRoot support
-
-(def ^:private lucuma-shadow-root-property "lucuma")
-
-(defn shadow-root
-  "Returns lucuma ShadowRoot of element."
-  ([el] (shadow-root el (element-name el)))
-  ([el n]
-   (if (and (lucuma-element? el) n)
-     (some #(if (= (name n) (aget % lucuma-shadow-root-property)) %) (sd/shadow-roots el)))))
-
 (defn host
   "Returns the host of an element inside a custom element, walking parents as needed; otherwise returns null."
   [el]
   (if el
-    (if (or (lucuma-element? el) (and (exists? js/ShadowRoot) (instance? js/ShadowRoot el)))
-      (or (.-host el) el)
+    (if (lucuma-element? el)
+      el
       (if-let [pel (.-parentNode el)] (recur pel)))))
-
-(defn- create-shadow-root
-  "Creates and appends a ShadowRoot."
-  [el]
-  (let [sr (.createShadowRoot el)]
-    (aset sr lucuma-shadow-root-property (name (element-name el)))
-    sr))
 
 ; Prototype creation
 
@@ -177,18 +158,6 @@
     (if (and e (not= extends e))
       (.createElement js/document (name e) n)
       (.createElement js/document n))))
-
-(defn create-content-root
-  [el requires-shadow-dom?]
-  (if (and requires-shadow-dom? (not (sd/supported?)))
-    (throw (ex-info "ShadowDOM not supported but required" {})))
-  (if requires-shadow-dom?
-    (create-shadow-root el)
-    el))
-
-(defn content-root
-  [el]
-  (or (shadow-root el) el))
 
 (defn- install-document!
   [el d]
@@ -233,11 +202,11 @@
     (.setAttribute el (name k) (str v))))
 
 (defn- install-content!
-  [r {:keys [document style]}]
+  [el {:keys [document style]}]
   (if document
-    (install-document! r document))
+    (install-document! el document))
   (if style
-    (install-style! r style)))
+    (install-style! el style)))
 
 (defn- property-name->js-property-name [s] (.replace (name s) "-" "_"))
 (defn- js-property-name->property-name [s] (.replace (name s) "_" "-"))
@@ -278,11 +247,11 @@
       (throw (ex-info "Can't have :on-changed both statically defined and returned by :on-created" {})))))
 
 (defn- call-on-created
-  [f el r m mp]
+  [f el m mp]
   (when-let [o (f el mp)]
     (validate-on-created-result! m o)
     (if (contains? o :document)
-      (install-content! r o))
+      (install-content! el o))
     (if-let [on-changed (:on-changed o)]
       (set-lucuma-property! el on-changed-property-name on-changed))))
 
@@ -294,14 +263,13 @@
 (defn- create-prototype
   "Creates a Custom Element prototype from a map definition."
   [{:keys [properties methods] :as m} prototype]
-  (let [on-created #(let [mp (property-values properties (att/attributes %))
-                          r (create-content-root % (:requires-shadow-dom? m))]
+  (let [on-created #(let [mp (property-values properties (att/attributes %))]
                      (initialize-instance! % mp m)
                      ; If document or style is part of definition set it first before call to :on-created
-                     (install-content! r m)
+                     (install-content! % m)
                      (if-let [f (:on-created m)]
                        ; Handle eventual :document and :on-changed part of :on-created result
-                       (call-on-created f % r m mp)))
+                       (call-on-created f % m mp)))
         on-attribute-changed (fn [el a ov nv _]
                                (attribute-changed el (keyword (js-property-name->property-name a)) ov nv m))
         prototype (ce/create-prototype
@@ -348,7 +316,7 @@
 
 (def all-keys
   #{:name :ns :prototype :extends :mixins :document :style :attributes :properties :methods
-    :on-created :on-attached :on-detached :on-changed :requires-shadow-dom?})
+    :on-created :on-attached :on-detached :on-changed})
 
 (defn ignored-keys
   "Returns a set of ignored keys."
@@ -396,7 +364,6 @@
 
 (defn merge-mixins
   [m]
-  ; TODO warn on conflicting values for :requires-shadow-dom?
   (if-let [mxs (collect-mixins m)]
     (let [mm (reduce merge-map-definition (conj (filterv map? mxs) m))
           fns (filter fn? mxs)]
