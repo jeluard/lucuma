@@ -1,9 +1,8 @@
 # [0.5.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.5.0)
 
-* **[+]** Introduced **on-changed** callback allowing to be notified of all property/attribute changes
+* **[+]** Introduced **on-property-changed** callback allowing to be notified of all property/attribute changes
 * **[+]** Introduced **mixins** support
 * **[+]** Dash-based property name are now supported
-* **[+]** Added support for **attributes**
 * **[~]** ShadowDOM is not created by default even when supported by browser.
 * **[~]** Renamed `lucuma` to `lucuma.core` (no more single segment namespace)
 * **[-]** Old extension mechanism has been removed in favour of new **mixins**

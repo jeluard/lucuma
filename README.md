@@ -108,15 +108,6 @@ Style can be defined as map allowing to provide **title** and **media** value on
           :content "div { background: blue; color: white; border: 0; border-radius: 4px;}"})
 ```
 
-### Attributes
-
-Static attributes that will be set on the host element instance can be provided via the **attributes** element.
-
-```clojure
-(defwebcomponent my-element
-  :attributes {:aria-label "label"})
-```
-
 ### Properties
 
 Per instance properties can be accessed via JavaScript getter/setter and ClojureScript **get-property** / **set-property!**. When accessed via JavaScript values are properly converted in both directions. 
