@@ -11,4 +11,4 @@
   (is (not (u/valid-standard-element-name? nil)))
   (is (u/valid-standard-element-name? "a"))
   (is (u/valid-standard-element-name? "aa"))
-  (is (not (u/valid-standard-element-name? "my-component"))))
+  (is (not (u/valid-standard-element-name? "my-element"))))

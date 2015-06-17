@@ -2,7 +2,7 @@
 
 [Getting Started](#getting-started) | [Usage](#usage) | [Browser support](#browser-support)
 
-A [Web Components](http://webcomponents.org/) library for ClojureScript. Lucuma helps with creating reusable HTML elements encapsulating document, style and logic.
+A [Custom Elements](http://www.w3.org/TR/custom-elements/) library for ClojureScript. Lucuma helps with creating native reusable HTML elements.
 
 [![Clojars Project](http://clojars.org/lucuma/latest-version.svg)](http://clojars.org/lucuma).
 
@@ -12,9 +12,9 @@ First define your custom element
 
 ```clojure
 (ns your.ns
-  (:require [lucuma :as l :refer-macros [defwebcomponent]]))
+  (:require [lucuma :as l :refer-macros [defcustomelement]]))
 
-(defwebcomponent my-element
+(defcustomelement my-element
   :on-created #(set! (.-textContent %) "Hello World!")
   :properties {:threshold 10})
 ```
@@ -46,7 +46,7 @@ Finally manipulate it like any HTML element
 
 Custom elements are defined as maps of keyword / value. This map serves as the abstract definition for the element prototype.
 
-Once a Web Component is defined and registered in the current document a new HTML tag is available (named after the var). It can be inserted in the DOM as any regular HTML element (including programmatically).
+Once a Custom Element is defined and registered in the current document a new HTML tag is available (named after the var). It can be inserted in the DOM as any regular HTML element (including programmatically).
 
 ### Lifecycle
 
@@ -66,7 +66,7 @@ All functions receive as first argument the element instance.
 **on-property-changed** receives as second argument a list of changes as map (`{:property :property-name :old-value "old" :new-value "new"}`).
 
 ```clojure
-(defwebcomponent my-element
+(defcustomelement my-element
   :on-created #(println %1 "created")
   :on-attached #(println % "attached")
   :on-detached #(println % "detached")
@@ -85,7 +85,7 @@ Changes to a property will fire DOM style events if **events?** is set to true (
 Note that properties name follow clojure naming convention (dash-based) but are accessed using underscore-based convention from JavaScript.
 
 ```clojure
-(defwebcomponent my-element
+(defcustomelement my-element
   :properties {:property-1 "default"
                :property-2 {:default 1 :type :number :events? true :attributes? true}})
 ```
@@ -93,8 +93,8 @@ Note that properties name follow clojure naming convention (dash-based) but are 
 The **on-created** callback receives as second argument a map of consolidated property values (with element attributes overriding property defaults).
 
 ```clojure
-(defwebcomponent my-element
-  :on-created #(println "Created with properties" m)
+(defcustomelement my-element
+  :on-created #(println "Created with properties" %2)
   :properties {:property "default"})
 ```
 
@@ -114,7 +114,7 @@ Note that ClojureScript functions will receive the right element instance as fir
   [el]
   ...)
 
-(defwebcomponent my-element
+(defcustomelement my-element
   :methods {:method some-method})
 ```
 
@@ -128,31 +128,31 @@ el.method(); /* calls (some-method el) */
 Existing element can inherit capacity from other elements via prototype inheritance. **prototype** value can be a keyword referencing valid HTML element (including Custom ones) or an existing prototype.
 
 ```clojure
-(defwebcomponent my-element
+(defcustomelement my-element
   :prototype :div)
 
-(defwebcomponent my-other-element
+(defcustomelement my-other-element
   :prototype js/HTMLButtonElement.prototype)
 ```
 
-If extending a Custom Element created via `defwebcomponent` directly reference the var. Their definition will then properly be merged as would happen if it was used as a mixin.
+If extending a Custom Element created via `defcustomelement` directly reference the var. Their definition will then properly be merged as would happen if it was used as a mixin.
 
 ```clojure
-(defwebcomponent my-element
+(defcustomelement my-element
   :prototype :div)
 
-(defwebcomponent my-extended-element
+(defcustomelement my-extended-element
   :prototype my-element)
 ```
 
 ### Reuse via mixins
 
-To improve element reuse defwebcomponent has advanced syntax allowing to introduce parametrization and reuse existing definition.
+To improve element reuse defcustomelement has advanced syntax allowing to introduce parametrization and reuse existing definition.
 
-By providing a vector as first element of a defwebcomponent arguments can be defined that can then be used in the element definition. defwebcomponent type will then be a function that returns a map upon invocation. This map will have to be registered (as opposed to the defwebcomponent itself).
+By providing a vector as first element of a defcustomelement arguments can be defined that can then be used in the element definition. defcustomelement type will then be a function that returns a map upon invocation. This map will have to be registered (as opposed to the defcustomelement itself).
 
 ```clojure
-(defwebcomponent my-element
+(defcustomelement my-element
   [value]
   :properties {:default-threshold value})
 
@@ -167,7 +167,7 @@ The final map definition is then the result of last function invocation.
 (def default
   {:properties {:property1 "value" :property2 2}})
 
-(defwebcomponent my-element
+(defcustomelement my-element
   [value]
   :mixins [default #(update-in % [:properties :property2] inc)]
   :properties {:threshold value})
@@ -175,22 +175,35 @@ The final map definition is then the result of last function invocation.
 
 ## Browser support
 
+Support for Custom Elements is appearing in recent browser releases. Some descent polyfill can be used for other browsers:
+
+* [WebComponents.org](http://webcomponents.org/polyfills/custom-elements/#polyfill-details) provides a Custom Elements polyfill for evergreen browsers
+* [document-register-element](https://github.com/WebReflection/document-register-element/) provides a Custom Elements polyfill for older browsers and is pretty small
+
+`document-register-element` is also available as a [CLJSJS package](https://github.com/cljsjs/packages/tree/master/document-register-element) so it can be used as simply as:
+
+```clojure
+(ns application.core
+  (:require cljsjs.document-register-element))
+```
+
+For production environment you can also add the following snippet to your document head:
+
 ```javascript
+function init () {
+  // this code calls (l/register ..)
+}
+
 var supported = 'registerElement' in document;
 if (!supported) {
   var polyfill = document.createElement("script");
-  polyfill.onload = load();
-  polyfill.src = "";
+  polyfill.onload = init();
+  polyfill.src = "..."; // your polyfill URL, like "//cdnjs.cloudflare.com/ajax/libs/document-register-element/$LATEST_VERSION$/document-register-element.js"
   document.head.appendChild(polyfill);
 } else {
   load();
 }
 ```
-
-Support for Custom Elements is appearing in recent browser releases. Some descent polyfill can be used for older browser:
-
-* [WebComponents.org](http://webcomponents.org/polyfills/) polyfills Custom Elements for evergreen browsers
-* [document-register-element](https://github.com/WebReflection/document-register-element/) polyfill Custom Elements for pretty much all browsers and is pretty small
 
 ## License
 

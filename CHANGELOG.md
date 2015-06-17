@@ -1,10 +1,14 @@
 # [0.5.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.5.0)
 
+`lucuma` now focuses on creating Custom Elements and providing simple ClojureScript hooks.
+This release breaks backward compatibility.
+
 * **[+]** Introduced **on-property-changed** callback allowing to be notified of all property/attribute changes
 * **[+]** Introduced **mixins** support
 * **[+]** Dash-based property name are now supported
-* **[~]** ShadowDOM is not created by default even when supported by browser.
 * **[~]** Renamed `lucuma` to `lucuma.core` (no more single segment namespace)
+* **[~]** Renamed `defwebcomponent` to `defcustomelement`
+* **[-]** Removed support for ShadowDOM, **:document** and **:style**
 * **[-]** Old extension mechanism has been removed in favour of new **mixins**
 
 # [0.3.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.3.0)

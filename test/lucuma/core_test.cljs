@@ -1,6 +1,6 @@
 (ns lucuma.core-test
   (:require [cemerick.cljs.test :as t :refer-macros [deftest done is use-fixtures]]
-            [lucuma.core :as l :refer-macros [defwebcomponent]])
+            [lucuma.core :as l :refer-macros [defcustomelement]])
   (:refer-clojure :exclude [methods]))
 
 (def ^:private tests-node "tests-appends")
@@ -35,47 +35,47 @@
   (is (thrown? js/Error (l/register "")))
   (is (thrown? js/Error (l/register {:unknown-key nil}))))
 
-(defwebcomponent test-prototype-1)
-(defwebcomponent test-prototype-2
+(defcustomelement test-prototype-1)
+(defcustomelement test-prototype-2
   :extends :button)
-(defwebcomponent test-prototype-3
+(defcustomelement test-prototype-3
   :prototype test-prototype-2)
-(defwebcomponent test-prototype-4
+(defcustomelement test-prototype-4
   :prototype js/HTMLButtonElement.prototype)
-(defwebcomponent test-prototype-definition-1
+(defcustomelement test-prototype-definition-1
   :prototype test-prototype-3)
-(defwebcomponent test-prototype-definition-2
+(defcustomelement test-prototype-definition-2
   :prototype :test-prototype-polymer
   :extends :button)
-(defwebcomponent test-prototype-definition-3
+(defcustomelement test-prototype-definition-3
   :mixins [test-prototype-2])
-(defwebcomponent test-prototype-definition-4
+(defcustomelement test-prototype-definition-4
   [arg]
   :on-created #(set! (.-textContent %) (inc arg)))
-(defwebcomponent test-prototype-definition-5
+(defcustomelement test-prototype-definition-5
   [arg]
   :mixins [test-prototype-2]
   :on-created #(set! (.-textContent %) (inc arg)))
-(defwebcomponent test-prototype-definition-6
+(defcustomelement test-prototype-definition-6
   :prototype test-prototype-1)
-(defwebcomponent test-prototype-definition-7
+(defcustomelement test-prototype-definition-7
   :properties {:property1 "default" :property2 "default" :property3 "default"})
-(defwebcomponent test-prototype-definition-8
+(defcustomelement test-prototype-definition-8
   :mixins [test-prototype-definition-7]
   :properties {:property2 "another-default"})
 #_
-(defwebcomponent test-prototype-definition-9
+(defcustomelement test-prototype-definition-9
   :mixins [test-prototype-definition-8]
   :properties {:property3 "another-default"})
-(defwebcomponent test-prototype-definition-10
+(defcustomelement test-prototype-definition-10
   :mixins [{:properties {:property1 "value1" :property2 "value1"}} {:properties {:property1 "value2"}}]
   :properties {:property2 "value"})
 #_
-(defwebcomponent test-prototype-definition-11
+(defcustomelement test-prototype-definition-11
   :mixins [#(update-in % [:properties :property] inc)]
   :properties {:property 1})
 
-(defwebcomponent test-prototype-definition-fail-1
+(defcustomelement test-prototype-definition-fail-1
   :prototype :test-prototype-polymer)
 
 (deftest collect-mixins
@@ -87,24 +87,24 @@
   (is (= {2 2} (first (l/collect-mixins {:mixins [m2]}))))
   (is (= 2 (count (l/collect-mixins {:mixins [(fn []) (fn [])]}))))))
 
-(defwebcomponent mixin-1
+(defcustomelement mixin-1
   :mixins [{:properties {:property "value"}}])
-(defwebcomponent mixin-2
+(defcustomelement mixin-2
   :mixins [{:properties {:property "value"}}]
   :properties {:property "overridden-value"})
 (def defaults {:properties {:property "value"}})
-(defwebcomponent mixin-3
+(defcustomelement mixin-3
   :mixins [defaults])
 (def defaults-with-mixins
   {:mixins [defaults]})
 (def other-defaults-with-mixins
   {:mixins [defaults]
    :properties {:property "overridden-value"}})
-(defwebcomponent mixin-4
+(defcustomelement mixin-4
   :mixins [defaults-with-mixins])
-(defwebcomponent mixin-5
+(defcustomelement mixin-5
   :mixins [other-defaults-with-mixins])
-(defwebcomponent mixin-6
+(defcustomelement mixin-6
   :mixins [#(assoc-in % [:properties :property2] 1)
            #(update-in % [:properties :property] inc)]
   :properties {:property 1})
@@ -131,19 +131,19 @@
   (is (= "value" (get-in test-prototype-definition-10 [:properties :property2])))
   #_(is (= 3 (get-in test-prototype-definition-11 [:properties :property]))))
 
-(defwebcomponent test-extends-1)
-(defwebcomponent test-extends-2
+(defcustomelement test-extends-1)
+(defcustomelement test-extends-2
   :prototype :div)
-(defwebcomponent test-extends-3
+(defcustomelement test-extends-3
   :prototype test-extends-1)
-(defwebcomponent test-extends-4
+(defcustomelement test-extends-4
   :prototype test-extends-2)
-(defwebcomponent test-extends-5
+(defcustomelement test-extends-5
                  ;TODO fix :prototype :non-lucu-element
   :extends :div)
-(defwebcomponent test-extends-6
+(defcustomelement test-extends-6
   :prototype test-extends-4)
-(defwebcomponent test-extends-fail-1
+(defcustomelement test-extends-fail-1
   :prototype :non-lucu-element)
 
 (deftest host-type->extends
@@ -167,7 +167,7 @@
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-3")))
   (is (instance? js/HTMLButtonElement (.createElement js/document "test-prototype-4"))))
 
-(defwebcomponent test-register)
+(defcustomelement test-register)
 
 (deftest register-is-idempotent
   (is (true? (l/register test-register)) "first registration")
@@ -217,10 +217,10 @@
   (is (= true (l/property-definition-events? {:type :boolean})))
   (is (= false (l/property-definition-events? {:events? false :type :boolean}))))
 
-(defwebcomponent test-on-created-1
+(defcustomelement test-on-created-1
   :properties {:property 1}
   :on-created (fn [el m] (l/set-property! el :property (inc (:property m)))))
-(defwebcomponent test-on-created-2
+(defcustomelement test-on-created-2
   :on-created (fn [] {:invalid-property ""}))
 
 (deftest on-created
@@ -234,13 +234,13 @@
 
 (defn on-changed-reject [_ _] false)
 
-(defwebcomponent test-on-changed-1
+(defcustomelement test-on-changed-1
   :on-property-changed on-changed-inc
   :properties {:property 1})
-(defwebcomponent test-on-changed-2
+(defcustomelement test-on-changed-2
   :on-created (fn [_] {:on-property-changed on-changed-inc})
   :properties {:property 1})
-(defwebcomponent test-on-changed-3
+(defcustomelement test-on-changed-3
   :on-created (fn [_] {:on-property-changed on-changed-reject})
   :properties {:property 1})
 
@@ -261,7 +261,7 @@
 (def test-changed-callback1-called (atom 0))
 
 #_
-(defwebcomponent test-callback-1
+(defcustomelement test-callback-1
   :on-created #(reset! test-created-callback1-called true)
   :on-attached #(reset! test-attached-callback1-called true)
   :on-detached #(reset! test-detached-callback1-called true)
@@ -352,22 +352,22 @@
                      (is (= 0 @test-changed-callback1-called))
                      (done)) 100)))
 
-(defwebcomponent test-property-1
+(defcustomelement test-property-1
   :properties {:property nil
                :some-property ""})
-(defwebcomponent test-property-2
+(defcustomelement test-property-2
   :properties {:property1 "1"
                :property2 {:default 1 :type :number}
                :property-3 ""})
 
-(defwebcomponent test-property-fail-1
+(defcustomelement test-property-fail-1
   :properties {:invalid_property_name nil})
-(defwebcomponent test-property-fail-2
+(defcustomelement test-property-fail-2
   :properties {:id nil})
-(defwebcomponent test-property-fail-3
+(defcustomelement test-property-fail-3
   :extends :img
   :properties {:src nil})
-(defwebcomponent test-property-fail-4
+(defcustomelement test-property-fail-4
   :extends :img
   :properties {:src {:default nil :override? true}})
 
@@ -407,14 +407,14 @@
     #_
     (is (= "2" (l/get-property el :property1)))))
 
-(defwebcomponent test-method-1
+(defcustomelement test-method-1
   :methods {:method1 (fn [] 1)
             :method2 (fn [] {:key "value"})
             :method3 (fn [_ o] (get o "key"))
             :method4 (fn [& args] args)})
-(defwebcomponent test-method-2
+(defcustomelement test-method-2
   :methods {:invalid_method_name nil})
-(defwebcomponent test-method-3
+(defcustomelement test-method-3
   :methods {:constructor nil})
 
 (deftest methods
@@ -426,13 +426,13 @@
   (is (thrown? js/Error (l/register test-method-2)))
   (is (thrown? js/Error (l/register test-method-3))))
 
-(defwebcomponent test-extension-1
+(defcustomelement test-extension-1
   :on-created #(l/set-property! % :property1 "2")
   :properties {:property1 "1"}
   :methods {:method1 (fn [] 1)})
-(defwebcomponent test-extension-2
+(defcustomelement test-extension-2
   :prototype test-extension-1)
-(defwebcomponent test-extension-3
+(defcustomelement test-extension-3
   :prototype test-extension-2)
 
 (deftest extension

@@ -9,14 +9,14 @@
      [(first kvs) (apply hash-map (rest kvs))]
      [[] (apply hash-map kvs)]))
 
-(defmacro defwebcomponent
-  "Specify a Web Component as keyword / value pairs.
+(defmacro defcustomelement
+  "Specify a Custom Element as keyword / value pairs.
 
   When first argument is a vector its values are interpreted as arguments
-  that can be used by pair values and `defwebcomponent` defines a function whose return type is map.
-  Otherwise `defwebcomponent` defines a map.
+  that can be used by pair values and `defcustomelement` defines a function whose return type is map.
+  Otherwise `defcustomelement` defines a map.
 
-  (defwebcomponent my-button
+  (defcustomelement my-button
     [title]
     :extends :button)"
   [n & c]

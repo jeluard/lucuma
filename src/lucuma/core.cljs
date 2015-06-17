@@ -187,7 +187,7 @@
 (defn- attribute-changed
   "Updates property based on associated attribute change."
   [el k _ nv m]
-  (if-let [os (get-in m [:properties k])] ; Attribute changed is a property defined by our component
+  (if-let [os (get-in m [:properties k])] ; Attribute changed is a property defined by our element
     (let [v (att/attribute->property [(:type os) nv])]
       (if (not= v (get-property el k)) ; Value is different from current value: this is not a change due to a property change
         (if (property-definition-attributes? os) ; Property is managed by lucuma
