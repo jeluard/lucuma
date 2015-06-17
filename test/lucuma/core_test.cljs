@@ -260,13 +260,13 @@
 (defn on-changed-reject [_ _] false)
 
 (defwebcomponent test-on-changed-1
-  :on-changed on-changed-inc
+  :on-property-changed on-changed-inc
   :properties {:property 1})
 (defwebcomponent test-on-changed-2
-  :on-created (fn [_] {:on-changed on-changed-inc})
+  :on-created (fn [_] {:on-property-changed on-changed-inc})
   :properties {:property 1})
 (defwebcomponent test-on-changed-3
-  :on-created (fn [_] {:on-changed on-changed-reject})
+  :on-created (fn [_] {:on-property-changed on-changed-reject})
   :properties {:property 1})
 
 (deftest on-changed
@@ -290,7 +290,7 @@
   :on-created #(reset! test-created-callback1-called true)
   :on-attached #(reset! test-attached-callback1-called true)
   :on-detached #(reset! test-detached-callback1-called true)
-  :on-changed #(swap! test-changed-callback1-called inc)
+  :on-property-changed #(swap! test-changed-callback1-called inc)
   :properties {:property1 "default1" :property2 "default2"})
 
 #_

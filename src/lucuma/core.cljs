@@ -12,7 +12,7 @@
 
 (def ^:private lucuma-properties-holder-name "lucuma")
 (def ^:private properties-holder-name "properties")
-(def ^:private on-changed-property-name "on_changed")
+(def ^:private on-property-changed-property-name "on_property_changed")
 
 (defn- install-lucuma-properties-holder! [p] (aset p lucuma-properties-holder-name #js {}))
 
@@ -111,9 +111,9 @@
   ([el m ps consider-attributes? initialization?]
     (if (lucuma-element? el)
       (let [pv (get-properties el)
-            on-changed (or (get-lucuma-property! el on-changed-property-name) (:on-changed ps))]
-        (if (and (not initialization?) on-changed)
-          (if-not (false? (on-changed el (for [[k v] m] {:property k :old-value (k pv) :new-value v})))
+            on-property-changed (or (get-lucuma-property! el on-property-changed-property-name) (:on-property-changed ps))]
+        (if (and (not initialization?) on-property-changed)
+          (if-not (false? (on-property-changed el (for [[k v] m] {:property k :old-value (k pv) :new-value v})))
             (set-properties* el m pv ps consider-attributes? initialization?))
           (set-properties* el m pv ps consider-attributes? initialization?))))))
 
@@ -236,15 +236,15 @@
 
 (defn- validate-on-created-result!
   [m ocm]
-  (let [em (dissoc ocm :document :on-changed)]
+  (let [em (dissoc ocm :document :on-property-changed)]
     (if-not (empty? em)
-      (throw (ex-info ":on-created invocation can only return a map containing :document and/or :on-changed" em)))
+      (throw (ex-info ":on-created invocation can only return a map containing :document and/or :on-property-changed" em)))
     (if (and (contains? m :document)
              (contains? ocm :document))
       (throw (ex-info "Can't have :document both statically defined and returned by :on-created" {})))
-    (if (and (contains? m :on-changed)
-             (contains? ocm :on-changed))
-      (throw (ex-info "Can't have :on-changed both statically defined and returned by :on-created" {})))))
+    (if (and (contains? m :on-property-changed)
+             (contains? ocm :on-property-hanged))
+      (throw (ex-info "Can't have :on-property-changed both statically defined and returned by :on-created" {})))))
 
 (defn- call-on-created
   [f el m mp]
@@ -252,8 +252,8 @@
     (validate-on-created-result! m o)
     (if (contains? o :document)
       (install-content! el o))
-    (if-let [on-changed (:on-changed o)]
-      (set-lucuma-property! el on-changed-property-name on-changed))))
+    (if-let [on-property-changed (:on-property-changed o)]
+      (set-lucuma-property! el on-property-changed-property-name on-property-changed))))
 
 (defn- call-callback-when-defined
   [m k el]
@@ -268,7 +268,7 @@
                      ; If document or style is part of definition set it first before call to :on-created
                      (install-content! % m)
                      (if-let [f (:on-created m)]
-                       ; Handle eventual :document and :on-changed part of :on-created result
+                       ; Handle eventual :document and :on-property-changed part of :on-created result
                        (call-on-created f % m mp)))
         on-attribute-changed (fn [el a ov nv _]
                                (attribute-changed el (keyword (js-property-name->property-name a)) ov nv m))
@@ -316,7 +316,7 @@
 
 (def all-keys
   #{:name :ns :prototype :extends :mixins :document :style :attributes :properties :methods
-    :on-created :on-attached :on-detached :on-changed})
+    :on-created :on-attached :on-detached :on-property-changed})
 
 (defn ignored-keys
   "Returns a set of ignored keys."

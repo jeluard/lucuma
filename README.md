@@ -58,20 +58,20 @@ You can hook functions to the element lifecycle using following keys:
 * **on-created** called when an instance of the element is created (e.g. via `document.createElement`)
 * **on-attached** called after an instance of the element is attached to the DOM
 * **on-detached** called after an instance of the element is detached from the DOM
-* **on-changed** called each time a property/attribute is changed (multi changes via **set-properties!** will trigger a single **on-changed**)
+* **on-property-changed** called each time a property/attribute is changed (multi changes via **set-properties!** will trigger a single **on-property-changed**)
 
 All functions receive as first argument the element instance.
 
-**on-created** receives as second argument a map of consolidated properties (see documentation [later](#properties)) values. It can return a map containing a value for **document** and **on-changed** that will be used for this specific element instance.
+**on-created** receives as second argument a map of consolidated properties (see documentation [later](#properties)) values. It can return a map containing a value for **document** and **on-property-changed** that will be used for this specific element instance.
 
-**on-changed** receives as second argument a list of changes as map (`{:property :property-name :old-value "old" :new-value "new"}`).
+**on-property-changed** receives as second argument a list of changes as map (`{:property :property-name :old-value "old" :new-value "new"}`).
 
 ```clojure
 (defwebcomponent my-element
   :on-created #(do (println %1 "created") {:document (str "<div>" (count %2) " properties</div>")})
   :on-attached #(println % "attached")
   :on-detached #(println % "detached")
-  :on-changed #(println %1 " got some changes" %2))
+  :on-property-changed #(println %1 " got some changes" %2))
 ```
 
 ### Document
