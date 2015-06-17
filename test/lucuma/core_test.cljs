@@ -28,8 +28,8 @@
 
 (deftest ignored-keys
   (is (empty? (l/ignored-keys {:document ""})))
-  (is (empty? (l/ignored-keys {:document "" :style ""})))
-  (is (= #{:documemt} (l/ignored-keys {:documemt "" :style ""}))))
+  (is (empty? (l/ignored-keys {:document "" :properties {}})))
+  (is (= #{:documemt} (l/ignored-keys {:documemt "" :properties {}}))))
 
 (deftest validate-definition
   (is (thrown? js/Error (l/register "")))
@@ -216,18 +216,6 @@
   (is (= false (l/property-definition-events? {:events? false})))
   (is (= true (l/property-definition-events? {:type :boolean})))
   (is (= false (l/property-definition-events? {:events? false :type :boolean}))))
-
-(defwebcomponent test-style-1
-  :document "<span id='style1'></span>"
-  :style "#style1 {color: rgb(255, 0, 0);}")
-
-(defwebcomponent test-style-2
-  :document "<span id='style2'></span>"
-  :style {:media "all" :content "#style2 {color: rgb(255, 0, 0);}"})
-
-(deftest style
-  (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style1")))))
-  (is (= "rgb(255, 0, 0)" (.-color (.getComputedStyle js/window (by-id "style2"))))))
 
 (defwebcomponent test-on-created-1
   :on-created (fn [] {:document "content"}))
@@ -471,11 +459,6 @@
 (defn wrap-registration
   [f]
   (append-tests-node)
-
-  (l/register test-style-1)
-  (l/register test-style-2)
-  (append "test-style-1")
-  (append "test-style-2")
 
   (l/register test-on-created-1)
   (l/register test-on-created-2)

@@ -16,7 +16,6 @@ First define your custom element
 
 (defwebcomponent my-element
   :document "Hello!"
-  :style "* {color: green;}"
   :properties {:threshold 10})
 ```
 
@@ -83,29 +82,6 @@ The document of a Web Component comes from the **document** value that will be a
 ```clojure
 (defwebcomponent my-element
   :document "<div>some content</div>")
-```
-
-### Style
-
-The style of a Web Component comes from the **style** value that will be appended as a `style` element to the element instance. This process is triggered per instance during the creation phase.
-
-**style** value can be a String or a map.
-
-```clojure
-(defwebcomponent my-element
-  :document "<div>some content</div>"
-  :style "span { background: blue; color: white; border: 0; border-radius: 4px;}")
-```
-
-#### Media Queries
-
-Style can be defined as map allowing to provide **title** and **media** value on top of the **content**. Those values will be used when creating the style element and directly managed by the browser.
-
-```clojure
-(defwebcomponent my-element
-  :document "<div>content</div>"
-  :style {:media "screen and (min-width: 800px)" :title "Large Screen"
-          :content "div { background: blue; color: white; border: 0; border-radius: 4px;}"})
 ```
 
 ### Properties

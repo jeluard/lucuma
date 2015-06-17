@@ -165,22 +165,6 @@
     (node? d) (.appendChild el d)
     (string? d) (set! (.-innerHTML el) d)))
 
-(defn- create-style-element
-  "Creates a style element."
-  [media title]
-  (let [el (.createElement js/document "style")]
-    (if media (set! (.-media el) media))
-    (if title (set! (.-title el) title))
-    el))
-
-(defn- install-style!
-  "Appends a new style element encapsulating redendered style."
-  [el o]
-  (let [{:keys [media title content]} (if (map? o) o {:content o})
-        sel (create-style-element media title)]
-    (set! (.-textContent sel) content)
-    (.appendChild el sel)))
-
 (defn property-values
   [ps as]
   (into {}
@@ -200,11 +184,9 @@
   (set-properties! el m ps true true))
 
 (defn- install-content!
-  [el {:keys [document style]}]
+  [el {:keys [document]}]
   (if document
-    (install-document! el document))
-  (if style
-    (install-style! el style)))
+    (install-document! el document)))
 
 (defn- property-name->js-property-name [s] (.replace (name s) "-" "_"))
 (defn- js-property-name->property-name [s] (.replace (name s) "_" "-"))
@@ -263,7 +245,7 @@
   [{:keys [properties methods] :as m} prototype]
   (let [on-created #(let [mp (property-values properties (att/attributes %))]
                      (initialize-instance! % mp m)
-                     ; If document or style is part of definition set it first before call to :on-created
+                     ; If document is part of definition set it first before call to :on-created
                      (install-content! % m)
                      (if-let [f (:on-created m)]
                        ; Handle eventual :document and :on-property-changed part of :on-created result
@@ -313,7 +295,7 @@
         (merge m {:type it})))))
 
 (def all-keys
-  #{:name :ns :prototype :extends :mixins :document :style :properties :methods
+  #{:name :ns :prototype :extends :mixins :document :properties :methods
     :on-created :on-attached :on-detached :on-property-changed})
 
 (defn ignored-keys
