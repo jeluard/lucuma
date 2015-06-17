@@ -15,7 +15,7 @@ First define your custom element
   (:require [lucuma :as l :refer-macros [defwebcomponent]]))
 
 (defwebcomponent my-element
-  :document "Hello!"
+  :on-created #(set! (.-textContent %) "Hello World!")
   :properties {:threshold 10})
 ```
 
@@ -67,21 +67,10 @@ All functions receive as first argument the element instance.
 
 ```clojure
 (defwebcomponent my-element
-  :on-created #(do (println %1 "created") {:document (str "<div>" (count %2) " properties</div>")})
+  :on-created #(println %1 "created")
   :on-attached #(println % "attached")
   :on-detached #(println % "detached")
   :on-property-changed #(println %1 " got some changes" %2))
-```
-
-### Document
-
-The document of a Web Component comes from the **document** value that will be appended to the element instance. This process is triggered per instance during the creation phase.
-
-**document** value can be either a String or a Node instance.
-
-```clojure
-(defwebcomponent my-element
-  :document "<div>some content</div>")
 ```
 
 ### Properties
@@ -176,8 +165,7 @@ The final map definition is then the result of last function invocation.
 
 ```clojure
 (def default
-  {:document "<div>some content</div>"
-   :properties {:property1 "value" :property2 2}})
+  {:properties {:property1 "value" :property2 2}})
 
 (defwebcomponent my-element
   [value]

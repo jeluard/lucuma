@@ -20,7 +20,6 @@
 (defn- set-lucuma-property! [el n v] (aset el lucuma-properties-holder-name n v))
 
 (defn- element? [el] (instance? js/Element el))
-(defn- node? [el] (instance? js/Node el))
 
 (defn element-name
   "Returns an element name. Supports both custom and regular element."
@@ -159,12 +158,6 @@
       (.createElement js/document (name e) n)
       (.createElement js/document n))))
 
-(defn- install-document!
-  [el d]
-  (cond
-    (node? d) (.appendChild el d)
-    (string? d) (set! (.-innerHTML el) d)))
-
 (defn property-values
   [ps as]
   (into {}
@@ -182,11 +175,6 @@
   (install-lucuma-properties-holder! el)
   (install-properties-holder! el)
   (set-properties! el m ps true true))
-
-(defn- install-content!
-  [el {:keys [document]}]
-  (if document
-    (install-document! el document)))
 
 (defn- property-name->js-property-name [s] (.replace (name s) "-" "_"))
 (defn- js-property-name->property-name [s] (.replace (name s) "_" "-"))
@@ -216,12 +204,9 @@
 
 (defn- validate-on-created-result!
   [m ocm]
-  (let [em (dissoc ocm :document :on-property-changed)]
+  (let [em (dissoc ocm :on-property-changed)]
     (if-not (empty? em)
-      (throw (ex-info ":on-created invocation can only return a map containing :document and/or :on-property-changed" em)))
-    (if (and (contains? m :document)
-             (contains? ocm :document))
-      (throw (ex-info "Can't have :document both statically defined and returned by :on-created" {})))
+      (throw (ex-info ":on-created invocation can only return a map containing :on-property-changed" em)))
     (if (and (contains? m :on-property-changed)
              (contains? ocm :on-property-hanged))
       (throw (ex-info "Can't have :on-property-changed both statically defined and returned by :on-created" {})))))
@@ -230,8 +215,6 @@
   [f el m mp]
   (when-let [o (f el mp)]
     (validate-on-created-result! m o)
-    (if (contains? o :document)
-      (install-content! el o))
     (if-let [on-property-changed (:on-property-changed o)]
       (set-lucuma-property! el on-property-changed-property-name on-property-changed))))
 
@@ -245,10 +228,8 @@
   [{:keys [properties methods] :as m} prototype]
   (let [on-created #(let [mp (property-values properties (att/attributes %))]
                      (initialize-instance! % mp m)
-                     ; If document is part of definition set it first before call to :on-created
-                     (install-content! % m)
                      (if-let [f (:on-created m)]
-                       ; Handle eventual :document and :on-property-changed part of :on-created result
+                       ; Handle eventual :on-property-changed part of :on-created result
                        (call-on-created f % m mp)))
         on-attribute-changed (fn [el a ov nv _]
                                (attribute-changed el (keyword (js-property-name->property-name a)) ov nv m))
@@ -295,7 +276,7 @@
         (merge m {:type it})))))
 
 (def all-keys
-  #{:name :ns :prototype :extends :mixins :document :properties :methods
+  #{:name :ns :prototype :extends :mixins :properties :methods
     :on-created :on-attached :on-detached :on-property-changed})
 
 (defn ignored-keys

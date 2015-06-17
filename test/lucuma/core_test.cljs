@@ -27,9 +27,9 @@
 (defn- by-id [id] (.getElementById js/document id))
 
 (deftest ignored-keys
-  (is (empty? (l/ignored-keys {:document ""})))
-  (is (empty? (l/ignored-keys {:document "" :properties {}})))
-  (is (= #{:documemt} (l/ignored-keys {:documemt "" :properties {}}))))
+  (is (empty? (l/ignored-keys {:mixins []})))
+  (is (empty? (l/ignored-keys {:mixins [] :properties {}})))
+  (is (= #{:mixinss} (l/ignored-keys {:mixinss [] :properties {}}))))
 
 (deftest validate-definition
   (is (thrown? js/Error (l/register "")))
@@ -51,11 +51,11 @@
   :mixins [test-prototype-2])
 (defwebcomponent test-prototype-definition-4
   [arg]
-  :document (inc arg))
+  :on-created #(set! (.-textContent %) (inc arg)))
 (defwebcomponent test-prototype-definition-5
   [arg]
   :mixins [test-prototype-2]
-  :document (inc arg))
+  :on-created #(set! (.-textContent %) (inc arg)))
 (defwebcomponent test-prototype-definition-6
   :prototype test-prototype-1)
 (defwebcomponent test-prototype-definition-7
@@ -218,21 +218,14 @@
   (is (= false (l/property-definition-events? {:events? false :type :boolean}))))
 
 (defwebcomponent test-on-created-1
-  :on-created (fn [] {:document "content"}))
-(defwebcomponent test-on-created-2
   :properties {:property 1}
   :on-created (fn [el m] (l/set-property! el :property (inc (:property m)))))
-(defwebcomponent test-on-created-3
+(defwebcomponent test-on-created-2
   :on-created (fn [] {:invalid-property ""}))
-(defwebcomponent test-on-created-4
-  :document "content"
-  :on-created (fn [] {:document "content"}))
 
 (deftest on-created
-  (is (= "content" (.-innerHTML (.createElement js/document "test-on-created-1"))))
-  (is (= 2 (l/get-property (.createElement js/document "test-on-created-2") :property)))
-  (is (thrown? js/Error (.createElement js/document "test-on-created-3")))
-  (is (thrown? js/Error (.createElement js/document "test-on-created-4"))))
+  (is (= 2 (l/get-property (.createElement js/document "test-on-created-1") :property)))
+  (is (thrown? js/Error (.createElement js/document "test-on-created-2"))))
 
 (defn on-changed-inc
   [el cs]
@@ -462,8 +455,6 @@
 
   (l/register test-on-created-1)
   (l/register test-on-created-2)
-  (l/register test-on-created-3)
-  (l/register test-on-created-4)
 
   (l/register test-on-changed-1)
   (l/register test-on-changed-2)
