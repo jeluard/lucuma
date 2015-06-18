@@ -100,9 +100,10 @@
             (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el})))))
       (if (or (not os) (and consider-attributes? (property-definition-attributes? os)))
         (att/set! el k v))
-      (if (and initialization? (property-definition-events? os))
-        (fire-event el k {:old-value (k pv) :new-value v}))
-      (aset el lucuma-properties-holder-name properties-holder-name (name k) v))))
+      (when os
+        (if (and initialization? (property-definition-events? os))
+          (fire-event el k {:old-value (k pv) :new-value v}))
+        (aset el lucuma-properties-holder-name properties-holder-name (name k) v)))))
 
 (defn set-properties!
   "Sets all properties."

@@ -396,7 +396,11 @@
     (is (= "updated" (l/get-property el :property-3)))
     (is (= "updated" (aget el "property_3")))
     (aset el "property_3" "updated2")
-    (is (= "updated2" (l/get-property el :property-3)))))
+    (is (= "updated2" (l/get-property el :property-3)))
+    (l/set-property! el :undefined-property 1)
+    (is (= "1" (.getAttribute el "undefined-property")))
+    (is (= nil (l/get-property el :undefined-property)))
+    (is (= nil (aget el "undefine_property")))))
 
 (deftest attributes-update
   (let [el (.createElement js/document "test-property-2")]
