@@ -108,6 +108,9 @@
   :mixins [#(assoc-in % [:properties :property2] 1)
            #(update-in % [:properties :property] inc)]
   :properties {:property 1})
+(defcustomelement mixin-7
+  :mixins [{:properties {:property1 ""}}]
+  :properties {:property2 1})
 
 (deftest mixins
   (is (= "value" (get-in mixin-1 [:properties :property])))
@@ -116,7 +119,8 @@
   (is (= "value" (get-in mixin-4 [:properties :property])))
   (is (= "overridden-value" (get-in mixin-5 [:properties :property])))
   (is (= 2 (get-in mixin-6 [:properties :property])))
-  (is (= 1 (get-in mixin-6 [:properties :property2]))))
+  (is (= 1 (get-in mixin-6 [:properties :property2])))
+  (is (= 2 (count (get-in mixin-7 [:properties])))))
 
 #_
 (deftest mixins
@@ -222,10 +226,18 @@
   :on-created (fn [el m] (l/set-property! el :property (inc (:property m)))))
 (defcustomelement test-on-created-2
   :on-created (fn [] {:invalid-property ""}))
+(defcustomelement test-on-created-3
+  :mixins [{:on-created #(.appendChild % (.createTextNode js/document "1"))}]
+  :on-created #(.appendChild % (.createTextNode js/document "2")))
+(defcustomelement test-on-created-4
+  :prototype test-on-created-1
+  :on-created (fn [el m] (l/set-property! el :property (inc (:property m)))))
 
 (deftest on-created
   (is (= 2 (l/get-property (.createElement js/document "test-on-created-1") :property)))
-  (is (thrown? js/Error (.createElement js/document "test-on-created-2"))))
+  (is (thrown? js/Error (.createElement js/document "test-on-created-2")))
+  (is (= "12" (.-textContent (.createElement js/document "test-on-created-3"))))
+  (is (= 2 (l/get-property (.createElement js/document "test-on-created-4") :property))))
 
 (defn on-changed-inc
   [el cs]
@@ -459,6 +471,8 @@
 
   (l/register test-on-created-1)
   (l/register test-on-created-2)
+  (l/register test-on-created-3)
+  (l/register test-on-created-4)
 
   (l/register test-on-changed-1)
   (l/register test-on-changed-2)

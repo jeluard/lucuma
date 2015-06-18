@@ -214,10 +214,11 @@
 
 (defn- call-on-created
   [f el m mp]
-  (when-let [o (f el mp)]
-    (validate-on-created-result! m o)
-    (if-let [on-property-changed (:on-property-changed o)]
-      (set-lucuma-property! el on-property-changed-property-name on-property-changed))))
+  (let [o (f el mp)]
+    (when (map? o)
+      (validate-on-created-result! m o)
+      (if-let [on-property-changed (:on-property-changed o)]
+        (set-lucuma-property! el on-property-changed-property-name on-property-changed)))))
 
 (defn- call-callback-when-defined
   [m k el]
@@ -308,11 +309,21 @@
     (doseq [m ms]
       (register m))))
 
-(defn merge-map-definition
-  [m1 m2]
-  (let [ps (merge (:properties m1) (:properties m2))
-        ms (merge (:methods m1) (:methods m2))]
-    (merge m1 m2 (if ps {:properties ps}) (if ms {:methods ms}))))
+(defn default-mixin-combiner
+  [r l]
+  "Combines map by merging them.
+   Combines function by creating a new function that first calls the old one then the new one.
+   For all others types the new value takes precedence."
+  (cond
+    (map? l) (merge r l)
+    (fn? l)  (fn [& args] (if r (apply r args)) (apply l args))
+    :else (or l r)))
+
+(defn map-without-mixins
+  [m]
+  (if (map? m)
+    (dissoc m :mixins (if (map? (:prototype m)) :prototype))
+    m))
 
 (defn collect-mixins
   [m]
@@ -322,12 +333,12 @@
              (reduce #(if-let [pmxs (collect-mixins %2)]
                        (apply conj %1 pmxs)
                        %1) [] mxs)
-             mxs))))
+             (mapv map-without-mixins mxs)))))
 
 (defn merge-mixins
   [m]
   (if-let [mxs (collect-mixins m)]
-    (let [mm (reduce merge-map-definition (conj (filterv map? mxs) m))
+    (let [mm (reduce #(merge-with (or (:mixin-combiner m) default-mixin-combiner) (map-without-mixins %1) (map-without-mixins %2)) (conj (filterv map? mxs) m))
           fns (filter fn? mxs)]
       (if (seq fns)
         (reduce #(%2 %1) mm fns)
