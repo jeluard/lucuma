@@ -225,19 +225,16 @@
   :properties {:property 1}
   :on-created (fn [el m] (l/set-property! el :property (inc (:property m)))))
 (defcustomelement test-on-created-2
-  :on-created (fn [] {:invalid-property ""}))
-(defcustomelement test-on-created-3
   :mixins [{:on-created #(.appendChild % (.createTextNode js/document "1"))}]
   :on-created #(.appendChild % (.createTextNode js/document "2")))
-(defcustomelement test-on-created-4
+(defcustomelement test-on-created-3
   :prototype test-on-created-1
   :on-created (fn [el m] (l/set-property! el :property (inc (:property m)))))
 
 (deftest on-created
   (is (= 2 (l/get-property (.createElement js/document "test-on-created-1") :property)))
-  (is (thrown? js/Error (.createElement js/document "test-on-created-2")))
-  (is (= "12" (.-textContent (.createElement js/document "test-on-created-3"))))
-  (is (= 2 (l/get-property (.createElement js/document "test-on-created-4") :property))))
+  (is (= "12" (.-textContent (.createElement js/document "test-on-created-2"))))
+  (is (= 2 (l/get-property (.createElement js/document "test-on-created-3") :property))))
 
 (defn on-changed-inc
   [el cs]
@@ -247,17 +244,11 @@
 (defcustomelement test-on-changed-1
   :on-property-changed on-changed-inc
   :properties {:property 1})
-(defcustomelement test-on-changed-2
-  :on-created (fn [_] {:on-property-changed on-changed-inc})
-  :properties {:property 1})
 
 (deftest on-changed
   (let [el (.createElement js/document "test-on-changed-1")]
     (l/set-property! el :property 2)
-    (is (= "3" (.getAttribute el "data-property"))))
-  (let [el (.createElement js/document "test-on-changed-2")]
-    (l/set-property! el :property 3)
-    (is (= "4" (.getAttribute el "data-property")))))
+    (is (= "3" (.getAttribute el "data-property")))))
 
 (def test-created-callback1-called (atom false))
 (def test-attached-callback1-called (atom false))
@@ -464,10 +455,8 @@
   (l/register test-on-created-1)
   (l/register test-on-created-2)
   (l/register test-on-created-3)
-  (l/register test-on-created-4)
 
   (l/register test-on-changed-1)
-  (l/register test-on-changed-2)
 
   (l/register test-prototype-1)
   (l/register test-prototype-2)

@@ -61,7 +61,7 @@ You can hook functions to the element lifecycle using following keys:
 
 All functions receive as first argument the element instance.
 
-**on-created** receives as second argument a map of consolidated properties (see documentation [later](#properties)) values. It can return a map containing a value for **document** and **on-property-changed** that will be used for this specific element instance.
+**on-created** receives as second argument a map of consolidated properties (see documentation [later](#properties)) values.
 
 **on-property-changed** receives as second argument a list of changes as map (`{:property :property-name :old-value "old" :new-value "new"}`).
 

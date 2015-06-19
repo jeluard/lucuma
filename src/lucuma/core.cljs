@@ -12,7 +12,6 @@
 
 (def ^:private lucuma-properties-holder-name "lucuma")
 (def ^:private properties-holder-name "properties")
-(def ^:private on-property-changed-property-name "on_property_changed")
 
 (defn- install-lucuma-properties-holder! [p] (aset p lucuma-properties-holder-name #js {}))
 
@@ -108,14 +107,9 @@
 
 (defn on-property-changed
   [el ps m pv]
-  (let [lf (get-lucuma-property! el on-property-changed-property-name)
-        f (:on-property-changed ps)]
-    (if (or lf f)
-      (let [s (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
-        (if lf
-          (lf el s))
-        (if f
-          (f el s))))))
+  (if-let [f (:on-property-changed ps)]
+    (let [s (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
+      (f el s))))
 
 (defn set-properties!
   "Sets all properties."
@@ -214,20 +208,6 @@
     (map? o) (prototype-of (:name o))
     (instance? js/HTMLElement o) o))
 
-(defn- validate-on-created-result!
-  [ocm]
-  (let [em (dissoc ocm :on-property-changed)]
-    (if-not (empty? em)
-      (throw (ex-info ":on-created invocation can only return a map containing :on-property-changed" em)))))
-
-(defn- call-on-created
-  [f el mp]
-  (let [o (f el mp)]
-    (when (map? o)
-      (validate-on-created-result! o)
-      (if-let [on-property-changed (:on-property-changed o)]
-        (set-lucuma-property! el on-property-changed-property-name on-property-changed)))))
-
 (defn- call-callback-when-defined
   [m k el]
   (if-let [f (k m)]
@@ -239,8 +219,7 @@
   (let [on-created #(let [mp (property-values properties (att/attributes %))]
                      (initialize-instance! % mp m)
                      (if-let [f (:on-created m)]
-                       ; Handle eventual :on-property-changed part of :on-created result
-                       (call-on-created f % mp)))
+                       (f % mp)))
         on-attribute-changed (fn [el a ov nv _]
                                (attribute-changed el (keyword (js-property-name->property-name a)) ov nv m))
         prototype (ce/create-prototype
