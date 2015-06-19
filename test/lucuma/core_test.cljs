@@ -244,16 +244,11 @@
   (let [c (first cs)]
     (.setAttribute el (str "data-" (name (:property c))) (inc (:new-value c)))))
 
-(defn on-changed-reject [_ _] false)
-
 (defcustomelement test-on-changed-1
   :on-property-changed on-changed-inc
   :properties {:property 1})
 (defcustomelement test-on-changed-2
   :on-created (fn [_] {:on-property-changed on-changed-inc})
-  :properties {:property 1})
-(defcustomelement test-on-changed-3
-  :on-created (fn [_] {:on-property-changed on-changed-reject})
   :properties {:property 1})
 
 (deftest on-changed
@@ -262,10 +257,7 @@
     (is (= "3" (.getAttribute el "data-property"))))
   (let [el (.createElement js/document "test-on-changed-2")]
     (l/set-property! el :property 2)
-    (is (= "3" (.getAttribute el "data-property"))))
-  (let [el (.createElement js/document "test-on-changed-3")]
-    (l/set-property! el :property 2)
-    (is (= "1" (.getAttribute el "property")))))
+    (is (= "3" (.getAttribute el "data-property")))))
 
 (def test-created-callback1-called (atom false))
 (def test-attached-callback1-called (atom false))
@@ -476,7 +468,6 @@
 
   (l/register test-on-changed-1)
   (l/register test-on-changed-2)
-  (l/register test-on-changed-3)
 
   (l/register test-prototype-1)
   (l/register test-prototype-2)

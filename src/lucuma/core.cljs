@@ -105,17 +105,26 @@
           (fire-event el k {:old-value (k pv) :new-value v}))
         (aset el lucuma-properties-holder-name properties-holder-name (name k) v)))))
 
+(defn on-property-changed
+  [el ps m pv]
+  (let [lf (get-lucuma-property! el on-property-changed-property-name)
+        f (:on-property-changed ps)]
+    (if (or lf f)
+      (let [s (for [[k v] m] {:property k :old-value (k pv) :new-value v})]
+        (if lf
+          (lf el s))
+        (if f
+          (f el s))))))
+
 (defn set-properties!
   "Sets all properties."
   ([el m] (set-properties! el m (get-definition (element-name el)) true false))
   ([el m ps consider-attributes? initialization?]
     (if (lucuma-element? el)
-      (let [pv (get-properties el)
-            on-property-changed (or (get-lucuma-property! el on-property-changed-property-name) (:on-property-changed ps))]
-        (if (and (not initialization?) on-property-changed)
-          (if-not (false? (on-property-changed el (for [[k v] m] {:property k :old-value (k pv) :new-value v})))
-            (set-properties* el m pv ps consider-attributes? initialization?))
-          (set-properties* el m pv ps consider-attributes? initialization?))))))
+      (let [pv (get-properties el)]
+        (set-properties* el m pv ps consider-attributes? initialization?)
+        (if (not initialization?)
+          (on-property-changed el ps m pv))))))
 
 (defn set-property!
   "Sets the value of a named property."
@@ -204,19 +213,16 @@
     (instance? js/HTMLElement o) o))
 
 (defn- validate-on-created-result!
-  [m ocm]
+  [ocm]
   (let [em (dissoc ocm :on-property-changed)]
     (if-not (empty? em)
-      (throw (ex-info ":on-created invocation can only return a map containing :on-property-changed" em)))
-    (if (and (contains? m :on-property-changed)
-             (contains? ocm :on-property-hanged))
-      (throw (ex-info "Can't have :on-property-changed both statically defined and returned by :on-created" {})))))
+      (throw (ex-info ":on-created invocation can only return a map containing :on-property-changed" em)))))
 
 (defn- call-on-created
-  [f el m mp]
+  [f el mp]
   (let [o (f el mp)]
     (when (map? o)
-      (validate-on-created-result! m o)
+      (validate-on-created-result! o)
       (if-let [on-property-changed (:on-property-changed o)]
         (set-lucuma-property! el on-property-changed-property-name on-property-changed)))))
 
@@ -232,7 +238,7 @@
                      (initialize-instance! % mp m)
                      (if-let [f (:on-created m)]
                        ; Handle eventual :on-property-changed part of :on-created result
-                       (call-on-created f % m mp)))
+                       (call-on-created f % mp)))
         on-attribute-changed (fn [el a ov nv _]
                                (attribute-changed el (keyword (js-property-name->property-name a)) ov nv m))
         prototype (ce/create-prototype
