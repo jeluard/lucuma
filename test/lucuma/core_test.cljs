@@ -256,8 +256,8 @@
     (l/set-property! el :property 2)
     (is (= "3" (.getAttribute el "data-property"))))
   (let [el (.createElement js/document "test-on-changed-2")]
-    (l/set-property! el :property 2)
-    (is (= "3" (.getAttribute el "data-property")))))
+    (l/set-property! el :property 3)
+    (is (= "4" (.getAttribute el "data-property")))))
 
 (def test-created-callback1-called (atom false))
 (def test-attached-callback1-called (atom false))

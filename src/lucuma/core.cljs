@@ -98,12 +98,13 @@
         (let [et (:type os)]
           (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
             (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el})))))
-      (if (or (not os) (and consider-attributes? (property-definition-attributes? os)))
-        (att/set! el k v))
       (when os
         (if (and initialization? (property-definition-events? os))
           (fire-event el k {:old-value (k pv) :new-value v}))
-        (aset el lucuma-properties-holder-name properties-holder-name (name k) v)))))
+        (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
+      ; Set attribute after property is set to prevent a double call to set-properties*
+      (if (or (not os) (and consider-attributes? (property-definition-attributes? os)))
+        (att/set! el k v)))))
 
 (defn on-property-changed
   [el ps m pv]
@@ -118,7 +119,8 @@
 
 (defn set-properties!
   "Sets all properties."
-  ([el m] (set-properties! el m (get-definition (element-name el)) true false))
+  ([el m] (set-properties! el m true false))
+  ([el m consider-attributes? initialization?] (set-properties! el m (get-definition (element-name el)) consider-attributes? initialization?))
   ([el m ps consider-attributes? initialization?]
     (if (lucuma-element? el)
       (let [pv (get-properties el)]
