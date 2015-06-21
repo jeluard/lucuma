@@ -84,10 +84,16 @@
     (aset ev "detail" (clj->js m))
     (.dispatchEvent el ev)))
 
+(defn change->map [m] {(:property m) (:new-value m)})
+
 (defn changes->map
   "Returns a map of changed values"
   [s]
-  (reduce #(merge %1 {(:property %2) (:new-value %2)}) {} s))
+  (reduce #(merge %1 (change->map %2)) {} s))
+
+(defn get-change
+  [s k]
+  (some #(let [m %] (if (= k (:property %)) m)) s))
 
 (defn- set-properties*
   [el m pv ps consider-attributes? initialization?]
@@ -303,7 +309,7 @@
    For all others types the new value takes precedence."
   (cond
     (map? l) (merge r l)
-    (fn? l)  (fn [& args] (if r (apply r args)) (apply l args))
+    (fn? l)  (fn [& args] (if r (do (apply r args) (apply l args)) f))
     :else (or l r)))
 
 (defn map-without-mixins
