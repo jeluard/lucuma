@@ -309,7 +309,7 @@
    For all others types the new value takes precedence."
   (cond
     (map? l) (merge r l)
-    (fn? l)  (fn [& args] (if r (do (apply r args) (apply l args)) f))
+    (fn? l)  (fn [& args] (if r (do (apply r args) (apply l args)) r))
     :else (or l r)))
 
 (defn map-without-mixins
