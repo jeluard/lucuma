@@ -353,7 +353,8 @@
 (defcustomelement test-property-2
   :properties {:property1 "1"
                :property2 {:default 1 :type :number}
-               :property-3 ""})
+               :property-3 ""
+               :property4 {:default "" :read-only? true}})
 
 (defcustomelement test-property-fail-1
   :properties {:invalid_property_name nil})
@@ -395,7 +396,9 @@
     (l/set-property! el :undefined-property 1)
     (is (= "1" (.getAttribute el "undefined-property")))
     (is (= nil (l/get-property el :undefined-property)))
-    (is (= nil (aget el "undefine_property")))))
+    (is (= nil (aget el "undefine_property")))
+    (is (thrown? js/Error (l/set-property! el :property4 "updating read-only property")))
+    (is (thrown? js/Error (aset el "property4" "updating read-only property")))))
 
 (deftest attributes-update
   (let [el (.createElement js/document "test-property-2")]

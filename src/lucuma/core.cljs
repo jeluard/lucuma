@@ -95,15 +95,20 @@
   [s k]
   (some #(let [m %] (if (= k (:property %)) m)) s))
 
+(defn- throw-when-modifying-read-only-property
+  [k]
+  (throw (ex-info "Can't set value of read-only? property" {:property (name k)})))
+
 (defn- set-properties*
   [el m pv ps consider-attributes? initialization?]
   (doseq [[k v] m]
     (let [os (k (:properties ps))]
-      (if os
-        (let [et (:type os)]
-          (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
-            (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el})))))
       (when os
+        (let [et (:type os)]
+          (if (and (not initialization?) (:read-only? os))
+            (throw-when-modifying-read-only-property k))
+          (if (and (not (nil? v)) (not (= et (infer-type-from-value v))))
+            (throw (ex-info (str "Expected value of type " et " but got " (infer-type-from-value v) " (<" v ">) for " k) {:property (name k) :target el}))))
         (if (and initialization? (property-definition-events? os))
           (fire-event el k {:old-value (k pv) :new-value v}))
         (aset el lucuma-properties-holder-name properties-holder-name (name k) v))
@@ -192,9 +197,15 @@
 (defn- js-property-name->property-name [s] (.replace (name s) "_" "-"))
 
 (defn- merge-properties
-  [p g s]
-  (apply merge (map #(hash-map (keyword (property-name->js-property-name %)) (att/property-definition (partial g (keyword (js-property-name->property-name %))) (partial s (keyword (js-property-name->property-name %)))))
-                    (map key p))))
+  [ps g s]
+  (apply merge (map #(let [kj (keyword (property-name->js-property-name (key %)))
+                           kp (keyword (js-property-name->property-name (key %)))]
+                      (hash-map kj (att/property-definition
+                                    (partial g kp)
+                                    (if (false? (boolean (:read-only? (val %))))
+                                      (partial s kp)
+                                      (fn [] (throw-when-modifying-read-only-property kp))))))
+                    ps)))
 
 (defn- attribute-changed
   "Updates property based on associated attribute change."
