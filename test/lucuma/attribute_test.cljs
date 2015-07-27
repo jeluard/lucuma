@@ -1,5 +1,5 @@
 (ns lucuma.attribute-test
-  (:require [cemerick.cljs.test :as t :refer-macros [deftest is]]
+  (:require [cljs.test :refer-macros [deftest is]]
             [lucuma.attribute :as att])
   (:refer-clojure :exclude [get set]))
 

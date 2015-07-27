@@ -1,8 +1,7 @@
 (ns lucuma.custom-elements-test
-  (:require [cemerick.cljs.test :as t]
+  (:require [cljs.test :refer-macros [deftest is]]
             [lucuma.custom-elements :as ce]
-            cljsjs.document-register-element)
-  (:require-macros [cemerick.cljs.test :refer [deftest is testing]]))
+            cljsjs.document-register-element))
 
 (deftest supported
   (is (ce/supported?)))

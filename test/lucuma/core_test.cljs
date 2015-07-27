@@ -1,5 +1,5 @@
 (ns lucuma.core-test
-  (:require [cemerick.cljs.test :as t :refer-macros [deftest done is use-fixtures]]
+  (:require [cljs.test :refer-macros [deftest is use-fixtures]]
             [lucuma.core :as l :refer-macros [defcustomelement]])
   (:refer-clojure :exclude [methods]))
 
@@ -121,19 +121,6 @@
   (is (= 2 (get-in mixin-6 [:properties :property])))
   (is (= 1 (get-in mixin-6 [:properties :property2])))
   (is (= 2 (count (get-in mixin-7 [:properties])))))
-
-#_
-(deftest mixins
-  (is (= :button (:extends test-prototype-definition-3)))
-  (is (= :button (:extends (test-prototype-definition-5 0))))
-  (is (= "default" (get-in test-prototype-definition-8 [:properties :property1])))
-  (is (= "another-default" (get-in test-prototype-definition-8 [:properties :property2])))
-  #_(is (= "default" (get-in test-prototype-definition-9 [:properties :property1])))
-  #_(is (= "another-default" (get-in test-prototype-definition-9 [:properties :property2])))
-  #_(is (= "another-default" (get-in test-prototype-definition-9 [:properties :property3])))
-  (is (= "value2" (get-in test-prototype-definition-10 [:properties :property1])))
-  (is (= "value" (get-in test-prototype-definition-10 [:properties :property2])))
-  #_(is (= 3 (get-in test-prototype-definition-11 [:properties :property]))))
 
 (defcustomelement test-extends-1)
 (defcustomelement test-extends-2

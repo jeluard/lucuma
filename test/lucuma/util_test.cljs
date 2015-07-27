@@ -1,5 +1,5 @@
 (ns lucuma.util-test
-  (:require [cemerick.cljs.test :as t :refer-macros [deftest is testing]]
+  (:require [cljs.test :refer-macros [deftest is]]
             [lucuma.util :as u]))
 
 (deftest wrap-to-javascript

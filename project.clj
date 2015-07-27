@@ -11,14 +11,14 @@
                     [org.clojure/clojurescript "0.0-3308"]
                     [cljsjs/document-register-element "0.4.3-0"]]
      :plugins [[lein-cljsbuild "1.0.5"]
-               [com.cemerick/clojurescript.test "0.3.3"]]}}
+               [lein-doo "0.1.4-SNAPSHOT"]]}}
   :cljsbuild
   {:builds
    {:test
     {:source-paths ["src" "test"]
      :compiler {:output-to "target/cljs/unit-test.js"
-                :optimizations :whitespace}}}
-   :test-commands {"slimerjs" ["slimerjs" :runner "target/cljs/unit-test.js"]}}
-  :aliases {"clean-test" ["do" "clean," "cljsbuild" "test"]
+                :main 'lucuma.runner
+                :optimizations :whitespace}}}}
+  :aliases {"clean-test" ["do" "clean," "doo" "phantom" "test" "once"]
             "clean-install" ["do" "clean," "install"]}
   :min-lein-version "2.5.0")
