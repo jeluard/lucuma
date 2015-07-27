@@ -345,6 +345,6 @@
     (let [mm (reduce #(merge-with (or (:mixin-combiner m) default-mixin-combiner) (map-without-mixins %1) (map-without-mixins %2)) (conj (filterv map? mxs) m))
           fns (filter fn? mxs)]
       (if (seq fns)
-        (reduce #(%2 %1) mm fns)
+        (reduce #(merge-mixins (%2 %1)) (map-without-mixins mm) fns)
         mm))
     m))

@@ -106,8 +106,9 @@
   :mixins [other-defaults-with-mixins])
 (defcustomelement mixin-6
   :mixins [#(assoc-in % [:properties :property2] 1)
-           #(update-in % [:properties :property] inc)]
-  :properties {:property 1})
+           #(update-in % [:properties :property1] inc)
+           #(assoc % :mixins [mixin-5])]
+  :properties {:property1 1})
 (defcustomelement mixin-7
   :mixins [{:properties {:property1 ""}}]
   :properties {:property2 1})
@@ -118,8 +119,9 @@
   (is (= "value" (get-in mixin-3 [:properties :property])))
   (is (= "value" (get-in mixin-4 [:properties :property])))
   (is (= "overridden-value" (get-in mixin-5 [:properties :property])))
-  (is (= 2 (get-in mixin-6 [:properties :property])))
+  (is (= 2 (get-in mixin-6 [:properties :property1])))
   (is (= 1 (get-in mixin-6 [:properties :property2])))
+  (is (= "overridden-value" (get-in mixin-6 [:properties :property])))
   (is (= 2 (count (get-in mixin-7 [:properties])))))
 
 (defcustomelement test-extends-1)
@@ -151,7 +153,6 @@
 (deftest extends-right-prototype
   (is (instance? js/HTMLUnknownElement (.createElement js/document "unknown")))
   (is (instance? js/HTMLElement (.createElement js/document "test-unknown")))
-  (is (not (instance? js/HTMLUnknownElement (.createElement js/document "test-unknown"))))
   (is (instance? js/HTMLElement (.createElement js/document "test-prototype-1")))
   (is (not (instance? js/HTMLButtonElement (.createElement js/document "test-prototype-2"))))
   (is (instance? js/HTMLButtonElement (.createElement js/document "button" "test-prototype-2")))
