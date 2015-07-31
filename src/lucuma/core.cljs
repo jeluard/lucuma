@@ -293,25 +293,25 @@
 (defn register
   "Registers a new Custom Element from its definition.
    Returns true if registration was successful, falsey value if the definition was already registered."
-  ([m]
-   {:pre [(map? m)]}
-   (let [n (:name m)]
-     (if-not (registered? n)
-       (let [{:keys [properties methods]} m
-             prototype (prototype m)]
-         ; Validate property / method names
-         (doseq [[o m] (concat properties methods)]
-           (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o) m))
-         (let [um (assoc m :properties (into {} (for [[k v] properties]
-                                                  [k (or (validate-property-definition! k v) v)])))]
-           (swap! registry assoc n um)
-           (ce/register n (create-prototype um prototype) (:extends m)))
-         true))))
-  ([m1 m2 & ms]
-    (register m1)
-    (register m2)
-    (doseq [m ms]
-      (register m))))
+  [r]
+  (cond
+    (map? r)
+    (let [n (:name r)]
+      (if-not (registered? n)
+        (let [{:keys [properties methods]} r
+              prototype (prototype r)]
+          ; Validate property / method names
+          (doseq [[o r] (concat properties methods)]
+            (validate-property-name! (or (if (keyword? prototype) (create-element prototype)) default-element) (name o) r))
+          (let [um (assoc r :properties (into {} (for [[k v] properties]
+                                                   [k (or (validate-property-definition! k v) v)])))]
+            (swap! registry assoc n um)
+            (ce/register n (create-prototype um prototype) (:extends r)))
+          true)))
+    (sequential? r)
+    (doall (map register r))
+    :else
+    (throw (ex-info "Can't register unsupported definition" {:r r}))))
 
 (defn default-mixin-combiner
   [r l]
