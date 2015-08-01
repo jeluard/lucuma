@@ -18,7 +18,7 @@
     {:source-paths ["src" "test"]
      :compiler {:output-to "target/cljs/unit-test.js"
                 :main 'lucuma.runner
-                :optimizations :whitespace}}}}
-  :aliases {"clean-test" ["do" "clean," "doo" "phantom" "test" "once"]
+                :optimizations :none}}}}
+  :aliases {"clean-test" ["do" "clean," "doo" "slimer" "test" "once"]
             "clean-install" ["do" "clean," "install"]}
   :min-lein-version "2.5.0")
