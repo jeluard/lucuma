@@ -151,16 +151,6 @@ If extending a Custom Element created via `defcustomelement` directly reference 
 
 To improve element reuse defcustomelement has advanced syntax allowing to introduce parametrization and reuse existing definition.
 
-By providing a vector as first element of a defcustomelement arguments can be defined that can then be used in the element definition. defcustomelement type will then be a function that returns a map upon invocation. This map will have to be registered (as opposed to the defcustomelement itself).
-
-```clojure
-(defcustomelement my-element
-  [value]
-  :properties {:default-threshold value})
-
-(register (my-element 15))
-```
-
 **mixins** allows to provide shared definition by providing a list of map and/or function. All maps are first merged in order with the definition map itself (definition being merged last)
 then all functions are applied in order with the first function receiving the consolidated map as argument and all subsequents the result of previous function invocation.
 The final map definition is then the result of last function invocation.
@@ -170,9 +160,8 @@ The final map definition is then the result of last function invocation.
   {:properties {:property1 "value" :property2 2}})
 
 (defcustomelement my-element
-  [value]
   :mixins [default #(update-in % [:properties :property2] inc)]
-  :properties {:threshold value})
+  :properties {:threshold 1})
 ```
 
 ## Browser support

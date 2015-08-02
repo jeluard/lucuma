@@ -49,13 +49,6 @@
   :extends :button)
 (defcustomelement test-prototype-definition-3
   :mixins [test-prototype-2])
-(defcustomelement test-prototype-definition-4
-  [arg]
-  :on-created #(set! (.-textContent %) (inc arg)))
-(defcustomelement test-prototype-definition-5
-  [arg]
-  :mixins [test-prototype-2]
-  :on-created #(set! (.-textContent %) (inc arg)))
 (defcustomelement test-prototype-definition-6
   :prototype test-prototype-1)
 (defcustomelement test-prototype-definition-7

@@ -9,6 +9,7 @@ This release breaks backward compatibility.
 * **[~]** Renamed `lucuma` to `lucuma.core` (no more single segment namespace)
 * **[~]** Renamed `defwebcomponent` to `defcustomelement`
 * **[-]** Removed support for ShadowDOM, **:document** and **:style**
+* **[-]** `defcustomelement` cannot take arguments anymore
 * **[-]** Old extension mechanism has been removed in favour of new **mixins**
 
 # [0.3.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.3.0)
