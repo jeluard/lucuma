@@ -4,7 +4,6 @@
   :license  {:name "Eclipse Public License"
              :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths  ["src" "test"]
-  :dependencies [[org.clojure/tools.macro "0.1.2"]]
   :profiles
   {:dev
     {:dependencies [[org.clojure/clojure "1.7.0"]
