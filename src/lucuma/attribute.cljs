@@ -16,7 +16,7 @@
 (defmulti attribute->property first)
 
 (defmethod attribute->property :string [[_ s]] (if-not (empty? s) s))
-(defmethod attribute->property :keyword [[_ k]] (keyword k))
+(defmethod attribute->property :keyword [[_ k]] (if-not (empty? k) (keyword k)))
 (defmethod attribute->property :boolean [[_ b]] (cond (nil? b) false (identical? "" b) true :else (read-string b)))
 (defmethod attribute->property :number [[_ n]] (if-not (empty? n) (read-string n)))
 (defmethod attribute->property :default [v] (.log js/console (str "Can't convert attribute of type <" (first v) ">")))

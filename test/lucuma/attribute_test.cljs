@@ -20,6 +20,7 @@
   (is (= :keyword (att/attribute->property [:keyword "keyword"])))
   (is (= :lucuma.attribute-test/keyword (att/attribute->property [:keyword "lucuma.attribute-test/keyword"])))
   (is (= nil (att/attribute->property [:keyword nil])))
+  (is (= nil (att/attribute->property [:keyword ""])))
   (is (= 5.2 (att/attribute->property [:number "5.2"])))
   (is (= nil (att/attribute->property [:number nil])))
   (is (= true (att/attribute->property [:boolean "true"])))
