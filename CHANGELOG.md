@@ -1,3 +1,7 @@
+# 0.5.1
+
+* **[~]** Fixed issue with keyword parsing
+
 # [0.5.0](https://github.com/jeluard/lucuma/issues?q=is%3Aclosed+milestone%3A0.5.0)
 
 `lucuma` now focuses on creating Custom Elements and providing simple ClojureScript hooks.
