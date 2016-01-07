@@ -7,10 +7,10 @@
   :profiles
   {:dev
     {:dependencies [[org.clojure/clojure "1.7.0"]
-                    [org.clojure/clojurescript "0.0-3308"]
-                    [cljsjs/document-register-element "0.4.3-0"]]
-     :plugins [[lein-cljsbuild "1.0.5"]
-               [lein-doo "0.1.4-SNAPSHOT"]]}}
+                    [org.clojure/clojurescript "1.7.170"]
+                    [cljsjs/document-register-element "0.5.3-0"]]
+     :plugins [[lein-cljsbuild "1.1.2"]
+               [lein-doo "0.1.6"]]}}
   :cljsbuild
   {:builds
    {:test
@@ -18,6 +18,6 @@
      :compiler {:output-to "target/cljs/unit-test.js"
                 :main 'lucuma.runner
                 :optimizations :none}}}}
-  :aliases {"clean-test" ["do" "clean," "doo" "slimer" "test" "once"]
+  :aliases {"clean-test" ["do" "clean," "doo" "phantom" "test" "once"]
             "clean-install" ["do" "clean," "install"]}
   :min-lein-version "2.5.0")
