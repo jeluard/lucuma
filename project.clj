@@ -8,7 +8,7 @@
   {:dev
     {:dependencies [[org.clojure/clojure "1.7.0"]
                     [org.clojure/clojurescript "1.7.170"]
-                    [cljsjs/document-register-element "0.5.3-0"]]
+                    [cljsjs/document-register-element "0.5.3-1"]]
      :plugins [[lein-cljsbuild "1.1.2"]
                [lein-doo "0.1.6"]]}}
   :cljsbuild
